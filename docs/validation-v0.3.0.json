@@ -1,0 +1,493 @@
+{
+  "version": "0.3.0",
+  "verifiedAt": "2026-10-20",
+  "runtime": "Node 24.19.0 / Linux",
+  "softwareTests": {
+    "tests": 76,
+    "passed": 76,
+    "failed": 0,
+    "skipped": 0
+  },
+  "referenceTemplates": {
+    "count": 48,
+    "categories": 8,
+    "nativePptxFiles": 9,
+    "pptx": {
+      "sha256": "e8f5e980d2b6bc56493dceffb54f10b708576ee39c1d2b40432baf1953573657",
+      "bytes": 2653131,
+      "slides": 48,
+      "nativeShapes": 1367,
+      "pictures": 18,
+      "nativeTables": 8,
+      "nativeChartFrames": 5,
+      "embeddedWorkbooks": 5,
+      "notes": 48
+    },
+    "checks": {
+      "staticIssues": [],
+      "pptxVisual": {
+        "status": "reviewed",
+        "renderer": {
+          "package": "@deepseek-ai/libreoffice-kit",
+          "version": "0.1.5",
+          "backend": "wasm"
+        },
+        "sourceSha256": "e8f5e980d2b6bc56493dceffb54f10b708576ee39c1d2b40432baf1953573657",
+        "slideCount": 48,
+        "missingFonts": [],
+        "reviewedPages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ],
+        "montages": [
+          {
+            "category": "paper",
+            "path": "montages/paper.png",
+            "pages": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "sha256": "e8a9f5a933f23aafad7a8cf843b09f207b4e1c5bfc2f1cf2db70cacfd15de537",
+            "byteLength": 645565
+          },
+          {
+            "category": "method",
+            "path": "montages/method.png",
+            "pages": [
+              7,
+              8,
+              9,
+              10,
+              11,
+              12
+            ],
+            "sha256": "aebf1f07bd643e6db921d997afdce95509ec58c20584ce30b36d342cd814133d",
+            "byteLength": 612506
+          },
+          {
+            "category": "experiment",
+            "path": "montages/experiment.png",
+            "pages": [
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ],
+            "sha256": "26096ff4054e432a0160efd01021ab3978540fa1be404467edb8b84c1dd295af",
+            "byteLength": 624860
+          },
+          {
+            "category": "results",
+            "path": "montages/results.png",
+            "pages": [
+              19,
+              20,
+              21,
+              22,
+              23,
+              24
+            ],
+            "sha256": "92b86e71da21258b78455eefa24751b904c87cbbebf675566edf23e624abd397",
+            "byteLength": 558348
+          },
+          {
+            "category": "figure",
+            "path": "montages/figure.png",
+            "pages": [
+              25,
+              26,
+              27,
+              28,
+              29,
+              30
+            ],
+            "sha256": "16b8424c5602824a76dcc602d2aaa7e16309c8e3cf4dd352f758d70b95b5d1c4",
+            "byteLength": 620783
+          },
+          {
+            "category": "synthesis",
+            "path": "montages/synthesis.png",
+            "pages": [
+              31,
+              32,
+              33,
+              34,
+              35,
+              36
+            ],
+            "sha256": "51ae68aaf626f5d755eef53b54c85f5f5b6e6c9f2a50278b4ba45d707a89be30",
+            "byteLength": 568776
+          },
+          {
+            "category": "limitations",
+            "path": "montages/limitations.png",
+            "pages": [
+              37,
+              38,
+              39,
+              40,
+              41,
+              42
+            ],
+            "sha256": "0378d3437754cdf655b840a12ccb2e998a2fcc25c2e6f3f0d13c06fcfc780447",
+            "byteLength": 580964
+          },
+          {
+            "category": "plan",
+            "path": "montages/plan.png",
+            "pages": [
+              43,
+              44,
+              45,
+              46,
+              47,
+              48
+            ],
+            "sha256": "07b815b98098ae9d22d73ead5381a16206a608106e5cd14d703c02a609010a4a",
+            "byteLength": 603336
+          }
+        ],
+        "sourcePageHashes": [
+          {
+            "page": 1,
+            "sha256": "dcd0ca72f9270e7364d47f9477bf430bd2ac4c3d4c1112ec688a1ad778267f77"
+          },
+          {
+            "page": 2,
+            "sha256": "f79bcc79717518444875ed85269b82d0b74c757696c6c07f6c9af885f14bec43"
+          },
+          {
+            "page": 3,
+            "sha256": "fc0fe69f530ef256908d1f38f364e09206704f0d2cec10c9252082e1a539f594"
+          },
+          {
+            "page": 4,
+            "sha256": "7219915b432a0b130ae2369211e3db17f24c44686b216b26c832d6553e49467d"
+          },
+          {
+            "page": 5,
+            "sha256": "544ac25d5ddef47e03d3dd6eee992127eb9f197cf6719fca3384fcf9178b2d41"
+          },
+          {
+            "page": 6,
+            "sha256": "f4a26c871774725c29af4b784005ca541c330e9e71620a4374f7ae313725b248"
+          },
+          {
+            "page": 7,
+            "sha256": "267417968958798f6b900853b3602e7263911b22c26b77c8e360f6c968113803"
+          },
+          {
+            "page": 8,
+            "sha256": "0b097fdddd701e92db7d71b1d9c2d69cb4fb8a751fb5c732263848f863259318"
+          },
+          {
+            "page": 9,
+            "sha256": "1230c3471d2ebc43cbefad401090b34155e9996b57f973411f6e3f485a504426"
+          },
+          {
+            "page": 10,
+            "sha256": "28f942ef9c5062bd42e1383c4a5820d20b9e925fa35c4c802762f400b0ef990d"
+          },
+          {
+            "page": 11,
+            "sha256": "3cb01ad0d8fd6766ba0bb4efd1e0e54589179b7f5eeab87faf08b4ebb729e262"
+          },
+          {
+            "page": 12,
+            "sha256": "53dd651f34508d780f87ce6f8cb6dd821cf1b9264117d322deb565ff2d3600fd"
+          },
+          {
+            "page": 13,
+            "sha256": "f3430b4adba7c81a4bef7f284ed2cd3685c0c7625f37acb0b560b02a1c369e63"
+          },
+          {
+            "page": 14,
+            "sha256": "f62369620cd38e21aa4781b14dcf18484d6f8d6a07dc612495f2170ba7b30509"
+          },
+          {
+            "page": 15,
+            "sha256": "f3437531c85d35886d37dbade5863d3c8f09baafb17e638bcf48bb01ed9eecd1"
+          },
+          {
+            "page": 16,
+            "sha256": "9ecacbfcab280cf3434f3b99a071fc81086e5ce270bf606af4889caf169e3550"
+          },
+          {
+            "page": 17,
+            "sha256": "52548e9bcd79a38e72cf62d95006efa969341f0d374bf6dd9557da70ba91eeea"
+          },
+          {
+            "page": 18,
+            "sha256": "8c4f6ca1b53f68898b043a7e2284caf5dc4a86a93045a7e940662f6d6916f289"
+          },
+          {
+            "page": 19,
+            "sha256": "e139ccaca02b78af28669d949c75983fa0a7ba3ad9b32511051e1665aefcca64"
+          },
+          {
+            "page": 20,
+            "sha256": "1ec8bdeffc3943c317776871d66b99d42c705dacbc59869e25ae38a7c28d1718"
+          },
+          {
+            "page": 21,
+            "sha256": "6aa65bb3f6a6b5e9dc3efb494ec29928e5235249b2afcc902dba4db7670eafbb"
+          },
+          {
+            "page": 22,
+            "sha256": "17038c66ef2e32c0645a8f7c687866268e3d084d73e9d70e4146ced8596b2291"
+          },
+          {
+            "page": 23,
+            "sha256": "4ed718f8c91c64ce0d5e7e30130703269335200f367528816ae1a866085f1b5c"
+          },
+          {
+            "page": 24,
+            "sha256": "1b2cb42ce99edcfa6c0937e9643c6fe80ca24aa8a226cecb25f1b5696fbd9472"
+          },
+          {
+            "page": 25,
+            "sha256": "ed13050a4e04623d46bee31007d410aab268033999afc407426f17b08fa9ef02"
+          },
+          {
+            "page": 26,
+            "sha256": "9dc40aeb676b64fd51c6b128e911262b380ebedc94b7bad74c23e7554042ad6a"
+          },
+          {
+            "page": 27,
+            "sha256": "38796a8b5f3e1e2c1850a65214006f07b94e0c13c5e0f328822164172f5caa38"
+          },
+          {
+            "page": 28,
+            "sha256": "9d117734c601c14284579d1fe9299648c7e517cbc8272667f3bdaf2f64a3e313"
+          },
+          {
+            "page": 29,
+            "sha256": "8c88a8015305d13715d336fb56f4c02a75ebbe3b48cf899b192e53ddd20f8000"
+          },
+          {
+            "page": 30,
+            "sha256": "14a79a31ff24784e59516454551c2f81ba5ba6a71ba67532d83e4f97cd3a472a"
+          },
+          {
+            "page": 31,
+            "sha256": "f33c1dab511c5133f6fc7040dbcdd04658c823e4627aca2339e632ae22ebfdda"
+          },
+          {
+            "page": 32,
+            "sha256": "d4f474e382052a333ddd5fdca2a3bf011149174d1080b18acb507c27ab82825b"
+          },
+          {
+            "page": 33,
+            "sha256": "63e794e439915eab9c7d85b7d7a82046b3a76e06893ec05ed5ce9860ca91ba9e"
+          },
+          {
+            "page": 34,
+            "sha256": "5e9c7d3b19ccb4f66066936b7b35a41c6f741624729a1b0e4591a5bf3dd7dbc6"
+          },
+          {
+            "page": 35,
+            "sha256": "9a33bdfbe96658ad508e0897e12afa220850a16d570b57ba86b1cfa407aa7c02"
+          },
+          {
+            "page": 36,
+            "sha256": "518621bdb93c3859f7daa9a1931d3d51e702f947b35779fbf824d36ffd555a1a"
+          },
+          {
+            "page": 37,
+            "sha256": "b9b4096060d045926fdd98b23ed88612af8cdc76d26193965e618281eab6a049"
+          },
+          {
+            "page": 38,
+            "sha256": "2591dd5e618be4e856065740792124a5cb78015780e585c7a0989a1dcfe33d70"
+          },
+          {
+            "page": 39,
+            "sha256": "237c3b41389bb81dafead2f57666bf91c4ce2eefb9e191690dfedee25d368722"
+          },
+          {
+            "page": 40,
+            "sha256": "6332a461a871cd54026ae0ea558114e9da7bc7d5407571d74825887fb25df90b"
+          },
+          {
+            "page": 41,
+            "sha256": "23865d32f0d11fc90af7ea8c75b8b9108b89218cc6c214b9818a89f5d38777e7"
+          },
+          {
+            "page": 42,
+            "sha256": "c94f200ee7ec8ae31a9fe916fe979b01b9010498664a962dea26ee488535436f"
+          },
+          {
+            "page": 43,
+            "sha256": "a0c9e24a3611467b54144afe851f44c3c31122d456afbfe10cc37a9a8dde86cf"
+          },
+          {
+            "page": 44,
+            "sha256": "8f8dff05b460bc7533f5b1ccb5297e745727ca61e3a070b37839401727947424"
+          },
+          {
+            "page": 45,
+            "sha256": "03fd4f3138011c6849360e3d1880460aa6435763284dfc8b6bd6c7262f54ef98"
+          },
+          {
+            "page": 46,
+            "sha256": "680a492b7e014bc1f61007c88ca4f92e1e3bb336954599fc35f0804811078802"
+          },
+          {
+            "page": 47,
+            "sha256": "c506aad220dc453d983b81f746401ee4c9efb637b3a5ef41e29e763af110ebd7"
+          },
+          {
+            "page": 48,
+            "sha256": "8d68f14cf491d41c6a6c9f85b7b173d68d765b1831c28921207475812a894738"
+          }
+        ],
+        "fullSizeReviewedPages": [
+          3,
+          5,
+          10,
+          14,
+          16,
+          18,
+          21,
+          24,
+          28,
+          29,
+          40,
+          48
+        ],
+        "reviewMethod": "All eight actual-PPTX category contact sheets were inspected. The five final changed pages (5, 10, 14, 16, 18) were then inspected at full size; the other 43 page PNGs matched the previously reviewed render byte for byte. Final paper, method, experiment and results contact sheets were checked again. Main/supporting panels, the selected portrait panel, the three evidence-table layouts, and the full reference page were also inspected at full size.",
+        "findings": [
+          "No clipping or overlapping scientific content was observed in the inspected render; no fonts were reported missing by the renderer.",
+          "T28 displays a readable main panel and independent supporting panel. T29 displays only the selected evidence panel from a tall multi-panel source; the original bytes and viewport records are retained.",
+          "Axes, units, treatment labels and panel titles remain inside both selected viewports; displayed captions identify the content as synthetic.",
+          "Seven short-table layouts place their explanations after the actual table and caption, avoiding detached bottom notes or a blank nominal table slot.",
+          "Native editable title/body emphasis, semantic role treatments and restrained image shadows are visible; the split label on T10 uses two complete words instead of an orphan character.",
+          "All plots are synthetic teaching data, with consistent observations across standalone and combined source figures. No research finding or verified-paper status is implied."
+        ],
+        "scope": "Visual review covers the bundled layout fixtures and their actual LibreOffice 0.1.5 rendering with the supplied Noto Sans CJK SC fonts. It is not user approval, a DeepSeek end-to-end evaluation, or a guarantee for all Microsoft PowerPoint/font environments. Bibliographic metadata is placeholder text and numeric values are synthetic."
+      }
+    }
+  },
+  "scienceDemo": {
+    "count": 14,
+    "seconds": 670,
+    "static": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "renderer": {
+      "name": "@deepseek-ai/libreoffice-kit",
+      "version": "0.1.5",
+      "backend": "wasm",
+      "missingFonts": []
+    },
+    "visualReview": {
+      "reviewer": "ChatGPT with image input",
+      "source": "actual PPTX PNG render",
+      "reviewedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "status": "reviewed",
+      "limits": [
+        "No claim of user approval",
+        "No physical projection test",
+        "No PowerPoint/WPS GUI test"
+      ]
+    },
+    "pptx": {
+      "sha256": "86487284b1563f8b45a802a4af38b107d35a95d173468c23df9e88b235caae2b",
+      "bytes": 2588056,
+      "slides": 14,
+      "nativeShapes": 419,
+      "pictures": 4,
+      "nativeTables": 3,
+      "nativeChartFrames": 1,
+      "embeddedWorkbooks": 1,
+      "notes": 14,
+      "fullSourceImagesPresent": {
+        "pheno-figure3.png": true,
+        "pheno-figure4.png": true,
+        "author-pla_plot.png": true
+      }
+    }
+  },
+  "limitations": [
+    "No live DeepSeek/DSH GUI end-to-end model evaluation",
+    "Geometry and declared reading metadata do not prove scientific or aesthetic correctness",
+    "Bundled rebuild script starts with unknown model vision; published review is not automatically inherited"
+  ],
+  "independentUse": {
+    "source": "forward-review-v0.3.0.json",
+    "pages": 4,
+    "seconds": 180,
+    "errors": 0,
+    "warnings": 1,
+    "pptxSha256": "33fcf1ed80a639d3408412269bf3375caca85e62f2cd0023ef7919c42361e195",
+    "liveDeepSeekEvaluation": false
+  }
+}

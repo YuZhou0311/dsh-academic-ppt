@@ -21,6 +21,7 @@ for(let i=0;i<argv.length;i++) {
 const root=await safePath(cwd,target||`academic-demo-${new Date().toISOString().slice(0,10)}-${randomUUID().slice(0,8)}`);
 await mkdir(root); // EEXIST intentionally stops. Existing files are never removed or overwritten.
 await mkdir(join(root,'assets'));
+await copyFile(join(exampleRoot,'assets','LICENSE-PhenoAssistant.txt'),join(root,'assets','LICENSE-PhenoAssistant.txt')); // Keep the author's output license with the generated asset pack.
 await copyFile(join(exampleRoot,'ASSETS.md'),join(root,'ASSETS.md'));
 const content=scienceDemo();
 for(const assetPath of new Set(content.assets.map(a=>a.path))){

@@ -6,10 +6,10 @@ const metric = (label,value,unit,denominator,aggregation,baseline='描述性结�
 const claim = (id,kind,text,locator,context,metrics) => ({id,paperId:'P1',kind,text,locator,context,verified:true,...(metrics?{metrics}:{})});
 const c = (id,kind,title,body,claimIds,extra={}) => ({id,kind,title,body,claimIds,...extra});
 const s = (id,layout,referenceTemplateId,title,seconds,notes,extra={}) => ({id,layout,referenceTemplateId,title,seconds,notes:notes+'\n\n论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. '+source,paperIds:['P1'],claimIds:[],figureIds:[],cards:[],...extra});
-const fig = (id,number,panel,caption,viewport,cropNote) => ({id,path:`assets/pheno-figure${number}.png`,width:685,height:number===3?1181:1058,paperId:'P1',figure:`Fig. ${number}`,panel,caption,sourceUrl:source+`/figures/${number}`,sourceVersion:version,license:'CC BY 4.0',usage:'figure',cropNote,...(viewport?{viewport}:{})});
+const fig = (id,number,panel,caption,viewport,cropNote) => ({id,path:`assets/pheno-figure${number}.png`,width:number===3?1449:1615,height:number===3?2499:2496,paperId:'P1',figure:`Fig. ${number}`,panel,caption,sourceUrl:source+`/figures/${number}`,sourceVersion:version,license:'CC BY 4.0',usage:'figure',cropNote,...(viewport?{viewport}:{})});
 
 export function scienceDemo() {
-  return {
+  const deck = {
     title:'PhenoAssistant 论文精读：植物表型智能体的方法、证据与局限',
     brief:{centralQuestion:'PhenoAssistant 如何连接植物表型分析工具，它的案例与任务评价分别支持什么结论，怎样检验图表读数核验的价值？',audience:'农业信息学、植物表型与人工智能方向研究生和科研同行',talkMinutes:12,targetPaperCount:1,requireFullText:true},
     design:{fontFamily:'Noto Sans CJK SC',palette:{ink:'#171C22',paper:'#FFFFFF',background:'#FFFFFF',accent:'#183B66',secondary:'#455C76',muted:'#4F5D6A',line:'#C5CFDA',soft:'#EEF2F6',tint:'#EEF2F6',gold:'#9D3038'}},
@@ -58,4 +58,68 @@ export function scienceDemo() {
       s('S14','references','plan-reference-notes','结论与资料来源',25,'这篇论文的进展是把植物专用模型与分析工具组织成可交互、可复用的表型工作流。案例、工具链评分和实际任务正确率提供了不同层次的证据。细粒度读图错误则给出了一个具体研究方向：在共同资源条件下检验可追溯数值核验。参考文献、正式版本、原图授权和官方代码均在这里与配套材料中保留，便于进一步讨论或复现。',{claimIds:['C2','C11','C14','C15','H1'],cards:[c('conclusions','result','主要判断','工具编排扩展了表型分析流程。\n局部读数可靠性仍需核验。\n农艺控制收益尚待独立验证。',['C2','C11','C14']),c('materials','setting','进一步阅读','正式全文与补充材料。\nFig. 3/4，CC BY 4.0。\n官方代码：vios-s/PhenoAssistant。',['C15'])]})
     ]
   };
+  return applyVisualComposition(deck);
+}
+
+/** Each visual choice below follows the paper's evidence and remains editable. */
+function applyVisualComposition(deck) {
+  for(const slide of deck.slides){
+    if(slide.kicker){slide.notes+='\n\n原文位置：'+slide.kicker;delete slide.kicker;}
+    for(const node of slide.nodes||[])node.kind=node.id==='outputs'||node.id==='save'||node.id==='answer'?'result':node.id==='read'?'boundary':node.id==='verify'?'hypothesis':node.id==='tasks'||node.id==='data'||node.id==='plants'||node.id==='groups'||node.id==='time'?'setting':'method';
+    for(const card of slide.cards)delete card.style;
+  }
+  const get=id=>deck.slides.find(s=>s.id===id);
+  const assets=Object.fromEntries(deck.assets.map(a=>[a.id,a]));
+  for(const a of deck.assets){a.treatment='paper';a.displayCaption=`${a.figure} 局部 · Chen et al., 2026 · CC BY 4.0`;}
+  // The lead page needs the organism and input modality, not a miniature tool log.
+  Object.assign(assets.F3_TASK1,{panel:'任务 1 的输入植株照片',viewport:{x:365/685,y:80/1181,w:235/685,h:62/1181},cropNote:'只显示任务1中的四幅输入植株照片；完整原始高清图保留。此图说明输入对象，不供定量读数。',reading:{purpose:'evidence',contentType:'photo',task:'overview',panelCount:1,requiredElements:['四幅植株输入照片'],verifiedBy:'vision-model'}});
+  get('S01').panelTitles=['输入对象：拟南芥顶视图'];
+  get('S01').title='PhenoAssistant：植物表型分析的智能体工作流';
+  get('S02').panelTitles=['工具路由'];
+  // S04: one readable plot is the main evidence; no dense full-figure thumbnail.
+  const plot=get('S04');delete plot.referenceTemplateId;
+  Object.assign(plot,{layout:'figure-focus',title:'PLA 生长曲线显示生态型间的差异',figureIds:['F3_PLA'],figureBoxes:[{x:48,y:132,w:820,h:516}],cards:[
+    c('trend','result','曲线呈现的差异','平均 PLA 曲线逐渐分离。\nein2、col0 后期较高。',['C3','C5'],{emphasis:['逐渐分离'],box:{x:898,y:132,w:334,h:186}}),
+    c('axis','setting','坐标与误差含义','横轴：播种后天数。\n纵轴：投影叶面积。\n阴影：标准差。',['C5'],{emphasis:['标准差'],box:{x:898,y:330,w:334,h:160}}),
+    c('test','boundary','统计解释边界','结论需结合统计检验。\n下一页说明重复测量模型。',['C5'],{emphasis:['重复测量模型'],box:{x:898,y:502,w:334,h:146}})
+  ]});
+  plot.notes='本页直接放大 Fig. 3 任务二的 PLA 曲线。横轴是播种后天数，纵轴是投影叶面积，单位为平方厘米。不同颜色对应不同生态型，阴影表示标准差。随生长推进，各组的平均曲线逐渐分离。这个图提供描述性证据，曲线间的视觉距离或阴影重叠都不能代替统计检验。下一页再结合作者的重复测量模型理解生态型分组。完整原始图和裁切范围保留在配套资产中。\n\n出处：Chen et al., 2026, Fig. 3, '+source;
+  Object.assign(assets.F3_PLA,{path:'assets/author-pla_plot.png',width:1000,height:600,figure:'Fig. 3 对应的作者输出',panel:'PLA 生长曲线',caption:'作者 PhenoAssistant Case1 的独立 PLA 原始输出，对应 Chen et al. Fig. 3；MIT，Copyright 2025 Feng Chen。',displayCaption:'作者 Case1 原始输出 · 对应 Fig. 3 · MIT',sourceUrl:'https://raw.githubusercontent.com/vios-s/PhenoAssistant/aff85512073d9629dfcd501474641eb1919fbe87/results/Case1/pla_plot.png',sourceVersion:'PhenoAssistant author repository aff85512073d9629dfcd501474641eb1919fbe87',license:'MIT · Copyright 2025 Feng Chen · see LICENSE-PhenoAssistant.txt',cropNote:'显示作者独立原始输出，裁去图外围空白；完整保留标题、横纵轴、五生态型图例和标准差带。没有重新计算或重画曲线。',viewport:{x:.06,y:.065,w:.865,h:.91},reading:{purpose:'evidence',contentType:'plot',task:'overview',panelCount:1,requiredElements:['Mean and STD 标题','days after sowing 横轴','PLA 纵轴','五个生态型图例','标准差阴影'],verifiedBy:'vision-model',note:'与正文 Fig.3 对应面板进行视觉比对。此页讨论定性趋势，不从像素估计数值；原生解释区另说明轴和误差含义。'}});
+  assets.F3_PLA.displayLegend=[{label:'adh1',color:'#1F77B4'},{label:'col0',color:'#FF7F0E'},{label:'ctr',color:'#2CA02C'},{label:'ein2',color:'#D62728'},{label:'pgm',color:'#9467BD'}];
+  assets.F3_PLA.reading.note+=' 图例按作者原图转录为独立可编辑色线与标签，颜色表示生态型身份。';
+  plot.notes=plot.notes.replace('本页直接放大 Fig. 3 任务二的 PLA 曲线。','本页使用作者官方代码仓库保存的独立 PLA 输出，对应正文 Fig. 3 任务二。').replace('横轴是播种后天数，纵轴是投影叶面积，单位为平方厘米。','横轴是播种后天数，纵轴是投影叶面积。此独立图轴没有印出单位；平方厘米来自 Fig. 3 的 CSV 表头，不能误称是图轴原文。');
+  Object.assign(assets.F3_TEST,{viewport:{x:347/685,y:895/1181,w:324/685,h:68/1181},panel:'统计结果的 Summary 分组',cropNote:'只展示任务4的结果汇总段落，保留交互说明、Tukey–Kramer 分组及全部生态型名称；完整原图仍在文件中。',reading:{purpose:'evidence',contentType:'table',task:'read-values',panelCount:1,minLabelPx:22,requiredElements:['Summary','时间与生态型交互','Tukey–Kramer 分组和全部生态型名称'],verifiedBy:'vision-model',note:'原始高分辨率图中三行汇总字形约22px；最终裁切与显示还需核对。'}});
+  const stats=get('S05');delete stats.referenceTemplateId;delete stats.panelTitles;
+  stats.figureBoxes=[{x:48,y:144,w:1184,h:228}];
+  stats.cards.forEach((card,i)=>{card.box={x:48+i*401,y:400,w:382,h:240};});
+  // The correlation paragraph is the evidence. Omit the separate duplicative author conclusion from the viewport.
+  Object.assign(assets.F4_CORR,{viewport:{x:20/1615,y:1818/2496,w:1555/1615,h:329/2496},panel:'两项 Pearson 相关系数结果',cropNote:'放大结果摘要中的两项相关系数及其比较段落；未显示其后重复解释段落。完整出版方原图保留，未改写数字。',reading:{purpose:'evidence',contentType:'table',task:'read-values',panelCount:1,minLabelPx:31,requiredElements:['r = 0.8911 及变量','r = 0.7577 及变量','两项均属同一案例'],verifiedBy:'vision-model'}});
+  const emphasis={
+    question:['视觉、统计与编程工具'],change:['Manager'],scope:['三类植物案例'],
+    interface:['预定功能与参数'],reuse:['保存工具调用与代码'],unit:['24 株','1,248 幅'],measurement:['投影叶面积 PLA'],
+    'groups-note':['各 5 株'],model:['组内因素','组间因素'],'groups-result':['ein2.1、Col-0'],interpretation:['标准差'],
+    'new-capability':['训练需求'],'evaluation-unit':['独立数据'],agronomic:['实际执行与农艺终点'],judge:['GPT-4o'],execution:['计划的选择与顺序'],
+    'effect-size':['工具链模型评分'],'set-design':['15 项可匹配，5 项无合适模型'],generality:['作者构造'],feedback:['无实时人工反馈'],count:['20 项数据分析任务'],
+    failure:['细粒度图表读取'],'scope-limit':['未评价灌溉、施肥决策'],observed:['精细图表信息'],traceable:['结构化源数据'],'model-version':['GPT-4o 2024-08-06'],
+    priority:['关键分析错误与核验代价'],hypothesis:['统一预算上限'],falsify:['关键错误率'],conclusions:['局部读数可靠性'],materials:['正式全文与补充材料']
+  };
+  for(const slide of deck.slides)for(const card of slide.cards){const phrases=(emphasis[card.id]||[]).filter(t=>card.body.includes(t));if(phrases.length)card.emphasis=phrases;}
+  get('S06').cards[0].metric={value:'0.8911',unit:'Pearson r',label:'人工叶面积 A 与干重 W',context:'同一案例的 32 幅图像'};
+  get('S06').cards[0].body='';
+  get('S06').cards[1].metric={value:'0.7577',unit:'Pearson r',label:'图像表型 PLA 与干重 W',context:'模型：leaf-only SAM'};
+  get('S06').cards[1].body='';
+  get('S06').cards[2].body='32 幅图像的对应记录。\n相关系数差异未作正式检验。';
+  const correlations=get('S06');delete correlations.referenceTemplateId;delete correlations.panelTitles;
+  correlations.figureBoxes=[{x:48,y:132,w:1184,h:324}];
+  correlations.cards.forEach((card,i)=>{card.box={x:48+i*406,y:480,w:372,h:168};card.style=['academic-side','ruled','academic-tab'][i];});
+  get('S08').cards[2].metric={value:'4.55 → 4.66',unit:'/5',label:'同一 20 项任务的报告平均',context:'GPT-4o 对工具链计划评分，未执行工具'};get('S08').cards[2].body='';delete get('S08').cards[2].emphasis;
+  get('S07').cards[0].title='能力扩展';
+  get('S10').cards[0].metric={value:'17 / 20',unit:'项任务',label:'人工检查正确项',context:'分母：20 项分析任务'};
+  get('S10').cards[0].body='';delete get('S10').cards[0].emphasis;
+  get('S10').cards[0].box={x:888,y:126,w:344,h:172};
+  get('S10').cards[1].box={x:888,y:326,w:344,h:132};
+  get('S05').cards[0].style='compact';
+  get('S05').cards[0].body='因变量：PLA。\n组内：播种后天数。\n组间：生态型。';delete get('S05').cards[0].emphasis;
+  deck.assets=deck.assets.filter(a=>a.id!=='F3_ALL');
+  return deck;
 }

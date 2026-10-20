@@ -4,13 +4,32 @@
 
 把研究问题、论文证据、真实原图和模板组件组织成可编辑 PPTX，同时保留讲稿、来源记录和可以继续修改的工程。让模型负责阅读与判断，让工具负责可追溯的数据结构、排版、版本和检查。
 
-当前版本为 **0.2.0 公开预览版**。源码和版本包发布于本仓库；尚未发布 npm。它是独立插件，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存；学术工程使用自己的 `academic_ppt_*` 工具和 JSON 格式。
+当前版本为 **0.3.0 公开预览版**。源码和版本包发布于本仓库；尚未发布 npm。它是独立插件，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存；学术工程使用自己的 `academic_ppt_*` 工具和 JSON 格式。
 
-[安装与首次使用](docs/INSTALL.md) · [48 页学术模板](skills/dsh-academic-ppt/references/templates/README.md) · [原模板研究](docs/USER_TEMPLATE_STUDY.md) · [设计说明](docs/DESIGN.md) · [验证范围](docs/VALIDATION.md) · [学术工作流](skills/dsh-academic-ppt/SKILL.md) · [真实论文示例](examples/README.md)
+[安装与首次使用](docs/INSTALL.md) · [48 页学术模板](skills/dsh-academic-ppt/references/templates/README.md) · [原模板研究](docs/USER_TEMPLATE_STUDY.md) · [图片与视觉方法](docs/VISUAL_DESIGN_V03.md) · [设计说明](docs/DESIGN.md) · [验证范围](docs/VALIDATION.md) · [学术工作流](skills/dsh-academic-ppt/SKILL.md) · [真实论文示例](examples/README.md)
 
-![随附十四页学术汇报的实际 PPTX 渲染](examples/preview.png)
+![按曲线内容组织主证据、趋势、坐标与统计边界：实际 PPTX 渲染](examples/pla-page.png)
 
 上图来自随附的真实论文示例：[可编辑 PPTX](examples/report.pptx) · [讲稿](examples/speaker-notes.md) · [原图与授权](examples/ASSETS.md)。页面标题、论证、卡片、流程、必要表格和数据图表均为原生对象；论文原图作为独立图片保留。原图可设置非破坏的局部展示窗口，原始媒体仍保存在 PPTX 中。
+
+## v0.3：让图片、层级与版式相互适配
+
+本版重做 14 页真实论文示例和 48 页参考包，针对上一版实际画面暴露的问题调整工具与技能。先判断要从图中读什么，再选择图和布局；不把大幅密集竖图压进狭窄半栏，也不靠空卡片增加装饰。
+
+| 制作问题 | v0.3 的具体做法 |
+| --- | --- |
+| 图片尺寸匹配，但内容不可读 | `asset.reading` 记录图的职责、必要元素与关键标签测量；参考工具返回最多三个真实槽位候选；不合适时用受控图框或拆页 |
+| 标题、变量和结论都一样重 | 主标题 40、区域标题 26、正文 24 场景 px 为起点；`emphasis` 保留原生粗体和彩色关键词，指标与变量/分母共同出现 |
+| 小字过多、重要条件藏在顶栏 | 移除示例中装饰性 kicker；正文与必要条件保持可读尺寸，简洁图注与完整来源分工 |
+| 卡片换颜色却不表达关系 | `kind` 同时驱动方法、设置、结果、限制、假说的颜色身份；题签、侧标、细框、开放解释与虚线按关系组合 |
+| 色块松散，图文缺少整体感 | 图片细框跟随真实图像边界；选择性使用浅阴影；短表后的解释跟随实际表高，不留下脱节大空白 |
+| 提示只要求“高级、好看” | 提供读图契约、短设计记录、2–3 个候选、难例先行和实际 PPTX 逐页复核，让模型有可执行的依据 |
+
+这些字号和几何预警是制作起点，不是投影设备的通用保证。图像语义仍需实际查看，颜色不修改作者数据系列，自动检查不代替审美判断。具体过程见 [图片选择](skills/dsh-academic-ppt/references/figure-selection.md)、[视觉决策](skills/dsh-academic-ppt/references/visual-decision.md) 和 [DeepSeek 执行指导](skills/dsh-academic-ppt/references/deepseek.md)。
+
+![方法、原图解读、结果统计和研究边界：四页实际 PPTX 示例](examples/preview.png)
+
+[查看完整 14 页总览](examples/overview.png)。预览均来自实际 PPTX 渲染；所有讲稿与数字由同一份源记录生成。
 
 ## 学术模板参考包
 
@@ -55,7 +74,7 @@
 需要 Node **`^22.19.0 || >=24.0.0`**，以 [package.json](package.json) 为准。下载本仓库源码，或克隆固定发布版本：
 
 ```sh
-git clone --branch v0.2.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.3.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 node bin/academic-ppt.mjs --help
@@ -101,7 +120,7 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt"
 | `academic_ppt_record` | 分批登记论文、证据、资产、页面和模板 profile 路径 |
 | `academic_ppt_context` | 读取当前状态、缺项与聚焦记录，恢复长任务 |
 | `academic_ppt_template` | 盘点模板，保存受支持原生组件及不支持项 |
-| `academic_ppt_reference` | 按研究任务检索 48 个页型，读取实际布局与可编辑模板资源 |
+| `academic_ppt_reference` | 按研究任务检索 48 个页型，或按图片阅读条件返回至多三个适配候选 |
 | `academic_ppt_build` | 构建可编辑 PPTX、HTML、备注与来源产物 |
 | `academic_ppt_edit` | 按稳定 ID 进行卡片样式或明确的页面内容修改 |
 | `academic_ppt_undo` | 将上一内容状态恢复为新修订 |

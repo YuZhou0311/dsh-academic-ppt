@@ -30,7 +30,7 @@ const descriptions = {
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
   academic_ppt_check: '只读检查论文证据、版式与产物摘要，列出可定位的问题。静态检查不能代替逐页看最终 PPTX。Inspect evidence, geometry and output integrity.',
   academic_ppt_template: '盘点本地 PPTX 的字体、颜色与支持的原生组件，将 profile JSON 保存到工作区供 record 导入；不覆盖不同内容的文件，不承诺复杂模板无损导入。Inspect and persist a reusable template profile.',
-  academic_ppt_reference: '检索 48 种紧凑学术页型及可编辑 PPTX 模板。先按研究任务选择 category，再用 templateId 查看实际区域、内容数量与资源路径；referenceTemplateId 会驱动生成版式。Inspect content-specific academic reference layouts.',
+  academic_ppt_reference: '检索 48 种学术页型及可编辑 PPTX 模板。可传入 figure 的原始像素、viewport 与 reading 阅读记录获得最多三个图像适配候选；不自动识别或裁切科学图。先按研究任务选择 category，再用 templateId 查看实际区域、内容数量与资源路径；referenceTemplateId 会驱动生成版式。Inspect content-specific academic reference layouts.',
   academic_ppt_render: '通过可选渲染引擎读取当前交付 PPTX，生成实际页面画面并记录摘要；引擎缺失时如实返回未验证。Render the current PPTX without changing the editable source.',
   academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
 }
@@ -124,6 +124,15 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_reference') {
     lines.push(`学术页型：本次 ${data.count ?? 0} 个${data.totalCount ? '；总计 ' + data.totalCount + ' 个' : ''}。`)
     if (Array.isArray(data.templates)) lines.push(...data.templates.slice(0, 48).map(t => `${clip(t.id, 80)}｜${clip(t.name, 80)}｜${clip(t.description, 220)}`))
+    if (data.figureAdvice) {
+      const a=data.figureAdvice
+      lines.push(`图片适配：${clip(a.status,100)}；${clip(a.basis,700)}`)
+      for(const c of a.candidates??[]){
+        lines.push(`候选 ${clip(c.templateId,80)}：${clip(c.name,100)}；图区 ${clip(JSON.stringify(c.imageBox),220)}；关键标签估计 ${c.projectedLabelPx??'未测量'} px；${clip(c.status,80)}`)
+        for(const i of c.issues??[])lines.push(`${clip(i.severity,20)} ${clip(i.code,80)}：${clip(i.message,450)}`)
+      }
+      for(const action of a.nextActions??[])lines.push(clip(action,600))
+    }
     if (data.template) {
       const t = data.template
       lines.push(`选用 ${clip(t.id, 80)}：${clip(t.name, 100)}；layout=${clip(t.layout, 40)}`)
@@ -146,7 +155,8 @@ export function formatToolResult(name, result) {
         const record = own(item.record)
         lines.push(`记录 ${clip(item.collection, 30)}/${clip(record.id, 80)}：${clip(record.title ?? record.text ?? record.caption, 1800)}`)
         for (const key of ['methodSummary', 'context', 'locator', 'version', 'figure', 'panel', 'cropNote']) if (record[key]) lines.push(`${key}：${clip(record[key], 1400)}`)
-        if (record.reading) lines.push(`阅读状态：${clip(record.reading.status, 40)}；来源：${clip(record.reading.source, 500)}；阅读笔记：${clip(record.reading.notes, 1400)}`)
+        if (record.reading?.status) lines.push(`阅读状态：${clip(record.reading.status, 40)}；来源：${clip(record.reading.source, 500)}；阅读笔记：${clip(record.reading.notes, 1400)}`)
+        if (record.reading?.purpose) lines.push(`图片阅读：${clip(JSON.stringify(record.reading),2200)}`)
         if (Array.isArray(record.limitations)) lines.push(...record.limitations.slice(0, 4).map(x => `局限：${clip(x, 600)}`))
         if (Array.isArray(record.metrics)) lines.push(...record.metrics.slice(0, 5).map(m => `${clip(m.label, 100)}：${clip(m.value, 100)} ${clip(m.unit, 100)}；比较对象 ${clip(m.baseline, 400)}；分母 ${clip(m.denominator, 400)}；汇总口径 ${clip(m.aggregation, 400)}`))
         if (Array.isArray(record.cards)) lines.push(...record.cards.slice(0, 8).map(c => `卡片 ${clip(c.id, 80)}（${clip(c.style ?? c.kind, 40)}）：${clip(c.title, 150)}；${clip(c.body, 450)}`))

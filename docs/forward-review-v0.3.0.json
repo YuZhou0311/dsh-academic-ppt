@@ -1,0 +1,63 @@
+{
+  "status": "completed",
+  "revision": 7,
+  "slideCount": 4,
+  "seconds": 180,
+  "pptxSha256": "33fcf1ed80a639d3408412269bf3375caca85e62f2cd0023ef7919c42361e195",
+  "actualReadings": [
+    "指定SKILL及research/evidence/design/deepseek/figure-selection/academic-layouts/visual-decision/delivery",
+    "提供的paper-records.json、sources.json、MIT授权文件",
+    "Nature正式页书目、Design、Case study 1、Fig.3图注及Vision models方法片段"
+  ],
+  "actualImageObservations": [
+    "完整Fig.3",
+    "task1照片行局部",
+    "作者PLA独立图",
+    "paper/experiment/figure分类参考拼图",
+    "当前r7 PPTX 4页全尺寸和拼图"
+  ],
+  "actualPluginCommands": [
+    "init",
+    "record",
+    "reference",
+    "build (review mode)",
+    "edit (scoped slide-content)",
+    "render",
+    "review (pptx-render)",
+    "check"
+  ],
+  "verification": {
+    "evidence": "records-checked-not-independently-verified",
+    "layout": "estimated",
+    "pptxRender": "rendered",
+    "visual": "reported-passed",
+    "htmlVisual": "not-verified",
+    "readyForDelivery": true
+  },
+  "summary": {
+    "errors": 0,
+    "warnings": 1
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "figure-label-measurement-missing",
+      "slideId": "S3",
+      "objectId": "S3/figure:0:image",
+      "assetId": "AUTHOR_PLA_CLEAN",
+      "message": "此图需要读数或比较；记录原始像素中的关键标签高度，或在实际 PPTX 画面中逐项核对。不能仅以高分辨率判定可读。"
+    }
+  ],
+  "knownScope": [
+    "本次未重新精读整篇；schema无partial-text故采用metadata-only并记录已读段落",
+    "3分钟是计划预算，未朗读计时",
+    "未做PowerPoint/WPS交互编辑或现场投影",
+    "参考figure拼图在首次使用时与新版几何不同：当时为正在更新的中间状态",
+    "artifact字段异常出现一次，重建恢复，未复现未归因"
+  ],
+  "sourceDiscrepancy": "首次发表日2026-04-03与2026-07-16 Version of record标签不同；属于两类日期，应保留字段含义，不将其自动判为论文日期错误。",
+  "artifactIncident": {
+    "status": "observed-once-unattributed",
+    "description": "构建和check确认当前artifact后，同revision一次render返回not-built；正式重建恢复，后续渲染成功，未复现、未归因。"
+  }
+}

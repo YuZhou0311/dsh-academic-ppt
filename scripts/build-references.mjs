@@ -48,7 +48,7 @@ const TEXT={
   '安全约束':['硬边界、软惩罚与终止条件。','单独报告约束违反情况。'],
   '路由依据':['任务类型如何匹配工具能力？','工具选择是否使用相同的信息？','缺少工具时应明确退出或求助。'],
   '工具覆盖范围':['列出工具能处理的对象和输入。','标注分布外样本与失败类别。','解释工具更新后需重做哪些验证。'],
-  '输入与单位':['同化观测、气象与管理输入。','逐项保留物理量单位和时间步。','说明缺失或预测数据的来源。'],
+  '输入与单位':['列出观测与管理输入。','核对物理量单位与时间步。','保留缺失或预测数据的来源。'],
   '校准与验证':['区分参数校准与独立验证。','报告校准范围与留出环境。','与观测比较误差而非只看拟合。'],
   '模型失配':['列出结构误差与参数不确定性。','说明误差如何影响优化或策略。','补充越界状态的处理规则。'],
   '关键运算':['写清关键更新或目标计算。','保留输入维度、输出与复杂度。','避免只写算法名而省略机制。'],
@@ -98,9 +98,9 @@ const TEXT={
   '证据 A':['变量、样本和关键趋势。','对应来源面板及读图规则。'],
   '证据 B':['使用不同观测检查同一解释。','保留自身单位与统计口径。'],
   '证据 C':['补充机制或边界证据。','不要把相关性作为因果结论。'],
-  '全图定位':['保留图号和细节区域的位置。'],
-  '局部读数与上下文':['放大指定面板，保留坐标、单位和邻近图例。'],
-  '阅读顺序':['按面板和变量解释竖向图。','先识别输入、过程与输出。'],
+  '主面板的读图结论':['两个条件的差异随时间展开。'],
+  '补充证据与限定':['效应区间补充趋势图。','两图都保留坐标与对照。','合成示例不支持研究结论。'],
+  '所选面板的范围':['本页只展开面板 A。','保留条件、坐标和误差带。'],
   '关键证据':['指出哪个面板支持具体论点。','把精确读数与正文或源数据对照。'],
   '局限与外推':['保留图中未覆盖的条件。','放大原图不改变其证据范围。'],
   '坐标与变量':['解释横纵轴、量纲与归一化。','注明对数刻度或截断范围。'],
@@ -139,7 +139,7 @@ const DEFAULT_TEXT=[
 ];
 function compactBody(title,box,style){return compactFrom(TEXT[title]||DEFAULT_TEXT,box,style);}
 function compactFrom(lines,box,style){
-  const d={compact:[23,0,46,1.24],plain:[24,0,53,1.24],ruled:[24,0,56,1.24],'academic-panel':[23,28,62,1.24],'academic-tab':[23,28,58,1.24],'academic-side':[23,16,56,1.24],'open-frame':[22,40,78,1.32],'dashed-note':[22,40,85,1.32]}[style]||[23,28,62,1.24];
+  const d={compact:[24,6,46,1.24],plain:[24,6,53,1.24],ruled:[24,6,56,1.24],'academic-panel':[24,34,61,1.24],'academic-tab':[24,34,61,1.24],'academic-side':[24,22,56,1.24],'open-frame':[24,46,78,1.24],'dashed-note':[24,46,85,1.24],'paper-shadow':[24,46,90,1.24],ledger:[24,46,92,1.24],'split-label':[24,Math.min(132,box.w*.29)+41,39,1.24]}[style]||[24,34,62,1.24];
   const [font,pad,used,lineHeight]=d;let body='';
   for(const sentence of lines){const s=sentence.replace(/[。？]$/u,'');const next=body?body+'\n'+s:s;if(wrapText(next,box.w-pad,font).length*font*lineHeight<=Math.max(14,box.h-used)+2)body=next;else break;}
   return body||lines[0].replace(/[。？]$/u,'');
@@ -150,10 +150,12 @@ const assets=[];
 for(const [id,name,caption] of FIGURES){
   const file=join(bundled,'assets',name),bytes=await readFile(file);
   if(output!==bundled)await copyFile(file,join(output,'assets',name));
-  assets.push({id:'template-'+id,paperId:'T1',data:'data:image/png;base64,'+bytes.toString('base64'),width:bytes.readUInt32BE(16),height:bytes.readUInt32BE(20),sha256:hash(bytes),figure:'示例图',caption,sourceUrl:'https://github.com/YuZhou0311/dsh-academic-ppt',sourceVersion:'原创排版教学示例 v0.2.0',license:'MIT; all plotted values are synthetic',usage:'figure',cropNote:'完整原图，无裁切'});
+  const compound=['composite','portrait','wide'].includes(id);
+  assets.push({id:'template-'+id,paperId:'T1',data:'data:image/png;base64,'+bytes.toString('base64'),width:bytes.readUInt32BE(16),height:bytes.readUInt32BE(20),sha256:hash(bytes),figure:'示例图',caption,displayCaption:id==='wide'?'A/B 为条件；所有数值为合成示例':id==='response'?'A/B 为条件；合成数据':id==='effect'?'Ref. 为参考，V1–V3 为变体；合成数据':caption.replace('；合成演示值','；合成数据'),sourceUrl:'https://github.com/YuZhou0311/dsh-academic-ppt',sourceVersion:'原创排版教学示例 v0.3.0',license:'MIT; all plotted values are synthetic',usage:'figure',cropNote:'完整原图，无裁切',treatment:'paper',reading:{purpose:'evidence',contentType:compound?'dense-multipanel':'plot',task:compound?'overview':'read-values',panelCount:id==='composite'?4:compound?3:1,minLabelPx:id==='wide'?34:28,requiredElements:['面板标题','坐标与单位','条件/图例','误差定义'],verifiedBy:'vision-model',note:'已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。'}});
 }
 if(output!==bundled)await copyFile(join(bundled,'assets/synthetic-data.json'),join(output,'assets/synthetic-data.json'));
-const detail=structuredClone(assets.find(a=>a.id==='template-composite'));detail.id='template-detail';detail.viewport={x:.015,y:.025,w:.495,h:.49};detail.caption='合成图面板 A 的局部视窗';detail.cropNote='视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留';assets.push(detail);
+const detail=structuredClone(assets.find(a=>a.id==='template-composite'));detail.id='template-detail';detail.viewport={x:.015,y:.025,w:.495,h:.49};detail.caption='合成图面板 A 的局部视窗';detail.displayCaption='面板 A；A/B 为条件；合成数据';detail.cropNote='视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留';detail.reading={...detail.reading,contentType:'plot',task:'read-values',panelCount:1};assets.push(detail);
+const portraitDetail=structuredClone(assets.find(a=>a.id==='template-portrait'));portraitDetail.id='template-portrait-detail';portraitDetail.viewport={x:.035,y:.008,w:.95,h:.315};portraitDetail.caption='竖长合成图中的面板 A';portraitDetail.displayCaption='竖图面板 A；其余面板另页；合成数据';portraitDetail.cropNote='视窗 x=.035,y=.008,w=.95,h=.315；保留顶部面板的完整标题、两条件图例、坐标及单位。未把总图缩略图当作证据。';portraitDetail.reading={...portraitDetail.reading,contentType:'plot',task:'read-values',panelCount:1};assets.push(portraitDetail);
 
 function tableFor(id){
   const tables={
@@ -162,7 +164,7 @@ function tableFor(id){
     'experiment-baseline-controls':{columns:['条件','基线流程','干预流程'],rows:[['观测数据','相同数据版本','相同数据版本'],['工具与参数','预先冻结','只修改指定模块'],['计算预算','统一上限','统一上限'],['人工干预','记录每次介入','记录每次介入'],['评价方法','同一盲评程序','同一盲评程序']]},
     'experiment-parameter-protocol':{columns:['参数','设置（待替换）','依据或来源'],rows:[['时间步','填写数值与单位','实验采样频率'],['训练轮次','填写停止条件','验证集选择'],['重复数量','填写独立重复数','样本量依据'],['学习率','填写候选与最终值','仅训练/验证选取'],['测试范围','列出年份与环境','独立留出记录']]},
     'results-ablation':{columns:['设置','合成效应','合成区间','解释任务'],rows:[['参考方法','0.00','−0.08…0.08','定义共同基线'],['移除模块 A','0.22','0.11…0.33','核查机制贡献'],['移除模块 B','0.31','0.17…0.45','核查信息变化'],['完整方法','0.43','0.27…0.59','报告资源代价']]},
-    'results-error-analysis':{columns:['阶段','合成任务数','合成失败数','需核查的证据'],rows:[['数据获取','10','1','原始输入与缺失'],['工具执行','10','2','参数、日志与异常'],['结果解释','10','3','答案与数据来源'],['最终交付','10','1','完整性与可复现性']]},
+    'results-error-analysis':{columns:['阶段','合成任务数','合成失败数','需核查的证据'],rows:[['数据获取','10','1','原始输入与缺失'],['工具执行','10','2','参数、日志与异常'],['结果解释','10','3','答案与数据来源']]},
     'synthesis-method-comparison':{columns:['研究','输入与知识','决策接口','验证范围'],rows:[['论文 A（替换）','填写实际输入','策略更新','仿真或实体（填写）'],['论文 B（替换）','填写新增信息','奖励或约束','独立留出（填写）'],['论文 C（替换）','填写工具边界','计划与工具调用','任务评价（填写）'],['共同问题','输入是否公平','机制能否区分','结论能外推到哪里']]},
     'limitations-validity-audit':{columns:['威胁','可能影响','可核查证据'],rows:[['选择偏倚','样本代表性下降','纳入与排除记录'],['测量误差','效应估计偏移','校准与重复测量'],['信息泄漏','测试结果偏高','完整数据处理链'],['评价混淆','结论对象改变','统一分母与评价者'],['环境变化','外推失效','独立环境测试']]}
   };return {...tables[id],caption:'结构占位 / 合成数据，必须替换后才能用于学术结论',sourceClaimIds:['C-TEMPLATE']};
@@ -184,16 +186,33 @@ const longText={
   'plan-reference-notes':[['记录正式稿、作者稿或预印本版本。','补充材料、代码和数据分别定位。','不要把链接存在当作已读全文。'],['保留图号、面板、作者与许可。','裁切说明不能省略关键上下文。','替换本页所有占位书目后再汇报。']]
 };
 
+const NODE_DETAILS={
+ 'method-agent-loop':['目标与可用数据','工具与调用顺序','输入、参数和日志','结果与来源一致','中间状态与证据','继续或退出'],
+ 'method-rl-interface':['传感、气象与历史','状态映射到动作','执行实际管理','奖励与约束检查'],
+ 'method-model-coupling':['同一时间步和物理量','参数与状态演化','效应、损失和边界','反馈到下一轮'],
+ 'experiment-cohort-design':['来源与纳入规则','独立接受处理','随机化与区组','时间点与采样频率'],
+ 'experiment-measurement-chain':['处理与生物重复','设备与采样条件','数据版本与缺失','异常与复核规则','表型与单位','效应与区间'],
+ 'synthesis-mechanism-map':['统一观测与单位','新增信息的来源','谁选择管理动作','如何检验输出'],
+ 'synthesis-timeline':['定义输入与任务','定位新模块','检查验证范围','明确仍缺的证据'],
+ 'limitations-measurement-bias':['目标估计对象','潜在系统性误差','实际分析单位','适用对象与范围'],
+ 'limitations-reproducibility':['公开记录与许可','可复现安装','固定程序和预算','原图、数据与来源'],
+ 'plan-fair-comparison':['独立留出与任务','原有处理机制','只改变指定模块','共同终点与盲评'],
+ 'plan-data-evaluation':['独立实验单位','统一测量与版本','冻结主要终点','单独留出环境']
+};
+const EMPHASIS=['独立实验单位','独立样本','独立重复','独立验证','独立留出','同一数据','相同数据','同一任务','同一评价','主要终点','效应大小','额外信息','新增信息','误差条','不确定性','约束违反','失败成本','比较基线','公平比较','对照','单位','输入','输出'];
+const SHORT_TITLES={'失败集中在哪一步':'失败环节','假设与计算条件':'计算假设','纳入排除与缺失值':'纳入、排除与缺失','不确定性与重复':'不确定性与重复','可支持的迁移结论':'迁移结论','主面板的读图结论':'主面板结论','所选面板的范围':'面板范围','可识别性假设':'可识别性假设','输入与单位':'输入\n单位'};
 const slides=REFERENCE_TEMPLATES.map((t,index)=>{
-  const figureIds=t.slots.figures.map((b,i)=>t.id==='figure-detail-window'?(i?'template-detail':'template-composite'):t.id==='figure-portrait-reading'?'template-portrait':t.id==='figure-wide-annotated'?'template-wide':t.id==='results-two-outcomes'?'template-distribution':(b.w/b.h<1.25?'template-distribution':['template-response','template-effect','template-transfer'][i%3]));
+  // Teaching evidence is selected by its intended role, never by slot shape.
+  const figureIds=t.slots.figures.map((b,i)=>t.id==='figure-detail-window'?(i?'template-effect':'template-detail'):t.id==='figure-portrait-reading'?'template-portrait-detail':t.id==='figure-wide-annotated'?'template-wide':t.id==='results-two-outcomes'?'template-distribution':['template-response','template-effect','template-transfer'][i%3]);
   const cards=t.prompts.map((title,i)=>{
     const style=t.cardStyles[i],lines=longText[t.id]?.[i];const body=lines?compactFrom(lines,t.slots.cards[i],style):compactBody(title,t.slots.cards[i],style);
-    return {id:'region-'+(i+1),kind:/局限|边界|风险|失败|偏倚|缺失|尚未|最差|威胁|反证|不可比/.test(title)?'boundary':/假设|假说|提议|研究问题/.test(title)?'hypothesis':'method',title,body,claimIds:[],style};
+    const emphasis=EMPHASIS.filter(text=>body.includes(text)).slice(0,2);
+    return {id:'region-'+(i+1),kind:t.cardKinds[i],title:SHORT_TITLES[title]||title,body,...(emphasis.length?{emphasis}:{}),claimIds:[],style};
   });
-  const nodes=(t.nodeLabels||[]).map((label,i)=>({id:'step-'+(i+1),label,detail:t.slots.nodeBoxes[i].h>110?'填写接口与条件':''}));
+  const nodes=(t.nodeLabels||[]).map((label,i)=>({id:'step-'+(i+1),label:label==='计划与工具选择'?'计划与工具':label,detail:t.slots.nodeBoxes[i].h>105?(NODE_DETAILS[t.id]?.[i]||''):'',kind:/核验|检验|验证|统计|输出|估计/.test(label)?'result':/终止|异常|质量|失配|约束/.test(label)?'boundary':/输入|观测|样本|实验对象|总体|数据/.test(label)?'setting':'method'}));
   const pairs=t.edgePairs||nodes.slice(1).map((_,i)=>[i,i+1]);
   const edges=pairs.map(([a,b])=>({from:nodes[a].id,to:nodes[b].id}));
-  const s={id:'T'+String(index+1).padStart(2,'0'),layout:t.layout,referenceTemplateId:t.id,title:t.name,kicker:'结构模板 / 占位说明与合成数据',paperIds:['T1'],claimIds:[],figureIds,cards,nodes,edges,notes:`本页为原创学术版式模板，ID ${t.id}。${t.description}\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：${t.prompts.join('；')}。\n建议讲述时间只是排练起点，按实际内容调整。`,seconds:t.suggestedSeconds};
+  const s={id:'T'+String(index+1).padStart(2,'0'),layout:t.layout,referenceTemplateId:t.id,title:t.name,paperIds:['T1'],claimIds:[],figureIds,cards,nodes,edges,notes:`本页为原创学术版式模板，ID ${t.id}。${t.description}\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：${t.prompts.join('；')}。\n建议讲述时间只是排练起点，按实际内容调整。`,seconds:t.suggestedSeconds};
   if(t.slots.panels)s.panelTitles=t.slots.panels.map(p=>p.title);
   if(t.slots.chart){s.chart=chartFor(t.id);s.claimIds=['C-TEMPLATE'];}
   if(t.slots.table){s.table=tableFor(t.id);s.claimIds=['C-TEMPLATE'];}
@@ -201,7 +220,7 @@ const slides=REFERENCE_TEMPLATES.map((t,index)=>{
   if(t.slots.references)s.paperIds=['T1','T2','T3'];
   return s;
 });
-const papers=['T1','T2','T3'].map((id,i)=>({id,title:['Full article title: connecting decision models, experimental evidence and independent validation in crop cultivation','Full title of a related methods or validation study','Full title of the source for the supplementary evidence'][i],authors:['作者姓名（替换）'],year:2026,journal:'期刊与卷页（替换）',doi:'待替换',url:'https://example.invalid/replace-with-official-paper-url',version:'书目占位，非真实文献',studyType:'system-evaluation',reading:{status:'metadata-only',sections:[],source:'模板占位',notes:'不是已阅读全文的声明。'},methodSummary:'填写实际方法。',limitations:['填写原论文局限。']}));
+const papers=['T1','T2','T3'].map((id,i)=>({id,title:['Full article title: connecting decision models, experimental evidence and independent validation in crop cultivation','Full title of a related methods or validation study','Full title of the source for the supplementary evidence'][i],authors:['作者姓名（替换）'],year:2026,journal:'期刊与卷页（替换）',doi:'书目占位；图表均为合成示例',url:'https://example.invalid/replace-with-official-paper-url',version:'书目占位，非真实文献',studyType:'system-evaluation',reading:{status:'metadata-only',sections:[],source:'模板占位',notes:'不是已阅读全文的声明。'},methodSummary:'填写实际方法。',limitations:['填写原论文局限。']}));
 const project={schemaVersion:1,id:'academic-reference-pack',revision:0,title:'48 种学术汇报版式参考',brief:{centralQuestion:'原创学术版式、结构化填充指引与合成科学图',audience:'学术汇报制作者',talkMinutes:48,targetPaperCount:0,requireFullText:false},design:{fontFamily:'Noto Sans CJK SC',palette:{background:'#FFFFFF',paper:'#FFFFFF',ink:'#1C2430',accent:'#173C70',secondary:'#355D88',gold:'#903543',muted:'#515B68',line:'#BEC8D4',soft:'#EEF3F8',tint:'#EEF3F8'}},capabilities:{imageInput:'unknown',source:'可视审查能力需由实际使用环境另行确认'},papers,claims:[{id:'C-TEMPLATE',paperId:'T1',kind:'proposal',text:'全部图表数字是合成排版示例，不是真实研究结论。',locator:'scripts/create-reference-figures.py 与 scripts/build-references.mjs',context:'仅用于教学模板；使用前替换并核查实际来源。',verified:false}],assets,slides};
 
 const all=await renderProject(project);
@@ -214,11 +233,14 @@ for(const category of REFERENCE_CATEGORIES){
   const rendered=await renderProject({...project,title:category.name+'学术模板',slides:selected});
   const name=category.id+'.pptx';await writeFile(join(output,name),rendered.pptx);files.push({category:category.id,name:category.name,file:name,slides:selected.length,sha256:hash(rendered.pptx)});
 }
-const assetRecords=assets.map(({data,...a})=>({...a,path:'assets/'+FIGURES.find(([id])=>a.id==='template-'+id||(a.id==='template-detail'&&id==='composite'))[1]}));
+const assetRecords=assets.map(({data,...a})=>({...a,path:'assets/'+FIGURES.find(([id])=>a.id==='template-'+id||(a.id==='template-detail'&&id==='composite')||(a.id==='template-portrait-detail'&&id==='portrait'))[1]}));
 await writeFile(join(output,'slide-records.json'),JSON.stringify({schemaVersion:1,synthetic:true,bibliographicPlaceholders:true,purpose:'layout-templates-not-research-evidence',notice:'All bibliographic metadata is placeholder text and all numeric data is synthetic. Replace and verify before a scientific presentation.',design:project.design,brief:project.brief,papers:project.papers,claims:project.claims,assets:assetRecords,slides},null,2)+'\n');
-const manifest={schemaVersion:1,version:'0.2.0',purpose:'original-academic-layout-reference',templateCount:48,categories:REFERENCE_CATEGORIES,collection:{file:'academic-templates-48.pptx',sha256:hash(all.pptx)},categoryFiles:files,templates:REFERENCE_TEMPLATES.map((t,i)=>({...t,page:i+1,preview:`previews/T${String(i+1).padStart(2,'0')}.svg`,pptx:t.category+'.pptx',categoryPage:i%6+1})),figures:assetRecords.map(({sha256,id,path,caption,license,viewport,cropNote})=>({id,path,sha256,caption,license,...(viewport?{viewport}:{}),cropNote})),sources:[{title:'MIT Communication Lab: Slideshow',url:'https://mitcommlab.mit.edu/nse/commkit/slideshow/'},{title:'Penn State Assertion–Evidence',url:'https://www.assertion-evidence.com/'},{title:'Bourne: Ten Simple Rules for Making Good Oral Presentations',url:'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.0030077'}],license:'MIT for original layouts and synthetic plot assets; no university logos or copyrighted template decks included',checks:{staticIssues:all.issues,pptxVisual:'not-yet-recorded'}};
+const manifest={schemaVersion:1,version:'0.3.0',purpose:'original-academic-layout-reference',templateCount:48,categories:REFERENCE_CATEGORIES,collection:{file:'academic-templates-48.pptx',sha256:hash(all.pptx)},categoryFiles:files,templates:REFERENCE_TEMPLATES.map((t,i)=>({...t,page:i+1,preview:`previews/T${String(i+1).padStart(2,'0')}.svg`,pptx:t.category+'.pptx',categoryPage:i%6+1})),figures:assetRecords.map(({sha256,id,path,caption,displayCaption,license,viewport,cropNote,reading})=>({id,path,sha256,caption,displayCaption,license,...(viewport?{viewport}:{}),cropNote,reading})),sources:[{title:'MIT Communication Lab: Slideshow',url:'https://mitcommlab.mit.edu/nse/commkit/slideshow/'},{title:'Penn State Assertion–Evidence',url:'https://www.assertion-evidence.com/'},{title:'Bourne: Ten Simple Rules for Making Good Oral Presentations',url:'https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.0030077'}],license:'MIT for original layouts and synthetic plot assets; no university logos or copyrighted template decks included',checks:{staticIssues:all.issues,pptxVisual:'not-yet-recorded'}};
 await writeFile(join(output,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
-const cards=manifest.templates.map(t=>`<article data-category="${t.category}" data-search="${esc(t.id+' '+t.name+' '+t.description+' '+t.prompts.join(' '))}"><a class="preview" href="previews/T${String(t.page).padStart(2,'0')}.svg"><img loading="lazy" src="previews/T${String(t.page).padStart(2,'0')}.svg" alt="${esc(t.name)}"></a><h2>${String(t.page).padStart(2,'0')} ${esc(t.name)}</h2><code>${t.id}</code><p>${esc(t.description)}</p><p class="roles">${t.prompts.map(esc).join(' / ')}</p><a href="${t.pptx}">下载本类 PPTX · 第 ${t.categoryPage} 页</a></article>`).join('\n');
+const cards=manifest.templates.map(t=>{
+  const guidance=t.category==='figure'?`<p class="figure-guide"><strong>图片适用条件：</strong>${esc(t.figureGuidance.description)}</p>`:'';
+  return `<article data-category="${t.category}" data-search="${esc(t.id+' '+t.name+' '+t.description+' '+t.prompts.join(' ')+(t.figureGuidance?' '+t.figureGuidance.description:''))}"><a class="preview" href="previews/T${String(t.page).padStart(2,'0')}.svg"><img loading="lazy" src="previews/T${String(t.page).padStart(2,'0')}.svg" alt="${esc(t.name)}"></a><h2>${String(t.page).padStart(2,'0')} ${esc(t.name)}</h2><code>${t.id}</code><p>${esc(t.description)}</p>${guidance}<p class="roles">${t.prompts.map(esc).join(' / ')}</p><a href="${t.pptx}">下载本类 PPTX · 第 ${t.categoryPage} 页</a></article>`;
+}).join('\n');
 const html=`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>48种学术汇报模板</title><style>*{box-sizing:border-box}body{margin:0;background:#f1f4f7;color:#1c2430;font:16px/1.65 "Noto Sans CJK SC",system-ui,sans-serif}header{background:white;padding:30px max(4vw,24px);border-bottom:3px solid #173c70}h1{margin:0;color:#173c70;font-size:28px}header p{max-width:1000px;margin:12px 0}a{color:#173c70}nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}input,select{font:inherit;border:1px solid #adb9c8;padding:9px 12px;background:white;min-width:190px}main{padding:28px max(4vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}article{background:white;padding:16px;border:1px solid #d8e0e8}article[hidden]{display:none}img{display:block;width:100%;aspect-ratio:16/9;background:white}h2{font-size:20px;margin:14px 0 3px}code{font-size:13px;color:#46556a}p{margin:8px 0}.roles{font-size:14px;color:#536070}.note{color:#903543}footer{padding:20px 4vw;background:white}@media(max-width:850px){main{grid-template-columns:1fr}}@media print{nav{display:none}main{grid-template-columns:1fr}article{break-inside:avoid}}</style></head><body><header><h1>48 种学术汇报模板</h1><p>按论文任务选择可编辑结构：完整书目、方法机制、实验设计、结果与统计、原图解读、跨文献综合、局限与失败、研究计划。布局与运行时 referenceTemplateId 使用同一份几何数据。</p><p class="note">模板文字为填写指引，图表值全部为合成示例。请替换为实际论文、原图和数据后再用于科学汇报。</p><p><a href="academic-templates-48.pptx">下载48页可编辑总集</a> · <a href="academic-templates-48.html">全屏逐页查看</a> · <a href="slide-records.json">可复用记录</a> · <a href="manifest.json">模板与素材清单</a></p><nav><input id="search" type="search" placeholder="搜索任务、模板ID或内容"><select id="category"><option value="all">全部 48 个模板</option>${REFERENCE_CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select><span id="count"></span></nav></header><main>${cards}</main><footer>原创模板与合成图采用 MIT 许可。参考学术沟通原则，不包含大学品牌模板、徽标或用户私有模板。</footer><script>const items=[...document.querySelectorAll('article')],search=document.querySelector('#search'),category=document.querySelector('#category');function filter(){const q=search.value.toLowerCase().trim(),c=category.value;let n=0;for(const item of items){item.hidden=!((c==='all'||item.dataset.category===c)&&item.dataset.search.toLowerCase().includes(q));if(!item.hidden)n++}document.querySelector('#count').textContent=n+' / 48'}search.addEventListener('input',filter);category.addEventListener('change',filter);filter();</script></body></html>`;
 await writeFile(join(output,'gallery.html'),html);
 console.log(JSON.stringify({output,templates:48,categoryDecks:8,pptx:'academic-templates-48.pptx',figures:FIGURES.length,staticErrors:all.issues.filter(x=>x.severity==='error').length,staticWarnings:all.issues.filter(x=>x.severity==='warning').length},null,2));

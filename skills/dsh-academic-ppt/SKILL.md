@@ -13,8 +13,8 @@ description: 制作或改进可编辑的学术汇报 PPT，适用于论文精读
 2. 读到什么版本，就声明什么版本。区分摘要、作者稿、正式论文、补充材料和代码，不能用解析成功冒充精读完成。
 3. 每个核心结论绑定原文位置、验证场景与数值口径。区分作者报告、汇报者解释、待检验建议。
 4. 每篇核心论文至少安排一个 `paper` 导读页，显示完整原文题名；参考文献页再次保留完整书目。中文论点标题不能替代正式题名。
-5. 优先引用支持本页论点的真实论文图。保留图号、面板、比例、图注和必要坐标。竖向复合原图宜定位后放大具体面板，不能缩成几乎不可读的小图。原生文字、图表和方法图构成解释层，禁止整页截图充当 PPT。
-6. 真正读取模板的布局和组件来源。先按学术任务选择构图，再处理局部卡片；不能让卡片、装饰或大留白替代研究内容。复用程度以工具报告的支持范围为准。
+5. 优先引用支持本页论点的真实论文图。先实际查看内容，区分主证据、局部证据和定位图，再按必要标签的最终可读尺寸选版。密集竖图不平均分配半页；裁到相关面板、换构图或拆任务，保留图号、坐标、单位、图例和对照。原生文字、图表和方法图构成解释层，禁止整页截图充当 PPT。
+6. 真正读取模板的布局和组件来源。先按学术任务选择构图，再定义标题/正文层级、语义色与块间关系，最后处理卡片、细框与轻阴影。省去装饰性小字与重复元信息，把空间给可读证据；复用程度以工具报告的支持范围为准。
 7. 用户只要求“小卡片”时，锁定已认可基线和具体卡片。`card-style` 只改 `style`、`accent`、`templateComponentId`，保留文字内容、数值、外框位置与大小、论文图、页序和备注；卡内文字位置可以随结构调整。
 8. 只报告实际完成的验证。结构合法不证明科学正确；HTML 预览不等于 PPTX 渲染；未知视觉能力不能写成视觉验收通过。
 
@@ -33,8 +33,8 @@ description: 制作或改进可编辑的学术汇报 PPT，适用于论文精读
 | --- | --- | --- |
 | 筛选 | 用宿主已有检索与文档工具获取材料，登记 `papers` | 主题角色、真实版本、期刊条件清楚 |
 | 精读 | 按 [evidence.md](references/evidence.md) 登记 `claims/assets` | 关键结果可定位，分母、基线与局限齐全 |
-| 叙事与模板 | 按 [design.md](references/design.md) 定义页面任务，读 [academic-layouts.md](references/academic-layouts.md)，用 `academic_ppt_reference` 选学术构图；有用户模板时调用 `academic_ppt_template` | 原图、方法、样本设计与结果各有适合的空间 |
-| 代表页 | 登记方法图、原图放大、结果统计与长题名等代表页并构建 | 内容足以支撑讲述，文字、图注和证据实际可读 |
+| 叙事与模板 | 按 [design.md](references/design.md) 定义页面任务；有论文图先读 [figure-selection.md](references/figure-selection.md)，按 [academic-layouts.md](references/academic-layouts.md) 用 `academic_ppt_reference` 选构图；有用户模板时调用 `academic_ppt_template` | 图的职责、必要元素和实际可读尺寸清楚，布局承载当前科学关系 |
+| 代表页 | 按 [visual-decision.md](references/visual-decision.md) 比较 2–3 个有依据候选，构建密集原图、方法、结果与长题名等难例 | 主证据可读，字号与语义色有层级，块间关系可见，浅细节不过度 |
 | 完整制作 | 小批量登记页面，补齐引用与备注后构建 | 主线完整，原图存在，解释层原生可编辑 |
 | 验收 | `academic_ppt_check`；按 [delivery.md](references/delivery.md) 检查和修订 | 科学、叙事、视觉、文件、修改范围分别有结论 |
 | 交付 | 记录当前产物的真实审查，提供成品与工程 | 文件与检查版本一致，未完成范围明确 |
@@ -46,7 +46,7 @@ description: 制作或改进可编辑的学术汇报 PPT，适用于论文精读
 - `academic_ppt_init` 创建项目；不要求一次提交整份 PPT。
 - `academic_ppt_record` 接受有类型的对象数组，按 ID 更新。单批上限为 5 篇论文、20 条证据、8 个资产、8 页；不是 JSON 字符串参数。先写被引用记录，已构建页面改用 scoped edit。
 - `academic_ppt_context` 返回紧凑上下文；按 `stage` 与至多 4 个 `recordIds` 聚焦读取。
-- `academic_ppt_reference` 按 `category` 或 `templateId` 读取学术参考构图。选用时给页面写入 `referenceTemplateId`，并满足返回的 `layout`、图像/节点/文本区数量及表格或图表要求；名称相似不能代替实际查看构图。
+- `academic_ppt_reference` 按 `category` 或 `templateId` 读取学术参考构图；也可传 `figure` 的原始尺寸、视窗与 `reading`，取得最多三个图片适配候选。选用时写入 `referenceTemplateId` 并满足返回要求；名称相似、排名第一或尺寸匹配均不代替实际查看。所有固定页型都不适合时，按 [figure-selection.md](references/figure-selection.md) 使用受控图框或拆页。
 - `academic_ppt_template` 接受 `filePath`，保存受支持原生组件与未支持信息。把返回文件路径以 `record.templateProfilePaths` 导入（每次 1–4 个），再选 `templateComponentId`；不让模型复制巨型 profile。
 - `academic_ppt_build` 使用 `mode: review` 检查证据门槛；材料不齐时可用 `draft` 做明确标记的草稿，不能将其冒充满足条件的最终稿。
 - `academic_ppt_edit` 使用明确 `scope`；`card-style` 保留内容与外框几何，`slide-content` 只用于已授权的内容修改。
@@ -66,6 +66,8 @@ description: 制作或改进可编辑的学术汇报 PPT，适用于论文精读
 标题直接说明具体研究对象、方法或有条件的发现。方法介绍可以用清楚的名词短语，结果页可以用证据支持的判断；避免“先确认”“把……转化为……”等对制作者发号施令的标题，也不要强迫每页变成一句口号。
 
 每页确定主要证据及阅读顺序，再补足理解它所必需的方法、变量、对照和条件。表格用于精确对应，机制用原生流程，结果用原图解读，失败用局部放大。`slide.table` 适合真正的参数或对照表，`asset.viewport` 适合保留原图文件的局部视窗。不要把“论点—证据—边界”机械画成每页三个框。
+
+默认不用微小 `kicker` 承担章节和结论。主标题、区域标题、正文和引用分级；会改变结论的条件留在正文。用 `card.kind` 和节点 `kind` 表达内容身份，`card.emphasis` 强调正文中的少数精确片段；用颜色、标题和形状共同区分方法、观察、设置、局限与假说。图像用简洁 `displayCaption` 保持上页可读，完整出处继续保存在记录与引用中。具体字段和样例按当前 schema 执行。
 
 连续看缩略图辨认重复，也检查是否内容稀薄：听众能否指出本页使用的数据、方法或具体发现？空白过多时补必要信息或合并页面，不能靠更大的数字和装饰制造存在感。拥挤时先去重复、拆任务、调图文比例；不能靠缩小所有字或删除科学限定换取整洁。
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "purpose": "original-academic-layout-reference",
   "templateCount": 48,
   "categories": [
@@ -27,7 +27,7 @@
     {
       "id": "figure",
       "name": "原图解读",
-      "description": "全图定位、面板比较、局部放大和图例"
+      "description": "图像阅读任务、面板展开、局部放大和图例"
     },
     {
       "id": "synthesis",
@@ -47,7 +47,7 @@
   ],
   "collection": {
     "file": "academic-templates-48.pptx",
-    "sha256": "8198c410d751f9028d82420f445ee5933a2831665f640aa1392ff64773770fbe"
+    "sha256": "e8f5e980d2b6bc56493dceffb54f10b708576ee39c1d2b40432baf1953573657"
   },
   "categoryFiles": [
     {
@@ -55,56 +55,56 @@
       "name": "论文导读",
       "file": "paper.pptx",
       "slides": 6,
-      "sha256": "dbaf62830bca047d535f4574692395ffcf42e7ec2912cdf61df264373cec69eb"
+      "sha256": "7b7f1166f1ded3df18039d8b4e1b21a00b8c48bb5c44ae9010f4fbd20e4c4158"
     },
     {
       "category": "method",
       "name": "方法与机制",
       "file": "method.pptx",
       "slides": 6,
-      "sha256": "5c5613f9c1fc05dc9f5e40dc10739a282334826bd586e9c3ad42b019126e5193"
+      "sha256": "5b8b212b781a4621ec10216a37306a54b48fdc50a68472a305a2efbfea08fcc7"
     },
     {
       "category": "experiment",
       "name": "实验设计",
       "file": "experiment.pptx",
       "slides": 6,
-      "sha256": "edabb64acfa7ca97899f25f7e778d54e5bacf257eb30be79303f641849227cc0"
+      "sha256": "469dcbedea354bdf0c2b07d63fd99abb701ac4a26f3c4a73df1b06b599d4d25b"
     },
     {
       "category": "results",
       "name": "结果与统计",
       "file": "results.pptx",
       "slides": 6,
-      "sha256": "77856e9ae3833ffa4f906d8bae9e0c5feabaf3189fdbaf7aa05f8f5c9c8bbaf2"
+      "sha256": "4282da218964ef3861b3cbf4747e67475d66c683c94f4d7bf2c84728a5c428fa"
     },
     {
       "category": "figure",
       "name": "原图解读",
       "file": "figure.pptx",
       "slides": 6,
-      "sha256": "aa18da9453cedb866f28f33d2b11c04029420392629b9f978b10d33f12f05b87"
+      "sha256": "a7971c78273d960b244bcf0093afe92e677378e164e912afceb605965a08d498"
     },
     {
       "category": "synthesis",
       "name": "跨文献综合",
       "file": "synthesis.pptx",
       "slides": 6,
-      "sha256": "2480eabfac880dc2d1bcda64d343dbd3ea443b75453224016d6512310bb224fa"
+      "sha256": "dc144ced59d4b54d4a3436714c23ae960a89dd3b0e1c6be71e5420663e955775"
     },
     {
       "category": "limitations",
       "name": "局限与失败",
       "file": "limitations.pptx",
       "slides": 6,
-      "sha256": "65bd48f4e2c0a1a6b354661bd32932d7d7b7f53f7551be3c2e1271316bf5f8d4"
+      "sha256": "0bc875572b3c1327fddf8b663686cdf61c1dc7d6ebdb550f13982cf2b5d99f3d"
     },
     {
       "category": "plan",
       "name": "研究计划与附录",
       "file": "plan.pptx",
       "slides": 6,
-      "sha256": "a7c33b7a93f8e363b107d5153e9ee807bb7fd8bb69f9140ef439cc00f1b5e728"
+      "sha256": "366b803c476799c178522caf17f0e2c96dd816b1981791f69eb340343c7d84cb"
     }
   ],
   "templates": [
@@ -115,48 +115,49 @@
       "layout": "paper",
       "description": "完整书目置顶，左侧主图，右侧依次解释问题、方法与结果边界。",
       "slots": {
-        "cards": [
+        "paperTitle": {
+          "x": 48,
+          "y": 108,
+          "w": 1184,
+          "h": 124.62
+        },
+        "panels": [
           {
-            "x": 756,
-            "y": 264,
-            "w": 476,
-            "h": 118
-          },
-          {
-            "x": 756,
-            "y": 394,
-            "w": 476,
-            "h": 112
-          },
-          {
-            "x": 756,
-            "y": 518,
-            "w": 476,
-            "h": 116
+            "x": 48,
+            "y": 249.23,
+            "w": 682,
+            "h": 384.23,
+            "title": "关键证据图",
+            "style": "academic-panel",
+            "kind": "result"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 312,
+            "y": 299.08,
             "w": 654,
-            "h": 306
+            "h": 317.77
           }
         ],
-        "paperTitle": {
-          "x": 48,
-          "y": 128,
-          "w": 1184,
-          "h": 120
-        },
-        "panels": [
+        "cards": [
           {
-            "x": 48,
-            "y": 264,
-            "w": 682,
-            "h": 370,
-            "title": "关键证据图",
-            "style": "academic-panel"
+            "x": 756,
+            "y": 249.23,
+            "w": 476,
+            "h": 122.54
+          },
+          {
+            "x": 756,
+            "y": 384.23,
+            "w": 476,
+            "h": 116.31
+          },
+          {
+            "x": 756,
+            "y": 513,
+            "w": 476,
+            "h": 120.46
           }
         ]
       },
@@ -181,11 +182,30 @@
         "compact",
         "ruled"
       ],
+      "cardKinds": [
+        "hypothesis",
+        "method",
+        "result"
+      ],
       "prompts": [
         "研究问题",
         "方法改变了什么",
         "结果及适用范围"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 1,
       "preview": "previews/T01.svg",
@@ -199,39 +219,39 @@
       "layout": "paper",
       "description": "区分已有认识、尚存缺口、研究假说及可观测预测。",
       "slots": {
+        "paperTitle": {
+          "x": 48,
+          "y": 108,
+          "w": 1184,
+          "h": 124.62
+        },
         "cards": [
           {
             "x": 48,
-            "y": 270,
+            "y": 255.46,
             "w": 568,
-            "h": 158
+            "h": 164.08
           },
           {
             "x": 646,
-            "y": 270,
+            "y": 255.46,
             "w": 586,
-            "h": 158
+            "h": 164.08
           },
           {
             "x": 48,
-            "y": 454,
+            "y": 446.54,
             "w": 768,
-            "h": 180
+            "h": 186.92
           },
           {
             "x": 848,
-            "y": 454,
+            "y": 446.54,
             "w": 384,
-            "h": 180
+            "h": 186.92
           }
         ],
-        "figures": [],
-        "paperTitle": {
-          "x": 48,
-          "y": 128,
-          "w": 1184,
-          "h": 120
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -250,10 +270,16 @@
         "table": false
       },
       "cardStyles": [
-        "plain",
+        "academic-side",
         "academic-tab",
-        "academic-panel",
+        "dashed-note",
         "ruled"
+      ],
+      "cardKinds": [
+        "question",
+        "question",
+        "hypothesis",
+        "boundary"
       ],
       "prompts": [
         "已有认识",
@@ -274,83 +300,85 @@
       "layout": "synthesis",
       "description": "左窄右宽两组证据，右组原图与解释链同框，底部保留共同边界。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 62,
-            "y": 474,
-            "w": 420,
-            "h": 90
+            "x": 48,
+            "y": 116.31,
+            "w": 448,
+            "h": 490.15,
+            "title": "证据一：测量对象",
+            "style": "academic-panel",
+            "kind": "result"
           },
           {
-            "x": 540,
-            "y": 474,
-            "w": 678,
-            "h": 90
+            "x": 526,
+            "y": 116.31,
+            "w": 706,
+            "h": 490.15,
+            "title": "证据二：效应与解释",
+            "style": "academic-panel",
+            "kind": "result"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 188,
+            "y": 170.31,
             "w": 420,
-            "h": 258
+            "h": 311.54
           },
           {
             "x": 540,
-            "y": 188,
+            "y": 170.31,
             "w": 410,
-            "h": 258
-          }
-        ],
-        "panels": [
-          {
-            "x": 48,
-            "y": 136,
-            "w": 448,
-            "h": 442,
-            "title": "证据一：测量对象",
-            "style": "academic-panel"
-          },
-          {
-            "x": 526,
-            "y": 136,
-            "w": 706,
-            "h": 442,
-            "title": "证据二：效应与解释",
-            "style": "academic-panel"
+            "h": 311.54
           }
         ],
         "diagram": {
           "x": 980,
-          "y": 188,
+          "y": 170.31,
           "w": 238,
-          "h": 260
+          "h": 311.54
         },
         "nodeBoxes": [
           {
             "x": 984,
-            "y": 196,
+            "y": 178.62,
             "w": 226,
-            "h": 62
+            "h": 64.38
           },
           {
             "x": 984,
-            "y": 284,
+            "y": 270,
             "w": 226,
-            "h": 62
+            "h": 64.38
           },
           {
             "x": 984,
-            "y": 372,
+            "y": 361.38,
             "w": 226,
-            "h": 62
+            "h": 64.38
+          }
+        ],
+        "cards": [
+          {
+            "x": 62,
+            "y": 496.38,
+            "w": 420,
+            "h": 99.69
+          },
+          {
+            "x": 540,
+            "y": 496.38,
+            "w": 678,
+            "h": 99.69
           }
         ],
         "takeaway": {
           "x": 48,
-          "y": 596,
+          "y": 614.77,
           "w": 1184,
-          "h": 44
+          "h": 33.23
         }
       },
       "requirements": {
@@ -373,10 +401,28 @@
         "compact",
         "compact"
       ],
+      "cardKinds": [
+        "method",
+        "method"
+      ],
       "prompts": [
         "论点一的依据",
         "论点二的依据"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "nodeLabels": [
         "输入与测量",
@@ -395,45 +441,45 @@
       "layout": "paper",
       "description": "完整题名后将样本、任务与验证范围连续排布。",
       "slots": {
+        "paperTitle": {
+          "x": 48,
+          "y": 108,
+          "w": 1184,
+          "h": 124.62
+        },
         "cards": [
           {
             "x": 48,
-            "y": 274,
+            "y": 259.62,
             "w": 362,
-            "h": 164
+            "h": 170.31
           },
           {
             "x": 440,
-            "y": 274,
+            "y": 259.62,
             "w": 362,
-            "h": 164
+            "h": 170.31
           },
           {
             "x": 832,
-            "y": 274,
+            "y": 259.62,
             "w": 400,
-            "h": 164
+            "h": 170.31
           },
           {
             "x": 48,
-            "y": 462,
+            "y": 454.85,
             "w": 748,
-            "h": 172
+            "h": 178.62
           },
           {
             "x": 826,
-            "y": 462,
+            "y": 454.85,
             "w": 406,
-            "h": 172
+            "h": 178.62
           }
         ],
-        "figures": [],
-        "paperTitle": {
-          "x": 48,
-          "y": 128,
-          "w": 1184,
-          "h": 120
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -458,6 +504,13 @@
         "ruled",
         "academic-tab"
       ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "method",
+        "method",
+        "setting"
+      ],
       "prompts": [
         "研究对象",
         "分析任务",
@@ -476,41 +529,35 @@
       "category": "paper",
       "name": "贡献与基线的差异",
       "layout": "paper",
-      "description": "原生表格仅用于严格维度映射，侧栏说明新增贡献与公平性。",
+      "description": "完整书目下以通栏表映射比较维度，两项说明紧贴实际表底，解释新增贡献与公平性。",
       "slots": {
-        "cards": [
-          {
-            "x": 882,
-            "y": 268,
-            "w": 350,
-            "h": 166
-          },
-          {
-            "x": 882,
-            "y": 454,
-            "w": 350,
-            "h": 168
-          }
-        ],
-        "figures": [],
         "paperTitle": {
           "x": 48,
-          "y": 128,
+          "y": 108,
           "w": 1184,
-          "h": 120
+          "h": 124.62
         },
         "table": {
           "x": 48,
-          "y": 268,
-          "w": 806,
-          "h": 342
+          "y": 240.92,
+          "w": 1184,
+          "h": 267.92
         },
-        "takeaway": {
-          "x": 48,
-          "y": 616,
-          "w": 806,
-          "h": 30
-        }
+        "cards": [
+          {
+            "x": 48,
+            "y": 508.85,
+            "w": 574,
+            "h": 130.85
+          },
+          {
+            "x": 656,
+            "y": 508.85,
+            "w": 576,
+            "h": 130.85
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -532,11 +579,22 @@
         "academic-side",
         "ruled"
       ],
+      "cardKinds": [
+        "method",
+        "setting"
+      ],
       "prompts": [
         "关键改变",
         "比较条件"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          0,
+          1
+        ],
+        "gap": 18
+      },
       "page": 5,
       "preview": "previews/T05.svg",
       "pptx": "paper.pptx",
@@ -549,48 +607,49 @@
       "layout": "paper",
       "description": "一幅关键图配研究问题与争议，底部展开方法和验证讨论。",
       "slots": {
-        "cards": [
+        "paperTitle": {
+          "x": 48,
+          "y": 108,
+          "w": 1184,
+          "h": 124.62
+        },
+        "panels": [
           {
-            "x": 48,
-            "y": 268,
-            "w": 734,
-            "h": 104
-          },
-          {
-            "x": 48,
-            "y": 390,
-            "w": 354,
-            "h": 244
-          },
-          {
-            "x": 426,
-            "y": 390,
-            "w": 356,
-            "h": 244
+            "x": 810,
+            "y": 253.38,
+            "w": 422,
+            "h": 380.08,
+            "title": "讨论依据",
+            "style": "academic-tab",
+            "kind": "method"
           }
         ],
         "figures": [
           {
             "x": 824,
-            "y": 314,
+            "y": 301.15,
             "w": 394,
-            "h": 304
+            "h": 315.69
           }
         ],
-        "paperTitle": {
-          "x": 48,
-          "y": 128,
-          "w": 1184,
-          "h": 120
-        },
-        "panels": [
+        "cards": [
           {
-            "x": 810,
-            "y": 268,
-            "w": 422,
-            "h": 366,
-            "title": "讨论依据",
-            "style": "academic-tab"
+            "x": 48,
+            "y": 253.38,
+            "w": 734,
+            "h": 108
+          },
+          {
+            "x": 48,
+            "y": 380.08,
+            "w": 354,
+            "h": 253.38
+          },
+          {
+            "x": 426,
+            "y": 380.08,
+            "w": 356,
+            "h": 253.38
           }
         ]
       },
@@ -612,14 +671,33 @@
       },
       "cardStyles": [
         "compact",
-        "academic-panel",
+        "open-frame",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "question",
+        "method",
+        "method"
       ],
       "prompts": [
         "本次讨论问题",
         "方法审查",
         "实验审查"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 6,
       "preview": "previews/T06.svg",
@@ -633,81 +711,82 @@
       "layout": "method",
       "description": "六节点闭环说明规划、执行与核验，右侧保留接口和失败处理。",
       "slots": {
-        "cards": [
-          {
-            "x": 906,
-            "y": 146,
-            "w": 326,
-            "h": 222
-          },
-          {
-            "x": 906,
-            "y": 392,
-            "w": 326,
-            "h": 236
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 140,
+            "y": 120.46,
             "w": 822,
-            "h": 440,
+            "h": 456.92,
             "title": "任务驱动的执行闭环",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 192,
+          "y": 174.46,
           "w": 822,
-          "h": 374
+          "h": 388.38
         },
         "nodeBoxes": [
           {
             "x": 64,
-            "y": 198,
+            "y": 180.69,
             "w": 226,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 340,
-            "y": 198,
+            "y": 180.69,
             "w": 226,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 616,
-            "y": 198,
+            "y": 180.69,
             "w": 226,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 616,
-            "y": 434,
+            "y": 425.77,
             "w": 226,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 340,
-            "y": 434,
+            "y": 425.77,
             "w": 226,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 64,
-            "y": 434,
+            "y": 425.77,
             "w": 226,
-            "h": 110
+            "h": 114.23
+          }
+        ],
+        "cards": [
+          {
+            "x": 906,
+            "y": 126.69,
+            "w": 326,
+            "h": 230.54
+          },
+          {
+            "x": 906,
+            "y": 382.15,
+            "w": 326,
+            "h": 245.08
           }
         ],
         "takeaway": {
           "x": 48,
-          "y": 596,
+          "y": 594,
           "w": 822,
-          "h": 36
-        }
+          "h": 37.38
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -728,6 +807,10 @@
       "cardStyles": [
         "academic-side",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "boundary"
       ],
       "prompts": [
         "系统接口",
@@ -780,65 +863,65 @@
       "layout": "method",
       "description": "环境与策略构成闭环，右侧将状态、动作、奖励、约束分别定义。",
       "slots": {
-        "cards": [
-          {
-            "x": 832,
-            "y": 142,
-            "w": 400,
-            "h": 112
-          },
-          {
-            "x": 832,
-            "y": 270,
-            "w": 400,
-            "h": 112
-          },
-          {
-            "x": 832,
-            "y": 398,
-            "w": 400,
-            "h": 112
-          },
-          {
-            "x": 832,
-            "y": 526,
-            "w": 400,
-            "h": 112
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 152,
+          "y": 132.92,
           "w": 740,
-          "h": 412
+          "h": 427.85
         },
         "nodeBoxes": [
           {
             "x": 66,
-            "y": 184,
+            "y": 166.15,
             "w": 284,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 454,
-            "y": 184,
+            "y": 166.15,
             "w": 284,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 454,
-            "y": 424,
+            "y": 415.38,
             "w": 284,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 66,
-            "y": 424,
+            "y": 415.38,
             "w": 284,
-            "h": 128
+            "h": 132.92
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 832,
+            "y": 122.54,
+            "w": 400,
+            "h": 116.31
+          },
+          {
+            "x": 832,
+            "y": 255.46,
+            "w": 400,
+            "h": 116.31
+          },
+          {
+            "x": 832,
+            "y": 388.38,
+            "w": 400,
+            "h": 116.31
+          },
+          {
+            "x": 832,
+            "y": 521.31,
+            "w": 400,
+            "h": 116.31
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -861,6 +944,12 @@
         "compact",
         "compact",
         "compact"
+      ],
+      "cardKinds": [
+        "method",
+        "method",
+        "method",
+        "boundary"
       ],
       "prompts": [
         "状态 s_t",
@@ -905,69 +994,70 @@
       "layout": "method",
       "description": "纵向任务入口分流到三类工具，再汇总到核验节点。",
       "slots": {
-        "cards": [
-          {
-            "x": 908,
-            "y": 144,
-            "w": 324,
-            "h": 216
-          },
-          {
-            "x": 908,
-            "y": 390,
-            "w": 324,
-            "h": 240
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 138,
+            "y": 118.38,
             "w": 830,
-            "h": 496,
+            "h": 515.08,
             "title": "任务、工具与输出",
-            "style": "academic-tab"
+            "style": "academic-tab",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 184,
+          "y": 166.15,
           "w": 830,
-          "h": 446
+          "h": 463.15
         },
         "nodeBoxes": [
           {
             "x": 320,
-            "y": 190,
+            "y": 172.38,
             "w": 268,
-            "h": 78
+            "h": 81
           },
           {
             "x": 64,
-            "y": 344,
+            "y": 332.31,
             "w": 230,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 356,
-            "y": 344,
+            "y": 332.31,
             "w": 230,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 646,
-            "y": 344,
+            "y": 332.31,
             "w": 216,
-            "h": 110
+            "h": 114.23
           },
           {
             "x": 320,
-            "y": 548,
+            "y": 544.15,
             "w": 268,
-            "h": 72
+            "h": 74.77
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 908,
+            "y": 124.62,
+            "w": 324,
+            "h": 224.31
+          },
+          {
+            "x": 908,
+            "y": 380.08,
+            "w": 324,
+            "h": 249.23
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -988,6 +1078,10 @@
       "cardStyles": [
         "academic-panel",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "setting"
       ],
       "prompts": [
         "路由依据",
@@ -1039,69 +1133,70 @@
       "layout": "method",
       "description": "耦合链横向展开，下面交代接口、校准和模型失配。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 374,
-            "w": 366,
-            "h": 252
-          },
-          {
-            "x": 442,
-            "y": 374,
-            "w": 368,
-            "h": 252
-          },
-          {
-            "x": 838,
-            "y": 374,
-            "w": 394,
-            "h": 252
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 142,
+            "y": 122.54,
             "w": 1184,
-            "h": 190,
+            "h": 197.31,
             "title": "耦合计算链",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 188,
+          "y": 170.31,
           "w": 1184,
-          "h": 138
+          "h": 143.31
         },
         "nodeBoxes": [
           {
             "x": 64,
-            "y": 196,
+            "y": 178.62,
             "w": 226,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 366,
-            "y": 196,
+            "y": 178.62,
             "w": 226,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 670,
-            "y": 196,
+            "y": 178.62,
             "w": 226,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 974,
-            "y": 196,
+            "y": 178.62,
             "w": 242,
-            "h": 116
+            "h": 120.46
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 363.46,
+            "w": 366,
+            "h": 261.69
+          },
+          {
+            "x": 442,
+            "y": 363.46,
+            "w": 368,
+            "h": 261.69
+          },
+          {
+            "x": 838,
+            "y": 363.46,
+            "w": 394,
+            "h": 261.69
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1120,9 +1215,14 @@
         "table": false
       },
       "cardStyles": [
-        "academic-side",
+        "split-label",
         "academic-panel",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "method"
       ],
       "prompts": [
         "输入与单位",
@@ -1148,65 +1248,65 @@
       "layout": "method",
       "description": "左列给出紧凑有序步骤，右侧给出核心算子与必要假设。",
       "slots": {
-        "cards": [
-          {
-            "x": 452,
-            "y": 142,
-            "w": 780,
-            "h": 152
-          },
-          {
-            "x": 452,
-            "y": 314,
-            "w": 780,
-            "h": 148
-          },
-          {
-            "x": 452,
-            "y": 484,
-            "w": 780,
-            "h": 148
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 136,
+          "y": 116.31,
           "w": 370,
-          "h": 500
+          "h": 519.23
         },
         "nodeBoxes": [
           {
             "x": 62,
-            "y": 140,
+            "y": 120.46,
             "w": 344,
-            "h": 76
+            "h": 78.92
           },
           {
             "x": 62,
-            "y": 244,
+            "y": 228.46,
             "w": 344,
-            "h": 76
+            "h": 78.92
           },
           {
             "x": 62,
-            "y": 348,
+            "y": 336.46,
             "w": 344,
-            "h": 76
+            "h": 78.92
           },
           {
             "x": 62,
-            "y": 452,
+            "y": 444.46,
             "w": 344,
-            "h": 76
+            "h": 78.92
           },
           {
             "x": 62,
-            "y": 556,
+            "y": 552.46,
             "w": 344,
-            "h": 76
+            "h": 78.92
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 452,
+            "y": 122.54,
+            "w": 780,
+            "h": 157.85
+          },
+          {
+            "x": 452,
+            "y": 301.15,
+            "w": 780,
+            "h": 153.69
+          },
+          {
+            "x": 452,
+            "y": 477.69,
+            "w": 780,
+            "h": 153.69
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1228,6 +1328,11 @@
         "academic-panel",
         "ruled",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "method",
+        "hypothesis"
       ],
       "prompts": [
         "关键运算",
@@ -1257,33 +1362,33 @@
         "cards": [
           {
             "x": 48,
-            "y": 142,
+            "y": 122.54,
             "w": 766,
-            "h": 154
+            "h": 159.92
           },
           {
             "x": 48,
-            "y": 318,
+            "y": 305.31,
             "w": 766,
-            "h": 136
+            "h": 141.23
           },
           {
             "x": 48,
-            "y": 476,
+            "y": 469.38,
             "w": 766,
-            "h": 160
+            "h": 166.15
           },
           {
             "x": 850,
-            "y": 142,
+            "y": 122.54,
             "w": 382,
-            "h": 236
+            "h": 245.08
           },
           {
             "x": 850,
-            "y": 402,
+            "y": 392.54,
             "w": 382,
-            "h": 234
+            "h": 243
           }
         ],
         "figures": []
@@ -1307,9 +1412,16 @@
       "cardStyles": [
         "academic-panel",
         "ruled",
-        "plain",
         "academic-side",
+        "ledger",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "boundary",
+        "method",
+        "setting",
+        "hypothesis"
       ],
       "prompts": [
         "优化目标",
@@ -1331,59 +1443,59 @@
       "layout": "method",
       "description": "队列划分和采集过程在左，独立样本与观测次数在右明确区分。",
       "slots": {
-        "cards": [
-          {
-            "x": 864,
-            "y": 144,
-            "w": 368,
-            "h": 216
-          },
-          {
-            "x": 864,
-            "y": 386,
-            "w": 368,
-            "h": 248
-          },
-          {
-            "x": 48,
-            "y": 486,
-            "w": 778,
-            "h": 148
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 144,
+          "y": 124.62,
           "w": 778,
-          "h": 302
+          "h": 313.62
         },
         "nodeBoxes": [
           {
             "x": 48,
-            "y": 172,
+            "y": 153.69,
             "w": 218,
-            "h": 112
+            "h": 116.31
           },
           {
             "x": 328,
-            "y": 172,
+            "y": 153.69,
             "w": 218,
-            "h": 112
+            "h": 116.31
           },
           {
             "x": 608,
-            "y": 172,
+            "y": 153.69,
             "w": 218,
-            "h": 112
+            "h": 116.31
           },
           {
             "x": 328,
-            "y": 350,
+            "y": 338.54,
             "w": 218,
-            "h": 94
+            "h": 97.62
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 864,
+            "y": 124.62,
+            "w": 368,
+            "h": 224.31
+          },
+          {
+            "x": 864,
+            "y": 375.92,
+            "w": 368,
+            "h": 257.54
+          },
+          {
+            "x": 48,
+            "y": 479.77,
+            "w": 778,
+            "h": 153.69
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1403,8 +1515,13 @@
       },
       "cardStyles": [
         "academic-panel",
-        "academic-side",
+        "open-frame",
         "ruled"
+      ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "boundary"
       ],
       "prompts": [
         "独立样本单位",
@@ -1442,35 +1559,35 @@
       "category": "experiment",
       "name": "实验因子与处理组合",
       "layout": "comparison",
-      "description": "用原生表格记录因子水平与处理，右侧解释随机化和交互作用。",
+      "description": "因子表与随机化条件并列，主效应和交互作用的解释作为宽带紧接表底。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 135,
+          "w": 796,
+          "h": 299.08
+        },
         "cards": [
           {
             "x": 878,
-            "y": 146,
+            "y": 126.69,
             "w": 354,
-            "h": 222
+            "h": 230.54
           },
           {
-            "x": 878,
-            "y": 392,
-            "w": 354,
-            "h": 242
+            "x": 48,
+            "y": 448.62,
+            "w": 1184,
+            "h": 176.54
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 154,
-          "w": 796,
-          "h": 418
-        },
         "takeaway": {
           "x": 48,
-          "y": 596,
-          "w": 796,
-          "h": 44
-        }
+          "y": 639.69,
+          "w": 1184,
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1490,13 +1607,24 @@
       },
       "cardStyles": [
         "academic-panel",
-        "ruled"
+        "paper-shadow"
+      ],
+      "cardKinds": [
+        "method",
+        "result"
       ],
       "prompts": [
         "随机化与重复",
         "效应解释"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          1
+        ],
+        "gap": 22,
+        "takeawayAfterCards": true
+      },
       "page": 14,
       "preview": "previews/T14.svg",
       "pptx": "experiment.pptx",
@@ -1509,63 +1637,64 @@
       "layout": "method",
       "description": "原始样本按独立单位划分到训练、验证与独立测试三个分支，下方说明划分职责与泄漏检查。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 420,
-            "w": 576,
-            "h": 214
-          },
-          {
-            "x": 656,
-            "y": 420,
-            "w": 576,
-            "h": 214
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 138,
+            "y": 118.38,
             "w": 1184,
-            "h": 258,
+            "h": 267.92,
             "title": "各集合承担不同职责",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 186,
+          "y": 168.23,
           "w": 1184,
-          "h": 200
+          "h": 207.69
         },
         "nodeBoxes": [
           {
             "x": 350,
-            "y": 190,
+            "y": 172.38,
             "w": 580,
-            "h": 72
+            "h": 74.77
           },
           {
             "x": 64,
-            "y": 308,
+            "y": 294.92,
             "w": 328,
-            "h": 70
+            "h": 72.69
           },
           {
             "x": 476,
-            "y": 308,
+            "y": 294.92,
             "w": 328,
-            "h": 70
+            "h": 72.69
           },
           {
             "x": 888,
-            "y": 308,
+            "y": 294.92,
             "w": 328,
-            "h": 70
+            "h": 72.69
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 411.23,
+            "w": 576,
+            "h": 222.23
+          },
+          {
+            "x": 656,
+            "y": 411.23,
+            "w": 576,
+            "h": 222.23
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1586,6 +1715,10 @@
       "cardStyles": [
         "academic-side",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "setting",
+        "method"
       ],
       "prompts": [
         "划分单位与留出条件",
@@ -1622,35 +1755,35 @@
       "category": "experiment",
       "name": "基线与公平对照",
       "layout": "comparison",
-      "description": "共同条件用表格对齐，额外信息、算力与调参预算在侧栏说明。",
+      "description": "共同条件用表格对齐，右栏交代预算；紧接表底的宽解释区区分新增信息与结构贡献。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 130.85,
+          "w": 824,
+          "h": 324
+        },
         "cards": [
           {
             "x": 906,
-            "y": 150,
+            "y": 130.85,
             "w": 326,
-            "h": 214
+            "h": 222.23
           },
           {
-            "x": 906,
-            "y": 390,
-            "w": 326,
-            "h": 238
+            "x": 48,
+            "y": 471.46,
+            "w": 1184,
+            "h": 170.31
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 150,
-          "w": 824,
-          "h": 448
-        },
         "takeaway": {
           "x": 48,
-          "y": 616,
-          "w": 824,
-          "h": 28
-        }
+          "y": 639.69,
+          "w": 1184,
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1672,11 +1805,22 @@
         "academic-side",
         "academic-tab"
       ],
+      "cardKinds": [
+        "setting",
+        "method"
+      ],
       "prompts": [
         "共同预算",
         "额外信息"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          1
+        ],
+        "gap": 20,
+        "takeawayAfterCards": true
+      },
       "page": 16,
       "preview": "previews/T16.svg",
       "pptx": "experiment.pptx",
@@ -1689,75 +1833,76 @@
       "layout": "method",
       "description": "测量链用分层流程，误差来源与校准集中置于右侧。",
       "slots": {
-        "cards": [
-          {
-            "x": 906,
-            "y": 148,
-            "w": 326,
-            "h": 222
-          },
-          {
-            "x": 906,
-            "y": 394,
-            "w": 326,
-            "h": 238
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 138,
+            "y": 118.38,
             "w": 828,
-            "h": 484,
+            "h": 502.62,
             "title": "从观测到估计",
-            "style": "academic-side"
+            "style": "academic-side",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 186,
+          "y": 168.23,
           "w": 828,
-          "h": 432
+          "h": 448.62
         },
         "nodeBoxes": [
           {
             "x": 64,
-            "y": 196,
+            "y": 178.62,
             "w": 238,
-            "h": 104
+            "h": 108
           },
           {
             "x": 354,
-            "y": 196,
+            "y": 178.62,
             "w": 238,
-            "h": 104
+            "h": 108
           },
           {
             "x": 644,
-            "y": 196,
+            "y": 178.62,
             "w": 216,
-            "h": 104
+            "h": 108
           },
           {
             "x": 644,
-            "y": 472,
+            "y": 465.23,
             "w": 216,
-            "h": 104
+            "h": 108
           },
           {
             "x": 354,
-            "y": 472,
+            "y": 465.23,
             "w": 238,
-            "h": 104
+            "h": 108
           },
           {
             "x": 64,
-            "y": 472,
+            "y": 465.23,
             "w": 238,
-            "h": 104
+            "h": 108
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 906,
+            "y": 128.77,
+            "w": 326,
+            "h": 230.54
+          },
+          {
+            "x": 906,
+            "y": 384.23,
+            "w": 326,
+            "h": 247.15
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1778,6 +1923,10 @@
       "cardStyles": [
         "academic-panel",
         "ruled"
+      ],
+      "cardKinds": [
+        "method",
+        "setting"
       ],
       "prompts": [
         "校准与误差",
@@ -1804,39 +1953,39 @@
       "layout": "comparison",
       "description": "参数表配训练、测试和复现备注，避免参数被藏在讲稿中。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 128.77,
+          "w": 744,
+          "h": 319.85
+        },
         "cards": [
           {
             "x": 828,
-            "y": 146,
+            "y": 126.69,
             "w": 404,
-            "h": 148
+            "h": 224.31
           },
           {
             "x": 828,
-            "y": 314,
+            "y": 378,
             "w": 404,
-            "h": 146
+            "h": 251.31
           },
           {
-            "x": 828,
-            "y": 480,
-            "w": 404,
-            "h": 152
+            "x": 48,
+            "y": 467.31,
+            "w": 744,
+            "h": 153.69
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 148,
-          "w": 744,
-          "h": 430
-        },
         "takeaway": {
           "x": 48,
-          "y": 598,
+          "y": 639.69,
           "w": 744,
-          "h": 42
-        }
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1859,12 +2008,24 @@
         "ruled",
         "open-frame"
       ],
+      "cardKinds": [
+        "setting",
+        "setting",
+        "setting"
+      ],
       "prompts": [
         "训练条件",
         "测试条件",
         "复现材料"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          2
+        ],
+        "gap": 20,
+        "takeawayAfterCards": true
+      },
       "page": 18,
       "preview": "previews/T18.svg",
       "pptx": "experiment.pptx",
@@ -1877,39 +2038,39 @@
       "layout": "results",
       "description": "主图占主要面积，右侧同时给出效应、样本与结论边界。",
       "slots": {
+        "chart": {
+          "x": 48,
+          "y": 128.77,
+          "w": 808,
+          "h": 469.38
+        },
         "cards": [
           {
             "x": 888,
-            "y": 146,
+            "y": 126.69,
             "w": 344,
-            "h": 146
+            "h": 151.62
           },
           {
             "x": 888,
-            "y": 316,
+            "y": 303.23,
             "w": 344,
-            "h": 144
+            "h": 149.54
           },
           {
             "x": 888,
-            "y": 484,
+            "y": 477.69,
             "w": 344,
-            "h": 146
+            "h": 151.62
           }
         ],
-        "figures": [],
-        "chart": {
-          "x": 48,
-          "y": 148,
-          "w": 808,
-          "h": 452
-        },
         "takeaway": {
           "x": 48,
-          "y": 616,
+          "y": 614.77,
           "w": 808,
-          "h": 28
-        }
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -1928,9 +2089,14 @@
         "table": false
       },
       "cardStyles": [
-        "academic-side",
+        "academic-panel",
         "ruled",
-        "academic-tab"
+        "academic-side"
+      ],
+      "cardKinds": [
+        "result",
+        "setting",
+        "boundary"
       ],
       "prompts": [
         "主要效应",
@@ -1950,52 +2116,54 @@
       "layout": "results",
       "description": "左原生图表与右原图分别报告终点，解释各自的指标、分母与条件。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 468,
-            "w": 574,
-            "h": 166
-          },
-          {
-            "x": 656,
-            "y": 468,
-            "w": 576,
-            "h": 166
-          }
-        ],
-        "figures": [
-          {
-            "x": 670,
-            "y": 188,
-            "w": 548,
-            "h": 228
-          }
-        ],
         "panels": [
           {
             "x": 48,
-            "y": 136,
+            "y": 116.31,
             "w": 574,
-            "h": 298,
+            "h": 384.23,
             "title": "终点一：组间比较",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "result"
           },
           {
             "x": 656,
-            "y": 136,
+            "y": 116.31,
             "w": 576,
-            "h": 298,
+            "h": 384.23,
             "title": "终点二：个体分布",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "result"
           }
         ],
         "chart": {
           "x": 62,
-          "y": 188,
+          "y": 170.31,
           "w": 546,
-          "h": 228
-        }
+          "h": 311.54
+        },
+        "figures": [
+          {
+            "x": 670,
+            "y": 170.31,
+            "w": 548,
+            "h": 311.54
+          }
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 525.46,
+            "w": 574,
+            "h": 112.15
+          },
+          {
+            "x": 656,
+            "y": 525.46,
+            "w": 576,
+            "h": 112.15
+          }
+        ]
       },
       "requirements": {
         "cards": {
@@ -2017,10 +2185,28 @@
         "academic-panel",
         "academic-panel"
       ],
+      "cardKinds": [
+        "result",
+        "result"
+      ],
       "prompts": [
         "终点一的解释",
         "终点二的解释"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 20,
       "preview": "previews/T20.svg",
@@ -2032,35 +2218,35 @@
       "category": "results",
       "name": "消融比较与组件贡献",
       "layout": "results",
-      "description": "消融表与组件作用说明相邻，底部列出估计不确定性。",
+      "description": "左侧表格下方紧接可支持的效应结论，右侧说明组件机制与替代解释；短表按实际行高收紧。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 120.46,
+          "w": 756,
+          "h": 313.62
+        },
         "cards": [
           {
-            "x": 876,
-            "y": 152,
-            "w": 356,
-            "h": 210
+            "x": 838,
+            "y": 120.46,
+            "w": 394,
+            "h": 220.15
           },
           {
-            "x": 876,
-            "y": 388,
-            "w": 356,
-            "h": 240
+            "x": 838,
+            "y": 365.54,
+            "w": 394,
+            "h": 263.77
           },
           {
             "x": 48,
-            "y": 514,
-            "w": 786,
-            "h": 114
+            "y": 438.23,
+            "w": 756,
+            "h": 197.31
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 152,
-          "w": 786,
-          "h": 334
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -2079,9 +2265,14 @@
         "table": true
       },
       "cardStyles": [
-        "academic-side",
+        "academic-panel",
         "academic-tab",
-        "compact"
+        "academic-panel"
+      ],
+      "cardKinds": [
+        "method",
+        "method",
+        "method"
       ],
       "prompts": [
         "组件作用",
@@ -2089,6 +2280,12 @@
         "不确定性与重复"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          2
+        ],
+        "gap": 20
+      },
       "page": 21,
       "preview": "previews/T21.svg",
       "pptx": "results.pptx",
@@ -2101,33 +2298,33 @@
       "layout": "results",
       "description": "趋势图展示环境差异，右侧记录训练覆盖与最差情形。",
       "slots": {
+        "chart": {
+          "x": 48,
+          "y": 126.69,
+          "w": 830,
+          "h": 359.31
+        },
         "cards": [
           {
             "x": 912,
-            "y": 146,
+            "y": 126.69,
             "w": 320,
-            "h": 220
+            "h": 228.46
           },
           {
             "x": 912,
-            "y": 392,
+            "y": 382.15,
             "w": 320,
-            "h": 240
+            "h": 249.23
           },
           {
             "x": 48,
-            "y": 524,
+            "y": 519.23,
             "w": 830,
-            "h": 108
+            "h": 112.15
           }
         ],
-        "figures": [],
-        "chart": {
-          "x": 48,
-          "y": 146,
-          "w": 830,
-          "h": 346
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -2149,6 +2346,11 @@
         "academic-panel",
         "academic-tab",
         "compact"
+      ],
+      "cardKinds": [
+        "method",
+        "boundary",
+        "result"
       ],
       "prompts": [
         "测试环境",
@@ -2168,39 +2370,39 @@
       "layout": "results",
       "description": "定量图配三个不同角色的解释区，明确权衡的比较单位。",
       "slots": {
+        "chart": {
+          "x": 48,
+          "y": 128.77,
+          "w": 752,
+          "h": 469.38
+        },
         "cards": [
           {
             "x": 834,
-            "y": 146,
+            "y": 126.69,
             "w": 398,
-            "h": 144
+            "h": 149.54
           },
           {
             "x": 834,
-            "y": 316,
+            "y": 303.23,
             "w": 398,
-            "h": 144
+            "h": 149.54
           },
           {
             "x": 834,
-            "y": 486,
+            "y": 479.77,
             "w": 398,
-            "h": 144
+            "h": 149.54
           }
         ],
-        "figures": [],
-        "chart": {
-          "x": 48,
-          "y": 148,
-          "w": 752,
-          "h": 452
-        },
         "takeaway": {
           "x": 48,
-          "y": 614,
+          "y": 612.69,
           "w": 752,
-          "h": 28
-        }
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -2219,9 +2421,14 @@
         "table": false
       },
       "cardStyles": [
-        "academic-side",
+        "academic-panel",
         "academic-tab",
         "ruled"
+      ],
+      "cardKinds": [
+        "method",
+        "boundary",
+        "method"
       ],
       "prompts": [
         "收益指标",
@@ -2239,35 +2446,35 @@
       "category": "results",
       "name": "错误类型与任务分母",
       "layout": "results",
-      "description": "原生错误分类表与实际评价流程并置，避免评价口径混用。",
+      "description": "先交代共同评价条件，再以通栏表对齐任务分母，下方分别说明任务构造与失败解释。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 238.85,
+          "w": 1184,
+          "h": 222.23
+        },
         "cards": [
           {
-            "x": 808,
-            "y": 146,
-            "w": 424,
-            "h": 210
+            "x": 48,
+            "y": 475.62,
+            "w": 574,
+            "h": 184.85
           },
           {
-            "x": 808,
-            "y": 382,
-            "w": 424,
-            "h": 248
+            "x": 656,
+            "y": 475.62,
+            "w": 576,
+            "h": 184.85
           },
           {
             "x": 48,
-            "y": 524,
-            "w": 720,
-            "h": 108
+            "y": 118.38,
+            "w": 1184,
+            "h": 99.69
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 146,
-          "w": 720,
-          "h": 358
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -2290,12 +2497,24 @@
         "academic-tab",
         "compact"
       ],
+      "cardKinds": [
+        "method",
+        "boundary",
+        "setting"
+      ],
       "prompts": [
         "评价者与尺度",
         "失败集中在哪一步",
         "分母与统计单位"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          0,
+          1
+        ],
+        "gap": 22
+      },
       "page": 24,
       "preview": "previews/T24.svg",
       "pptx": "results.pptx",
@@ -2308,42 +2527,43 @@
       "layout": "figure-focus",
       "description": "完整宽幅原图置于上方，下面按图中元素组织读图说明。",
       "slots": {
-        "cards": [
+        "panels": [
           {
             "x": 48,
-            "y": 496,
-            "w": 364,
-            "h": 136
-          },
-          {
-            "x": 442,
-            "y": 496,
-            "w": 364,
-            "h": 136
-          },
-          {
-            "x": 836,
-            "y": 496,
-            "w": 396,
-            "h": 136
+            "y": 114.23,
+            "w": 1184,
+            "h": 373.85,
+            "title": "证据图与面板顺序",
+            "style": "academic-tab",
+            "kind": "result"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 180,
+            "y": 162,
             "w": 1156,
-            "h": 278
+            "h": 309.46
           }
         ],
-        "panels": [
+        "cards": [
           {
             "x": 48,
-            "y": 134,
-            "w": 1184,
-            "h": 340,
-            "title": "证据图与面板顺序",
-            "style": "academic-tab"
+            "y": 506.77,
+            "w": 364,
+            "h": 130.85
+          },
+          {
+            "x": 442,
+            "y": 506.77,
+            "w": 364,
+            "h": 130.85
+          },
+          {
+            "x": 836,
+            "y": 506.77,
+            "w": 396,
+            "h": 130.85
           }
         ]
       },
@@ -2368,11 +2588,30 @@
         "ruled",
         "academic-tab"
       ],
+      "cardKinds": [
+        "method",
+        "result",
+        "method"
+      ],
       "prompts": [
         "图例与处理",
         "主要趋势",
         "必要限定"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "适合可完整读出的横向图或少量简单面板。若每个面板都有密集轴字或表格，先拆为独立面板；不要按总图宽高比直接缩放。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 25,
       "preview": "previews/T25.svg",
@@ -2386,50 +2625,52 @@
       "layout": "figure-split",
       "description": "两面板共享高度，每幅图的解释直接放在对应面板下面。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 62,
-            "y": 492,
-            "w": 546,
-            "h": 128
+            "x": 48,
+            "y": 118.38,
+            "w": 574,
+            "h": 521.31,
+            "title": "A  面板及对应解读",
+            "style": "academic-panel",
+            "kind": "method"
           },
           {
-            "x": 670,
-            "y": 492,
-            "w": 548,
-            "h": 128
+            "x": 656,
+            "y": 118.38,
+            "w": 576,
+            "h": 521.31,
+            "title": "B  面板及对应解读",
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 188,
+            "y": 170.31,
             "w": 546,
-            "h": 274
+            "h": 346.85
           },
           {
             "x": 670,
-            "y": 188,
+            "y": 170.31,
             "w": 548,
-            "h": 274
+            "h": 346.85
           }
         ],
-        "panels": [
+        "cards": [
           {
-            "x": 48,
-            "y": 138,
-            "w": 574,
-            "h": 496,
-            "title": "A  面板及对应解读",
-            "style": "academic-panel"
+            "x": 62,
+            "y": 533.77,
+            "w": 546,
+            "h": 99.69
           },
           {
-            "x": 656,
-            "y": 138,
-            "w": 576,
-            "h": 496,
-            "title": "B  面板及对应解读",
-            "style": "academic-panel"
+            "x": 670,
+            "y": 533.77,
+            "w": 548,
+            "h": 99.69
           }
         ]
       },
@@ -2453,10 +2694,29 @@
         "compact",
         "compact"
       ],
+      "cardKinds": [
+        "method",
+        "method"
+      ],
       "prompts": [
         "面板 A",
         "面板 B"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed",
+          "dense-multipanel"
+        ],
+        "readingTasks": [
+          "compare-panels",
+          "read-values"
+        ],
+        "description": "两个已核对的独立面板并列。需要相同比例或坐标时保留它们；比较双方应有相同证据等级，不能将一侧全图缩略图当作对应面板。",
+        "requiresPanelSelection": true
+      },
       "suggestedSeconds": 60,
       "page": 26,
       "preview": "previews/T26.svg",
@@ -2470,70 +2730,73 @@
       "layout": "figure-split",
       "description": "三图解释不同证据环节，结论限定沿底部展开。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 62,
-            "y": 486,
-            "w": 342,
-            "h": 136
+            "x": 48,
+            "y": 120.46,
+            "w": 382,
+            "h": 515.08,
+            "title": "A  对应证据",
+            "style": "academic-panel",
+            "kind": "result"
           },
           {
-            "x": 462,
-            "y": 486,
-            "w": 342,
-            "h": 136
+            "x": 449,
+            "y": 120.46,
+            "w": 382,
+            "h": 515.08,
+            "title": "B  对应证据",
+            "style": "academic-panel",
+            "kind": "result"
           },
           {
-            "x": 862,
-            "y": 486,
-            "w": 356,
-            "h": 136
+            "x": 850,
+            "y": 120.46,
+            "w": 382,
+            "h": 515.08,
+            "title": "C  对应证据",
+            "style": "academic-panel",
+            "kind": "result"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 192,
-            "w": 342,
-            "h": 268
+            "y": 174.46,
+            "w": 354,
+            "h": 311.54
           },
           {
-            "x": 462,
-            "y": 192,
-            "w": 342,
-            "h": 268
+            "x": 463,
+            "y": 174.46,
+            "w": 354,
+            "h": 311.54
           },
           {
-            "x": 862,
-            "y": 192,
-            "w": 356,
-            "h": 268
+            "x": 864,
+            "y": 174.46,
+            "w": 354,
+            "h": 311.54
           }
         ],
-        "panels": [
+        "cards": [
           {
-            "x": 48,
-            "y": 140,
-            "w": 370,
-            "h": 496,
-            "title": "A  对应证据",
-            "style": "academic-panel"
+            "x": 62,
+            "y": 498.46,
+            "w": 354,
+            "h": 128.77
           },
           {
-            "x": 448,
-            "y": 140,
-            "w": 370,
-            "h": 496,
-            "title": "B  对应证据",
-            "style": "academic-panel"
+            "x": 463,
+            "y": 498.46,
+            "w": 354,
+            "h": 128.77
           },
           {
-            "x": 848,
-            "y": 140,
-            "w": 384,
-            "h": 496,
-            "title": "C  对应证据",
-            "style": "academic-panel"
+            "x": 864,
+            "y": 498.46,
+            "w": 354,
+            "h": 128.77
           }
         ]
       },
@@ -2558,11 +2821,29 @@
         "compact",
         "compact"
       ],
+      "cardKinds": [
+        "result",
+        "result",
+        "result"
+      ],
       "prompts": [
         "证据 A",
         "证据 B",
         "证据 C"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo"
+        ],
+        "readingTasks": [
+          "overview",
+          "compare-panels"
+        ],
+        "description": "只适合每幅图变量少、图例短的三个互补证据。若需精读误差条、小表或多行标签，改为两面板或分别独占一页。",
+        "requiresPanelSelection": true
+      },
       "suggestedSeconds": 60,
       "page": 27,
       "preview": "previews/T27.svg",
@@ -2572,36 +2853,36 @@
     {
       "id": "figure-detail-window",
       "category": "figure",
-      "name": "全图定位与局部放大",
+      "name": "主证据与补充面板",
       "layout": "figure-split",
-      "description": "全图与细节分别保留为独立图像，附面板位置和放大范围说明。",
+      "description": "主面板占左侧主要面积，右上展开补充面板、右下解释两者关系；两图都承担可读的证据任务。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 550,
-            "w": 448,
-            "h": 90
-          },
-          {
-            "x": 528,
-            "y": 550,
-            "w": 704,
-            "h": 90
-          }
-        ],
         "figures": [
           {
             "x": 48,
-            "y": 144,
-            "w": 448,
-            "h": 382
+            "y": 120.46,
+            "w": 756,
+            "h": 409.15
           },
           {
-            "x": 528,
-            "y": 144,
-            "w": 704,
-            "h": 382
+            "x": 838,
+            "y": 120.46,
+            "w": 394,
+            "h": 311.54
+          }
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 544.15,
+            "w": 756,
+            "h": 99.69
+          },
+          {
+            "x": 838,
+            "y": 454.85,
+            "w": 394,
+            "h": 182.77
           }
         ]
       },
@@ -2623,12 +2904,30 @@
       },
       "cardStyles": [
         "compact",
-        "compact"
+        "open-frame"
+      ],
+      "cardKinds": [
+        "result",
+        "result"
       ],
       "prompts": [
-        "全图定位",
-        "局部读数与上下文"
+        "主面板的读图结论",
+        "补充证据与限定"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "mixed",
+          "dense-multipanel"
+        ],
+        "readingTasks": [
+          "read-values",
+          "compare-panels"
+        ],
+        "description": "一个主面板加一个可独立辨认的补充面板；两者分别保留轴、单位、对照与图例。竖长总图应先选择范围，整体定位仅在它确有定位作用时额外安排。",
+        "requiresPanelSelection": true
+      },
       "suggestedSeconds": 60,
       "page": 28,
       "preview": "previews/T28.svg",
@@ -2638,46 +2937,47 @@
     {
       "id": "figure-portrait-reading",
       "category": "figure",
-      "name": "竖向原图与分步解读",
+      "name": "竖长原图的独立面板",
       "layout": "figure-focus",
-      "description": "竖图使用整列高度，右侧先解释流程，再记录关键证据和局限。",
+      "description": "从竖长多面板原图选择当前论点所需的独立面板，占主要区域；保留轴与图例，其他面板按论证另页展开。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 558,
-            "y": 140,
-            "w": 674,
-            "h": 144
-          },
-          {
-            "x": 558,
-            "y": 308,
-            "w": 674,
-            "h": 144
-          },
-          {
-            "x": 558,
-            "y": 478,
-            "w": 674,
-            "h": 154
+            "x": 48,
+            "y": 116.31,
+            "w": 770,
+            "h": 521.31,
+            "title": "面板 A：独立证据",
+            "style": "academic-tab",
+            "kind": "result"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 182,
-            "w": 446,
-            "h": 440
+            "y": 166.15,
+            "w": 742,
+            "h": 454.85
           }
         ],
-        "panels": [
+        "cards": [
           {
-            "x": 48,
-            "y": 136,
-            "w": 474,
-            "h": 502,
-            "title": "竖向证据图",
-            "style": "academic-tab"
+            "x": 854,
+            "y": 122.54,
+            "w": 378,
+            "h": 147.46
+          },
+          {
+            "x": 854,
+            "y": 297,
+            "w": 378,
+            "h": 147.46
+          },
+          {
+            "x": 854,
+            "y": 471.46,
+            "w": 378,
+            "h": 166.15
           }
         ]
       },
@@ -2702,11 +3002,31 @@
         "academic-panel",
         "academic-tab"
       ],
+      "cardKinds": [
+        "setting",
+        "result",
+        "boundary"
+      ],
       "prompts": [
-        "阅读顺序",
+        "所选面板的范围",
         "关键证据",
         "局限与外推"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "table",
+          "mixed",
+          "dense-multipanel"
+        ],
+        "readingTasks": [
+          "read-values",
+          "explain-process"
+        ],
+        "description": "面向竖长或密集总图中的一个独立证据面板。原图完整媒体保留，用已核对视窗展开当前面板；其他面板另页，不要求在主证据位展示总图。",
+        "requiresPanelSelection": true
+      },
       "suggestedSeconds": 60,
       "page": 29,
       "preview": "previews/T29.svg",
@@ -2720,42 +3040,43 @@
       "layout": "figure-focus",
       "description": "原图在右，左列明确变量、颜色和判读规则。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 48,
-            "y": 146,
-            "w": 402,
-            "h": 142
-          },
-          {
-            "x": 48,
-            "y": 316,
-            "w": 402,
-            "h": 144
-          },
-          {
-            "x": 48,
-            "y": 486,
-            "w": 402,
-            "h": 144
+            "x": 486,
+            "y": 122.54,
+            "w": 746,
+            "h": 504.69,
+            "title": "图像与图例",
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "figures": [
           {
             "x": 500,
-            "y": 194,
+            "y": 176.54,
             "w": 718,
-            "h": 418
+            "h": 434.08
           }
         ],
-        "panels": [
+        "cards": [
           {
-            "x": 486,
-            "y": 142,
-            "w": 746,
-            "h": 486,
-            "title": "图像与图例",
-            "style": "academic-panel"
+            "x": 48,
+            "y": 126.69,
+            "w": 402,
+            "h": 147.46
+          },
+          {
+            "x": 48,
+            "y": 303.23,
+            "w": 402,
+            "h": 149.54
+          },
+          {
+            "x": 48,
+            "y": 479.77,
+            "w": 402,
+            "h": 149.54
           }
         ]
       },
@@ -2776,15 +3097,32 @@
         "table": false
       },
       "cardStyles": [
-        "academic-side",
+        "academic-panel",
         "ruled",
-        "plain"
+        "academic-side"
+      ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "method"
       ],
       "prompts": [
         "坐标与变量",
         "颜色与处理",
         "判读规则"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "mixed"
+        ],
+        "readingTasks": [
+          "read-values",
+          "compare-panels"
+        ],
+        "description": "主图有多种处理、符号或误差表达时，在左侧解释必要读图条件。已能从图中清楚读出的图例不再逐字重复，解释应连接本页比较任务。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 30,
       "preview": "previews/T30.svg",
@@ -2798,63 +3136,64 @@
       "layout": "synthesis",
       "description": "以共有接口连接不同方法，下面说明差异来自哪里。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 436,
-            "w": 576,
-            "h": 196
-          },
-          {
-            "x": 656,
-            "y": 436,
-            "w": 576,
-            "h": 196
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 144,
+            "y": 124.62,
             "w": 1184,
-            "h": 244,
+            "h": 253.38,
             "title": "在同一接口层级比较",
-            "style": "academic-panel"
+            "style": "academic-panel",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 194,
+          "y": 176.54,
           "w": 1184,
-          "h": 194
+          "h": 201.46
         },
         "nodeBoxes": [
           {
             "x": 64,
-            "y": 212,
+            "y": 195.23,
             "w": 226,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 366,
-            "y": 212,
+            "y": 195.23,
             "w": 226,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 670,
-            "y": 212,
+            "y": 195.23,
             "w": 226,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 974,
-            "y": 212,
+            "y": 195.23,
             "w": 242,
-            "h": 142
+            "h": 147.46
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 427.85,
+            "w": 576,
+            "h": 203.54
+          },
+          {
+            "x": 656,
+            "y": 427.85,
+            "w": 576,
+            "h": 203.54
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -2875,6 +3214,10 @@
       "cardStyles": [
         "academic-panel",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "method"
       ],
       "prompts": [
         "共同机制",
@@ -2902,39 +3245,39 @@
         "cards": [
           {
             "x": 48,
-            "y": 148,
+            "y": 128.77,
             "w": 800,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 108,
-            "y": 274,
+            "y": 259.62,
             "w": 740,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 168,
-            "y": 400,
+            "y": 390.46,
             "w": 680,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 228,
-            "y": 526,
+            "y": 521.31,
             "w": 620,
-            "h": 116
+            "h": 120.46
           },
           {
             "x": 894,
-            "y": 148,
+            "y": 128.77,
             "w": 338,
-            "h": 216
+            "h": 224.31
           },
           {
             "x": 894,
-            "y": 392,
+            "y": 382.15,
             "w": 338,
-            "h": 238
+            "h": 247.15
           }
         ],
         "figures": []
@@ -2963,6 +3306,14 @@
         "academic-side",
         "academic-tab"
       ],
+      "cardKinds": [
+        "method",
+        "method",
+        "method",
+        "method",
+        "setting",
+        "boundary"
+      ],
       "prompts": [
         "离线与模拟",
         "受控实验",
@@ -2984,33 +3335,33 @@
       "layout": "comparison",
       "description": "表格只比较输入、接口与验证范围，右侧解释不可比的数字。",
       "slots": {
+        "table": {
+          "x": 48,
+          "y": 128.77,
+          "w": 856,
+          "h": 461.08
+        },
         "cards": [
           {
             "x": 938,
-            "y": 148,
+            "y": 128.77,
             "w": 294,
-            "h": 224
+            "h": 232.62
           },
           {
             "x": 938,
-            "y": 398,
+            "y": 388.38,
             "w": 294,
-            "h": 232
+            "h": 240.92
           }
         ],
-        "figures": [],
-        "table": {
-          "x": 48,
-          "y": 148,
-          "w": 856,
-          "h": 444
-        },
         "takeaway": {
           "x": 48,
-          "y": 608,
+          "y": 606.46,
           "w": 856,
-          "h": 28
-        }
+          "h": 29.08
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3032,6 +3383,10 @@
         "academic-side",
         "academic-tab"
       ],
+      "cardKinds": [
+        "method",
+        "boundary"
+      ],
       "prompts": [
         "比较维度",
         "不可比条件"
@@ -3049,59 +3404,59 @@
       "layout": "synthesis",
       "description": "时间节点上方对应技术变化，下方集中说明评价方式的变化。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 388,
-            "w": 370,
-            "h": 244
-          },
-          {
-            "x": 448,
-            "y": 388,
-            "w": 370,
-            "h": 244
-          },
-          {
-            "x": 848,
-            "y": 388,
-            "w": 384,
-            "h": 244
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 146,
+          "y": 126.69,
           "w": 1184,
-          "h": 190
+          "h": 197.31
         },
         "nodeBoxes": [
           {
             "x": 48,
-            "y": 158,
+            "y": 139.15,
             "w": 242,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 362,
-            "y": 158,
+            "y": 139.15,
             "w": 242,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 676,
-            "y": 158,
+            "y": 139.15,
             "w": 242,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 990,
-            "y": 158,
+            "y": 139.15,
             "w": 242,
-            "h": 128
+            "h": 132.92
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 378,
+            "w": 370,
+            "h": 253.38
+          },
+          {
+            "x": 448,
+            "y": 378,
+            "w": 370,
+            "h": 253.38
+          },
+          {
+            "x": 848,
+            "y": 378,
+            "w": 384,
+            "h": 253.38
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3123,6 +3478,11 @@
         "academic-side",
         "ruled",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "method",
+        "method",
+        "method"
       ],
       "prompts": [
         "方法演化",
@@ -3148,38 +3508,38 @@
       "layout": "synthesis",
       "description": "并列证据图后将一致结论、冲突来源与可能解释明确区分。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 434,
-            "w": 370,
-            "h": 196
-          },
-          {
-            "x": 448,
-            "y": 434,
-            "w": 370,
-            "h": 196
-          },
-          {
-            "x": 848,
-            "y": 434,
-            "w": 384,
-            "h": 196
-          }
-        ],
         "figures": [
           {
             "x": 48,
-            "y": 138,
+            "y": 118.38,
             "w": 574,
-            "h": 260
+            "h": 311.54
           },
           {
             "x": 656,
-            "y": 138,
+            "y": 118.38,
             "w": 576,
-            "h": 260
+            "h": 311.54
+          }
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 452.77,
+            "w": 370,
+            "h": 178.62
+          },
+          {
+            "x": 448,
+            "y": 452.77,
+            "w": 370,
+            "h": 178.62
+          },
+          {
+            "x": 848,
+            "y": 452.77,
+            "w": 384,
+            "h": 178.62
           }
         ]
       },
@@ -3202,13 +3562,32 @@
       "cardStyles": [
         "academic-panel",
         "academic-tab",
-        "ruled"
+        "dashed-note"
+      ],
+      "cardKinds": [
+        "result",
+        "boundary",
+        "method"
       ],
       "prompts": [
         "一致发现",
         "冲突来源",
         "可区分的解释"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 35,
       "preview": "previews/T35.svg",
@@ -3225,33 +3604,33 @@
         "cards": [
           {
             "x": 48,
-            "y": 148,
+            "y": 128.77,
             "w": 538,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 622,
-            "y": 148,
+            "y": 128.77,
             "w": 610,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 48,
-            "y": 354,
+            "y": 342.69,
             "w": 538,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 622,
-            "y": 354,
+            "y": 342.69,
             "w": 610,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 48,
-            "y": 560,
+            "y": 548.31,
             "w": 1184,
-            "h": 76
+            "h": 96
           }
         ],
         "figures": []
@@ -3279,6 +3658,13 @@
         "plain",
         "compact"
       ],
+      "cardKinds": [
+        "result",
+        "hypothesis",
+        "result",
+        "hypothesis",
+        "hypothesis"
+      ],
       "prompts": [
         "已知证据一",
         "对应研究问题一",
@@ -3299,49 +3685,50 @@
       "layout": "figure-focus",
       "description": "失败原图保留在左，右侧按输入、错误步骤和后果解释。",
       "slots": {
-        "cards": [
+        "panels": [
           {
-            "x": 708,
-            "y": 146,
-            "w": 524,
-            "h": 140
-          },
-          {
-            "x": 708,
-            "y": 312,
-            "w": 524,
-            "h": 144
-          },
-          {
-            "x": 708,
-            "y": 482,
-            "w": 524,
-            "h": 146
+            "x": 48,
+            "y": 122.54,
+            "w": 624,
+            "h": 481.85,
+            "title": "失败输入及输出记录",
+            "style": "academic-tab",
+            "kind": "boundary"
           }
         ],
         "figures": [
           {
             "x": 62,
-            "y": 188,
+            "y": 170.31,
             "w": 596,
-            "h": 400
+            "h": 415.38
           }
         ],
-        "panels": [
+        "cards": [
           {
-            "x": 48,
-            "y": 142,
-            "w": 624,
-            "h": 464,
-            "title": "失败输入及输出记录",
-            "style": "academic-tab"
+            "x": 708,
+            "y": 126.69,
+            "w": 524,
+            "h": 145.38
+          },
+          {
+            "x": 708,
+            "y": 299.08,
+            "w": 524,
+            "h": 149.54
+          },
+          {
+            "x": 708,
+            "y": 475.62,
+            "w": 524,
+            "h": 151.62
           }
         ],
         "takeaway": {
           "x": 48,
-          "y": 620,
+          "y": 618.92,
           "w": 624,
-          "h": 28
+          "h": 29.08
         }
       },
       "requirements": {
@@ -3365,11 +3752,30 @@
         "academic-tab",
         "ruled"
       ],
+      "cardKinds": [
+        "boundary",
+        "method",
+        "result"
+      ],
       "prompts": [
         "失败条件",
         "错误发生在哪一步",
         "对结论的影响"
       ],
+      "figureGuidance": {
+        "contentTypes": [
+          "plot",
+          "diagram",
+          "photo",
+          "mixed"
+        ],
+        "readingTasks": [
+          "overview",
+          "explain-process"
+        ],
+        "description": "按当前科学论点选择完整图或已核对的独立面板。若轴字和必要图例在目标尺寸不可读，扩大证据区域、换布局或拆页。",
+        "requiresPanelSelection": false
+      },
       "suggestedSeconds": 60,
       "page": 37,
       "preview": "previews/T37.svg",
@@ -3383,33 +3789,33 @@
       "layout": "results",
       "description": "跨条件曲线配输入变化、机制失配和验证范围。",
       "slots": {
+        "chart": {
+          "x": 48,
+          "y": 126.69,
+          "w": 782,
+          "h": 359.31
+        },
         "cards": [
           {
             "x": 864,
-            "y": 146,
+            "y": 126.69,
             "w": 368,
-            "h": 220
+            "h": 228.46
           },
           {
             "x": 864,
-            "y": 390,
+            "y": 380.08,
             "w": 368,
-            "h": 240
+            "h": 249.23
           },
           {
             "x": 48,
-            "y": 524,
+            "y": 519.23,
             "w": 782,
-            "h": 108
+            "h": 112.15
           }
         ],
-        "figures": [],
-        "chart": {
-          "x": 48,
-          "y": 146,
-          "w": 782,
-          "h": 346
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3432,6 +3838,11 @@
         "academic-tab",
         "compact"
       ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "result"
+      ],
       "prompts": [
         "输入条件变化",
         "机制失配",
@@ -3450,53 +3861,53 @@
       "layout": "method",
       "description": "因果链展示测量误差如何传入结论，下方给出排查与敏感性分析。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 430,
-            "w": 576,
-            "h": 202
-          },
-          {
-            "x": 656,
-            "y": 430,
-            "w": 576,
-            "h": 202
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 142,
+          "y": 122.54,
           "w": 1184,
-          "h": 242
+          "h": 251.31
         },
         "nodeBoxes": [
           {
             "x": 48,
-            "y": 162,
+            "y": 143.31,
             "w": 248,
-            "h": 132
+            "h": 137.08
           },
           {
             "x": 362,
-            "y": 162,
+            "y": 143.31,
             "w": 248,
-            "h": 132
+            "h": 137.08
           },
           {
             "x": 676,
-            "y": 162,
+            "y": 143.31,
             "w": 248,
-            "h": 132
+            "h": 137.08
           },
           {
             "x": 990,
-            "y": 162,
+            "y": 143.31,
             "w": 242,
-            "h": 132
+            "h": 137.08
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 421.62,
+            "w": 576,
+            "h": 209.77
+          },
+          {
+            "x": 656,
+            "y": 421.62,
+            "w": 576,
+            "h": 209.77
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3517,6 +3928,10 @@
       "cardStyles": [
         "academic-tab",
         "ruled"
+      ],
+      "cardKinds": [
+        "boundary",
+        "method"
       ],
       "prompts": [
         "偏倚来源",
@@ -3539,35 +3954,35 @@
       "category": "limitations",
       "name": "效度与解释边界",
       "layout": "comparison",
-      "description": "逐项对应威胁、证据与处理，避免笼统的局限清单。",
+      "description": "通栏表对齐威胁、证据与验证；其下两块说明限定范围，结论紧跟实际内容高度。",
       "slots": {
-        "cards": [
-          {
-            "x": 916,
-            "y": 148,
-            "w": 316,
-            "h": 220
-          },
-          {
-            "x": 916,
-            "y": 394,
-            "w": 316,
-            "h": 236
-          }
-        ],
-        "figures": [],
         "table": {
           "x": 48,
-          "y": 148,
-          "w": 834,
-          "h": 418
+          "y": 112.15,
+          "w": 1184,
+          "h": 315.69
         },
+        "cards": [
+          {
+            "x": 48,
+            "y": 448.62,
+            "w": 574,
+            "h": 178.62
+          },
+          {
+            "x": 656,
+            "y": 448.62,
+            "w": 576,
+            "h": 178.62
+          }
+        ],
         "takeaway": {
           "x": 48,
-          "y": 592,
-          "w": 834,
-          "h": 44
-        }
+          "y": 639.69,
+          "w": 1184,
+          "h": 37.38
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3586,14 +4001,26 @@
         "table": true
       },
       "cardStyles": [
-        "academic-side",
-        "academic-tab"
+        "academic-panel",
+        "dashed-note"
+      ],
+      "cardKinds": [
+        "method",
+        "method"
       ],
       "prompts": [
         "内部效度",
         "外部效度"
       ],
       "suggestedSeconds": 60,
+      "tableFlow": {
+        "cardIndexes": [
+          0,
+          1
+        ],
+        "gap": 22,
+        "takeawayAfterCards": true
+      },
       "page": 40,
       "preview": "previews/T40.svg",
       "pptx": "limitations.pptx",
@@ -3606,69 +4033,70 @@
       "layout": "proposal",
       "description": "触发到复核的过程与风险分类、介入代价并列。",
       "slots": {
-        "cards": [
-          {
-            "x": 854,
-            "y": 146,
-            "w": 378,
-            "h": 220
-          },
-          {
-            "x": 854,
-            "y": 390,
-            "w": 378,
-            "h": 240
-          },
-          {
-            "x": 48,
-            "y": 524,
-            "w": 778,
-            "h": 108
-          }
-        ],
-        "figures": [],
         "panels": [
           {
             "x": 48,
-            "y": 142,
+            "y": 122.54,
             "w": 778,
-            "h": 354,
+            "h": 367.62,
             "title": "触发、核验与记录",
-            "style": "academic-side"
+            "style": "academic-side",
+            "kind": "method"
           }
         ],
         "diagram": {
           "x": 48,
-          "y": 190,
+          "y": 172.38,
           "w": 778,
-          "h": 302
+          "h": 313.62
         },
         "nodeBoxes": [
           {
             "x": 62,
-            "y": 200,
+            "y": 182.77,
             "w": 210,
-            "h": 102
+            "h": 105.92
           },
           {
             "x": 336,
-            "y": 200,
+            "y": 182.77,
             "w": 210,
-            "h": 102
+            "h": 105.92
           },
           {
             "x": 598,
-            "y": 200,
+            "y": 182.77,
             "w": 212,
-            "h": 102
+            "h": 105.92
           },
           {
             "x": 336,
-            "y": 394,
+            "y": 384.23,
             "w": 210,
-            "h": 86
+            "h": 89.31
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 854,
+            "y": 126.69,
+            "w": 378,
+            "h": 228.46
+          },
+          {
+            "x": 854,
+            "y": 380.08,
+            "w": 378,
+            "h": 249.23
+          },
+          {
+            "x": 48,
+            "y": 519.23,
+            "w": 778,
+            "h": 112.15
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3690,6 +4118,11 @@
         "academic-tab",
         "ruled",
         "compact"
+      ],
+      "cardKinds": [
+        "boundary",
+        "method",
+        "boundary"
       ],
       "prompts": [
         "风险触发条件",
@@ -3733,59 +4166,59 @@
       "layout": "synthesis",
       "description": "左侧记录材料依赖链，右侧列出可复现范围与缺失项。",
       "slots": {
-        "cards": [
-          {
-            "x": 814,
-            "y": 146,
-            "w": 418,
-            "h": 224
-          },
-          {
-            "x": 814,
-            "y": 396,
-            "w": 418,
-            "h": 234
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 146,
+          "y": 126.69,
           "w": 734,
-          "h": 424
+          "h": 440.31
         },
         "nodeBoxes": [
           {
             "x": 56,
-            "y": 158,
+            "y": 139.15,
             "w": 230,
-            "h": 114
+            "h": 118.38
           },
           {
             "x": 362,
-            "y": 158,
+            "y": 139.15,
             "w": 230,
-            "h": 114
+            "h": 118.38
           },
           {
             "x": 362,
-            "y": 430,
+            "y": 421.62,
             "w": 230,
-            "h": 114
+            "h": 118.38
           },
           {
             "x": 56,
-            "y": 430,
+            "y": 421.62,
             "w": 230,
-            "h": 114
+            "h": 118.38
+          }
+        ],
+        "cards": [
+          {
+            "x": 814,
+            "y": 126.69,
+            "w": 418,
+            "h": 232.62
+          },
+          {
+            "x": 814,
+            "y": 386.31,
+            "w": 418,
+            "h": 243
           }
         ],
         "takeaway": {
           "x": 48,
-          "y": 596,
+          "y": 594,
           "w": 734,
-          "h": 42
-        }
+          "h": 43.62
+        },
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3804,8 +4237,12 @@
         "table": false
       },
       "cardStyles": [
-        "academic-panel",
+        "open-frame",
         "dashed-note"
+      ],
+      "cardKinds": [
+        "setting",
+        "boundary"
       ],
       "prompts": [
         "已公开材料",
@@ -3833,33 +4270,33 @@
         "cards": [
           {
             "x": 48,
-            "y": 146,
+            "y": 126.69,
             "w": 576,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 656,
-            "y": 146,
+            "y": 126.69,
             "w": 576,
-            "h": 176
+            "h": 182.77
           },
           {
             "x": 48,
-            "y": 356,
+            "y": 344.77,
             "w": 364,
-            "h": 276
+            "h": 286.62
           },
           {
             "x": 442,
-            "y": 356,
+            "y": 344.77,
             "w": 364,
-            "h": 276
+            "h": 286.62
           },
           {
             "x": 836,
-            "y": 356,
+            "y": 344.77,
             "w": 396,
-            "h": 276
+            "h": 286.62
           }
         ],
         "figures": []
@@ -3883,9 +4320,16 @@
       "cardStyles": [
         "academic-panel",
         "academic-tab",
+        "dashed-note",
         "open-frame",
-        "plain",
-        "ruled"
+        "ledger"
+      ],
+      "cardKinds": [
+        "result",
+        "question",
+        "hypothesis",
+        "method",
+        "boundary"
       ],
       "prompts": [
         "已有证据",
@@ -3907,53 +4351,53 @@
       "layout": "method",
       "description": "一套数据分配到两种流程，再用同一评价程序核查。",
       "slots": {
-        "cards": [
-          {
-            "x": 904,
-            "y": 146,
-            "w": 328,
-            "h": 220
-          },
-          {
-            "x": 904,
-            "y": 390,
-            "w": 328,
-            "h": 240
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 146,
+          "y": 126.69,
           "w": 812,
-          "h": 434
+          "h": 450.69
         },
         "nodeBoxes": [
           {
             "x": 334,
-            "y": 148,
+            "y": 128.77,
             "w": 248,
-            "h": 94
+            "h": 97.62
           },
           {
             "x": 70,
-            "y": 330,
+            "y": 317.77,
             "w": 254,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 560,
-            "y": 330,
+            "y": 317.77,
             "w": 254,
-            "h": 128
+            "h": 132.92
           },
           {
             "x": 334,
-            "y": 530,
+            "y": 525.46,
             "w": 248,
-            "h": 98
+            "h": 101.77
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 904,
+            "y": 126.69,
+            "w": 328,
+            "h": 228.46
+          },
+          {
+            "x": 904,
+            "y": 380.08,
+            "w": 328,
+            "h": 249.23
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -3974,6 +4418,10 @@
       "cardStyles": [
         "academic-panel",
         "academic-tab"
+      ],
+      "cardKinds": [
+        "setting",
+        "boundary"
       ],
       "prompts": [
         "共同预算与信息",
@@ -4016,53 +4464,53 @@
       "layout": "proposal",
       "description": "数据到评价的主线占上部，下方明确样本量依据与留出条件。",
       "slots": {
-        "cards": [
-          {
-            "x": 48,
-            "y": 402,
-            "w": 574,
-            "h": 230
-          },
-          {
-            "x": 656,
-            "y": 402,
-            "w": 576,
-            "h": 230
-          }
-        ],
-        "figures": [],
         "diagram": {
           "x": 48,
-          "y": 146,
+          "y": 126.69,
           "w": 1184,
-          "h": 216
+          "h": 224.31
         },
         "nodeBoxes": [
           {
             "x": 48,
-            "y": 164,
+            "y": 145.38,
             "w": 240,
-            "h": 130
+            "h": 135
           },
           {
             "x": 362,
-            "y": 164,
+            "y": 145.38,
             "w": 240,
-            "h": 130
+            "h": 135
           },
           {
             "x": 676,
-            "y": 164,
+            "y": 145.38,
             "w": 240,
-            "h": 130
+            "h": 135
           },
           {
             "x": 990,
-            "y": 164,
+            "y": 145.38,
             "w": 242,
-            "h": 130
+            "h": 135
           }
-        ]
+        ],
+        "cards": [
+          {
+            "x": 48,
+            "y": 392.54,
+            "w": 574,
+            "h": 238.85
+          },
+          {
+            "x": 656,
+            "y": 392.54,
+            "w": 576,
+            "h": 238.85
+          }
+        ],
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -4083,6 +4531,10 @@
       "cardStyles": [
         "academic-panel",
         "ruled"
+      ],
+      "cardKinds": [
+        "setting",
+        "method"
       ],
       "prompts": [
         "样本量与采集计划",
@@ -4110,33 +4562,33 @@
         "cards": [
           {
             "x": 48,
-            "y": 148,
+            "y": 128.77,
             "w": 832,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 48,
-            "y": 320,
+            "y": 307.38,
             "w": 832,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 48,
-            "y": 492,
+            "y": 486,
             "w": 832,
-            "h": 142
+            "h": 147.46
           },
           {
             "x": 914,
-            "y": 148,
+            "y": 128.77,
             "w": 318,
-            "h": 220
+            "h": 228.46
           },
           {
             "x": 914,
-            "y": 394,
+            "y": 384.23,
             "w": 318,
-            "h": 240
+            "h": 249.23
           }
         ],
         "figures": []
@@ -4164,6 +4616,13 @@
         "plain",
         "academic-tab"
       ],
+      "cardKinds": [
+        "setting",
+        "method",
+        "boundary",
+        "method",
+        "setting"
+      ],
       "prompts": [
         "阶段一：材料与基线",
         "阶段二：机制与验证",
@@ -4187,33 +4646,33 @@
         "cards": [
           {
             "x": 48,
-            "y": 150,
+            "y": 130.85,
             "w": 782,
-            "h": 136
+            "h": 141.23
           },
           {
             "x": 48,
-            "y": 314,
+            "y": 301.15,
             "w": 782,
-            "h": 136
+            "h": 141.23
           },
           {
             "x": 48,
-            "y": 478,
+            "y": 471.46,
             "w": 782,
-            "h": 154
+            "h": 159.92
           },
           {
             "x": 870,
-            "y": 150,
+            "y": 130.85,
             "w": 362,
-            "h": 222
+            "h": 230.54
           },
           {
             "x": 870,
-            "y": 398,
+            "y": 388.38,
             "w": 362,
-            "h": 234
+            "h": 243
           }
         ],
         "figures": []
@@ -4241,6 +4700,13 @@
         "academic-tab",
         "open-frame"
       ],
+      "cardKinds": [
+        "result",
+        "result",
+        "result",
+        "boundary",
+        "hypothesis"
+      ],
       "prompts": [
         "结论一及证据",
         "结论二及证据",
@@ -4261,27 +4727,27 @@
       "layout": "references",
       "description": "完整书目集中排列，右栏记录版本、补充材料与图像来源。",
       "slots": {
+        "references": {
+          "x": 48,
+          "y": 120.46,
+          "w": 806,
+          "h": 504.69
+        },
         "cards": [
           {
             "x": 890,
-            "y": 148,
+            "y": 128.77,
             "w": 342,
-            "h": 220
+            "h": 228.46
           },
           {
             "x": 890,
-            "y": 394,
+            "y": 384.23,
             "w": 342,
-            "h": 238
+            "h": 247.15
           }
         ],
-        "figures": [],
-        "references": {
-          "x": 48,
-          "y": 140,
-          "w": 806,
-          "h": 486
-        }
+        "figures": []
       },
       "requirements": {
         "cards": {
@@ -4303,6 +4769,10 @@
         "academic-side",
         "ruled"
       ],
+      "cardKinds": [
+        "setting",
+        "method"
+      ],
       "prompts": [
         "版本与补充材料",
         "图像与数据来源"
@@ -4318,64 +4788,177 @@
     {
       "id": "template-response",
       "path": "assets/response.png",
-      "sha256": "2ed71dbf0f6fb4152528eeefdde357a73024d52ea8767a541b34822877c82928",
+      "sha256": "631f5cf5eab8bb54344bab0714cc0d105dbcaef6758ab90f15f3e6cf2b729301",
       "caption": "响应曲线；合成演示值",
+      "displayCaption": "A/B 为条件；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-distribution",
       "path": "assets/distribution.png",
-      "sha256": "c6afc2430887c009ff966fb795691af6cd1ac3bb79a3db5349b123d2477bfe80",
+      "sha256": "5e081107f59b3d907c498c44d7c5ab7d865db3dacd7fc9366c3081a37f766b8d",
       "caption": "独立观测分布；合成演示值",
+      "displayCaption": "独立观测分布；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-transfer",
       "path": "assets/transfer.png",
-      "sha256": "62a9bd2343cd34d2aeccae2dff096312bd047163466a2b050b9473a10eb422c8",
+      "sha256": "2e9b2506ee7088f7b1b1195f983eea43df36181ff1dd007bc15337ed1c0be429",
       "caption": "跨环境矩阵；合成演示值",
+      "displayCaption": "跨环境矩阵；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-effect",
       "path": "assets/effect-interval.png",
-      "sha256": "b294b1f051847224a6e6ca4034ca21b3b40adca9b2cd29e9a6861e77daf46e2b",
+      "sha256": "3662908d5872c343f06b5bc20ceded1472f04e4248f8a9cc2d68d6d1da813347",
       "caption": "效应与区间；合成演示值",
+      "displayCaption": "Ref. 为参考，V1–V3 为变体；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-composite",
       "path": "assets/four-panels.png",
-      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "sha256": "487864bd7137a1859610029966ea872d984a5ef8a3e36a5a0e103561ff9a05fd",
       "caption": "多面板科学图；合成演示值",
+      "displayCaption": "多面板科学图；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 4,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-portrait",
       "path": "assets/portrait-panels.png",
-      "sha256": "d3f60f809493c5b8178330e816856656da990bfad6ff48c6610daa2edf1daffc",
+      "sha256": "65f03882698bd71b69b9f243644f6bdf59955164fb70fe9beaefa78a39a14087",
       "caption": "竖向面板示例；合成演示值",
+      "displayCaption": "竖向面板示例；合成数据",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 3,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-wide",
       "path": "assets/wide-panels.png",
-      "sha256": "86a8dffd59d05fbfdb1f9f07c90d5385bfc51e50f09f0b8f455953112bc54d61",
+      "sha256": "d9ddbf98a4c5b329ecb193bcb82f811896afa96bfd6cf3d0d838a578e6ded978",
       "caption": "宽幅面板示例；合成演示值",
+      "displayCaption": "A/B 为条件；所有数值为合成示例",
       "license": "MIT; all plotted values are synthetic",
-      "cropNote": "完整原图，无裁切"
+      "cropNote": "完整原图，无裁切",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 3,
+        "minLabelPx": 34,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     },
     {
       "id": "template-detail",
       "path": "assets/four-panels.png",
-      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "sha256": "487864bd7137a1859610029966ea872d984a5ef8a3e36a5a0e103561ff9a05fd",
       "caption": "合成图面板 A 的局部视窗",
+      "displayCaption": "面板 A；A/B 为条件；合成数据",
       "license": "MIT; all plotted values are synthetic",
       "viewport": {
         "x": 0.015,
@@ -4383,7 +4966,52 @@
         "w": 0.495,
         "h": 0.49
       },
-      "cropNote": "视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留"
+      "cropNote": "视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
+    },
+    {
+      "id": "template-portrait-detail",
+      "path": "assets/portrait-panels.png",
+      "sha256": "65f03882698bd71b69b9f243644f6bdf59955164fb70fe9beaefa78a39a14087",
+      "caption": "竖长合成图中的面板 A",
+      "displayCaption": "竖图面板 A；其余面板另页；合成数据",
+      "license": "MIT; all plotted values are synthetic",
+      "viewport": {
+        "x": 0.035,
+        "y": 0.008,
+        "w": 0.95,
+        "h": 0.315
+      },
+      "cropNote": "视窗 x=.035,y=.008,w=.95,h=.315；保留顶部面板的完整标题、两条件图例、坐标及单位。未把总图缩略图当作证据。",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      }
     }
   ],
   "sources": [
@@ -4410,7 +5038,7 @@
         "version": "0.1.5",
         "backend": "wasm"
       },
-      "sourceSha256": "8198c410d751f9028d82420f445ee5933a2831665f640aa1392ff64773770fbe",
+      "sourceSha256": "e8f5e980d2b6bc56493dceffb54f10b708576ee39c1d2b40432baf1953573657",
       "slideCount": 48,
       "missingFonts": [],
       "reviewedPages": [
@@ -4475,8 +5103,8 @@
             5,
             6
           ],
-          "sha256": "2abcd9129eb0397c78e31c048ae9c0ccf511f3a1ce367955516155995bc908fd",
-          "byteLength": 604583
+          "sha256": "e8a9f5a933f23aafad7a8cf843b09f207b4e1c5bfc2f1cf2db70cacfd15de537",
+          "byteLength": 645565
         },
         {
           "category": "method",
@@ -4489,8 +5117,8 @@
             11,
             12
           ],
-          "sha256": "321cffe2a7e07397a96a110747bddb4a2a0a514dadb4d48b4a623920bb8e1091",
-          "byteLength": 559826
+          "sha256": "aebf1f07bd643e6db921d997afdce95509ec58c20584ce30b36d342cd814133d",
+          "byteLength": 612506
         },
         {
           "category": "experiment",
@@ -4503,8 +5131,8 @@
             17,
             18
           ],
-          "sha256": "95f807119c2c240da08e44f867b47e54ec8e480b067b7efe1872975ee6a83178",
-          "byteLength": 592690
+          "sha256": "26096ff4054e432a0160efd01021ab3978540fa1be404467edb8b84c1dd295af",
+          "byteLength": 624860
         },
         {
           "category": "results",
@@ -4517,8 +5145,8 @@
             23,
             24
           ],
-          "sha256": "c30a165e6d813923c2889b743453bda54964572c946f92c829d275c0d4b64dcd",
-          "byteLength": 552702
+          "sha256": "92b86e71da21258b78455eefa24751b904c87cbbebf675566edf23e624abd397",
+          "byteLength": 558348
         },
         {
           "category": "figure",
@@ -4531,8 +5159,8 @@
             29,
             30
           ],
-          "sha256": "e98b3acc917579a98586dad088a1f364b0bde4e04437c94bf1fb15b435911706",
-          "byteLength": 554378
+          "sha256": "16b8424c5602824a76dcc602d2aaa7e16309c8e3cf4dd352f758d70b95b5d1c4",
+          "byteLength": 620783
         },
         {
           "category": "synthesis",
@@ -4545,8 +5173,8 @@
             35,
             36
           ],
-          "sha256": "e02a3c99b786e33c49d81e4c3b700c9a06e17c00519f94cd4832d6498a9ef11d",
-          "byteLength": 522754
+          "sha256": "51ae68aaf626f5d755eef53b54c85f5f5b6e6c9f2a50278b4ba45d707a89be30",
+          "byteLength": 568776
         },
         {
           "category": "limitations",
@@ -4559,8 +5187,8 @@
             41,
             42
           ],
-          "sha256": "da6bb95cd6a8a902a2f18ad6ae0930646e4f1cc062e4858f9dbd8d606549a638",
-          "byteLength": 540160
+          "sha256": "0378d3437754cdf655b840a12ccb2e998a2fcc25c2e6f3f0d13c06fcfc780447",
+          "byteLength": 580964
         },
         {
           "category": "plan",
@@ -4573,229 +5201,228 @@
             47,
             48
           ],
-          "sha256": "b55b87e0960300cccbfd780eaab1a20877977ee840f805f837bd6597736358bc",
-          "byteLength": 555758
+          "sha256": "07b815b98098ae9d22d73ead5381a16206a608106e5cd14d703c02a609010a4a",
+          "byteLength": 603336
         }
       ],
       "sourcePageHashes": [
         {
           "page": 1,
-          "sha256": "de44b602ea1fd9d90bc97463ae7971ed79c9335261ce51188b7d9b75e6de3463"
+          "sha256": "dcd0ca72f9270e7364d47f9477bf430bd2ac4c3d4c1112ec688a1ad778267f77"
         },
         {
           "page": 2,
-          "sha256": "5db0d95a7e8895b31178fa6af39367b20c6f2184695746616316971ef938f801"
+          "sha256": "f79bcc79717518444875ed85269b82d0b74c757696c6c07f6c9af885f14bec43"
         },
         {
           "page": 3,
-          "sha256": "4e0f74dd6403b24a607a8164e52a194836d5c4f6e935558074efb2f6f5b08378"
+          "sha256": "fc0fe69f530ef256908d1f38f364e09206704f0d2cec10c9252082e1a539f594"
         },
         {
           "page": 4,
-          "sha256": "a37c20be28a396771c318053a16d5b5e3af92c646819ef0244e1616a2443ab02"
+          "sha256": "7219915b432a0b130ae2369211e3db17f24c44686b216b26c832d6553e49467d"
         },
         {
           "page": 5,
-          "sha256": "ba3fa5b3ead037d2508f07730f577bc1925bc718a9450ddd9299b0ead5eb79dc"
+          "sha256": "544ac25d5ddef47e03d3dd6eee992127eb9f197cf6719fca3384fcf9178b2d41"
         },
         {
           "page": 6,
-          "sha256": "fe97e5efb8028ea81164a504e92709b89a7c6a5ef05fbc1e0398c06e05e25d27"
+          "sha256": "f4a26c871774725c29af4b784005ca541c330e9e71620a4374f7ae313725b248"
         },
         {
           "page": 7,
-          "sha256": "cf6a3c11f727cad7303f982ee2eaf34a14e2a599eca9231727ed12b5cc3ac20f"
+          "sha256": "267417968958798f6b900853b3602e7263911b22c26b77c8e360f6c968113803"
         },
         {
           "page": 8,
-          "sha256": "a14e8a887127ed74e2d58b1b7e14d2b356cd4fee593e71b0aab7f7e78eadf8c8"
+          "sha256": "0b097fdddd701e92db7d71b1d9c2d69cb4fb8a751fb5c732263848f863259318"
         },
         {
           "page": 9,
-          "sha256": "3c8e81873033ba39b4bef78b04ab0102d37c9d87f36397798ce5d9eeab0791a4"
+          "sha256": "1230c3471d2ebc43cbefad401090b34155e9996b57f973411f6e3f485a504426"
         },
         {
           "page": 10,
-          "sha256": "1b7ed1c86fa2c99466b30c87f3d574d471ddee1f51a49c515ecf476334de8625"
+          "sha256": "28f942ef9c5062bd42e1383c4a5820d20b9e925fa35c4c802762f400b0ef990d"
         },
         {
           "page": 11,
-          "sha256": "9f245afdfd6db96d6ba8fe6ace41731b53a6fd02044ef6be3f803cfce5c7a846"
+          "sha256": "3cb01ad0d8fd6766ba0bb4efd1e0e54589179b7f5eeab87faf08b4ebb729e262"
         },
         {
           "page": 12,
-          "sha256": "0507d5d86b10052c4d8d8e4c21b2aaf442ce38d2552521dcacb6510ec59e4e00"
+          "sha256": "53dd651f34508d780f87ce6f8cb6dd821cf1b9264117d322deb565ff2d3600fd"
         },
         {
           "page": 13,
-          "sha256": "799a3a71f79b4c3745a2ddc4722ac3dfab0258c4d96c054aacbf23adf63a09c6"
+          "sha256": "f3430b4adba7c81a4bef7f284ed2cd3685c0c7625f37acb0b560b02a1c369e63"
         },
         {
           "page": 14,
-          "sha256": "70cc95019f066835c3979595317c1f6de3683ddf2637422b789fa0dc5a143725"
+          "sha256": "f62369620cd38e21aa4781b14dcf18484d6f8d6a07dc612495f2170ba7b30509"
         },
         {
           "page": 15,
-          "sha256": "09808ff12fd7c7e0dad8be14e8b9b7693579c9e971b71fab94bf7d15244272b7"
+          "sha256": "f3437531c85d35886d37dbade5863d3c8f09baafb17e638bcf48bb01ed9eecd1"
         },
         {
           "page": 16,
-          "sha256": "81486702a5bccc9a114b05753b8fdb4fb4d169ba2936d45a51c22c9b28dc3b4f"
+          "sha256": "9ecacbfcab280cf3434f3b99a071fc81086e5ce270bf606af4889caf169e3550"
         },
         {
           "page": 17,
-          "sha256": "057317c86a0e49e2ec0ff11ad0098a9b26db635ab977952424fc8ec0db318820"
+          "sha256": "52548e9bcd79a38e72cf62d95006efa969341f0d374bf6dd9557da70ba91eeea"
         },
         {
           "page": 18,
-          "sha256": "1bf8f12262475cdfa79c7cc3cc31a403fd7fbb94a889ca66eea904df19f83d84"
+          "sha256": "8c4f6ca1b53f68898b043a7e2284caf5dc4a86a93045a7e940662f6d6916f289"
         },
         {
           "page": 19,
-          "sha256": "7315d4d278747d63a82c88158c40e29ec19fde7ca36a895cbe986342c8e5c83a"
+          "sha256": "e139ccaca02b78af28669d949c75983fa0a7ba3ad9b32511051e1665aefcca64"
         },
         {
           "page": 20,
-          "sha256": "88a7a12d71f1a18069bdf6ee05b400caeb4ee108be48cf7ae3bec3343d73bc4c"
+          "sha256": "1ec8bdeffc3943c317776871d66b99d42c705dacbc59869e25ae38a7c28d1718"
         },
         {
           "page": 21,
-          "sha256": "5a2c83cb58e758d18dc8418fb3ecc0faded0e5e46edef16f309bd78cb7f3f115"
+          "sha256": "6aa65bb3f6a6b5e9dc3efb494ec29928e5235249b2afcc902dba4db7670eafbb"
         },
         {
           "page": 22,
-          "sha256": "5912ab38f397b50119db70722008b721f41f99a9859624f757b30b37f972a471"
+          "sha256": "17038c66ef2e32c0645a8f7c687866268e3d084d73e9d70e4146ced8596b2291"
         },
         {
           "page": 23,
-          "sha256": "7da04f4676781cf5f70364ecd24f71db310527ea1c31daa4f1a1f3e1fea1143a"
+          "sha256": "4ed718f8c91c64ce0d5e7e30130703269335200f367528816ae1a866085f1b5c"
         },
         {
           "page": 24,
-          "sha256": "9460b6ef15ae4b1ce561e2991fafe334313a1b49b0aed7924f81f47f0e5ce48a"
+          "sha256": "1b2cb42ce99edcfa6c0937e9643c6fe80ca24aa8a226cecb25f1b5696fbd9472"
         },
         {
           "page": 25,
-          "sha256": "260b03add70a37416706a82eed99fff0f12bf27855a4d3c7e1a654a7991fb7eb"
+          "sha256": "ed13050a4e04623d46bee31007d410aab268033999afc407426f17b08fa9ef02"
         },
         {
           "page": 26,
-          "sha256": "1ea59dda0a283030e490ffbf1d16d15853d8bd60e1ff9311e2c0c4d349992a0e"
+          "sha256": "9dc40aeb676b64fd51c6b128e911262b380ebedc94b7bad74c23e7554042ad6a"
         },
         {
           "page": 27,
-          "sha256": "803b43f3d5cfb8ae70f7eb58f26988015d2bfeb866fab85eda526cdf9da095e9"
+          "sha256": "38796a8b5f3e1e2c1850a65214006f07b94e0c13c5e0f328822164172f5caa38"
         },
         {
           "page": 28,
-          "sha256": "e70d5ca5785a2da51316f1f5cfbfe33d74db792c04eb0218e750f1f1a0455e22"
+          "sha256": "9d117734c601c14284579d1fe9299648c7e517cbc8272667f3bdaf2f64a3e313"
         },
         {
           "page": 29,
-          "sha256": "f2f2c93151c891223192b8476f3866983e7133665056846952f2850a82a2df65"
+          "sha256": "8c88a8015305d13715d336fb56f4c02a75ebbe3b48cf899b192e53ddd20f8000"
         },
         {
           "page": 30,
-          "sha256": "f6064e81480415cb86bbc58c6f1849c236684a42208632ef48922f2f8f73d243"
+          "sha256": "14a79a31ff24784e59516454551c2f81ba5ba6a71ba67532d83e4f97cd3a472a"
         },
         {
           "page": 31,
-          "sha256": "0bfd1adc724e4ad18f687f554c3c5ca28190b8457b963a083509f20d5f909c3b"
+          "sha256": "f33c1dab511c5133f6fc7040dbcdd04658c823e4627aca2339e632ae22ebfdda"
         },
         {
           "page": 32,
-          "sha256": "f5eca79776f52485eeef3cdb871e658308ba74bc8f686b0106b39a26e26f8ed1"
+          "sha256": "d4f474e382052a333ddd5fdca2a3bf011149174d1080b18acb507c27ab82825b"
         },
         {
           "page": 33,
-          "sha256": "f01d589dc29ee54d098658fbb5465aca75e5503b9e627a13eb56af03b1474732"
+          "sha256": "63e794e439915eab9c7d85b7d7a82046b3a76e06893ec05ed5ce9860ca91ba9e"
         },
         {
           "page": 34,
-          "sha256": "5d5acaa4c9d1d720ba53ad2d6657a6b6256e05b7a0049bf25fa3f6696b41e578"
+          "sha256": "5e9c7d3b19ccb4f66066936b7b35a41c6f741624729a1b0e4591a5bf3dd7dbc6"
         },
         {
           "page": 35,
-          "sha256": "1c26c663cbfe0df77b1732075b1e0aa7ae2e7d4e42aa8fc107d36319fd59ef73"
+          "sha256": "9a33bdfbe96658ad508e0897e12afa220850a16d570b57ba86b1cfa407aa7c02"
         },
         {
           "page": 36,
-          "sha256": "032d3b6696f9cbc3240d56dbac4e20d3c7a8cdc5388da7bce4314914f909ed6a"
+          "sha256": "518621bdb93c3859f7daa9a1931d3d51e702f947b35779fbf824d36ffd555a1a"
         },
         {
           "page": 37,
-          "sha256": "cab725fc172c71bf6e3afa1031cb1b979174430c6c97b54ed537890e5a85143a"
+          "sha256": "b9b4096060d045926fdd98b23ed88612af8cdc76d26193965e618281eab6a049"
         },
         {
           "page": 38,
-          "sha256": "60d940f38173332535562cf88e6f6aee6a083ef1108869be7e0934612b2e7619"
+          "sha256": "2591dd5e618be4e856065740792124a5cb78015780e585c7a0989a1dcfe33d70"
         },
         {
           "page": 39,
-          "sha256": "2844e5ab71b58f7e5960db9467bf04cc8bc3d1e943f6c5c7275e3934b0d883f4"
+          "sha256": "237c3b41389bb81dafead2f57666bf91c4ce2eefb9e191690dfedee25d368722"
         },
         {
           "page": 40,
-          "sha256": "a22fcf77598981601068d3930dce3a5d990126dad5d7b21fe9c754bdb157f981"
+          "sha256": "6332a461a871cd54026ae0ea558114e9da7bc7d5407571d74825887fb25df90b"
         },
         {
           "page": 41,
-          "sha256": "0525bad427f3aef87690787ad02312f556ad0aae17ea7d536ca969fdadc1f680"
+          "sha256": "23865d32f0d11fc90af7ea8c75b8b9108b89218cc6c214b9818a89f5d38777e7"
         },
         {
           "page": 42,
-          "sha256": "47ce389256fe331076a100f703d54977ac81880e327bbab661d7d661d0836144"
+          "sha256": "c94f200ee7ec8ae31a9fe916fe979b01b9010498664a962dea26ee488535436f"
         },
         {
           "page": 43,
-          "sha256": "a0d2c4f77dfa1839b6989ab772e94ad8e27d73bffec84aeba1e3e7fa2d6c3b3e"
+          "sha256": "a0c9e24a3611467b54144afe851f44c3c31122d456afbfe10cc37a9a8dde86cf"
         },
         {
           "page": 44,
-          "sha256": "36eaf02ae6d519105f5a2dfd1a4d396316a7d8e6d321b221c96292e6c0627db1"
+          "sha256": "8f8dff05b460bc7533f5b1ccb5297e745727ca61e3a070b37839401727947424"
         },
         {
           "page": 45,
-          "sha256": "477a78ebfa896e0fa46ed27c90cd7b4bf4e6984157f184933e50dd34e8e7404d"
+          "sha256": "03fd4f3138011c6849360e3d1880460aa6435763284dfc8b6bd6c7262f54ef98"
         },
         {
           "page": 46,
-          "sha256": "05e424f1b43fa4b71c6558d68e776a249071a011218ba4fb91c35e12ecff45f4"
+          "sha256": "680a492b7e014bc1f61007c88ca4f92e1e3bb336954599fc35f0804811078802"
         },
         {
           "page": 47,
-          "sha256": "2094ba3d4d91cd02fad565c3120d28506fad34e192da3db62bd177b01cfb2e17"
+          "sha256": "c506aad220dc453d983b81f746401ee4c9efb637b3a5ef41e29e763af110ebd7"
         },
         {
           "page": 48,
-          "sha256": "b06fce75e714013e7b67ea18e5d0b9487c4fd100393ba0d24aa91f0fb2605095"
+          "sha256": "8d68f14cf491d41c6a6c9f85b7b173d68d765b1831c28921207475812a894738"
         }
       ],
       "fullSizeReviewedPages": [
         3,
-        8,
-        15,
+        5,
+        10,
+        14,
+        16,
+        18,
+        21,
         24,
         28,
+        29,
+        40,
         48
       ],
-      "reviewMethod": "All eight actual-PPTX contact sheets were inspected. After the final semantic correction, pages 3 and 15 were inspected again at original resolution; the other 46 page PNGs matched the previously reviewed render byte for byte. Page 48 was also checked again at original resolution.",
+      "reviewMethod": "All eight actual-PPTX category contact sheets were inspected. The five final changed pages (5, 10, 14, 16, 18) were then inspected at full size; the other 43 page PNGs matched the previously reviewed render byte for byte. Final paper, method, experiment and results contact sheets were checked again. Main/supporting panels, the selected portrait panel, the three evidence-table layouts, and the full reference page were also inspected at full size.",
       "findings": [
-        "No clipping or overlapping content was observed in the inspected render.",
-        "The train/validation/test diagram uses three branches from one independent-unit split.",
-        "Page 3 uses the neutral label 验证与比较.",
-        "The reference list and right-hand notes remain visually separated."
+        "No clipping or overlapping scientific content was observed in the inspected render; no fonts were reported missing by the renderer.",
+        "T28 displays a readable main panel and independent supporting panel. T29 displays only the selected evidence panel from a tall multi-panel source; the original bytes and viewport records are retained.",
+        "Axes, units, treatment labels and panel titles remain inside both selected viewports; displayed captions identify the content as synthetic.",
+        "Seven short-table layouts place their explanations after the actual table and caption, avoiding detached bottom notes or a blank nominal table slot.",
+        "Native editable title/body emphasis, semantic role treatments and restrained image shadows are visible; the split label on T10 uses two complete words instead of an orphan character.",
+        "All plots are synthetic teaching data, with consistent observations across standalone and combined source figures. No research finding or verified-paper status is implied."
       ],
-      "scope": "Visual review covers the supplied layout fixtures and rendered objects. Synthetic template values are not research findings; bibliographic placeholders are not verified papers."
-    },
-    "nativeObjects": {
-      "slides": 48,
-      "editableShapes": 1322,
-      "textRuns": 1017,
-      "independentPictures": 18,
-      "nativeTables": 8,
-      "nativeCharts": 5,
-      "verification": "Counts parsed from the final PPTX slide XML; the separate picture objects are figure assets, not full-slide screenshots."
+      "scope": "Visual review covers the bundled layout fixtures and their actual LibreOffice 0.1.5 rendering with the supplied Noto Sans CJK SC fonts. It is not user approval, a DeepSeek end-to-end evaluation, or a guarantee for all Microsoft PowerPoint/font environments. Bibliographic metadata is placeholder text and numeric values are synthetic."
     }
   },
   "previewNotice": "previews/*.svg are scene previews; montages/*.png come from the actual exported PPTX."

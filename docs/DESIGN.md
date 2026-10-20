@@ -108,7 +108,7 @@ PPTX 使用原生文字、形状、连接线、必要表格和支持的原生图
 
 `readyForDelivery` 组合当前 review 构建、产物一致性、真实 PPTX 渲染记录、页面审查覆盖和字体状态。它是过程条件汇总，不是独立的科研真实性或审美分数。HTML 审查不能升级为 PPTX 审查；unknown 视觉能力不能提交为模型视觉通过。
 
-每次内容变更使旧成品与审查失效，需要重建。渲染器升级也使旧的视觉审查不能自动继承；v0.2 会要求旧渲染版本重建，保留已有导出文件。旧哈希、错误页面 ID、失配渲染回执应被拒绝；具体测试结果见 [VALIDATION.md](VALIDATION.md)。
+每次内容变更使旧成品与审查失效，需要重建。渲染器升级也使旧的视觉审查不能自动继承；v0.3 会要求旧渲染版本重建，保留已有导出文件。旧哈希、错误页面 ID、失配渲染回执应被拒绝；具体测试结果见 [VALIDATION.md](VALIDATION.md)。
 
 ## 8. 怎样评价是否比通用流程更有效
 
@@ -136,3 +136,7 @@ PPTX 使用原生文字、形状、连接线、必要表格和支持的原生图
 - 当前测试范围：[VALIDATION.md](VALIDATION.md)。
 - 第三方署名与代码许可：[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)、[LICENSE](../LICENSE)。
 - DSH 插件官方协议：[Your first plugin](https://deepseek-harness.github.io/deepseek-harness/en/develop/basic/)。
+
+## 9. v0.3：先读图，再创造适合内容的版式
+
+本轮将图片阅读职责、关键标签尺寸与必要科学元素写入资产记录，依据真实槽位提供最多三个候选；固定模板不适合时使用受控图框。字体、语义色、卡片结构与原生辅助图例共同表达信息层级，短表解释按实际高度就近排列。方法、实例与明确边界见 [VISUAL_DESIGN_V03.md](VISUAL_DESIGN_V03.md)；这套规则不将几何分数冒充审美或科学判断。

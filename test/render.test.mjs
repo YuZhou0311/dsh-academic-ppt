@@ -219,7 +219,7 @@ test('native text leading equals scene geometry and reverse loop rows remain dir
   const p=base(),ref=REFERENCE_TEMPLATES.find(t=>t.id==='method-agent-loop');
   p.slides=[{id:'leading',layout:'method',referenceTemplateId:ref.id,title:'行距与反馈环验证',paperIds:[],figureIds:[],cards:[{id:'scope',kind:'setting',title:'输入与条件',body:'第一行保持字号。\n第二行保持行距。'},{id:'review',kind:'boundary',title:'人工复核触发',body:'只针对不确定结果。'}],nodes:ref.slots.nodeBoxes.map((_,i)=>({id:`n${i}`,label:`节点 ${i}`,detail:'合成步骤'})),edges:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]].map(([a,b])=>({from:`n${a}`,to:`n${b}`})),notes:'Exact leading fixture.'}];
   const out=await renderProject(p),xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide1.xml']),page=out.scenes.pages[0];
-  assert.match(xml,/<a:spcPts val="2139"/);assert.doesNotMatch(xml,/<a:spcPct/);
+  assert.match(xml,/<a:spcPts val="2232"/,'24px body text retains its exact 22.32pt baseline step');assert.doesNotMatch(xml,/<a:spcPct/);
   assert.ok(!out.issues.some(i=>i.objectId==='leading/card/review/title'));
   for(const i of [3,4]){
     const edge=page.nodes.find(n=>n.id===`leading/edge:${i}`);assert.ok(edge&&edge.w<0&&edge.h===0,'the lower return row should be sequential, not a branching bus');
@@ -249,14 +249,16 @@ test('CJK line breaking preserves every scientific character and keeps closing p
   assert.ok(wrapText('样本17/20；边界清楚。',207,23).some(line=>line.includes('17/20')),'a fitting denominator remains an intact lexical unit');
 });
 
-test('authored panel titles replace generic labels without changing panel or evidence geometry',()=>{
+test('authored panel titles replace generic labels and size only their title tab',()=>{
   const p=base(),ref=REFERENCE_TEMPLATES.find(t=>t.id==='figure-wide-annotated');
   p.slides=[{id:'panel',layout:ref.layout,referenceTemplateId:ref.id,title:'原图面板身份',paperIds:['P1'],figureIds:['fig1'],cards:ref.slots.cards.map((_,i)=>({id:'c'+i,title:'证据口径',body:'保持原文。'})),notes:''}];
   const before=buildScenes(p).pages[0];p.slides[0].panelTitles=['Fig. 4 结果摘要'];const after=buildScenes(p).pages[0];
   assert.equal(after.nodes.find(n=>n.id==='panel/panel:0:title').text,'Fig. 4 结果摘要');
-  assert.deepEqual(before.nodes.filter(n=>n.id!=='panel/panel:0:title'),after.nodes.filter(n=>n.id!=='panel/panel:0:title'));
+  const titleParts=new Set(['panel/panel:0:title','panel/panel:0:tab']);
+  assert.deepEqual(before.nodes.filter(n=>!titleParts.has(n.id)),after.nodes.filter(n=>!titleParts.has(n.id)));
   const a=before.nodes.find(n=>n.id==='panel/panel:0:title'),b=after.nodes.find(n=>n.id==='panel/panel:0:title');
-  for(const key of ['x','y','w','h','fontSize'])assert.equal(a[key],b[key]);
+  for(const key of ['x','y','h','fontSize'])assert.equal(a[key],b[key]);
+  assert.ok(!after.issues.some(i=>i.objectId==='panel/panel:0:title'));
 });
 
 test('reference reading labels reflect full text, abstract or metadata access in both SVG and native PPTX',async()=>{
@@ -278,7 +280,9 @@ test('reference reading labels reflect full text, abstract or metadata access in
 });
 
 test('native table row geometry reserves glyph-width uncertainty before positioning its caption',async()=>{
-  const p=base();p.slides=[{id:'table-wrap',layout:'comparison',referenceTemplateId:'experiment-baseline-controls',title:'同信息与同预算的对照',paperIds:[],figureIds:[],cards:[{id:'a',title:'预算',body:'保持共同预算。'},{id:'b',title:'边界',body:'只作合成演示。'}],notes:'Regression for native table expansion.',table:{columns:['对照','观测/预报','动作','调参条件'],rows:[['规则基线','同源传感+3日预报','0/2/4 mm','同等验证预算'],['RL策略','同源传感+3日预报','0/2/4 mm','同等验证预算'],['去预报消融','同源传感；无预报','0/2/4 mm','同等验证预算'],['Oracle参考','同源传感+完整未来','0/2/4 mm','单列成本与身份']],caption:'教学表格；未执行的比较设计。'}}];
+  // Four wrapped comparison rows need a tall table with side explanations.
+  // The baseline-controls reference now reserves its lower region for a flowing explanation band.
+  const p=base();p.slides=[{id:'table-wrap',layout:'comparison',referenceTemplateId:'synthesis-method-comparison',title:'同信息与同预算的对照',paperIds:[],figureIds:[],cards:[{id:'a',title:'预算',body:'保持共同预算。'},{id:'b',title:'边界',body:'只作合成演示。'}],notes:'Regression for native table expansion.',table:{columns:['对照','观测/预报','动作','调参条件'],rows:[['规则基线','同源传感+3日预报','0/2/4 mm','同等验证预算'],['RL策略','同源传感+3日预报','0/2/4 mm','同等验证预算'],['去预报消融','同源传感；无预报','0/2/4 mm','同等验证预算'],['Oracle参考','同源传感+完整未来','0/2/4 mm','单列成本与身份']],caption:'教学表格；未执行的比较设计。'}}];
   const out=await renderProject(p),page=out.scenes.pages[0],table=page.nodes.find(n=>n.kind==='table'),caption=page.nodes.find(n=>n.id==='table-wrap/table-caption');
   assert.equal(table.cellLines[1][1].length,2,'the near-boundary phrase must wrap before the native application adds a line');
   assert.equal(table.cellLines[2][1].length,2);
@@ -302,4 +306,145 @@ test('long mixed-script figure licenses remain separate complete entries inside 
   const xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide6.xml']);
   assert.equal((xml.match(/CC BY 4.0/g)||[]).length,5);
   for(const panel of panels)assert.ok(xml.includes(panel));
+});
+
+test('semantic roles survive local frame changes and authored emphasis stays native and exact',async()=>{
+  const p=base(),body='17/20 项独立任务通过核查。\n失败条件必须保留，不能合并分母。';
+  p.slides=[{id:'rich',layout:'synthesis',title:'不同证据职责具有不同层级',figureIds:[],paperIds:[],cards:[
+    {id:'observed',kind:'result',style:'ruled',title:'观察结果',body,emphasis:['17/20','独立任务'],box:{x:48,y:138,w:550,h:260}},
+    {id:'limit',kind:'boundary',style:'ruled',title:'结论边界',body:'保留失败条件与对应分母。',emphasis:['对应分母'],box:{x:652,y:138,w:550,h:260}}
+  ],notes:''}];
+  const out=await renderProject(p),page=out.scenes.pages[0],bodyNode=page.nodes.find(n=>n.id==='rich/card/observed/body');
+  assert.equal(bodyNode.text,body);
+  assert.equal(bodyNode.richLines.flatMap(r=>r).map(r=>r.text).join(''),body.replaceAll('\n',''));
+  assert.ok(bodyNode.richLines.flat().some(r=>r.text==='17/20'&&r.bold&&r.color==='#146C63'));
+  assert.equal(bodyNode.fontSize,24);assert.equal(page.nodes.find(n=>n.role==='title').fontSize,40);
+  const a=page.nodes.find(n=>n.id==='rich/card/observed/title'),z=page.nodes.find(n=>n.id==='rich/card/limit/title');
+  assert.notEqual(a.color,z.color,'matching frame geometry does not erase different evidence roles');
+  const changed=structuredClone(p);changed.slides[0].cards[0].style='paper-shadow';
+  const changedBody=buildScenes(changed).pages[0].nodes.find(n=>n.id===bodyNode.id);
+  assert.equal(changedBody.emphasisColor,bodyNode.emphasisColor);
+  const xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide1.xml']);
+  const parsed=new XMLParser({ignoreAttributes:false,parseTagValue:false,trimValues:false}).parse(xml),shapes=parsed['p:sld']['p:cSld']['p:spTree']['p:sp'];
+  const shape=shapes.find(s=>s['p:nvSpPr']['p:cNvPr']['@_name']===bodyNode.id);
+  const paras=[shape['p:txBody']['a:p']].flat(),runs=paras.flatMap(p=>[p['a:r']||[]].flat());
+  assert.equal(runs.map(r=>r['a:t']).join(''),body.replaceAll('\n',''));
+  const highlighted=runs.find(r=>r['a:t']==='17/20');
+  assert.equal(highlighted['a:rPr']['@_b'],'1');
+  assert.equal(highlighted['a:rPr']['a:solidFill']['a:srgbClr']['@_val'],'146C63');
+  assert.equal(XMLValidator.validate(out.svgPages[0].svg),true);
+  const invalid=structuredClone(p);invalid.slides[0].cards[0].emphasis=['未经输入的发现'];
+  assert.ok(buildScenes(invalid).issues.some(i=>i.code==='unmatched-emphasis'&&i.severity==='error'));
+});
+
+test('figure paper treatment follows actual evidence bounds and keeps full provenance in notes',async()=>{
+  const p=base();Object.assign(p.assets[0],{displayCaption:'Fig. 2　关键证据',caption:'完整图注及测量说明',license:'Synthetic fixture license',sourceUrl:'https://example.invalid/figure',reading:{purpose:'evidence',contentType:'plot',task:'read-values',minLabelPx:20,verifiedBy:'human'}});
+  p.slides=[{id:'matte',layout:'figure-focus',title:'原图层次与科学身份',paperIds:['P1'],figureIds:['fig1'],cards:[],notes:'已有讲稿。'}];
+  const out=await renderProject(p),page=out.scenes.pages[0],pic=page.nodes.find(n=>n.kind==='image'),matte=page.nodes.find(n=>n.id==='matte/figure:0:paper');
+  assert.equal(matte.w,pic.w+6);assert.equal(matte.h,pic.h+6);assert.equal(matte.x,pic.x-3);assert.equal(matte.y,pic.y-3);
+  assert.ok(matte.shadow.opacity<=.15&&matte.shadow.offset<=2);
+  assert.equal(page.nodes.find(n=>n.id==='matte/figure:0:caption').text,'Fig. 2　关键证据');
+  assert.match(page.notes,/完整图注及测量说明/);assert.match(page.notes,/Synthetic fixture license/);
+  const zip=unzipSync(out.pptx),xml=strFromU8(zip['ppt/slides/slide1.xml']);
+  assert.match(xml,/<a:outerShdw /);assert.equal((xml.match(/<p:pic>/g)||[]).length,1);
+  assert.ok(Object.entries(zip).filter(([path])=>path.startsWith('ppt/media/')).some(([,bytes])=>Buffer.from(bytes).equals(Buffer.from(data.split(',')[1],'base64'))));
+  const plain=structuredClone(p);plain.assets[0].treatment='plain';
+  assert.ok(!buildScenes(plain).pages[0].nodes.some(n=>n.id==='matte/figure:0:paper'));
+});
+
+test('legacy kicker content becomes a readable subtitle and excessive headers require revision',()=>{
+  const p=base();p.slides=[{id:'head',layout:'synthesis',title:'工具执行与结论核验',kicker:'实验条件与评价对象',figureIds:[],cards:[],notes:''}];
+  const page=buildScenes(p).pages[0],title=page.nodes.find(n=>n.role==='title'),subtitle=page.nodes.find(n=>n.id==='head/kicker');
+  assert.equal(subtitle.text,p.slides[0].kicker);assert.equal(subtitle.fontSize,22);
+  assert.ok(subtitle.y>=title.y+title.h);assert.ok(!page.nodes.some(n=>n.role==='kicker'));
+  assert.ok(!page.issues.some(i=>i.code==='header-content-overlap'));
+  p.slides[0].title='完整长标题'.repeat(16);
+  assert.ok(buildScenes(p).issues.some(i=>i.code==='header-content-overlap'&&i.severity==='error'));
+});
+
+test('diagram role uses color and line form while all scientific labels remain independent text',async()=>{
+  const p=base();p.slides=[{id:'roles',layout:'method',title:'输入、执行与待检验机制',figureIds:[],cards:[],notes:'Role fixture.',nodes:[
+    {id:'data',kind:'setting',label:'实测输入',detail:'保留实验单位'},
+    {id:'model',kind:'method',label:'方法执行',detail:'可追溯工具'},
+    {id:'hypothesis',kind:'hypothesis',label:'待检验假说',detail:'需要独立实验'}
+  ],edges:[{from:'data',to:'model'},{from:'model',to:'hypothesis'}]}];
+  const out=await renderProject(p),page=out.scenes.pages[0],frame=id=>page.nodes.find(n=>n.id===`roles/node:${id}:frame`);
+  assert.notEqual(frame('data').fill,frame('model').fill);assert.equal(frame('hypothesis').dash,'dash');
+  const xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide1.xml']);
+  assert.match(xml,/待检验假说/);assert.match(xml,/<a:prstDash val="dash"/);
+  assert.ok(page.nodes.filter(n=>n.role==='diagram-label').every(n=>n.kind==='text'));
+});
+
+test('transcribed source legends remain editable, keep their own colors and reserve space above captions',async()=>{
+  const p=base(),legend=[{label:'adh1',color:'#007BFF'},{label:'col0',color:'#FF7F0E'},{label:'ctr',color:'#2CA02C'},{label:'ein2',color:'#D62728'},{label:'pgm',color:'#9467BD'}];
+  Object.assign(p.assets[0],{displayCaption:'作者 Case 1 原始输出',displayLegend:legend,width:1000,height:600});
+  p.slides=[{id:'legend',layout:'figure-focus',title:'五条曲线的身份',figureIds:['fig1'],figureBoxes:[{x:48,y:132,w:800,h:510}],cards:[],paperIds:['P1'],notes:'据原图转录。'}];
+  const out=await renderProject(p),page=out.scenes.pages[0],pic=page.nodes.find(n=>n.kind==='image'),labels=page.nodes.filter(n=>n.role==='figure-legend'),caption=page.nodes.find(n=>n.id==='legend/figure:0:caption');
+  assert.deepEqual(labels.map(n=>n.text),legend.map(x=>x.label));assert.ok(labels.every(n=>n.fontSize===22));
+  assert.equal(new Set(labels.map(n=>n.y)).size,1);
+  assert.ok(pic.y+pic.h<labels[0].y);assert.ok(labels.every(n=>n.y+n.h<=caption.y));
+  for(const [i,item] of legend.entries())assert.equal(page.nodes.find(n=>n.id===`legend/figure:0:legend:${i}:line`).stroke,item.color);
+  assert.match(page.notes,/辅助图例（据原图转录/);
+  const zip=unzipSync(out.pptx),xml=strFromU8(zip['ppt/slides/slide1.xml']);
+  assert.equal((xml.match(/<p:pic>/g)||[]).length,1);assert.ok(xml.includes('legend/figure:0:legend:4:label'));
+  for(const item of legend){assert.ok(xml.includes(item.label));assert.ok(xml.includes(`val="${item.color.slice(1)}"`));}
+  assert.ok(Object.entries(zip).filter(([path])=>path.startsWith('ppt/media/')).some(([,bytes])=>Buffer.from(bytes).equals(Buffer.from(data.split(',')[1],'base64'))));
+  const narrow=structuredClone(p);narrow.slides[0].figureBoxes[0].w=350;
+  const narrowPage=buildScenes(narrow).pages[0],narrowLabels=narrowPage.nodes.filter(n=>n.role==='figure-legend');
+  assert.equal(new Set(narrowLabels.map(n=>n.y)).size,2);assert.ok(!narrowPage.issues.some(i=>i.code==='figure-legend-overflow'));
+  const tooNarrow=structuredClone(p);tooNarrow.slides[0].figureBoxes[0].w=130;
+  assert.ok(buildScenes(tooNarrow).issues.some(i=>i.code==='figure-legend-overflow'&&i.severity==='error'));
+});
+
+test('short reference tables place their explanations after actual rows and captions without moving unrelated cards',async()=>{
+  let nativeFixture;
+  for(const refId of ['results-ablation','results-error-analysis','limitations-validity-audit']){
+    const p=base(),ref=REFERENCE_TEMPLATES.find(t=>t.id===refId),flow=ref.tableFlow;
+    p.slides=[{id:'flow',layout:ref.layout,referenceTemplateId:refId,title:'表格证据与对应解释',paperIds:[],figureIds:[],notes:'合成布局回归。',takeaway:ref.slots.takeaway?'结论限定在已列条件。':undefined,
+      cards:ref.slots.cards.map((_,i)=>({id:'c'+i,style:'academic-panel',title:'对应解释',body:'保留实验条件。'})),
+      table:{columns:['对象','观察'],rows:[['A','已报告']],caption:'合成布局夹具。'}}];
+    const first=buildScenes(p).pages[0],firstTable=first.nodes.find(n=>n.kind==='table'),firstCaption=first.nodes.find(n=>n.id==='flow/table-caption');
+    const extra=structuredClone(p);extra.slides[0].table.rows.push(['B','已报告']);
+    const second=buildScenes(extra).pages[0],secondTable=second.nodes.find(n=>n.kind==='table'),heightChange=secondTable.h-firstTable.h;
+    for(const [i,slot] of ref.slots.cards.entries()){
+      const frameId=`flow/card/c${i}/frame`,a=first.nodes.find(n=>n.id===frameId),b=second.nodes.find(n=>n.id===frameId);
+      if(flow.cardIndexes.includes(i)){
+        assert.ok(Math.abs(a.y-(firstCaption.y+firstCaption.h+flow.gap))<1e-8,'card follows the visible table caption');
+        assert.ok(Math.abs((b.y-a.y)-heightChange)<1e-8,'one added table row moves the explanation by its actual height');
+        for(const key of ['x','w','h'])assert.equal(a[key],slot[key]);
+      }else{
+        assert.deepEqual(first.nodes.filter(n=>n.cardId===`c${i}`),second.nodes.filter(n=>n.cardId===`c${i}`),'independent explanation stays in its authored region');
+      }
+    }
+    const withoutCaption=structuredClone(p);delete withoutCaption.slides[0].table.caption;
+    const noCaptionPage=buildScenes(withoutCaption).pages[0],flowId=`flow/card/c${flow.cardIndexes[0]}/frame`;
+    const captionExtent=firstCaption.y+firstCaption.h-(firstTable.y+firstTable.h);
+    assert.ok(Math.abs(first.nodes.find(n=>n.id===flowId).y-noCaptionPage.nodes.find(n=>n.id===flowId).y-captionExtent)<1e-8,'caption height and its gap participate in flow');
+    if(flow.takeawayAfterCards){
+      const maxBottom=Math.max(...flow.cardIndexes.map(i=>{const n=first.nodes.find(n=>n.id===`flow/card/c${i}/frame`);return n.y+n.h;}));
+      assert.equal(first.nodes.find(n=>n.id==='flow/takeaway').y,maxBottom+12);
+    }
+    assert.ok(!first.issues.some(i=>i.code==='table-flow-overflow'||i.code==='table-flow-missing-table'));
+    const excessive=structuredClone(p);excessive.slides[0].table.rows=Array.from({length:10},()=>['A','已报告']);
+    assert.ok(buildScenes(excessive).issues.some(i=>i.code==='table-flow-overflow'&&i.severity==='error'),'oversized evidence is reported, never compressed');
+    nativeFixture=p;
+  }
+  const explicit=structuredClone(nativeFixture);explicit.slides[0].cards[0].box={x:48,y:400,w:574,h:172};
+  const explicitFrame=buildScenes(explicit).pages[0].nodes.find(n=>n.id==='flow/card/c0/frame');
+  assert.equal(explicitFrame.y,400,'an authored explicit card box retains its placement');
+  const out=await renderProject(nativeFixture),xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide1.xml']);
+  assert.match(xml,/<a:tbl>/);assert.match(xml,/flow\/card\/c0\/frame/);assert.match(xml,/flow\/table-caption/);
+  assert.ok(!out.issues.some(i=>i.severity==='error'));
+});
+
+
+test('a complete metric block cannot silently exceed a shallow card even when each text box fits', () => {
+  const p=base();p.slides=[{id:'s',layout:'synthesis',title:'Metric region fixture',cards:[{...card('metric','academic-side'),body:'',metric:{value:'0.8911',unit:'r',label:'Variable A and W',context:'32 observations'},box:{x:48,y:490,w:400,h:122}}]}];
+  const small=buildScenes(p);
+  assert.ok(small.issues.some(i=>i.code==='card-metric-overflow'));
+  const source=structuredClone(p.slides[0].cards[0]);p.slides[0].cards[0].box.h=176;
+  const large=buildScenes(p);
+  assert.equal(large.issues.filter(i=>i.code==='card-metric-overflow').length,0);
+  assert.deepEqual(p.slides[0].cards[0].metric,source.metric);
+  assert.deepEqual(small.pages[0].nodes.filter(n=>n.kind==='text'&&n.cardId).map(n=>n.text),large.pages[0].nodes.filter(n=>n.kind==='text'&&n.cardId).map(n=>n.text));
 });

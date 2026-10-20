@@ -2,6 +2,7 @@
  * No scientific value is inferred here: every visible result comes from the project.
  */
 import { getReferenceTemplate } from './reference-catalog.mjs';
+import { assessFigurePlacement } from './figure-planning.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
 export const LAYOUTS = Object.freeze(['cover', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
 export const CARD_STYLES = Object.freeze(['plain', 'ruled', 'compact', 'academic-panel', 'academic-tab', 'academic-side', 'open-frame', 'floating-tab', 'split-label', 'paper-shadow', 'title-band', 'stacked-corner', 'ledger', 'dashed-note']);
@@ -9,12 +10,47 @@ export const DEFAULT_DESIGN = Object.freeze({
   fontFamily: 'Noto Sans CJK SC',
   palette: { background: '#FFFFFF', paper: '#FFFFFF', ink: '#171C22', muted: '#4F5D6A', accent: '#183B66', secondary: '#455C76', gold: '#9D3038', line: '#C5CFDA', tint: '#EEF2F6' },
 });
-const KIND_STYLE = { question: 'plain', method: 'academic-panel', setting: 'academic-side', result: 'ruled', boundary: 'academic-tab', hypothesis: 'ruled' };
+const KIND_STYLE = { question: 'open-frame', method: 'academic-panel', setting: 'academic-side', result: 'paper-shadow', boundary: 'academic-tab', hypothesis: 'dashed-note' };
 const CONTENT = Object.freeze({ x:48, y:132, w:1184, h:513 });
 const clone = value => JSON.parse(JSON.stringify(value));
 const safeColor = (value, fallback) => /^#[a-f\d]{6}$/i.test(String(value)) ? value : fallback;
 const asText = value => value === undefined || value === null ? '' : typeof value === 'string' ? value : String(value);
 const arr = value => Array.isArray(value) ? value : [];
+
+/** A small semantic vocabulary, shared by text, cards and diagram nodes.
+ * These hues identify roles, never imply that a scientific result is positive.
+ */
+export function semanticStyle(kind, palette = DEFAULT_DESIGN.palette) {
+  const styles = {
+    question: { accent: palette.accent, tint: '#EDF2F7' },
+    method: { accent: '#235E96', tint: '#EAF2FA' },
+    setting: { accent: '#536A7A', tint: '#F0F3F6' },
+    result: { accent: '#146C63', tint: '#E9F4F0' },
+    boundary: { accent: '#A24736', tint: '#FAEEE8' },
+    hypothesis: { accent: '#6C528E', tint: '#F2EDF7' },
+  };
+  return styles[kind] || { accent: palette.accent, tint: palette.tint };
+}
+
+/** Apply emphasis only to exact authored fragments; never rewrite the evidence. */
+function emphasizedLines(content, lines, phrases, color) {
+  const ranges = [];
+  for (const phrase of phrases) {
+    let from = 0, at;
+    while ((at = content.indexOf(phrase, from)) !== -1) {
+      ranges.push([at, at + phrase.length]); from = at + phrase.length;
+    }
+  }
+  let cursor = 0;
+  return lines.map(line => {
+    const found = content.indexOf(line, cursor), start = found < 0 ? cursor : found;
+    const end = start + line.length;
+    cursor = end + (content[end] === '\n' ? 1 : 0);
+    const bounds = [...new Set([start, end, ...ranges.flatMap(([a,z]) => a < end && z > start ? [Math.max(a,start),Math.min(z,end)] : [])])].sort((a,z)=>a-z);
+    if (!line) return [{ text: '' }];
+    return bounds.slice(0,-1).map((at,i) => ({ text: content.slice(at,bounds[i+1]), ...(ranges.some(([a,z])=>at>=a&&at<z) ? { bold:true,color } : {}) }));
+  });
+}
 
 export function resolveDesign(input = {}) {
   const palette = Object.fromEntries(Object.entries(DEFAULT_DESIGN.palette).map(([key, value]) => [key, safeColor(input.palette?.[key] || (key === 'tint' ? input.palette?.soft : undefined), value)]));
@@ -71,23 +107,37 @@ function pageBuilder(slide, index, total, design) {
   const text = (key, value, box, size = 24, more = {}, cardId) => {
     const content = asText(value), fontSize = size;
     if (!content) return null;
-    const lines = wrapText(content, box.w, fontSize);
+    // Bold CJK/Latin fragments need a small width reserve before native export.
+    const emphasis = arr(more.emphasis).filter(v => typeof v === 'string' && v.length);
+    const lines = wrapText(content, Math.max(1,box.w-(emphasis.length?fontSize*.22:0)), fontSize);
     const lineHeight = more.lineHeight || 1.28;
     const needed = lines.length * fontSize * lineHeight;
     if (needed > box.h + 2) page.issues.push({ severity: 'warning', code: 'text-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, message: `文字估计需要 ${Math.ceil(needed)} px，分配 ${box.h} px；请查看最终渲染。` });
-    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, ...more }, cardId);
+    for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
+    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
   };
   rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
   if(design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
   text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
-  return { page, p, add, rect, line, text };
+  const customFigures=!slide.referenceTemplateId&&['figure-focus','figure-split'].includes(slide.layout)?slide.figureBoxes:undefined;
+  return { page, p, add, rect, line, text, customFigures };
 }
 
 function header(b, slide) {
-  if(slide.kicker)b.text('kicker', slide.kicker, { x:48, y:16, w:1184, h:20 }, 16, { color:b.p.muted, role:'kicker', lineHeight:1.1 });
-  const titleY=slide.kicker?40:24,lines=wrapText(slide.title,1184,34).length,titleH=Math.min(78,Math.max(42,lines*38.1));
-  b.text('title', slide.title, { x:48, y:titleY, w:1184, h:titleH }, 34, { bold:true, lineHeight:1.12, role:'title' });
-  b.line('header-rule',48,Math.min(122,titleY+titleH+10),1232,Math.min(122,titleY+titleH+10),b.p.accent,{strokeWidth:1.2});
+  const titleSize=40,titleY=22,titleH=Math.max(46,wrapText(slide.title,1184,titleSize).length*44.8);
+  b.text('title',slide.title,{x:48,y:titleY,w:1184,h:titleH},titleSize,{bold:true,lineHeight:1.12,role:'title'});
+  let bottom=titleY+titleH;
+  // Legacy kickers remain visible and retain their content, but become readable
+  // subtitles below the title. New decks should omit redundant category labels.
+  if(slide.kicker){
+    const h=wrapText(slide.kicker,1184,22).length*26.4;
+    b.text('kicker',slide.kicker,{x:48,y:bottom+3,w:1184,h},22,{color:b.p.muted,role:'section-label',lineHeight:1.2});
+    bottom+=h+3;
+  }
+  const ruleY=bottom+11;
+  b.line('header-rule',48,ruleY,1232,ruleY,b.p.line,{strokeWidth:1.1});
+  b.line('header-accent',48,ruleY,122,ruleY,b.p.accent,{strokeWidth:3});
+  if(ruleY>122)b.page.issues.push({severity:'error',code:'header-content-overlap',slideId:b.page.id,message:'标题与副题超出页眉空间。删去冗余副题或改写标题，保留正文原字号。'});
 }
 
 function metricString(metric) {
@@ -99,8 +149,9 @@ function metricString(metric) {
 /** Draw a native card; text and frame remain independent editable objects. */
 function card(b, data, box, index, project, defaultStyle) {
   const c = data || {}, id = asText(c.id || `card-${index + 1}`);
-  const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain';
-  const accent = safeColor(c.accent, c.kind === 'boundary' ? p.gold : c.kind === 'hypothesis' ? p.secondary : p.accent);
+  const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p);
+  const accent=safeColor(c.accent,semantic.accent),tint=semantic.tint;
+  const shadow={color:'#20334A',opacity:.1,blur:3,offset:2,angle:90};
   const R = (name, r, fill, stroke, more) => b.rect(`${key}/${name}`, r, fill, stroke, more, id);
   const L = (name, x1, y1, x2, y2, color, more) => b.line(`${key}/${name}`, x1, y1, x2, y2, color, more, id);
   const T = (name, value, r, size, more) => b.text(`${key}/${name}`, value, r, size, more, id);
@@ -121,12 +172,12 @@ function card(b, data, box, index, project, defaultStyle) {
     if (zones?.body) { bx = x + zones.body.x * w; by = y + zones.body.y * h; bw = zones.body.w * w; }
   } else if(style==='academic-panel'){
     R('frame',box,p.paper,p.line,{strokeWidth:1.1});
-    R('heading-fill',{x:x+1,y:y+1,w:w-2,h:39},p.tint,'none');
+    R('heading-fill',{x:x+1,y:y+1,w:w-2,h:39},tint,'none');
     L('heading-rule',x,y+40,x+w,y+40,p.line,{strokeWidth:1});
-    tx=x+13;ty=y+6;tw=w-26;th=29;bx=x+14;by=y+52;bw=w-28;
+    tx=x+13;ty=y+5;tw=w-26;th=31;bx=x+14;by=y+51;bw=w-28;
   } else if(style==='academic-tab'){
     R('frame',{x,y:y+12,w,h:h-12},p.paper,p.line,{strokeWidth:1.1});
-    const tabW=Math.min(w-28,Math.max(100,asText(c.title).length*24+28)),tabH=Math.min(h,Math.max(33,wrapText(c.title,tabW-22,24).length*27.6+6));
+    const tabW=Math.min(w-28,Math.max(100,asText(c.title).length*26+28)),tabH=Math.min(h,Math.max(36,wrapText(c.title,tabW-22,26).length*29.9+6));
     R('tab',{x:x+12,y,w:tabW,h:tabH},accent,'none');
     tx=x+23;ty=y+3;tw=tabW-22;th=tabH-6;bx=x+14;by=y+tabH+15;bw=w-28;
   } else if(style==='academic-side'){
@@ -147,20 +198,18 @@ function card(b, data, box, index, project, defaultStyle) {
     ty = y + 2; by = y + 58;
     L('base-rule', x + 20, y + h - 16, x + 55, y + h - 16, accent, { strokeWidth: 3 });
   } else if (style === 'floating-tab') {
-    R('shadow', { x: x + 4, y: y + 23, w: w - 4, h: h - 23 }, '#DEE5E4', 'none');
-    R('frame', { x, y: y + 19, w: w - 4, h: h - 23 }, p.paper, p.line);
+    R('frame', { x, y: y + 19, w, h: h - 19 }, p.paper, p.line,{shadow});
     R('tab', { x: x + 16, y, w: Math.min(w - 42, Math.max(138, asText(c.title).length * 24 + 30)), h: 42 }, accent, 'none');
     tx = x + 28; ty = y + 6; tw = w - 54; by = y + 68;
   } else if (style === 'split-label') {
     const labelW = Math.min(132, w * .29);
     R('frame', box, p.paper, p.line);
-    R('label', { x, y, w: labelW, h }, p.tint, 'none');
+    R('label', { x, y, w: labelW, h }, tint, 'none');
     L('split', x + labelW, y + 18, x + labelW, y + h - 18, accent);
     tx = x + 15; ty = y + 20; tw = labelW - 30; th = h - 42;
     bx = x + labelW + 18; by = y + 19; bw = w - labelW - 35;
   } else if (style === 'paper-shadow') {
-    R('shadow', { x: x + 4, y: y + 4, w: w - 4, h: h - 4 }, '#D9E0E0', 'none');
-    R('frame', { x, y, w: w - 4, h: h - 4 }, p.paper, p.line);
+    R('frame',box,p.paper,p.line,{shadow});
     L('top-accent', x + 20, y + 12, x + 62, y + 12, accent, { strokeWidth: 3 });
     ty = y + 21; by = y + 70;
   } else if (style === 'title-band') {
@@ -169,12 +218,12 @@ function card(b, data, box, index, project, defaultStyle) {
     ty = y + 10; by = y + 67;
   } else if (style === 'stacked-corner') {
     R('rear', { x: x + 8, y: y + 8, w: w - 8, h: h - 8 }, p.background, accent);
-    R('middle', { x: x + 4, y: y + 4, w: w - 8, h: h - 8 }, p.tint, accent);
+    R('middle', { x: x + 4, y: y + 4, w: w - 8, h: h - 8 }, tint, accent);
     R('frame', { x, y, w: w - 8, h: h - 8 }, p.paper, accent);
     L('title-rule', x + 20, y + 56, x + w - 28, y + 56, p.line);
     tw -= 8; bw -= 8; by = y + 73;
   } else if (style === 'dashed-note') {
-    R('frame', box, p.paper, accent, { dash: 'dash', strokeWidth: 1.5 });
+    R('frame', box, tint, accent, { dash: 'dash', strokeWidth: 1.3 });
     R('corner-white', { x: x + w - 28, y, w: 28, h: 28 }, p.background, 'none');
     L('fold-diagonal', x + w - 28, y, x + w, y + 28, accent);
     L('fold-left', x + w - 28, y, x + w - 28, y + 28, accent);
@@ -189,16 +238,17 @@ function card(b, data, box, index, project, defaultStyle) {
   const darkTitle = !component && ['floating-tab', 'title-band','academic-tab'].includes(style);
   const flat=!component&&['plain','ruled','compact'].includes(style);
   const academic=!component&&['academic-panel','academic-tab','academic-side'].includes(style),compact=flat||academic;
-  T('title', c.title, { x: tx, y: ty, w: tw, h: th }, flat?25:24, { bold: true, color: darkTitle ? '#FFFFFF' : accent, lineHeight:1.15, role:'card-title' });
+  T('title', c.title, { x: tx, y: ty, w: tw, h: Math.max(th,30) },26,{bold:true,color:darkTitle?'#FFFFFF':accent,lineHeight:1.15,role:'card-title'});
   const metric = metricString(c.metric);
   if (metric) {
-    const metricSize=compact?32:39,metricH=metricSize*1.16;
+    const metricSize=compact?38:40,metricH=metricSize*1.16;
     T('metric',metric,{x:bx,y:by,w:bw,h:metricH},metricSize,{bold:true,color:accent,lineHeight:1.1,role:'metric'});by+=metricH+4;
-    if(c.metric?.label){const size=compact?23:17,mh=wrapText(c.metric.label,bw,size).length*size*1.18;T('metric-label',c.metric.label,{x:bx,y:by,w:bw,h:mh},size,{color:p.ink,lineHeight:1.18,role:'metric-label'});by+=mh+4;}
-    if(c.metric?.context){const size=compact?23:16,mh=wrapText(c.metric.context,bw,size).length*size*1.2;T('metric-context',c.metric.context,{x:bx,y:by,w:bw,h:mh},size,{color:p.muted,role:'metric-context',lineHeight:1.2});by+=mh+8;}
+    if(c.metric?.label){const size=24,mh=wrapText(c.metric.label,bw,size).length*size*1.18;T('metric-label',c.metric.label,{x:bx,y:by,w:bw,h:mh},size,{color:p.ink,lineHeight:1.18,role:'metric-label'});by+=mh+4;}
+    if(c.metric?.context){const size=24,mh=wrapText(c.metric.context,bw,size).length*size*1.2;T('metric-context',c.metric.context,{x:bx,y:by,w:bw,h:mh},size,{color:p.muted,role:'metric-context',lineHeight:1.2});by+=mh+8;}
   }
+  if(metric && by-8 > y+h-(flat?4:academic?10:20)+2)b.page.issues.push({severity:'warning',code:'card-metric-overflow',slideId:b.page.id,objectId:`${b.page.id}/${key}`,message:'指标、变量和口径的总高度超出卡片区域；扩大卡片或重排相关说明，不能让指标文字延伸到页脚。'});
   const body = Array.isArray(c.body) ? c.body.join('\n') : c.body;
-  T('body',body,{x:bx,y:by,w:bw,h:Math.max(14,y+h-(flat?4:academic?10:20)-by)},compact?(style==='compact'||academic?23:24):22,{lineHeight:compact?1.24:1.32,role:'body'});
+  T('body',body,{x:bx,y:by,w:bw,h:Math.max(14,y+h-(flat?4:academic?10:20)-by)},24,{lineHeight:1.24,role:'body',emphasis:c.emphasis,emphasisColor:accent});
   return { id, box, style };
 }
 
@@ -210,9 +260,26 @@ function cardsGrid(b, cards, box, columns, project, gap = 28) {
   cards.forEach((c, i) => card(b, c, c.box || { x: box.x + (i % columns) * (w + gap), y: box.y + Math.floor(i / columns) * (h + gap), w, h }, i, project));
 }
 
+/** Reproduce an explicitly transcribed source legend, never a semantic-role palette. */
+function displayLegendLayout(items,width){
+  const size=22,lineW=24,lineGap=9,itemGap=24,rows=[{items:[],width:0,height:34}];
+  for(const [index,item] of arr(items).entries()){
+    const label=asText(item.label),estimated=[...label].reduce((n,ch)=>n+(/\s/u.test(ch)?.3:/[\u0000-\u024f]/u.test(ch)?.53:1),0)*size+4;
+    const labelW=Math.max(1,Math.min(estimated,width-lineW-lineGap));
+    const w=lineW+lineGap+labelW,h=Math.max(34,wrapText(label,labelW,size).length*size*1.2+4);
+    let row=rows.at(-1);
+    if(row.items.length&&row.width+itemGap+w>width){row={items:[],width:0,height:34};rows.push(row);}
+    const x=row.items.length?row.width+itemGap:0;
+    row.items.push({index,label,color:item.color,x,w,h,labelW});row.width=x+w;row.height=Math.max(row.height,h);
+  }
+  let y=0;const placed=[];
+  for(const row of rows){for(const item of row.items)placed.push({...item,x:item.x+(width-row.width)/2,y});y+=row.height;}
+  return {items:placed,height:placed.length?y:0,rows:placed.length?rows.length:0,lineW,lineGap,size};
+}
+
 function figure(b, project, id, box, key) {
+  box=b.customFigures?.[Number(key.split(':')[1])]||box;
   const asset = arr(project.assets).find(a => a.id === id) || project.assets?.[id];
-  b.rect(`${key}:paper`, box, '#FFFFFF', 'none');
   if (!asset) {
     b.text(`${key}:missing`, '未提供原图', { x: box.x + 20, y: box.y + box.h / 2 - 20, w: box.w - 40, h: 45 }, 24, { color: b.p.muted, align: 'center' });
     b.page.issues.push({ severity: 'error', code: 'missing-figure', slideId: b.page.id, assetId: id, message: '页面引用了不存在的原图。' });
@@ -222,15 +289,32 @@ function figure(b, project, id, box, key) {
   if(viewport&&(!['x','y','w','h'].every(k=>Number.isFinite(viewport[k]))||viewport.x<0||viewport.y<0||viewport.w<=0||viewport.h<=0||viewport.x+viewport.w>1.00000001||viewport.y+viewport.h>1.00000001)){
     b.page.issues.push({severity:'error',code:'invalid-viewport',slideId:b.page.id,assetId:id,message:'原图视窗必须是0–1范围内、正尺寸的归一化矩形。'});return;
   }
-  const caption = [asset.paperId, asset.figure || asset.figureNumber, asset.panel, asset.caption].filter(Boolean).join(' · ');
+  const caption=asset.displayCaption||[asset.paperId,asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
   const captionLines=wrapText(caption,box.w,18),captionH=caption?Math.min(108,Math.max(26,captionLines.length*23+4)):0;
-  const frame={x:box.x,y:box.y,w:box.w,h:Math.max(1,box.h-captionH-9)};
+  const legend=displayLegendLayout(asset.displayLegend,box.w),legendH=legend.height?legend.height+8:0;
+  if(legend.rows>2||legend.height>68)b.page.issues.push({severity:'error',code:'figure-legend-overflow',slideId:b.page.id,assetId:id,message:'辅助图例超过两行。保留原始身份，缩短转录标签或扩大区域，不能降低图例字号。'});
+  const matte=asset.treatment!=='plain',pad=matte?5:0;
+  const frame={x:box.x+pad,y:box.y+pad,w:Math.max(1,box.w-pad*2),h:Math.max(1,box.h-captionH-legendH-9-pad*2)};
   if(frame.h<70)b.page.issues.push({severity:'warning',code:'small-figure-region',slideId:b.page.id,assetId:id,message:'图注之后的原图空间过小；扩大图区域或单独拆页。'});
   const iw=Number(asset.width||asset.pixelWidth||1)*(viewport?.w??1),ih=Number(asset.height||asset.pixelHeight||1)*(viewport?.h??1);
   const scale = Math.min(frame.w / iw, frame.h / ih);
   const imageBox = { x: frame.x + (frame.w - iw * scale) / 2, y: frame.y + (frame.h - ih * scale) / 2, w: iw * scale, h: ih * scale };
+  const assessment=assessFigurePlacement(asset,frame,{slideId:b.page.id,objectId:`${b.page.id}/${key}:image`});
+  b.page.issues.push(...assessment.issues);
+  // The matte follows the actual source aspect ratio, not its empty layout slot.
+  // A native outer shadow adds a shallow paper layer without rasterizing the page.
+  if(matte)b.rect(`${key}:paper`,{x:imageBox.x-3,y:imageBox.y-3,w:imageBox.w+6,h:imageBox.h+6},'#FFFFFF','#CCD4DD',{strokeWidth:.8,shadow:{color:'#263B50',opacity:.12,blur:3,offset:2,angle:90}});
   b.add('image',`${key}:image`,{...imageBox,assetId:id,data:asset.data||asset.dataUri,alt:asset.alt||caption||'论文原图',source:{paperId:asset.paperId,figure:asset.figure,panel:asset.panel,sourceVersion:asset.sourceVersion},fit:'contain',...(viewport?{viewport:clone(viewport)}:{})});
+  const legendY=box.y+box.h-captionH-legend.height-4;
+  for(const item of legend.items){
+    if(!item.label.trim()||!/^#[a-f\d]{6}$/i.test(String(item.color)))b.page.issues.push({severity:'error',code:'invalid-figure-legend',slideId:b.page.id,assetId:id,message:'辅助图例必须有非空标签和明确的六位颜色，并与原图核对。'});
+    const x=box.x+item.x,y=legendY+item.y,stem=`${key}:legend:${item.index}`;
+    b.line(`${stem}:line`,x,y+15,x+legend.lineW,y+15,safeColor(item.color,b.p.ink),{strokeWidth:3});
+    b.text(`${stem}:label`,item.label,{x:x+legend.lineW+legend.lineGap,y:y+1,w:item.labelW,h:item.h-2},legend.size,{color:b.p.ink,lineHeight:1.2,role:'figure-legend'});
+  }
   if(caption)b.text(`${key}:caption`,caption,{x:box.x,y:box.y+box.h-captionH,w:box.w,h:captionH},18,{color:b.p.muted,role:'caption',lineHeight:1.24});
+  b.page.notes+='\n\n原图来源：'+[asset.paperId,asset.figure,asset.panel,asset.caption,asset.sourceUrl,asset.sourceVersion,asset.license,asset.cropNote].filter(Boolean).join('\n');
+  if(legend.items.length)b.page.notes+='\n辅助图例（据原图转录，标签与颜色须核对）：\n'+legend.items.map(item=>`${item.label}: ${item.color}`).join('\n');
 }
 
 /** Select the two-panel arrangement that gives both source images the most visible area. */
@@ -239,9 +323,10 @@ function pairedFigureBoxes(project, ids, area, gap = 18) {
   const vertical = [0, 1].map(i => ({ x: area.x, y: area.y + i * (area.h + gap) / 2, w: area.w, h: (area.h - gap) / 2 }));
   const visibleArea = boxes => boxes.reduce((sum, box, i) => {
     const asset = arr(project.assets).find(a => a.id === ids[i]) || project.assets?.[ids[i]];
-    const iw=Number(asset?.width||1)*(asset?.viewport?.w??1),ih=Number(asset?.height||1)*(asset?.viewport?.h??1),caption=[asset?.paperId,asset?.figure,asset?.panel,asset?.caption].filter(Boolean).join(' · ');
+    const iw=Number(asset?.width||1)*(asset?.viewport?.w??1),ih=Number(asset?.height||1)*(asset?.viewport?.h??1),caption=asset?.displayCaption||[asset?.paperId,asset?.figure,asset?.panel,asset?.caption].filter(Boolean).join(' · ');
     const captionH=caption?Math.min(108,Math.max(26,wrapText(caption,box.w,18).length*23+4)):0;
-    const scale=Math.min(box.w/iw,Math.max(1,box.h-9-captionH)/ih);
+    const legendHeight=displayLegendLayout(asset?.displayLegend,box.w).height;
+    const scale=Math.min(box.w/iw,Math.max(1,box.h-9-captionH-(legendHeight?legendHeight+8:0))/ih);
     return sum + iw * ih * scale * scale;
   }, 0);
   return visibleArea(horizontal) >= visibleArea(vertical) ? horizontal : vertical;
@@ -307,10 +392,11 @@ function diagram(b, project, slide, area, nodeBoxes) {
   }
   for (const [i, n] of nodes.entries()) {
     const box = boxes.get(n.id);
+    const semantic=semanticStyle(n.kind||'method',b.p);
     const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,24).length*28),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?2:5,labelY=hasDetail?box.y+(small?6:10):box.y+Math.max(8,(box.h-labelH)/2);
-    b.rect(`node:${n.id}:frame`,box,b.p.paper,b.p.line,{strokeWidth:1.2});
-    b.line(`node:${n.id}:heading-rule`,box.x,box.y,box.x+box.w,box.y,b.p.accent,{strokeWidth:2});
-    b.text(`node:${n.id}:label`,n.label,{x:box.x+pad,y:labelY,w:iw,h:labelH},24,{bold:true,color:b.p.accent,align:'center',lineHeight:1.16,role:'diagram-label'});
+    b.rect(`node:${n.id}:frame`,box,n.kind?semantic.tint:b.p.paper,b.p.line,{strokeWidth:1.2,...(n.kind==='hypothesis'?{dash:'dash'}:{})});
+    b.line(`node:${n.id}:heading-rule`,box.x,box.y,box.x+box.w,box.y,semantic.accent,{strokeWidth:2});
+    b.text(`node:${n.id}:label`,n.label,{x:box.x+pad,y:labelY,w:iw,h:labelH},24,{bold:true,color:semantic.accent,align:'center',lineHeight:1.16,role:'diagram-label'});
     if(hasDetail)b.text(`node:${n.id}:detail`,n.detail,{x:box.x+pad,y:labelY+labelH+detailGap,w:iw,h:Math.max(22,box.y+box.h-(small?5:9)-(labelY+labelH+detailGap))},22,{color:b.p.ink,align:'center',lineHeight:1.18,role:'diagram-body'});
   }
 }
@@ -331,6 +417,7 @@ function table(b, data, box, fontFamily) {
   if(h+captionH>box.h+2)b.page.issues.push({severity:'error',code:'table-overflow-estimate',slideId:b.page.id,objectId:`${b.page.id}/data-table`,message:`表格按17.25pt正文需要 ${Math.ceil(h+captionH)} px，区域只有 ${box.h} px；减少行列或拆页，不能缩小正文隐藏内容。`});
   b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p)});
   if(data.caption)b.text('table-caption',data.caption,{x:box.x,y:box.y+h+7,w:box.w,h:Math.max(22,captionH-7)},18,{color:b.p.muted,lineHeight:1.22,role:'caption'});
+  return {bottom:box.y+h+captionH,height:h+captionH};
 }
 
 function references(b,project,slide,box) {
@@ -358,39 +445,58 @@ function references(b,project,slide,box) {
 
 function referenceLayout(b,project,slide,ref) {
   const s=ref.slots,figures=arr(slide.figureIds),cards=arr(slide.cards);
+  const flow=ref.tableFlow,flowIndexes=new Set(arr(flow?.cardIndexes));
   for(const [i,panel] of arr(s.panels).entries()){
-    const {x,y,w,h}=panel,key=`panel:${i}`,style=panel.style||'academic-panel';
+    const {x,y,w,h}=panel,key=`panel:${i}`,style=panel.style||'academic-panel',semantic=semanticStyle(panel.kind,b.p),accent=semantic.accent,tint=semantic.tint;
     if(style==='academic-side'){
       b.rect(`${key}:frame`,{x,y,w,h},b.p.paper,b.p.line,{strokeWidth:1.1});
-      b.rect(`${key}:side-mark`,{x:x+1,y:y+8,w:5,h:29},b.p.accent,'none');
-      b.text(`${key}:title`,slide.panelTitles?.[i]??panel.title,{x:x+16,y:y+6,w:w-32,h:31},24,{bold:true,color:b.p.accent,lineHeight:1.15,role:'panel-title'});
+      b.rect(`${key}:side-mark`,{x:x+1,y:y+8,w:5,h:29},accent,'none');
+      b.text(`${key}:title`,slide.panelTitles?.[i]??panel.title,{x:x+16,y:y+5,w:w-32,h:32},26,{bold:true,color:accent,lineHeight:1.15,role:'panel-title'});
     }else if(style==='academic-tab'){
       b.rect(`${key}:frame`,{x,y:y+12,w,h:h-12},b.p.paper,b.p.line,{strokeWidth:1.1});
-      const title=slide.panelTitles?.[i]??panel.title,tw=Math.min(w-28,Math.max(118,asText(panel.title).length*24+28));
-      b.rect(`${key}:tab`,{x:x+12,y,w:tw,h:34},b.p.accent,'none');
-      b.text(`${key}:title`,title,{x:x+23,y:y+3,w:tw-22,h:29},24,{bold:true,color:'#FFFFFF',lineHeight:1.15,role:'panel-title'});
+      const title=slide.panelTitles?.[i]??panel.title,tw=Math.min(w-28,Math.max(118,asText(title).length*26+38));
+      b.rect(`${key}:tab`,{x:x+12,y,w:tw,h:36},accent,'none');
+      b.text(`${key}:title`,title,{x:x+23,y:y+3,w:tw-22,h:30},26,{bold:true,color:'#FFFFFF',lineHeight:1.15,role:'panel-title'});
     }else{
       b.rect(`${key}:frame`,{x,y,w,h},b.p.paper,b.p.line,{strokeWidth:1.1});
-      b.rect(`${key}:heading-fill`,{x:x+1,y:y+1,w:w-2,h:40},b.p.tint,'none');
+      b.rect(`${key}:heading-fill`,{x:x+1,y:y+1,w:w-2,h:40},tint,'none');
       b.line(`${key}:heading-rule`,x,y+41,x+w,y+41,b.p.line,{strokeWidth:1});
-      b.text(`${key}:title`,slide.panelTitles?.[i]??panel.title,{x:x+13,y:y+6,w:w-26,h:31},24,{bold:true,color:b.p.accent,lineHeight:1.15,role:'panel-title'});
+      b.text(`${key}:title`,slide.panelTitles?.[i]??panel.title,{x:x+13,y:y+5,w:w-26,h:32},26,{bold:true,color:accent,lineHeight:1.15,role:'panel-title'});
     }
   }
   if(s.paperTitle)paperTitle(b,project,slide,s.paperTitle);
   if(s.subtitle&&slide.subtitle)b.text('subtitle',slide.subtitle,s.subtitle,24,{lineHeight:1.24,color:b.p.muted,role:'subtitle'});
-  if(s.takeaway&&slide.takeaway&&!(s.subtitle&&slide.takeaway===slide.subtitle))b.text('takeaway',slide.takeaway,s.takeaway,24,{bold:true,lineHeight:1.2,color:b.p.accent,role:'takeaway'});
+  const hasTakeaway=s.takeaway&&slide.takeaway&&!(s.subtitle&&slide.takeaway===slide.subtitle);
+  if(hasTakeaway&&!flow?.takeawayAfterCards)b.text('takeaway',slide.takeaway,s.takeaway,24,{bold:true,lineHeight:1.2,color:b.p.accent,role:'takeaway'});
   figures.forEach((id,i)=>{if(s.figures?.[i])figure(b,project,id,s.figures[i],`figure:${i}`);});
   if(s.chart&&slide.chart)b.add('chart','data-chart',{...s.chart,chart:clone(slide.chart),palette:clone(b.p),fontFamily:project.design?.fontFamily||DEFAULT_DESIGN.fontFamily});
-  if(s.table&&slide.table)table(b,slide.table,s.table,project.design?.fontFamily||DEFAULT_DESIGN.fontFamily);
+  const tableExtent=s.table&&slide.table?table(b,slide.table,s.table,project.design?.fontFamily||DEFAULT_DESIGN.fontFamily):undefined;
   if(s.diagram)diagram(b,project,slide,s.diagram,s.nodeBoxes);
   if(s.references)references(b,project,slide,s.references);
-  cards.forEach((c,i)=>{if(s.cards?.[i])card(b,c,c.box||s.cards[i],i,project,ref.cardStyles?.[i]||'plain');});
+  let flowBottom=tableExtent?.bottom;
+  if(flow&&!tableExtent)b.page.issues.push({severity:'error',code:'table-flow-missing-table',slideId:b.page.id,message:'此参考页需要有效表格才能安排其后解释，不能以空表区域代替证据。'});
+  cards.forEach((c,i)=>{
+    if(!s.cards?.[i])return;
+    let box=c.box||s.cards[i];
+    if(flowIndexes.has(i)&&tableExtent){
+      if(!c.box)box={...box,y:tableExtent.bottom+(flow.gap??24)};
+      flowBottom=Math.max(flowBottom,box.y+box.h);
+      if(box.y<tableExtent.bottom+8||box.y+box.h>645)b.page.issues.push({severity:'error',code:'table-flow-overflow',slideId:b.page.id,cardId:c.id,message:'表格后的解释区域与证据相碰或超出正文区。减少表格内容、调整说明或拆页，保留原字号。'});
+    }
+    card(b,c,box,i,project,ref.cardStyles?.[i]||'plain');
+  });
+  if(hasTakeaway&&flow?.takeawayAfterCards){
+    const box={...s.takeaway,y:flowBottom===undefined?s.takeaway.y:flowBottom+12};
+    b.text('takeaway',slide.takeaway,box,24,{bold:true,lineHeight:1.2,color:b.p.accent,role:'takeaway'});
+    if(box.y+box.h>645)b.page.issues.push({severity:'error',code:'table-flow-overflow',slideId:b.page.id,message:'表格及解释后的结论超出正文区，需调整内容层次或拆页。'});
+  }
 }
 
 export function buildScenes(project) {
   const design = resolveDesign(project.design), slides = arr(project.slides);
   const pages = slides.map((slide, index) => {
     const b = pageBuilder(slide, index, slides.length, design), cards = arr(slide.cards), figures = arr(slide.figureIds);
+    if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
     header(b, slide);
     const ref=slide.referenceTemplateId?getReferenceTemplate(slide.referenceTemplateId):undefined;
     if(slide.referenceTemplateId&&!ref)b.page.issues.push({severity:'error',code:'unknown-reference-template',slideId:b.page.id,message:`未找到参考页型 ${slide.referenceTemplateId}；不能静默替换成其他版式。`});

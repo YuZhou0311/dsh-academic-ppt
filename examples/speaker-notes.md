@@ -2,13 +2,15 @@
 
 目标时长：12 分钟。以下为本次导出对应的备注，实际语速须排练。
 
-## 1. PhenoAssistant：对话式植物表型分析
+## 1. PhenoAssistant：植物表型分析的智能体工作流
 
 页 ID：S01。时间预算：0:00–0:35。
 
 今天精读 Chen 等发表于 Nature Communications 的 PhenoAssistant。研究面向一个实际问题：植物图像分析往往需要连续切换模型、表型计算、统计和编程工具。系统让用户用自然语言描述任务，由中央 manager 编排这些专门工具。右侧概括问题、改变与评价范围，左边直接使用论文任务一的原图。汇报先解释系统结构和三个案例，再区分几种评价口径，最后讨论从读图错误出发的可检验方案。这是一篇论文的研究讨论，结论范围限定为表型分析。
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+
+原文位置：论文精读 · Chen et al., Nature Communications, 2026
 
 ## 2. Manager 的规划与专用工具的计算分工
 
@@ -18,6 +20,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：系统设计 · Design / Methods
+
 ## 3. 24 株拟南芥与 1,248 次图像观测
 
 页 ID：S03。时间预算：1:30–2:20。
@@ -26,13 +30,15 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
-## 4. 拟南芥的 PLA 曲线随生态型分离
+原文位置：案例 1 · 数据与实验单位
+
+## 4. PLA 生长曲线显示生态型间的差异
 
 页 ID：S04。时间预算：2:20–3:10。
 
-左侧全图定位原文的五项任务，右侧放大任务二的投影叶面积曲线。横轴是播种后天数，纵轴是 PLA，图中单位为平方厘米；每条曲线对应一个生态型，阴影表示标准差。可以看到，随着生长推进，不同生态型的平均曲线分离。这个观察为后面的组间分析提供入口，但阴影是否重叠不能替代正式检验。原图本身是复合图，这里保留完整源文件并只改变显示视窗。下方文字转录轴、图例和误差含义，不重新生成原始曲线。
+本页使用作者官方代码仓库保存的独立 PLA 输出，对应正文 Fig. 3 任务二。横轴是播种后天数，纵轴是投影叶面积。此独立图轴没有印出单位；平方厘米来自 Fig. 3 的 CSV 表头，不能误称是图轴原文。不同颜色对应不同生态型，阴影表示标准差。随生长推进，各组的平均曲线逐渐分离。这个图提供描述性证据，曲线间的视觉距离或阴影重叠都不能代替统计检验。下一页再结合作者的重复测量模型理解生态型分组。完整原始图和裁切范围保留在配套资产中。
 
-论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+出处：Chen et al., 2026, Fig. 3, https://www.nature.com/articles/s41467-026-71090-y
 
 ## 5. 重复测量检验支持案例内的生态型分组
 
@@ -42,6 +48,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：案例 1 · Fig. 3 任务 4
+
 ## 6. 马铃薯案例：PLA 与叶片干重的相关性
 
 页 ID：S06。时间预算：4:00–4:50。
@@ -49,6 +57,8 @@
 第二个案例研究马铃薯叶片。作者提供三十二幅图像和人工叶面积、干重标注，用 leaf-only SAM 提取投影叶面积。因为 Pearson 相关分析没有预先定义为固定工具，系统让代码代理生成并执行计算。下方是原图结果区域：人工叶面积与干重的相关系数为零点八九一一，PLA 与干重为零点七五七七。后一项提示图像表型与干重存在关联，也暴露测量替代的误差。这里不能把相关系数当作预测准确率，或仅凭两个数的差别宣称显著差异；原图没有给出该差异的正式检验。
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+
+原文位置：案例 2 · 32 幅图像 / Fig. 4
 
 ## 7. 冬小麦案例把新分类模型训练接入工具库
 
@@ -58,6 +68,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：案例 3 · 冬小麦营养缺乏识别
+
 ## 8. Critic 提高了工具链评分，执行正确性仍需另测
 
 页 ID：S08。时间预算：5:35–6:30。
@@ -65,6 +77,8 @@
 接下来分开看评价对象。表一评价工具链计划：让系统为二十项任务输出工具顺序和参数，由 GPT-4o 依据工具定义评分，评价阶段不执行工具。四个维度是整体链、工具是否存在、工具适用性和参数。增加同样基于 GPT-4o 的 critic 后，报告平均分从四点五五变为四点六六。适用性这一列从四点六五到四点九零。这个比较说明计划的模型评分发生变化，但它不是任务成功率，也没有在这里直接证明执行结果更准确。评判模型与 critic 的关系也是后续独立评价值得考察的条件。
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+
+原文位置：评价 1 · Table 1 / 工具选择任务
 
 ## 9. 模型选择与数据分析使用不同任务集
 
@@ -74,6 +88,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：评价 2 · 模型选择与结果检查
+
 ## 10. 20 项数据分析中，17 项输出通过人工检查
 
 页 ID：S10。时间预算：7:15–8:00。
@@ -81,6 +97,8 @@
 这一页把数据分析的任务计数单独呈现。与工具链评分不同，这里执行分析并由人检查输出，二十项中十七项正确，三项失败。图是依据原文计数绘制的可编辑数据图，不添加置信区间或未经报告的精度。这个结果支持部分分析任务可由系统完成，也清楚显示剩余错误。分母是任务，不是田间重复试验、植株或农业操作。三项失败集中在细粒度读图，提示下一步可以研究数值核对和适当人工介入，而不必笼统追求更多代理。
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+
+原文位置：评价 3 · 实际数据分析任务
 
 ## 11. 细粒度读图是数据链中的解释风险
 
@@ -90,6 +108,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：失败机制分析 · 根据原文任务链重绘
+
 ## 12. 现有证据的覆盖范围与外推条件
 
 页 ID：S12。时间预算：8:50–9:40。
@@ -98,6 +118,8 @@
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
 
+原文位置：综合讨论 · Discussion / Methods / 官方代码
+
 ## 13. 研究方案：在共同预算下检验读数核验
 
 页 ID：S13。时间预算：9:40–10:45。
@@ -105,6 +127,8 @@
 据此提出可证伪的假说：当两组能够访问完全相同的源数据、图像和工具，且模型与预算相同，强制核对关键读数能否降低错误。比较同一个 manager 的常规策略和增加核验要求的策略，使用配对留出任务、多次运行及盲评。两组都有 CSV，不能只给干预组额外真值。主要终点是预先定义的关键错误率，同时报告复核比例、耗时和核验调用成本。先做试验估计方差，再确定样本量。如果错误没有下降，或优势只在额外信息、更多预算或更多人工时出现，这个预算受限的假说就不获支持。这是一份待实施的研究设计，没有改善幅度或实验结果。
 
 论文：Chen F., Stogiannidis I., Wood A., et al. A conversational multi-agent AI system for automated plant phenotyping. Nature Communications 17, 6391 (2026). DOI: 10.1038/s41467-026-71090-y. https://www.nature.com/articles/s41467-026-71090-y
+
+原文位置：研究提议 · 尚未实施
 
 ## 14. 结论与资料来源
 

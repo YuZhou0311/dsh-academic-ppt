@@ -7,7 +7,7 @@ import {getReferenceTemplate} from './reference-catalog.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {fontFamily:'Noto Sans CJK SC',palette:{ink:'#202632',paper:'#FFFFFF',background:'#FFFFFF',accent:'#173F75',secondary:'#9B303A',muted:'#536070',line:'#CCD2DA',soft:'#F1F4F8',gold:'#9B303A',tint:'#F1F4F8'}};
-const RENDERER_VERSION=2;
+const RENDERER_VERSION=3;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -87,6 +87,15 @@ export function evidenceIssues(p){
   const nodeIds=new Set((s.nodes??[]).map(n=>n.id));for(const e of s.edges??[])if(!nodeIds.has(e.from)||!nodeIds.has(e.to))add('error','dangling-edge',path,'流程连线指向不存在的节点。');
   if(s.chart){if(s.chart.series.some(x=>x.values.length!==s.chart.categories.length))add('error','chart-dimensions',path,'图表系列与类别长度不一致。');const source=claims.get(s.chart.sourceClaimId);if(!source||!source.metrics?.length)add('error','chart-data-source',path,'可编辑图表必须关联记录了原始数据口径的证据。');}
   if(s.table){if(s.table.rows.some(row=>row.length!==s.table.columns.length))add('error','table-dimensions',path,'原生表格每一行必须与列标题等长。');if(!s.table.sourceClaimIds?.length)add('error','table-data-source',path,'table.sourceClaimIds 必须明确关联表格的原文或研究方案证据；页面其他 claim 不能代替表格来源。');if(s.table.rows.length>8||s.table.columns.length>6)add('warning','dense-table',path,'表格行列较多，建议拆为正文与备份页并检查实际字号。');}
+  if(s.figureBoxes){
+   if(s.referenceTemplateId)add('error','custom-reference-conflict',path,'figureBoxes 用于无 referenceTemplateId 的自定义图文页；固定模板面板不能和自由图框混用。');
+   if(!['figure-focus','figure-split'].includes(s.layout))add('error','custom-figure-layout',path,'figureBoxes 仅用于 figure-focus 或 figure-split 的图文构图。');
+   if(s.figureBoxes.length!==s.figureIds.length)add('error','custom-figure-count',path,'figureBoxes 必须与 figureIds 一一对应。');
+   if(s.cards.some(c=>!c.box))add('error','custom-card-box-required',path,'自定义图框时，为每个解释卡片显式分配 box，避免沿用默认位置造成重叠。');
+   for(const b of s.figureBoxes)if(b.x<36||b.y<132||b.x+b.w>1244||b.y+b.h>658)add('error','custom-figure-outside-content',path,'自定义证据图框需位于正文区域 x=36–1244、y=132–658 内。');
+   const boxes=[...s.figureBoxes,...s.cards.filter(c=>c.box).map(c=>c.box)];
+   for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];if(Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x)>1&&Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)>1)add('error','custom-evidence-overlap',path,'自定义证据图与解释区相互重叠，调整实际区域后再生成。');}
+  }
   if(s.panelTitles&&!s.referenceTemplateId)add('error','panel-titles-without-reference',path,'面板标题需要对应的 referenceTemplateId，不能配置后不显示。');
   if(s.referenceTemplateId){const template=getReferenceTemplate(s.referenceTemplateId);if(!template)add('error','unknown-reference-template',path,'未知学术模板 ID：'+s.referenceTemplateId);else{
    if(s.panelTitles&&s.panelTitles.length!==(template.slots.panels?.length??0))add('error','panel-title-count',path,'panelTitles 必须与所选模板的 panels 一一对应；请按实际图文内容命名。');
@@ -94,8 +103,9 @@ export function evidenceIssues(p){
    for(const [key,count] of [['cards',s.cards.length],['figures',s.figureIds.length],['nodes',(s.nodes??[]).length]]){const range=template.requirements?.[key];if(range&&(count<range.min||count>range.max))add('error','reference-content-count',path,`${template.name} 的 ${key} 需要 ${range.min}–${range.max} 个，当前 ${count} 个；选择匹配证据的页型。`);}
    for(const key of ['chart','table']){const required=template.requirements?.[key];if(required===true&&!s[key])add('error','reference-content-missing',path,`${template.name} 需要 ${key}，不能以空白占位代替证据。`);if(s[key]&&!template.slots?.[key])add('error','reference-content-unused',path,`${template.name} 没有 ${key} 区域，请选择支持此内容的页型。`);}
   }}
-  const structure=s.referenceTemplateId??s.layout;
-  if(index>=2&&(p.slides[index-1].referenceTemplateId??p.slides[index-1].layout)===structure&&(p.slides[index-2].referenceTemplateId??p.slides[index-2].layout)===structure&&!['paper','references'].includes(s.layout))add('warning','layout-repetition',path,'连续三页同构。检查证据是否适合换用不同图文结构。');
+  const structureOf=slide=>slide.referenceTemplateId??(slide.figureBoxes?JSON.stringify({layout:slide.layout,figures:slide.figureBoxes.map(box=>['x','y','w','h'].map(k=>Math.round(box[k]/32))),cards:slide.cards.map(card=>card.box?['x','y','w','h'].map(k=>Math.round(card.box[k]/32)):null)}):slide.layout);
+  const structure=structureOf(s);
+  if(index>=2&&structureOf(p.slides[index-1])===structure&&structureOf(p.slides[index-2])===structure&&!['paper','references'].includes(s.layout))add('warning','layout-repetition',path,'连续三页同构。检查证据是否适合换用不同图文结构。');
  }
  for(const id of used)if(!paperReferencedClaims.has(id))add('warning','paper-without-claims','papers.'+id,'论文尚未关联任何页内证据。');
  const seconds=p.slides.reduce((n,s)=>n+s.seconds,0),target=p.brief.talkMinutes*60;
@@ -126,7 +136,7 @@ export async function checkProject(options={}){
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),issues=evidenceIssues(p),summary=statusSummary(issues);
  let stage=a.stage??'auto';if(stage==='auto')stage=!p.papers.length?'research':!p.claims.length?'evidence':!p.slides.length?'storyboard':summary.errors?'evidence':!p.artifact?'render':'review';
- const nextActions={research:['按 brief 条件筛选论文，先核对全文和书目信息。','每篇读取方法、结果、图注、补充材料；写入结构化阅读记录。'],evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象、模拟或实体实验的适用范围。'],design:['先查看用户原模板的实际页面：标题比例、图文区域、边框与小题签。需要原生组件时调用 academic_ppt_template，并通过 templateProfilePaths 导入。','调用 academic_ppt_reference，按研究任务选择 category，再查看具体 templateId 的几何和可编辑参考 PPTX。不要只换配色。'],storyboard:['先确定每页一个研究问题、主证据和时间预算，再选匹配的 referenceTemplateId；其 layout、卡片、图与流程数量必须符合模板。','每篇保留 paper 完整题名页和 references 书目。先做方法页、原图页和结果页，检查紧凑程度与主次后展开全稿；信息不足补证据，拥挤先删重复或拆任务。'],render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],review:['调用 academic_ppt_render，再检查其返回的最终 PPTX 图片。','同时检查空疏和拥挤：主图有效面积、图例、解释长度、必要限定、卡片重复；按稳定 ID 局部修复后登记当前 hash 的视觉审查。'],delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。']}[stage];
+ const nextActions={research:['按 brief 条件筛选论文，先核对全文和书目信息。','每篇读取方法、结果、图注、补充材料；写入结构化阅读记录。'],evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象、模拟或实体实验的适用范围。'],design:['先查看用户原模板的实际页面：标题比例、图文区域、边框与小题签。需要原生组件时调用 academic_ppt_template，并通过 templateProfilePaths 导入。','先实际查看论文图并记录 asset.reading；调用 academic_ppt_reference，按研究任务或 figure 尺寸/视窗/阅读条件比较最多三个候选。必要时用 figureBoxes 创造合适比例。'],storyboard:['先确定每页一个研究问题、主证据和时间预算，再选匹配的 referenceTemplateId；其 layout、卡片、图与流程数量必须符合模板。','每篇保留 paper 完整题名页和 references 书目。先做密集原图、方法和结果难页，以字号、语义 kind、精确 emphasis 和不同关系形式建立层级；重要限定不降为小字。信息不足补必要解释，拥挤先去重复或拆任务。'],render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],review:['调用 academic_ppt_render，再检查其返回的最终 PPTX 图片。','同时检查空疏和拥挤：主图有效面积、图例、解释长度、必要限定、卡片重复；按稳定 ID 局部修复后登记当前 hash 的视觉审查。'],delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。']}[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
  return {ok:true,projectPath:path,revision:p.revision,stage,brief:p.brief,capabilities:p.capabilities,counts:counts(p),summary,nextActions,issues:issues.slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }

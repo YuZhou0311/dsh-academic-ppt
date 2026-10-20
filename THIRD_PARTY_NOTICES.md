@@ -13,7 +13,7 @@
 
 ## 2. 运行时依赖
 
-源码根目录的具体版本与完整传递依赖以 [v0.2.0 的 package-lock.json](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.2.0/package-lock.json) 为准。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承本次根工程的审计结果，详见[安装说明](docs/INSTALL.md#5-实际能力边界)。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
+源码根目录的具体版本与完整传递依赖以 [package-lock.json](package-lock.json) 为准。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承本次根工程的审计结果，详见[安装说明](docs/INSTALL.md#5-实际能力边界)。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
 
 | 依赖 | 固定版本 | 许可 / 来源 |
 | --- | --- | --- |
@@ -29,11 +29,28 @@
 
 ## 3. 真实论文示例
 
-示例使用 Chen F., Stogiannidis I., Wood A., et al., *A conversational multi-agent AI system for automated plant phenotyping*, Nature Communications 17, 6391 (2026), DOI [10.1038/s41467-026-71090-y](https://doi.org/10.1038/s41467-026-71090-y)。以 2026-10-20 访问的正式网页版本为阅读依据；最终书目和图号以示例的证据/资产清单为准。
+示例使用 Chen F., Stogiannidis I., Wood A., et al., *A conversational multi-agent AI system for automated plant phenotyping*, Nature Communications 17, 6391 (2026), DOI [10.1038/s41467-026-71090-y](https://doi.org/10.1038/s41467-026-71090-y)。[出版方书目记录](https://www.nature.com/articles/s41467-026-71090-y#article-info) 的首次发表日期为 **2026-04-03**，另列 Version of record 日期 **2026-07-16**；后者不作为首发表日期。本示例以 2026-10-20 核对的正式全文为阅读依据；完整源文件、四个实际资产 ID、页面、显示视窗与 SHA-256 见 [examples/ASSETS.md](examples/ASSETS.md)。
 
-论文页面声明 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，原图按文章许可与其中的具体第三方署名条件使用。示例使用 Fig. 3 和 Fig. 4，注明作者、出处、图号和许可；对局部面板使用原生展示窗口，保留原图媒体与裁切说明，不改写图中数据。示例的原生解释层是汇报者整理，研究方案明确标注为待验证。它是单篇论文的软件功能与版式示例，不是此前五篇综述的重新交付。
+### 论文出版图：CC BY 4.0
 
-论文原图不是插件 MIT 代码的一部分。再次分发或改用其他论文图时，仍须检查实际图注中的单独署名和使用范围。文章中的其他素材不因链接存在而自动包含在示例包中。
+`examples/assets/pheno-figure3.png`（1449 × 2499 px）与 `pheno-figure4.png`（1615 × 2496 px）为论文 Fig. 3 / Fig. 4 的完整图像，作者署名为 Chen et al., 2026。按文章的 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 声明及具体材料的 credit line 使用；示例保留作者、出处、图号、许可和原生视窗裁切说明。原图媒体完整保留，未改写图中数据。论文 Figure 1 含第三方 Flaticon 图标署名，本示例不复制该图，系统关系另用原生对象重绘。
+
+论文出版图不是本插件 MIT 代码的一部分。再次分发或改用其他论文素材时，仍需检查该材料的具体署名与许可范围；文章中的其他素材不因链接存在而自动包含在示例包中。
+
+### 作者独立 PLA 输出：作者仓库 MIT
+
+S04 使用的 `examples/assets/author-pla_plot.png` 为作者在官方 [vios-s/PhenoAssistant](https://github.com/vios-s/PhenoAssistant/) 仓库中发布的 Case 1 独立绘图输出，1000 × 600 px。其身份为“作者 Case 1 原始输出；对应正文 Fig. 3”，与上述两张出版方合成图分别登记许可。
+
+- 固定提交：`aff85512073d9629dfcd501474641eb1919fbe87`。
+- 原文件：[results/Case1/pla_plot.png](https://raw.githubusercontent.com/vios-s/PhenoAssistant/aff85512073d9629dfcd501474641eb1919fbe87/results/Case1/pla_plot.png)。
+- SHA-256：`1da6df2d4508687d7dc4806aeb5e729780f240efd24a2eeea3ae149cca1cfa77`。
+- 作者仓库许可：MIT；Copyright (c) 2025 Feng Chen。许可全文原样保存在 [examples/assets/LICENSE-PhenoAssistant.txt](examples/assets/LICENSE-PhenoAssistant.txt)，与[该固定版本 LICENSE](https://github.com/vios-s/PhenoAssistant/blob/aff85512073d9629dfcd501474641eb1919fbe87/LICENSE) 一致。
+
+论文 Code availability 与仓库 README 支持该仓库及输出的官方来源。已检查该版本根目录许可与文件树，未见 `results/Case1` 的另置许可或该图的单独排除声明；本记录针对这项作者发布的输出，不声称仓库中的所有外部素材均被 MIT 覆盖。
+
+示例只裁去该图外围空白，完整源文件、曲线、标准差带、标题、坐标和图例仍保留，未重算或重画曲线。原生 `displayLegend` 以 22 px 可编辑文字和对应原图色线辅助转录生态型身份，备注注明“据原图转录”。图本身纵轴未印 cm²，讲稿中的平方厘米依据对应 Fig. 3 的 CSV 表头；本页讨论定性趋势，不声称由曲线像素得到精确读数。没有把作者 PNG 标成已取得的补充 PDF，也没有使用生成模型编辑科学图像。
+
+示例的原生解释层由汇报者整理，研究方案标注为待验证。它是单篇论文的软件功能与版式示例，不是此前五篇综述的重新交付，也不是对 DeepSeek 或本插件的科学效果评价。
 
 ## 4. 模板与字体
 

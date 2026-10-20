@@ -1,5 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { REFERENCE_CATEGORIES, REFERENCE_TEMPLATES, getReferenceTemplate } from './reference-catalog.mjs'
+import { recommendFigureLayouts } from './figure-planning.mjs'
+import { assertToolArgs } from './schema.mjs'
 
 const resource = name => fileURLToPath(new URL('../skills/dsh-academic-ppt/references/templates/' + name, import.meta.url))
 const overview = template => ({
@@ -9,8 +11,9 @@ const overview = template => ({
 })
 
 /** Read-only catalogue. All resource paths come from bundled constants, never user paths. */
-export async function referenceLayouts({ templateId, category, signal } = {}) {
+export async function referenceLayouts({ templateId, category, figure, signal } = {}) {
   signal?.throwIfAborted()
+  assertToolArgs('academic_ppt_reference', {...(templateId?{templateId}:{}),...(category?{category}:{}),...(figure?{figure}:{})})
   if (category && !REFERENCE_CATEGORIES.some(item => item.id === category)) throw new Error('UNKNOWN_REFERENCE_CATEGORY: ' + category)
   const files = {
     pptx: resource('academic-templates-48.pptx'),
@@ -32,9 +35,15 @@ export async function referenceLayouts({ templateId, category, signal } = {}) {
     return structuredClone({
       ok: true, count: 1, template, files: { ...files, categoryPptx: resource(template.category + '.pptx') },
       binding: { referenceTemplateId: template.id, layout: template.layout }, instructions,
+      ...(figure?{figureAdvice:recommendFigureLayouts(figure,[template])}:{}),
     })
   }
   const templates = REFERENCE_TEMPLATES.filter(item => !category || item.category === category)
+  if(figure){
+    const figureAdvice=recommendFigureLayouts(figure,templates)
+    return structuredClone({ok:true,count:figureAdvice.candidates.length,totalCount:REFERENCE_TEMPLATES.length,
+      categories:REFERENCE_CATEGORIES,templates:figureAdvice.candidates.map(candidate=>overview(getReferenceTemplate(candidate.templateId))),figureAdvice,files,instructions})
+  }
   return structuredClone({
     ok: true, count: templates.length, totalCount: REFERENCE_TEMPLATES.length,
     categories: REFERENCE_CATEGORIES, templates: templates.map(overview),

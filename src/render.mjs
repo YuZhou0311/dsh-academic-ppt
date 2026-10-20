@@ -91,7 +91,7 @@ export function sceneToSvg(page) {
       const anchor = n.align === 'right' ? 'end' : n.align === 'center' ? 'middle' : 'start';
       const x = n.align === 'right' ? n.x + n.w : n.align === 'center' ? n.x + n.w / 2 : n.x;
       const lines = n.lines || [n.text];
-      const text = lines.map((s, j) => svgEl('tspan', { x, y: n.y + n.fontSize * .96 + j * n.fontSize * n.lineHeight }, esc(s))).join('');
+      const text=lines.map((s,j)=>svgEl('tspan',{x,y:n.y+n.fontSize*.96+j*n.fontSize*n.lineHeight},n.richLines?.[j]?n.richLines[j].map(run=>svgEl('tspan',{'font-weight':run.bold?700:undefined,fill:run.color?paint(run.color,n.color):undefined},esc(run.text))).join(''):esc(s))).join('');
       nodes.push(svgEl('text', { ...attrs, 'font-family': n.fontFamily, 'font-size': n.fontSize, 'font-weight': n.bold ? 700 : 400, fill: paint(n.color, '#243648'), 'text-anchor': anchor }, text));
     } else if (n.kind === 'rect' || n.kind === 'ellipse') {
       let filter;
@@ -150,7 +150,10 @@ async function nativePptx(project, scenes, signal) {
       // Exact point spacing matches the scene's em-based baseline step.
       // A percentage of the font's natural line height adds a second leading
       // factor (notably for CJK fonts) and can overflow otherwise valid slots.
-      if (n.kind === 'text') slide.addText((n.lines || [n.text]).join('\n'), { ...base, fontFace: n.fontFamily, fontSize: n.fontSize * .75, color: hex(n.color), bold: !!n.bold, align: n.align || 'left', valign: 'top', margin: 0, breakLine: false, lineSpacing: n.fontSize * .75 * (n.lineHeight || 1.28), paraSpaceAfter: 0, paraSpaceBefore: 0, fit: 'none', wrap: false, lang: 'zh-CN' });
+      if(n.kind==='text'){
+        const value=n.richLines?n.richLines.flatMap((runs,li)=>runs.map((run,ri)=>({text:run.text,options:{bold:run.bold??!!n.bold,color:hex(run.color||n.color),breakLine:ri===runs.length-1&&li<n.richLines.length-1}}))):(n.lines||[n.text]).join('\n');
+        slide.addText(value,{...base,fontFace:n.fontFamily,fontSize:n.fontSize*.75,color:hex(n.color),bold:!!n.bold,align:n.align||'left',valign:'top',margin:0,breakLine:false,lineSpacing:n.fontSize*.75*(n.lineHeight||1.28),paraSpaceAfter:0,paraSpaceBefore:0,fit:'none',wrap:false,lang:'zh-CN'});
+      }
       else if (n.kind === 'rect' || n.kind === 'ellipse') {
         const fill = n.fill && n.fill !== 'none' ? { color: hex(n.fill), transparency: (1 - (n.fillOpacity ?? 1)) * 100 } : { type: 'none', transparency: 100 };
         const line = n.stroke && n.stroke !== 'none' ? { color: hex(n.stroke), transparency: (1 - (n.strokeOpacity ?? 1)) * 100, width: (n.strokeWidth || 1) * .75, dashType: n.dash === 'dot' ? 'sysDot' : n.dash ? 'dash' : 'solid' } : { color: 'FFFFFF', transparency: 100 };

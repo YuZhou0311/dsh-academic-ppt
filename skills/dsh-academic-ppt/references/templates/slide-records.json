@@ -35,7 +35,7 @@
       ],
       "year": 2026,
       "journal": "期刊与卷页（替换）",
-      "doi": "待替换",
+      "doi": "书目占位；图表均为合成示例",
       "url": "https://example.invalid/replace-with-official-paper-url",
       "version": "书目占位，非真实文献",
       "studyType": "system-evaluation",
@@ -58,7 +58,7 @@
       ],
       "year": 2026,
       "journal": "期刊与卷页（替换）",
-      "doi": "待替换",
+      "doi": "书目占位；图表均为合成示例",
       "url": "https://example.invalid/replace-with-official-paper-url",
       "version": "书目占位，非真实文献",
       "studyType": "system-evaluation",
@@ -81,7 +81,7 @@
       ],
       "year": 2026,
       "journal": "期刊与卷页（替换）",
-      "doi": "待替换",
+      "doi": "书目占位；图表均为合成示例",
       "url": "https://example.invalid/replace-with-official-paper-url",
       "version": "书目占位，非真实文献",
       "studyType": "system-evaluation",
@@ -112,76 +112,161 @@
     {
       "id": "template-response",
       "paperId": "T1",
-      "width": 1120,
-      "height": 672,
-      "sha256": "2ed71dbf0f6fb4152528eeefdde357a73024d52ea8767a541b34822877c82928",
+      "width": 532,
+      "height": 392,
+      "sha256": "631f5cf5eab8bb54344bab0714cc0d105dbcaef6758ab90f15f3e6cf2b729301",
       "figure": "示例图",
       "caption": "响应曲线；合成演示值",
+      "displayCaption": "A/B 为条件；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/response.png"
     },
     {
       "id": "template-distribution",
       "paperId": "T1",
-      "width": 1120,
-      "height": 672,
-      "sha256": "c6afc2430887c009ff966fb795691af6cd1ac3bb79a3db5349b123d2477bfe80",
+      "width": 532,
+      "height": 392,
+      "sha256": "5e081107f59b3d907c498c44d7c5ab7d865db3dacd7fc9366c3081a37f766b8d",
       "figure": "示例图",
       "caption": "独立观测分布；合成演示值",
+      "displayCaption": "独立观测分布；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/distribution.png"
     },
     {
       "id": "template-transfer",
       "paperId": "T1",
-      "width": 1120,
-      "height": 672,
-      "sha256": "62a9bd2343cd34d2aeccae2dff096312bd047163466a2b050b9473a10eb422c8",
+      "width": 532,
+      "height": 392,
+      "sha256": "2e9b2506ee7088f7b1b1195f983eea43df36181ff1dd007bc15337ed1c0be429",
       "figure": "示例图",
       "caption": "跨环境矩阵；合成演示值",
+      "displayCaption": "跨环境矩阵；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/transfer.png"
     },
     {
       "id": "template-effect",
       "paperId": "T1",
-      "width": 1120,
-      "height": 672,
-      "sha256": "b294b1f051847224a6e6ca4034ca21b3b40adca9b2cd29e9a6861e77daf46e2b",
+      "width": 532,
+      "height": 392,
+      "sha256": "3662908d5872c343f06b5bc20ceded1472f04e4248f8a9cc2d68d6d1da813347",
       "figure": "示例图",
       "caption": "效应与区间；合成演示值",
+      "displayCaption": "Ref. 为参考，V1–V3 为变体；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/effect-interval.png"
     },
     {
       "id": "template-composite",
       "paperId": "T1",
-      "width": 1680,
-      "height": 1008,
-      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "width": 1400,
+      "height": 1036,
+      "sha256": "487864bd7137a1859610029966ea872d984a5ef8a3e36a5a0e103561ff9a05fd",
       "figure": "示例图",
       "caption": "多面板科学图；合成演示值",
+      "displayCaption": "多面板科学图；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 4,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/four-panels.png"
     },
     {
@@ -189,44 +274,95 @@
       "paperId": "T1",
       "width": 910,
       "height": 1512,
-      "sha256": "d3f60f809493c5b8178330e816856656da990bfad6ff48c6610daa2edf1daffc",
+      "sha256": "65f03882698bd71b69b9f243644f6bdf59955164fb70fe9beaefa78a39a14087",
       "figure": "示例图",
       "caption": "竖向面板示例；合成演示值",
+      "displayCaption": "竖向面板示例；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 3,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/portrait-panels.png"
     },
     {
       "id": "template-wide",
       "paperId": "T1",
-      "width": 2240,
-      "height": 532,
-      "sha256": "86a8dffd59d05fbfdb1f9f07c90d5385bfc51e50f09f0b8f455953112bc54d61",
+      "width": 1960,
+      "height": 490,
+      "sha256": "d9ddbf98a4c5b329ecb193bcb82f811896afa96bfd6cf3d0d838a578e6ded978",
       "figure": "示例图",
       "caption": "宽幅面板示例；合成演示值",
+      "displayCaption": "A/B 为条件；所有数值为合成示例",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "完整原图，无裁切",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "dense-multipanel",
+        "task": "overview",
+        "panelCount": 3,
+        "minLabelPx": 34,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "path": "assets/wide-panels.png"
     },
     {
       "id": "template-detail",
       "paperId": "T1",
-      "width": 1680,
-      "height": 1008,
-      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "width": 1400,
+      "height": 1036,
+      "sha256": "487864bd7137a1859610029966ea872d984a5ef8a3e36a5a0e103561ff9a05fd",
       "figure": "示例图",
       "caption": "合成图面板 A 的局部视窗",
+      "displayCaption": "面板 A；A/B 为条件；合成数据",
       "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
-      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
       "license": "MIT; all plotted values are synthetic",
       "usage": "figure",
       "cropNote": "视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
       "viewport": {
         "x": 0.015,
         "y": 0.025,
@@ -234,6 +370,44 @@
         "h": 0.49
       },
       "path": "assets/four-panels.png"
+    },
+    {
+      "id": "template-portrait-detail",
+      "paperId": "T1",
+      "width": 910,
+      "height": 1512,
+      "sha256": "65f03882698bd71b69b9f243644f6bdf59955164fb70fe9beaefa78a39a14087",
+      "figure": "示例图",
+      "caption": "竖长合成图中的面板 A",
+      "displayCaption": "竖图面板 A；其余面板另页；合成数据",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.3.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "视窗 x=.035,y=.008,w=.95,h=.315；保留顶部面板的完整标题、两条件图例、坐标及单位。未把总图缩略图当作证据。",
+      "treatment": "paper",
+      "reading": {
+        "purpose": "evidence",
+        "contentType": "plot",
+        "task": "read-values",
+        "panelCount": 1,
+        "minLabelPx": 28,
+        "requiredElements": [
+          "面板标题",
+          "坐标与单位",
+          "条件/图例",
+          "误差定义"
+        ],
+        "verifiedBy": "vision-model",
+        "note": "已查看作者脚本生成的源图。关键坐标/图例字体为 20 pt（宽图 24 pt），140 dpi；minLabelPx按 DejaVu Sans 数字/大写字形墨迹高度保守取28/34px，排除仅用于来源披露的底部小字。需另检查最终PPTX。"
+      },
+      "viewport": {
+        "x": 0.035,
+        "y": 0.008,
+        "w": 0.95,
+        "h": 0.315
+      },
+      "path": "assets/portrait-panels.png"
     }
   ],
   "slides": [
@@ -242,7 +416,6 @@
       "layout": "paper",
       "referenceTemplateId": "paper-overview",
       "title": "单篇论文全景",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -264,12 +437,16 @@
           "kind": "method",
           "title": "方法改变了什么",
           "body": "说明输入、处理与输出\n指出新增方法实际介入的环节",
+          "emphasis": [
+            "输入",
+            "输出"
+          ],
           "claimIds": [],
           "style": "compact"
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "结果及适用范围",
           "body": "报告效果、分母与比较对象\n保留作者实际测试的场景",
           "claimIds": [],
@@ -289,7 +466,6 @@
       "layout": "paper",
       "referenceTemplateId": "paper-gap-hypothesis",
       "title": "缺口与假说",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -298,15 +474,15 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "question",
           "title": "已有认识",
           "body": "列出已有研究共同支持的结论\n说明该结论依赖的数据条件",
           "claimIds": [],
-          "style": "plain"
+          "style": "academic-side"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "question",
           "title": "尚存缺口",
           "body": "指出尚未验证的机制或条件\n将缺口定位到具体决策接口",
           "claimIds": [],
@@ -318,7 +494,7 @@
           "title": "可检验假说",
           "body": "明确干预变量与预期结果\n给出能够区分替代解释的观测",
           "claimIds": [],
-          "style": "academic-panel"
+          "style": "dashed-note"
         },
         {
           "id": "region-4",
@@ -339,7 +515,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "paper-evidence-map",
       "title": "核心论点与证据对应",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -370,17 +545,20 @@
         {
           "id": "step-1",
           "label": "输入与测量",
-          "detail": ""
+          "detail": "",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "验证与比较",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         },
         {
           "id": "step-3",
           "label": "解释与限定",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -399,14 +577,13 @@
         "证据一：测量对象",
         "证据二：效应与解释"
       ],
-      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
     },
     {
       "id": "T04",
       "layout": "paper",
       "referenceTemplateId": "paper-study-scope",
       "title": "研究对象与验证范围",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -415,9 +592,12 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "研究对象",
           "body": "填写物种、样本来源和实验单位\n区分个体数与重复观测次数",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -426,6 +606,10 @@
           "kind": "method",
           "title": "分析任务",
           "body": "列出任务输入和预期输出\n说明是否承担实际管理决策",
+          "emphasis": [
+            "输入",
+            "输出"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -447,7 +631,7 @@
         },
         {
           "id": "region-5",
-          "kind": "method",
+          "kind": "setting",
           "title": "外推范围",
           "body": "指出未包含的场景与人群\n避免把短期结果扩展为长期收益",
           "claimIds": [],
@@ -464,7 +648,6 @@
       "layout": "paper",
       "referenceTemplateId": "paper-contribution-comparison",
       "title": "贡献与基线的差异",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -478,12 +661,16 @@
           "kind": "method",
           "title": "关键改变",
           "body": "区分新增信息与算法结构变化\n保持对应基线的输入条件一致",
+          "emphasis": [
+            "新增信息",
+            "输入"
+          ],
           "claimIds": [],
           "style": "academic-side"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "setting",
           "title": "比较条件",
           "body": "对齐样本、时间窗和评价方法\n说明额外调参或计算预算",
           "claimIds": [],
@@ -492,7 +679,7 @@
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID paper-contribution-comparison。原生表格仅用于严格维度映射，侧栏说明新增贡献与公平性。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：关键改变；比较条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID paper-contribution-comparison。完整书目下以通栏表映射比较维度，两项说明紧贴实际表底，解释新增贡献与公平性。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：关键改变；比较条件。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -526,15 +713,13 @@
         "sourceClaimIds": [
           "C-TEMPLATE"
         ]
-      },
-      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+      }
     },
     {
       "id": "T06",
       "layout": "paper",
       "referenceTemplateId": "paper-journal-club",
       "title": "精读讨论提纲",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -545,7 +730,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "question",
           "title": "本次讨论问题",
           "body": "用一个具体科学问题组织精读\n方法、实验和局限围绕该问题展开",
           "claimIds": [],
@@ -556,8 +741,11 @@
           "kind": "method",
           "title": "方法审查",
           "body": "输入假设和关键算子是否明确\n机制图与实际实现是否一致\n额外模块提供了什么新信息",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
-          "style": "academic-panel"
+          "style": "open-frame"
         },
         {
           "id": "region-3",
@@ -581,7 +769,6 @@
       "layout": "method",
       "referenceTemplateId": "method-agent-loop",
       "title": "智能体执行与反馈",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -593,6 +780,10 @@
           "kind": "method",
           "title": "系统接口",
           "body": "标出各步骤输入、输出和记录\n区分模型决策与确定性工具计算\n用箭头说明状态由谁更新",
+          "emphasis": [
+            "输入",
+            "输出"
+          ],
           "claimIds": [],
           "style": "academic-side"
         },
@@ -601,6 +792,9 @@
           "kind": "boundary",
           "title": "核验与失败处理",
           "body": "列出错误触发与返回机制\n保存工具输出、引用和重试记录\n核验模块的成本也需要评价",
+          "emphasis": [
+            "输出"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -609,32 +803,38 @@
         {
           "id": "step-1",
           "label": "任务与观测",
-          "detail": ""
+          "detail": "目标与可用数据",
+          "kind": "setting"
         },
         {
           "id": "step-2",
-          "label": "计划与工具选择",
-          "detail": ""
+          "label": "计划与工具",
+          "detail": "工具与调用顺序",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "执行与记录",
-          "detail": ""
+          "detail": "输入、参数和日志",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "结果检验",
-          "detail": ""
+          "detail": "结果与来源一致",
+          "kind": "result"
         },
         {
           "id": "step-5",
           "label": "状态更新",
-          "detail": ""
+          "detail": "中间状态与证据",
+          "kind": "method"
         },
         {
           "id": "step-6",
           "label": "后续任务",
-          "detail": ""
+          "detail": "继续或退出",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -675,7 +875,6 @@
       "layout": "method",
       "referenceTemplateId": "method-rl-interface",
       "title": "强化学习的状态动作奖励",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -687,6 +886,9 @@
           "kind": "method",
           "title": "状态 s_t",
           "body": "观测变量、历史和缺失值\n记录单位、采样频率与可得时间",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "compact"
         },
@@ -708,9 +910,12 @@
         },
         {
           "id": "region-4",
-          "kind": "method",
+          "kind": "boundary",
           "title": "安全约束",
           "body": "硬边界、软惩罚与终止条件\n单独报告约束违反情况",
+          "emphasis": [
+            "约束违反"
+          ],
           "claimIds": [],
           "style": "compact"
         }
@@ -719,22 +924,26 @@
         {
           "id": "step-1",
           "label": "观测与状态估计",
-          "detail": "填写接口与条件"
+          "detail": "传感、气象与历史",
+          "kind": "result"
         },
         {
           "id": "step-2",
           "label": "策略决策",
-          "detail": "填写接口与条件"
+          "detail": "状态映射到动作",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "环境与执行器",
-          "detail": "填写接口与条件"
+          "detail": "执行实际管理",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "反馈与终止条件",
-          "detail": "填写接口与条件"
+          "detail": "奖励与约束检查",
+          "kind": "boundary"
         }
       ],
       "edges": [
@@ -763,7 +972,6 @@
       "layout": "method",
       "referenceTemplateId": "method-tool-routing",
       "title": "工具路由与能力边界",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -780,9 +988,12 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "setting",
           "title": "工具覆盖范围",
           "body": "列出工具能处理的对象和输入\n标注分布外样本与失败类别\n解释工具更新后需重做哪些验证",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -791,27 +1002,32 @@
         {
           "id": "step-1",
           "label": "任务解析",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-2",
           "label": "感知模型",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "数据与统计工具",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         },
         {
           "id": "step-4",
           "label": "知识检索",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-5",
           "label": "输出核验",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         }
       ],
       "edges": [
@@ -851,7 +1067,6 @@
       "layout": "method",
       "referenceTemplateId": "method-model-coupling",
       "title": "机理模型与优化器耦合",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -860,17 +1075,24 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
-          "title": "输入与单位",
-          "body": "同化观测、气象与管理输入\n逐项保留物理量单位和时间步\n说明缺失或预测数据的来源",
+          "kind": "setting",
+          "title": "输入\n单位",
+          "body": "列出观测与管理输入\n核对物理量单位与时间步\n保留缺失或预测数据的来源",
+          "emphasis": [
+            "单位",
+            "输入"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "split-label"
         },
         {
           "id": "region-2",
           "kind": "method",
           "title": "校准与验证",
           "body": "区分参数校准与独立验证\n报告校准范围与留出环境\n与观测比较误差而非只看拟合",
+          "emphasis": [
+            "独立验证"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -879,6 +1101,9 @@
           "kind": "method",
           "title": "模型失配",
           "body": "列出结构误差与参数不确定性\n说明误差如何影响优化或策略\n补充越界状态的处理规则",
+          "emphasis": [
+            "不确定性"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -887,22 +1112,26 @@
         {
           "id": "step-1",
           "label": "环境与管理输入",
-          "detail": "填写接口与条件"
+          "detail": "同一时间步和物理量",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "机理模型",
-          "detail": "填写接口与条件"
+          "detail": "参数与状态演化",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "目标与约束计算",
-          "detail": "填写接口与条件"
+          "detail": "效应、损失和边界",
+          "kind": "boundary"
         },
         {
           "id": "step-4",
           "label": "优化或策略更新",
-          "detail": "填写接口与条件"
+          "detail": "反馈到下一轮",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -930,7 +1159,6 @@
       "layout": "method",
       "referenceTemplateId": "method-algorithm-steps",
       "title": "算法步骤与关键假设",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -942,6 +1170,10 @@
           "kind": "method",
           "title": "关键运算",
           "body": "写清关键更新或目标计算\n保留输入维度、输出与复杂度\n避免只写算法名而省略机制",
+          "emphasis": [
+            "输入",
+            "输出"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -956,7 +1188,7 @@
         {
           "id": "region-3",
           "kind": "hypothesis",
-          "title": "假设与计算条件",
+          "title": "计算假设",
           "body": "列出独立性、可观测性与稳定性假设\n报告超参数、随机种子和预算",
           "claimIds": [],
           "style": "academic-tab"
@@ -966,27 +1198,32 @@
         {
           "id": "step-1",
           "label": "输入与初始化",
-          "detail": ""
+          "detail": "",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "构造候选",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "计算目标",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "更新参数",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-5",
           "label": "停止与输出",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         }
       ],
       "edges": [
@@ -1015,7 +1252,6 @@
       "layout": "method",
       "referenceTemplateId": "method-objective-constraints",
       "title": "目标函数与约束分解",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1032,7 +1268,7 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "boundary",
           "title": "约束集合",
           "body": "示例：g(x) ≤ 0，a_t ∈ A\n说明约束作用对象与违反代价",
           "claimIds": [],
@@ -1043,16 +1279,19 @@
           "kind": "method",
           "title": "求解与评价",
           "body": "求解器负责怎样的搜索或更新\n独立测试怎样估计结果与不确定性",
+          "emphasis": [
+            "不确定性"
+          ],
           "claimIds": [],
-          "style": "plain"
+          "style": "academic-side"
         },
         {
           "id": "region-4",
-          "kind": "method",
+          "kind": "setting",
           "title": "符号与单位",
           "body": "统一状态、动作、参数与损失符号\n所有数值项保留量纲与归一化\n避免同一符号代表不同物理量",
           "claimIds": [],
-          "style": "academic-side"
+          "style": "ledger"
         },
         {
           "id": "region-5",
@@ -1073,7 +1312,6 @@
       "layout": "method",
       "referenceTemplateId": "experiment-cohort-design",
       "title": "样本单位与重复测量",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1082,7 +1320,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "独立样本单位",
           "body": "填写真正接受独立处理的个体\n随机种子、图像和轨迹分别计数\n用实验设计判断统计独立性",
           "claimIds": [],
@@ -1093,13 +1331,16 @@
           "kind": "method",
           "title": "重复测量结构",
           "body": "填写每个个体的时间点与采样频率\n说明分层或相关观测的处理方法\n缺失测量不应扩大独立样本数",
+          "emphasis": [
+            "独立样本"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "open-frame"
         },
         {
           "id": "region-3",
           "kind": "boundary",
-          "title": "纳入排除与缺失值",
+          "title": "纳入、排除与缺失",
           "body": "预先写明纳入、排除和质量控制规则\n报告各阶段样本量与缺失原因",
           "claimIds": [],
           "style": "ruled"
@@ -1109,22 +1350,26 @@
         {
           "id": "step-1",
           "label": "目标总体",
-          "detail": "填写接口与条件"
+          "detail": "来源与纳入规则",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "独立实验单位",
-          "detail": "填写接口与条件"
+          "detail": "独立接受处理",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "分组与处理",
-          "detail": "填写接口与条件"
+          "detail": "随机化与区组",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "重复测量",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -1149,7 +1394,6 @@
       "layout": "comparison",
       "referenceTemplateId": "experiment-factorial",
       "title": "实验因子与处理组合",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1163,21 +1407,24 @@
           "kind": "method",
           "title": "随机化与重复",
           "body": "说明处理分配与区组\n写清每组独立重复数\n将技术重复与生物重复区分",
+          "emphasis": [
+            "独立重复"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "效应解释",
-          "body": "分别解释主效应与交互作用\n比较应固定其他因素的条件\n多次比较的处理需在页上交代",
+          "body": "分别解释主效应与交互作用\n比较应固定其他因素的条件",
           "claimIds": [],
-          "style": "ruled"
+          "style": "paper-shadow"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID experiment-factorial。用原生表格记录因子水平与处理，右侧解释随机化和交互作用。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：随机化与重复；效应解释。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID experiment-factorial。因子表与随机化条件并列，主效应和交互作用的解释作为宽带紧接表底。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：随机化与重复；效应解释。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -1217,14 +1464,13 @@
           "C-TEMPLATE"
         ]
       },
-      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
     },
     {
       "id": "T15",
       "layout": "method",
       "referenceTemplateId": "experiment-train-test-split",
       "title": "训练验证与独立测试",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1233,7 +1479,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "划分单位与留出条件",
           "body": "按个体、站点或年份划分\n明确训练、验证与独立测试的职责\n测试集不能参与特征或阈值选择",
           "claimIds": [],
@@ -1252,22 +1498,26 @@
         {
           "id": "step-1",
           "label": "原始样本：按独立单位划分",
-          "detail": ""
+          "detail": "",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "训练集",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "验证集",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         },
         {
           "id": "step-4",
           "label": "独立测试集",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -1295,7 +1545,6 @@
       "layout": "comparison",
       "referenceTemplateId": "experiment-baseline-controls",
       "title": "基线与公平对照",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1306,9 +1555,12 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "共同预算",
           "body": "观测、工具与训练预算保持一致\n固定调参和人工干预次数\n报告运行时间与失败成本",
+          "emphasis": [
+            "失败成本"
+          ],
           "claimIds": [],
           "style": "academic-side"
         },
@@ -1317,13 +1569,17 @@
           "kind": "method",
           "title": "额外信息",
           "body": "列出每种方法获得的新增信息\n通过单独对照区分信息优势\n不能只据结果提升归因于结构",
+          "emphasis": [
+            "新增信息",
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID experiment-baseline-controls。共同条件用表格对齐，额外信息、算力与调参预算在侧栏说明。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：共同预算；额外信息。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID experiment-baseline-controls。共同条件用表格对齐，右栏交代预算；紧接表底的宽解释区区分新增信息与结构贡献。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：共同预算；额外信息。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -1370,7 +1626,6 @@
       "layout": "method",
       "referenceTemplateId": "experiment-measurement-chain",
       "title": "测量到统计分析的链路",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1382,12 +1637,15 @@
           "kind": "method",
           "title": "校准与误差",
           "body": "报告仪器校准与测量不确定性\n记录异常检测和人工复核规则",
+          "emphasis": [
+            "不确定性"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "setting",
           "title": "分析单位",
           "body": "区分记录行、图像、样本与场次\n模型估计应符合实际分层结构\n解释聚合前后的信息损失",
           "claimIds": [],
@@ -1398,32 +1656,38 @@
         {
           "id": "step-1",
           "label": "实验对象",
-          "detail": ""
+          "detail": "处理与生物重复",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "传感与成像",
-          "detail": ""
+          "detail": "设备与采样条件",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "原始观测",
-          "detail": ""
+          "detail": "数据版本与缺失",
+          "kind": "setting"
         },
         {
           "id": "step-4",
           "label": "质量控制",
-          "detail": ""
+          "detail": "异常与复核规则",
+          "kind": "boundary"
         },
         {
           "id": "step-5",
           "label": "特征构建",
-          "detail": ""
+          "detail": "表型与单位",
+          "kind": "method"
         },
         {
           "id": "step-6",
           "label": "统计估计",
-          "detail": ""
+          "detail": "效应与区间",
+          "kind": "result"
         }
       ],
       "edges": [
@@ -1459,7 +1723,6 @@
       "layout": "comparison",
       "referenceTemplateId": "experiment-parameter-protocol",
       "title": "参数与复现实验协议",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1470,7 +1733,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "训练条件",
           "body": "固定数据版本、目标与停止规则\n记录种子和选择超参数的依据",
           "claimIds": [],
@@ -1478,7 +1741,7 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "setting",
           "title": "测试条件",
           "body": "冻结模型后使用独立数据\n保留场景、尺度与失败记录",
           "claimIds": [],
@@ -1486,7 +1749,7 @@
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "setting",
           "title": "复现材料",
           "body": "代码、数据、参数和运行环境\n明确哪些材料公开，哪些受限",
           "claimIds": [],
@@ -1535,14 +1798,13 @@
           "C-TEMPLATE"
         ]
       },
-      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
     },
     {
       "id": "T19",
       "layout": "results",
       "referenceTemplateId": "results-main-effect",
       "title": "主结果与统计口径",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1553,17 +1815,25 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "主要效应",
           "body": "报告效应大小与比较基线\n模板图中的数字仅为合成演示",
+          "emphasis": [
+            "效应大小",
+            "比较基线"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "academic-panel"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "setting",
           "title": "统计口径",
           "body": "给出样本、聚合方法与不确定性\n误差条含义不能只写 error",
+          "emphasis": [
+            "误差条",
+            "不确定性"
+          ],
           "claimIds": [],
           "style": "ruled"
         },
@@ -1573,7 +1843,7 @@
           "title": "解释边界",
           "body": "统计差异与实际意义分别判断\n说明未测试的条件与替代解释",
           "claimIds": [],
-          "style": "academic-tab"
+          "style": "academic-side"
         }
       ],
       "nodes": [],
@@ -1607,7 +1877,6 @@
       "layout": "results",
       "referenceTemplateId": "results-two-outcomes",
       "title": "两个终点分别报告",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1620,17 +1889,20 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "终点一的解释",
-          "body": "定义单位、分母与评价时间窗\n单独报告该指标的效应与误差",
+          "body": "定义单位、分母与评价时间窗",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "终点二的解释",
-          "body": "明确与终点一的不同含义\n两个终点分别达标不等于同时达标",
+          "body": "明确与终点一的不同含义",
           "claimIds": [],
           "style": "academic-panel"
         }
@@ -1669,7 +1941,6 @@
       "layout": "results",
       "referenceTemplateId": "results-ablation",
       "title": "消融比较与组件贡献",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1683,14 +1954,20 @@
           "kind": "method",
           "title": "组件作用",
           "body": "把消融操作和机制假设对应\n比较时其余输入与预算保持一致",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "academic-panel"
         },
         {
           "id": "region-2",
           "kind": "method",
           "title": "替代解释",
           "body": "消融同时改变了哪些条件\n检查调参、容量与数据的影响\n用进一步对照区分机制贡献",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         },
@@ -1699,13 +1976,16 @@
           "kind": "method",
           "title": "不确定性与重复",
           "body": "报告独立重复、区间和显著性方法\n避免仅凭单次最佳值解释组件贡献",
+          "emphasis": [
+            "独立重复"
+          ],
           "claimIds": [],
-          "style": "compact"
+          "style": "academic-panel"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID results-ablation。消融表与组件作用说明相邻，底部列出估计不确定性。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：组件作用；替代解释；不确定性与重复。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID results-ablation。左侧表格下方紧接可支持的效应结论，右侧说明组件机制与替代解释；短表按实际行高收紧。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：组件作用；替代解释；不确定性与重复。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -1751,7 +2031,6 @@
       "layout": "results",
       "referenceTemplateId": "results-robustness",
       "title": "跨环境表现与异质性",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1765,6 +2044,9 @@
           "kind": "method",
           "title": "测试环境",
           "body": "列出训练覆盖和独立留出条件\n分环境报告，不只给全局平均",
+          "emphasis": [
+            "独立留出"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -1778,7 +2060,7 @@
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "平均值以外的结论",
           "body": "检查分位数、最差环境与个体差异\n总体均值不能替代条件层面的判断",
           "claimIds": [],
@@ -1826,7 +2108,6 @@
       "layout": "results",
       "referenceTemplateId": "results-tradeoff",
       "title": "收益风险与代价权衡",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1840,8 +2121,11 @@
           "kind": "method",
           "title": "收益指标",
           "body": "定义收益、单位与基线\n说明是否包含预测或模拟项",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "academic-panel"
         },
         {
           "id": "region-2",
@@ -1856,6 +2140,9 @@
           "kind": "method",
           "title": "资源代价",
           "body": "计算、人工、数据与执行成本\n权衡使用相同的时间与计量单位",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "ruled"
         }
@@ -1891,7 +2178,6 @@
       "layout": "results",
       "referenceTemplateId": "results-error-analysis",
       "title": "错误类型与任务分母",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1911,23 +2197,30 @@
         {
           "id": "region-2",
           "kind": "boundary",
-          "title": "失败集中在哪一步",
+          "title": "失败环节",
           "body": "将错误对应到数据、计划、工具或读图\n记录可复现的输入和失败输出\n避免用总分掩盖集中失效的环节",
+          "emphasis": [
+            "输入",
+            "输出"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "setting",
           "title": "分母与统计单位",
-          "body": "报告任务数、重复数与实际评价单位\n模板计数仅用于验证表格表达",
+          "body": "报告任务数、重复数与实际评价单位",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "compact"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID results-error-analysis。原生错误分类表与实际评价流程并置，避免评价口径混用。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：评价者与尺度；失败集中在哪一步；分母与统计单位。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID results-error-analysis。先交代共同评价条件，再以通栏表对齐任务分母，下方分别说明任务构造与失败解释。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：评价者与尺度；失败集中在哪一步；分母与统计单位。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -1954,12 +2247,6 @@
             "10",
             "3",
             "答案与数据来源"
-          ],
-          [
-            "最终交付",
-            "10",
-            "1",
-            "完整性与可复现性"
           ]
         ],
         "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
@@ -1973,7 +2260,6 @@
       "layout": "figure-focus",
       "referenceTemplateId": "figure-wide-annotated",
       "title": "宽幅原图与读图说明",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -1992,9 +2278,12 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "主要趋势",
           "body": "指出具体面板和变化方向\n对照图注与原始数据核对数值",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "ruled"
         },
@@ -2020,7 +2309,6 @@
       "layout": "figure-split",
       "referenceTemplateId": "figure-two-panels",
       "title": "双面板对照解读",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2034,7 +2322,7 @@
           "id": "region-1",
           "kind": "method",
           "title": "面板 A",
-          "body": "解释该面板的变量和处理\n对应的图注与样本条件独立保留",
+          "body": "解释该面板的变量和处理",
           "claimIds": [],
           "style": "compact"
         },
@@ -2042,7 +2330,7 @@
           "id": "region-2",
           "kind": "method",
           "title": "面板 B",
-          "body": "说明它如何补充前一面板\n确认两图尺度是否可以直接比较",
+          "body": "说明它如何补充前一面板",
           "claimIds": [],
           "style": "compact"
         }
@@ -2061,7 +2349,6 @@
       "layout": "figure-split",
       "referenceTemplateId": "figure-three-panels",
       "title": "三项互补证据",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2074,7 +2361,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "证据 A",
           "body": "变量、样本和关键趋势\n对应来源面板及读图规则",
           "claimIds": [],
@@ -2082,15 +2369,18 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "证据 B",
           "body": "使用不同观测检查同一解释\n保留自身单位与统计口径",
+          "emphasis": [
+            "单位"
+          ],
           "claimIds": [],
           "style": "compact"
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "证据 C",
           "body": "补充机制或边界证据\n不要把相关性作为因果结论",
           "claimIds": [],
@@ -2111,66 +2401,70 @@
       "id": "T28",
       "layout": "figure-split",
       "referenceTemplateId": "figure-detail-window",
-      "title": "全图定位与局部放大",
-      "kicker": "结构模板 / 占位说明与合成数据",
+      "title": "主证据与补充面板",
       "paperIds": [
         "T1"
       ],
       "claimIds": [],
       "figureIds": [
-        "template-composite",
-        "template-detail"
+        "template-detail",
+        "template-effect"
       ],
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
-          "title": "全图定位",
-          "body": "保留图号和细节区域的位置",
+          "kind": "result",
+          "title": "主面板结论",
+          "body": "两个条件的差异随时间展开",
           "claimIds": [],
           "style": "compact"
         },
         {
           "id": "region-2",
-          "kind": "method",
-          "title": "局部读数与上下文",
-          "body": "放大指定面板，保留坐标、单位和邻近图例",
+          "kind": "result",
+          "title": "补充证据与限定",
+          "body": "效应区间补充趋势图\n两图都保留坐标与对照\n合成示例不支持研究结论",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
-          "style": "compact"
+          "style": "open-frame"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID figure-detail-window。全图与细节分别保留为独立图像，附面板位置和放大范围说明。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：全图定位；局部读数与上下文。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID figure-detail-window。主面板占左侧主要面积，右上展开补充面板、右下解释两者关系；两图都承担可读的证据任务。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：主面板的读图结论；补充证据与限定。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60
     },
     {
       "id": "T29",
       "layout": "figure-focus",
       "referenceTemplateId": "figure-portrait-reading",
-      "title": "竖向原图与分步解读",
-      "kicker": "结构模板 / 占位说明与合成数据",
+      "title": "竖长原图的独立面板",
       "paperIds": [
         "T1"
       ],
       "claimIds": [],
       "figureIds": [
-        "template-portrait"
+        "template-portrait-detail"
       ],
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
-          "title": "阅读顺序",
-          "body": "按面板和变量解释竖向图\n先识别输入、过程与输出",
+          "kind": "setting",
+          "title": "面板范围",
+          "body": "本页只展开面板 A\n保留条件、坐标和误差带",
           "claimIds": [],
           "style": "academic-side"
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "关键证据",
           "body": "指出哪个面板支持具体论点\n把精确读数与正文或源数据对照",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -2185,10 +2479,10 @@
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID figure-portrait-reading。竖图使用整列高度，右侧先解释流程，再记录关键证据和局限。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：阅读顺序；关键证据；局限与外推。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID figure-portrait-reading。从竖长多面板原图选择当前论点所需的独立面板，占主要区域；保留轴与图例，其他面板按论证另页展开。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：所选面板的范围；关键证据；局限与外推。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "panelTitles": [
-        "竖向证据图"
+        "面板 A：独立证据"
       ]
     },
     {
@@ -2196,7 +2490,6 @@
       "layout": "figure-focus",
       "referenceTemplateId": "figure-legend-first",
       "title": "图例变量与结果判读",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2207,11 +2500,11 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "坐标与变量",
           "body": "解释横纵轴、量纲与归一化\n注明对数刻度或截断范围",
           "claimIds": [],
-          "style": "academic-side"
+          "style": "academic-panel"
         },
         {
           "id": "region-2",
@@ -2226,8 +2519,11 @@
           "kind": "method",
           "title": "判读规则",
           "body": "说明点、带和误差条代表什么\n依据实验设计解释比较关系",
+          "emphasis": [
+            "误差条"
+          ],
           "claimIds": [],
-          "style": "plain"
+          "style": "academic-side"
         }
       ],
       "nodes": [],
@@ -2243,7 +2539,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "synthesis-mechanism-map",
       "title": "多篇方法的接口对应",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2255,6 +2550,9 @@
           "kind": "method",
           "title": "共同机制",
           "body": "比较共同输入、动作和反馈的接口\n把机制相同与实现相同分开",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -2271,22 +2569,26 @@
         {
           "id": "step-1",
           "label": "共同输入",
-          "detail": "填写接口与条件"
+          "detail": "统一观测与单位",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "知识接入",
-          "detail": "填写接口与条件"
+          "detail": "新增信息的来源",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "决策接口",
-          "detail": "填写接口与条件"
+          "detail": "谁选择管理动作",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "执行与反馈",
-          "detail": "填写接口与条件"
+          "detail": "如何检验输出",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -2314,7 +2616,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "synthesis-evidence-ladder",
       "title": "证据等级与外推距离",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2334,6 +2635,9 @@
           "kind": "method",
           "title": "受控实验",
           "body": "说明受控条件与独立重复",
+          "emphasis": [
+            "独立重复"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -2355,7 +2659,7 @@
         },
         {
           "id": "region-5",
-          "kind": "method",
+          "kind": "setting",
           "title": "共同评价对象",
           "body": "先确定评价对象是否一致\n任务完成、预测性能和农艺收益分别比较",
           "claimIds": [],
@@ -2380,7 +2684,6 @@
       "layout": "comparison",
       "referenceTemplateId": "synthesis-method-comparison",
       "title": "同维度方法比较",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2394,6 +2697,10 @@
           "kind": "method",
           "title": "比较维度",
           "body": "只比较含义一致的输入与接口\n数值比较须使用相同任务和评价单位",
+          "emphasis": [
+            "单位",
+            "输入"
+          ],
           "claimIds": [],
           "style": "academic-side"
         },
@@ -2402,6 +2709,9 @@
           "kind": "boundary",
           "title": "不可比条件",
           "body": "列出数据、预算和任务范围的差异\n报告不可比原因及需要补充的对照",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -2455,7 +2765,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "synthesis-timeline",
       "title": "研究进展与方法演化",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2483,6 +2792,9 @@
           "kind": "method",
           "title": "仍然缺少的验证",
           "body": "指出现有证据尚未覆盖的条件\n提出升级验证需要的数据与对照",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -2491,22 +2803,26 @@
         {
           "id": "step-1",
           "label": "阶段一",
-          "detail": "填写接口与条件"
+          "detail": "定义输入与任务",
+          "kind": "method"
         },
         {
           "id": "step-2",
           "label": "阶段二",
-          "detail": "填写接口与条件"
+          "detail": "定位新模块",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "阶段三",
-          "detail": "填写接口与条件"
+          "detail": "检查验证范围",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "当前研究",
-          "detail": "填写接口与条件"
+          "detail": "明确仍缺的证据",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -2531,7 +2847,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "synthesis-agreement-conflict",
       "title": "一致发现与相互冲突",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2543,7 +2858,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "一致发现",
           "body": "汇总可被不同证据重复支持的关系\n保留各论文共享的实验条件",
           "claimIds": [],
@@ -2551,7 +2866,7 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "boundary",
           "title": "冲突来源",
           "body": "先检查任务、样本和测量尺度\n再分析机制解释是否相互排斥",
           "claimIds": [],
@@ -2562,8 +2877,11 @@
           "kind": "method",
           "title": "可区分的解释",
           "body": "列出能够解释分歧的具体条件\n设计只改变该条件的公平比较",
+          "emphasis": [
+            "公平比较"
+          ],
           "claimIds": [],
-          "style": "ruled"
+          "style": "dashed-note"
         }
       ],
       "nodes": [],
@@ -2576,7 +2894,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "synthesis-open-questions",
       "title": "证据缺口与研究问题",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2585,7 +2902,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "已知证据一",
           "body": "汇总现有研究一致支持的发现\n保留场景与测量条件",
           "claimIds": [],
@@ -2601,7 +2918,7 @@
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "已知证据二",
           "body": "记录已有失败与反例\n说明信息是否足以解释",
           "claimIds": [],
@@ -2617,7 +2934,7 @@
         },
         {
           "id": "region-5",
-          "kind": "method",
+          "kind": "hypothesis",
           "title": "下一步检验条件",
           "body": "优先检验影响核心结论且能获得证据的问题",
           "claimIds": [],
@@ -2634,7 +2951,6 @@
       "layout": "figure-focus",
       "referenceTemplateId": "limitations-failure-case",
       "title": "失败案例的逐步定位",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2648,6 +2964,9 @@
           "kind": "boundary",
           "title": "失败条件",
           "body": "填写可复现的输入、环境与触发点\n给出出现失败的任务分母",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
           "style": "academic-side"
         },
@@ -2656,12 +2975,15 @@
           "kind": "method",
           "title": "错误发生在哪一步",
           "body": "对照日志定位第一个错误环节\n区分原始错误和后续传播",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "对结论的影响",
           "body": "说明失败是否改变主要结果\n记录该条件是否已纳入评价",
           "claimIds": [],
@@ -2682,7 +3004,6 @@
       "layout": "results",
       "referenceTemplateId": "limitations-domain-shift",
       "title": "分布变化与迁移边界",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2693,7 +3014,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "输入条件变化",
           "body": "对齐训练和测试的变量范围\n用同一尺度表示发生变化的条件",
           "claimIds": [],
@@ -2709,8 +3030,8 @@
         },
         {
           "id": "region-3",
-          "kind": "method",
-          "title": "可支持的迁移结论",
+          "kind": "result",
+          "title": "迁移结论",
           "body": "结论限定在已测试的条件变化内\n独立报告未覆盖环境",
           "claimIds": [],
           "style": "compact"
@@ -2757,7 +3078,6 @@
       "layout": "method",
       "referenceTemplateId": "limitations-measurement-bias",
       "title": "测量偏倚与替代解释",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2785,22 +3105,26 @@
         {
           "id": "step-1",
           "label": "真实状态",
-          "detail": "填写接口与条件"
+          "detail": "目标估计对象",
+          "kind": "method"
         },
         {
           "id": "step-2",
           "label": "测量与选择",
-          "detail": "填写接口与条件"
+          "detail": "潜在系统性误差",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "统计估计",
-          "detail": "填写接口与条件"
+          "detail": "实际分析单位",
+          "kind": "result"
         },
         {
           "id": "step-4",
           "label": "研究结论",
-          "detail": "填写接口与条件"
+          "detail": "适用对象与范围",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -2825,7 +3149,6 @@
       "layout": "comparison",
       "referenceTemplateId": "limitations-validity-audit",
       "title": "效度与解释边界",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2839,8 +3162,11 @@
           "kind": "method",
           "title": "内部效度",
           "body": "对照是否隔离了目标干预\n检查混杂、泄漏与测量不一致",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
-          "style": "academic-side"
+          "style": "academic-panel"
         },
         {
           "id": "region-2",
@@ -2848,12 +3174,12 @@
           "title": "外部效度",
           "body": "研究样本代表哪些对象和条件\n明确跨地点、年份和管理制度的限制",
           "claimIds": [],
-          "style": "academic-tab"
+          "style": "dashed-note"
         }
       ],
       "nodes": [],
       "edges": [],
-      "notes": "本页为原创学术版式模板，ID limitations-validity-audit。逐项对应威胁、证据与处理，避免笼统的局限清单。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：内部效度；外部效度。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "notes": "本页为原创学术版式模板，ID limitations-validity-audit。通栏表对齐威胁、证据与验证；其下两块说明限定范围，结论紧跟实际内容高度。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：内部效度；外部效度。\n建议讲述时间只是排练起点，按实际内容调整。",
       "seconds": 60,
       "table": {
         "columns": [
@@ -2900,7 +3226,6 @@
       "layout": "proposal",
       "referenceTemplateId": "limitations-risk-mitigation",
       "title": "风险触发与干预条件",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2912,6 +3237,9 @@
           "kind": "boundary",
           "title": "风险触发条件",
           "body": "把失败或不确定性写成可监测信号\n提前规定何时停止、复核或回退",
+          "emphasis": [
+            "不确定性"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         },
@@ -2936,22 +3264,26 @@
         {
           "id": "step-1",
           "label": "异常或不确定性",
-          "detail": ""
+          "detail": "",
+          "kind": "boundary"
         },
         {
           "id": "step-2",
           "label": "触发复核",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "人工或工具核验",
-          "detail": ""
+          "detail": "",
+          "kind": "result"
         },
         {
           "id": "step-4",
           "label": "返回与记录",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -2983,7 +3315,6 @@
       "layout": "synthesis",
       "referenceTemplateId": "limitations-reproducibility",
       "title": "复现材料与缺失信息",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -2992,11 +3323,11 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "已公开材料",
           "body": "逐项记录数据、代码和环境版本\n用最小实验核查能否恢复原结果",
           "claimIds": [],
-          "style": "academic-panel"
+          "style": "open-frame"
         },
         {
           "id": "region-2",
@@ -3011,22 +3342,26 @@
         {
           "id": "step-1",
           "label": "数据与版本",
-          "detail": "填写接口与条件"
+          "detail": "公开记录与许可",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "环境与依赖",
-          "detail": "填写接口与条件"
+          "detail": "可复现安装",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "代码与参数",
-          "detail": "填写接口与条件"
+          "detail": "固定程序和预算",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "输出与核验",
-          "detail": "填写接口与条件"
+          "detail": "原图、数据与来源",
+          "kind": "result"
         }
       ],
       "edges": [
@@ -3052,7 +3387,6 @@
       "layout": "proposal",
       "referenceTemplateId": "plan-hypothesis-test",
       "title": "从证据缺口到可检验假设",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -3061,7 +3395,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "已有证据",
           "body": "填写可追溯的已有发现\n指出效应与验证范围",
           "claimIds": [],
@@ -3069,7 +3403,7 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "question",
           "title": "尚存缺口",
           "body": "将缺少的证据写成具体问题\n区分未知机制与未测环境",
           "claimIds": [],
@@ -3081,23 +3415,30 @@
           "title": "研究假设",
           "body": "改变一个明确的机制或接口\n预期哪个指标发生什么变化\n哪种观察会使假说不获支持",
           "claimIds": [],
-          "style": "open-frame"
+          "style": "dashed-note"
         },
         {
           "id": "region-4",
           "kind": "method",
           "title": "实验对照",
           "body": "冻结其余信息与工具预算\n设置基线、干预和必要消融\n保证同一评价和留出条件",
+          "emphasis": [
+            "同一评价"
+          ],
           "claimIds": [],
-          "style": "plain"
+          "style": "open-frame"
         },
         {
           "id": "region-5",
           "kind": "boundary",
           "title": "评价与反证",
           "body": "预先定义主要终点与不确定性\n同时报告失败、成本和风险\n无效或负效应也应完整保留",
+          "emphasis": [
+            "主要终点",
+            "不确定性"
+          ],
           "claimIds": [],
-          "style": "ruled"
+          "style": "ledger"
         }
       ],
       "nodes": [],
@@ -3110,7 +3451,6 @@
       "layout": "method",
       "referenceTemplateId": "plan-fair-comparison",
       "title": "公平比较的实验结构",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -3119,9 +3459,12 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "共同预算与信息",
           "body": "双方使用同一任务、观测和工具\n固定调用次数、人工介入和预算\n明确干预只改变哪个环节",
+          "emphasis": [
+            "同一任务"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -3130,6 +3473,10 @@
           "kind": "boundary",
           "title": "主要终点与反证",
           "body": "定义可测的主要终点\n统一盲评与统计单位\n预先规定不支持假说的结果",
+          "emphasis": [
+            "主要终点",
+            "单位"
+          ],
           "claimIds": [],
           "style": "academic-tab"
         }
@@ -3138,22 +3485,26 @@
         {
           "id": "step-1",
           "label": "同一数据与任务集",
-          "detail": ""
+          "detail": "",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "基线流程",
-          "detail": "填写接口与条件"
+          "detail": "原有处理机制",
+          "kind": "method"
         },
         {
           "id": "step-3",
           "label": "干预流程",
-          "detail": "填写接口与条件"
+          "detail": "只改变指定模块",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "统一评价",
-          "detail": ""
+          "detail": "",
+          "kind": "method"
         }
       ],
       "edges": [
@@ -3182,7 +3533,6 @@
       "layout": "proposal",
       "referenceTemplateId": "plan-data-evaluation",
       "title": "数据采集与评价计划",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -3191,9 +3541,13 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "样本量与采集计划",
           "body": "按独立实验单位规划采集\n依据预期效应与变异说明样本量",
+          "emphasis": [
+            "独立实验单位",
+            "单位"
+          ],
           "claimIds": [],
           "style": "academic-panel"
         },
@@ -3202,6 +3556,10 @@
           "kind": "method",
           "title": "留出与分析计划",
           "body": "在采集前明确主要终点和分析程序\n锁定独立留出条件与缺失值处理",
+          "emphasis": [
+            "独立留出",
+            "主要终点"
+          ],
           "claimIds": [],
           "style": "ruled"
         }
@@ -3210,22 +3568,26 @@
         {
           "id": "step-1",
           "label": "目标总体",
-          "detail": "填写接口与条件"
+          "detail": "独立实验单位",
+          "kind": "setting"
         },
         {
           "id": "step-2",
           "label": "采集与质量控制",
-          "detail": "填写接口与条件"
+          "detail": "统一测量与版本",
+          "kind": "boundary"
         },
         {
           "id": "step-3",
           "label": "预注册分析",
-          "detail": "填写接口与条件"
+          "detail": "冻结主要终点",
+          "kind": "method"
         },
         {
           "id": "step-4",
           "label": "独立验证",
-          "detail": "填写接口与条件"
+          "detail": "单独留出环境",
+          "kind": "result"
         }
       ],
       "edges": [
@@ -3250,7 +3612,6 @@
       "layout": "roadmap",
       "referenceTemplateId": "plan-work-packages",
       "title": "研究任务与阶段交付",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -3259,7 +3620,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "阶段一：材料与基线",
           "body": "确认数据版本、许可与基线\n产物：可复现的基线与证据记录",
           "claimIds": [],
@@ -3286,12 +3647,15 @@
           "kind": "method",
           "title": "阶段依赖",
           "body": "说明各阶段所需输入与完成条件\n避免仅按日期排列任务",
+          "emphasis": [
+            "输入"
+          ],
           "claimIds": [],
           "style": "plain"
         },
         {
           "id": "region-5",
-          "kind": "method",
+          "kind": "setting",
           "title": "停止与调整条件",
           "body": "材料不足、效果无效或成本超出时如何调整\n把停止条件与研究问题对应",
           "claimIds": [],
@@ -3308,7 +3672,6 @@
       "layout": "closing",
       "referenceTemplateId": "plan-conclusions",
       "title": "结论证据与后续问题",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1"
       ],
@@ -3317,7 +3680,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "result",
           "title": "结论一及证据",
           "body": "用一句结论连接一项核心证据\n保留样本、比较与实验身份",
           "claimIds": [],
@@ -3325,7 +3688,7 @@
         },
         {
           "id": "region-2",
-          "kind": "method",
+          "kind": "result",
           "title": "结论二及证据",
           "body": "解释与前一结论的关系\n避免重复陈述相同发现",
           "claimIds": [],
@@ -3333,7 +3696,7 @@
         },
         {
           "id": "region-3",
-          "kind": "method",
+          "kind": "result",
           "title": "结论三及证据",
           "body": "总结机制或适用范围\n将推断与原文报告区分",
           "claimIds": [],
@@ -3352,6 +3715,9 @@
           "kind": "hypothesis",
           "title": "优先研究问题",
           "body": "提出能被实验区分的下一步问题\n保留公平对照和评价尺度",
+          "emphasis": [
+            "对照"
+          ],
           "claimIds": [],
           "style": "open-frame"
         }
@@ -3366,7 +3732,6 @@
       "layout": "references",
       "referenceTemplateId": "plan-reference-notes",
       "title": "参考文献与补充说明",
-      "kicker": "结构模板 / 占位说明与合成数据",
       "paperIds": [
         "T1",
         "T2",
@@ -3377,7 +3742,7 @@
       "cards": [
         {
           "id": "region-1",
-          "kind": "method",
+          "kind": "setting",
           "title": "版本与补充材料",
           "body": "记录正式稿、作者稿或预印本版本\n补充材料、代码和数据分别定位\n不要把链接存在当作已读全文",
           "claimIds": [],
