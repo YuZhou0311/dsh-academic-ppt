@@ -1,70 +1,68 @@
-# 一篇真实论文，完整走通学术汇报工作流
+# 离线示例
 
-随附成品：[可编辑 PPTX](report.pptx) · [HTML 播放器](report.html) · [约 11 分钟讲稿](speaker-notes.md) · [实际 PPTX 验收记录](VISUAL_QA.md)。
+## v0.4 默认示例：材料疲劳研究进展
 
-![四页代表性实际 PPTX 渲染](preview.png)
+[可编辑 PPTX](materials-v04/report.pptx) · [PDF](materials-v04/report.pdf) · [逐页讲稿](materials-v04/speaker-notes.md) · [示例说明与复算方法](materials-v04/README.md) · [文件哈希与原生对象清单](materials-v04/manifest.json)
 
-[查看全部 14 页总览](overview.png) · [查看 PLA 原图页大图](pla-page.png)
+![8 页材料疲劳示例总览](materials-v04/overview.png)
 
-示例精读 Chen 等的 **A conversational multi-agent AI system for automated plant phenotyping**，*Nature Communications* 17, 6391 (2026)，[正式论文](https://www.nature.com/articles/s41467-026-71090-y)，DOI: 10.1038/s41467-026-71090-y。正文、实验口径、原图和研究提议分别保留来源；它展示单篇深读流程，不冒充五篇综述，也不把表型分析评价改写成农业控制收益。
+[查看封面原图](materials-v04/cover.png) · [查看核心证据页原图](materials-v04/evidence.png)
 
-## 重建方法
+该示例使用本轮新建的**教学模拟输入**：[protocol.md](materials-v04/protocol.md) 与 [fatigue.csv](materials-v04/fatigue.csv)。48 件合成试件不对应用户真实实验、机构、项目或论文。8 页汇报的时间预算为 600 秒，展示怎样从协议和 CSV 建立来源记录、描述性比较、推断边界与待实施方案；没有外部论文篇数或影响因子门槛。
+
+核心比较限定在 B 批次、200 MPa，两工艺各 12 件且均已失效。改性组样本均值较高 8.44%，中位数较高 2.36%；均值差的 95% bootstrap 区间跨 0。全体合并的观察时长差异为 41.52%，但混合了批次、应力及 C 组的两个右删失终点，不能表述为工艺因果提升。完整计算口径见 [analysis.json](materials-v04/analysis.json)。
+
+### 新建并生成
+
+安装项目依赖后，在仓库目录运行：
 
 ```bash
 npm run demo
 ```
 
-脚本不请求网络或模型。默认在调用目录下新建唯一目录，生成项目、PPTX、HTML 播放器、逐页讲稿、证据清单、原图清单和质量报告。示例直接调用与 DSH 工具共用的核心实现，使用 11 个实际学术参考构图，并按证据比例为 3 页配置受控图文布局；已有输出不会被覆盖。
+脚本不请求网络或模型，默认创建唯一的新目录。它读取 [便携 deck.json](materials-v04/deck.json)，通过 `recordsPath` 文件批次依次登记设计、来源、claim 和页面，生成新的工程、原生 PPTX、HTML、讲稿、证据/资产清单与质量报告。输入和可复算分析脚本也会复制到新目录，工程中的两个来源指向本次复制文件的实际路径，已有目录不会被覆盖。
 
-指定新目录并渲染真实 PPTX：
+新工程保留 `qualityProfile=academic`，图像输入能力如实设为 `unknown`。便携记录不包含原工程历史、产物摘要或视觉审查；新生成文件需要按自身哈希重新渲染和审查。
 
-```bash
-npm run demo -- --output ./my-academic-demo --render
-```
-
-如果中文字体在当前工作区中的专门目录：
+指定新目录，并选择是否渲染实际 PPTX：
 
 ```bash
-npm run demo -- --output ./my-academic-demo --render --font-dir ./fonts
+npm run demo -- --output ./my-materials-demo
+npm run demo -- --output ./my-materials-rendered --render --font-dir ./fonts
 ```
 
-`--render` 使用可选 LibreOffice kit，返回 PNG/PDF 与对应 PPTX 的哈希收据。依赖或字体不足会明确报告。生成成功并不代表视觉通过：实际逐页查看后，才能给相同文件哈希登记审查。字体家族可用也不证明所有特殊符号都有字形。
+`--render` 使用可选 LibreOffice kit。字体目录相对调用工作区解析；依赖或字体不足会明确返回结果。默认 demo 只生成和静态检查，视觉状态为 `not-verified`，不会继承随附成品的审查结论。Noto Sans CJK SC 是本例指定字体；PDF 保留随附最终渲染的外观。
 
-## 内容怎样决定版式
+### 复算统计量
 
-本示例为 **14 页、670 秒，约 11 分 10 秒**。这是逐页时间预算，仍需按实际语速和指图过程排练。
+Python 环境安装 [requirements.txt](materials-v04/requirements.txt) 中的 NumPy 和 SciPy 后，运行：
 
-| 页 | 研究任务 | 主要表达形式 |
-| --- | --- | --- |
-| S01 | 论文完整题名、研究问题、系统改变与评价范围 | 题名区、任务原图局部、三个开放解释区 |
-| S02 | manager 与工具库如何分工 | 一入三路再汇总的原生方法图，侧栏解释接口与复现对象 |
-| S03 | 24 株植物与 1,248 次图像观测如何区分 | 样本与重复测量结构，独立单位和测量输出 |
-| S04 | PLA 随生态型和时间的变化怎样读 | 作者独立曲线主图、可编辑辅助图例、就近的趋势与统计边界 |
-| S05 | 案例内分组采用什么统计方法 | 原图 Summary 分组横向放大、重复测量因子、结论范围 |
-| S06 | 两种叶面积测量与叶片干重怎样相关 | 原图相关分析结果、两项系数、32 幅图像的统计口径 |
-| S07 | 缺少现成视觉模型时怎样扩展工具库 | 标注、预处理、训练、评价入库的原生流程 |
-| S08 | critic 是否改善工具链规划评分 | 从 Table 1 重绘的原生表格，评价者与未执行边界 |
-| S09 | 工具/模型选择与数据分析为何不能混用分母 | 不同任务集合的原生对照表，人工检查与评分区别 |
-| S10 | 20 项数据分析任务的人工核查结果 | 可编辑 17/3 计数柱图、失败类别与适用范围 |
-| S11 | 细粒度读图错误发生在哪一环 | 从表型表到语言答案的链路，原文观察与待验证方向 |
-| S12 | 当前证据能支持哪些层次的结论 | 效度与外推范围表，论文原有 GPT-4o 环境说明 |
-| S13 | 怎样公平检验可追溯数值核验 | 共同留出任务、两个流程、统一盲评，假说与反证 |
-| S14 | 主要判断、完整书目与进一步阅读 | 连续书目和逐项原图许可，侧栏保留总结 |
+```bash
+python3 examples/materials-v04/analyze.py
+```
 
-上述版式没有要求把所有区域填满。原图页按面板比例分配空间，方法页优先展示关系，表格只用于严格对应的评分或条件，解释性文字按页上必要信息组织。相同的结论没有重复画成多组卡片。
+脚本按自身所在目录读取两个输入文件，并重写同目录的 `analysis.json`；从其他当前目录调用也可运行。均值差 bootstrap 固定为组内独立试件重抽样 100000 次、seed 20261020。默认 `npm run demo` 读取已保存的内容，不需要运行 Python。
 
-## 素材与可编辑性
+## 历史静态示例：v0.3 PhenoAssistant
 
-[ASSETS.md](ASSETS.md) 保留原图出处、图注、许可和每个局部视窗。Figure 3 与 Figure 4 的出版方高清 PNG，以及官方作者仓库的独立 PLA 输出位于 [assets](assets)。PPTX 嵌入完整媒体，局部视窗是原生图片裁切参数；文字、富文本强调、图例、图注、流程、表格和计数图表为独立可编辑对象。原图内部作者绘制的元素仍属于图片。
+以下文件保留为 **v0.3 历史静态示例**，`npm run demo` 已改用上面的 v0.4 材料模拟案例。
 
-[source records](science-demo.mjs) 保存全部数字、证据关联和讲稿，便于核对。研究提议明确写作待验证，没有虚构它的效果。
+[历史可编辑 PPTX](report.pptx) · [HTML 播放器](report.html) · [约 11 分钟讲稿](speaker-notes.md) · [当时的实际 PPTX 验收记录](VISUAL_QA.md)
 
-## 原生小组件与 48 页参考库
+![v0.3 PhenoAssistant 四页代表性实际 PPTX 渲染](preview.png)
 
-[小组件参考 PPTX](native-card-reference.pptx) 是专门制作的单页原生样例，包含细框表头、短题签、侧签、开放解释区等。它用于展示当前支持的组件，并不代表任意外部模板已经无损导入。
+[历史 14 页总览](overview.png) · [PLA 原图页](pla-page.png) · [原始创作记录](science-demo.mjs)
+
+该历史示例精读 Chen 等的 **A conversational multi-agent AI system for automated plant phenotyping**，*Nature Communications* 17, 6391 (2026)，[正式论文](https://www.nature.com/articles/s41467-026-71090-y)，DOI: 10.1038/s41467-026-71090-y。它展示单篇论文深读流程，保留表型观测、任务评价与待验证研究提议各自的口径。
+
+[ASSETS.md](ASSETS.md) 和 [assets](assets) 保留历史原图的出处、图注、许可及局部视窗。原文图像仍是图片；文字、图例、流程、表格和计数图表为独立对象。旧源码和当时的验收记录用于查看历史示例，不表示它已按 v0.4 新增的 analysis/reasoning/argument 门槛重新验收。
+
+## 原生小组件与参考库
+
+[小组件参考 PPTX](native-card-reference.pptx) 是专门制作的单页原生样例，包含细框表头、短题签、侧签和开放解释区，用于展示支持的组件范围。
 
 ```bash
 node examples/create-native-reference.mjs ./native-reference-new.pptx
 ```
 
-更完整的参考见 [48 页学术模板库](../skills/dsh-academic-ppt/references/templates/README.md)。本轮实际研究了用户两份模板的 39 页，公开包重新制作可编辑结构，未重新分发用户源模板及其原有研究资料。具体观察见 [原模板研究](../docs/USER_TEMPLATE_STUDY.md)。
+更多页型见 [48 页学术模板库](../skills/dsh-academic-ppt/references/templates/README.md)。模板提供构图参考，示例正文、图像和研究结论需要按当前材料重新组织。

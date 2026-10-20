@@ -29,10 +29,10 @@ async function folder(t) {
   return path
 }
 
-test('DSH registers the academic skill and all eleven raw-schema tools and disposes them', () => {
+test('DSH registers the academic skill and all twelve bounded tools and disposes them', () => {
   assert.deepEqual(inject, ['tools', 'skills'])
   const host = fakeHost(); apply(host.ctx)
-  assert.equal(host.tools.size, 11)
+  assert.equal(host.tools.size, 12)
   assert.deepEqual([...host.tools.keys()].sort(), Object.values(TOOL_COMMANDS).sort())
   const skill = host.skills.get('dsh-academic-ppt')
   assert.equal(skill.source, 'runtime')
@@ -146,13 +146,18 @@ test('native template tool persists reusable profile, reuses equal content and p
   const first = await template.execute({ filePath: 'template.pptx' }, exec)
   assert.equal(first.ok, true); assert.ok(first.profilePath.startsWith(cwd))
   assert.ok(first.components.length > 0)
+  assert.equal(first.shapes, undefined)
+  assert.ok(first.study)
+  assert.ok(first.components.every(component => !Object.hasOwn(component, 'nodes') && !Object.hasOwn(component, 'sourceName')))
   const saved = await readFile(first.profilePath)
+  assert.ok(JSON.parse(saved).components.some(component => component.nodes.length > 0))
   const repeated = await template.execute({ filePath: 'template.pptx' }, exec)
   assert.equal(repeated.profilePath, first.profilePath)
   assert.deepEqual(await readFile(first.profilePath), saved)
   assert.ok(template.output.render({}, first)[0].text.includes(first.profilePath))
   assert.ok(template.output.render({}, first)[0].text.includes(first.components[0].id))
-  const registered = await host.tools.get('academic_ppt_record').execute({ projectPath: created.projectPath, expectedRevision: 0, templateProfilePaths: [first.profilePath] }, exec)
+  await writeFile(join(cwd, 'template-import.json'), JSON.stringify({ templateProfilePaths: [first.profilePath] }))
+  const registered = await host.tools.get('academic_ppt_record').execute({ projectPath: created.projectPath, expectedRevision: 0, recordsPath: 'template-import.json' }, exec)
   assert.equal(registered.revision, 1)
   const updated = JSON.parse(await readFile(created.projectPath, 'utf8'))
   assert.ok(updated.design.templateProfile.components.length > 0)

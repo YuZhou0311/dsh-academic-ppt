@@ -46,11 +46,11 @@ test('externally edited PPTX is detected and a rebuild preserves the external fi
  const second=await buildProject({...o,expectedRevision:1});assert.notEqual(second.files.pptx,first.files.pptx);assert.equal(await readFile(first.files.pptx,'utf8'),'external Office edit fixture');
 });
 test('review records require actual capabilities and hash; HTML review cannot certify PPTX',async t=>{
- const o=await fill(t),built=await buildProject({...o,expectedRevision:1});const review={...o,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'vision-model',basis:'html-preview',reviewedSlides:['s1','s2','s3'],result:'passed',notes:'软件测试审查记录。'};
+ const o=await fill(t),built=await buildProject({...o,expectedRevision:1});const review={...o,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'vision-model',basis:'html-preview',reviewedSlides:['s1','s2','s3'],result:'passed',notes:'软件测试审查记录。',observations:['s1','s2','s3'].map(slideId=>({slideId,contentCheck:'测试来源身份与文字按fixture输入保持一致。',legibilityCheck:'此处仅验证审查协议，不是实际画面通过证明。',issue:''}))};
  await assert.rejects(recordReview(review),/VISION_UNVERIFIED/);
  await assert.rejects(recordReview({...review,reviewer:'human',basis:'pptx-render'}),/PPTX_RENDER_REQUIRED/);
  await recordReview({...review,reviewer:'human'});let checked=await checkProject(o);assert.equal(checked.verification.htmlVisual,'reported-passed');assert.equal(checked.verification.readyForDelivery,false);
- await recordReview({...review,reviewer:'human',result:'needs-fix',reviewedSlides:['s2']});checked=await checkProject(o);assert.equal(checked.verification.htmlVisual,'not-verified');
+ await recordReview({...review,reviewer:'human',result:'needs-fix',reviewedSlides:['s2'],observations:review.observations.filter(x=>x.slideId==='s2')});checked=await checkProject(o);assert.equal(checked.verification.htmlVisual,'not-verified');
 });
 test('paths, symlinks and image hashes cannot escape the chosen workspace',async t=>{
  const o=await fill(t);await assert.rejects(safePath(o.cwd,'../outside'),/PATH_OUTSIDE_WORKSPACE/);

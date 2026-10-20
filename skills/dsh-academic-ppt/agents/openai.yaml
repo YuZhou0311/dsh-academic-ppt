@@ -1,4 +1,4 @@
 interface:
-  display_name: "学术汇报 PPT"
-  short_description: "围绕论文证据、真实模板组件与可编辑图文设计制作学术汇报演示文稿"
-  default_prompt: "使用 $dsh-academic-ppt，阅读论文并遵循我给的模板，制作证据可靠、可编辑的学术汇报。"
+  display_name: "正式学术汇报 PPT"
+  short_description: "以研究论证、模板设计语法和逐页验收制作可编辑学术报告，覆盖精读、进展与答辩"
+  default_prompt: "使用 $dsh-academic-ppt，依据我的研究材料和参考模板，制作论证充分、封面正式、证据可读的可编辑学术汇报，并实际渲染逐页检查。"

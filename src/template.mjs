@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { unzipSync, strFromU8 } from 'fflate';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
+import { studyTemplateParts, templateSlideOrder } from './template-study.mjs';
 
 const EMU_PER_PX = 9525;
 const SUPPORTED = new Set(['rect', 'roundRect', 'ellipse', 'line']);
@@ -28,7 +29,7 @@ function xmlTree(bytes, name) {
     const key = Object.keys(entry).find(k => k !== ':@');
     if (!key || key.startsWith('?') || key === '#comment') return [];
     if (key === '#text') return [{ name: '#text', text: decode(entry[key]), attrs: {}, children: [] }];
-    return [{ name: local(key), attrs: Object.fromEntries(Object.entries(entry[':@'] || {}).map(([k, v]) => [local(k), decode(v)])), children: convert(Array.isArray(entry[key]) ? entry[key] : []) }];
+    return [{ name: local(key), attrs: Object.fromEntries(Object.entries(entry[':@'] || {}).flatMap(([k, v]) => k.includes(':') ? [[k, decode(v)], [local(k), decode(v)]] : [[k, decode(v)]])), children: convert(Array.isArray(entry[key]) ? entry[key] : []) }];
   });
   return { name: 'root', attrs: {}, children: convert(parsed) };
 }
@@ -69,10 +70,10 @@ function xfrm(node, transform) {
     flipH: ['1', 'true'].includes(attr(x, 'flipH')), flipV: ['1', 'true'].includes(attr(x, 'flipV')) };
 }
 
-function shapeFromXml(xml, transform, palette, sourceSlide, unsupported, ambiguousTheme = false) {
+function shapeFromXml(xml, transform, palette, sourceSlide, sourcePart, unsupported, ambiguousTheme = false) {
   const props = first(xml, 'spPr'), info = descendants(xml, 'cNvPr')[0];
   const sourceShapeId = attr(info, 'id', ''), sourceName = attr(info, 'name', '');
-  const source = { sourceSlide, sourceShapeId, sourceName };
+  const source = { sourceSlide, sourcePart, sourceShapeId, sourceName };
   const text = descendants(xml, 't').map(t => t.children.filter(c => c.name === '#text').map(c => c.text).join('')).join('\n');
   const bounds = xfrm(props, transform);
   const geom = first(props, 'prstGeom');
@@ -154,7 +155,7 @@ export async function inspectTemplate(filePath, { signal } = {}) {
   let count = 0, sum = 0;
   const zip = unzipSync(bytes, { filter(entry) {
     count++; if (count > 12000) throw new Error('模板 ZIP 条目过多。');
-    if (!/^ppt\/(?:presentation\.xml|theme\/theme\d+\.xml|slides\/slide\d+\.xml)$/.test(entry.name)) return false;
+    if (!/^ppt\/(?:presentation\.xml|_rels\/presentation\.xml\.rels|theme\/theme\d+\.xml|slides\/(?:slide\d+\.xml|_rels\/slide\d+\.xml\.rels)|slideLayouts\/(?:slideLayout\d+\.xml|_rels\/slideLayout\d+\.xml\.rels)|slideMasters\/(?:slideMaster\d+\.xml|_rels\/slideMaster\d+\.xml\.rels))$/.test(entry.name)) return false;
     if (entry.originalSize > MAX_XML) throw new Error('模板单个 XML 超过 3 MiB。');
     sum += entry.originalSize; if (sum > 48 * 1024 * 1024) throw new Error('模板 XML 总量超过 48 MiB。');
     return true;
@@ -166,21 +167,22 @@ export async function inspectTemplate(filePath, { signal } = {}) {
   const shapes = [], groups = [], unsupported = [];
   const ambiguousTheme = Object.keys(zip).filter(name => /^ppt\/theme\/theme\d+\.xml$/.test(name)).length > 1;
   if (ambiguousTheme) unsupported.push({ reason: '存在多个主题；只列出 theme1 色板，依赖主题色的形状不导入，以免错误绑定主题。显式 RGB 形状仍可提取。' });
-  const slidePaths = Object.keys(zip).filter(name => /^ppt\/slides\/slide\d+\.xml$/.test(name)).sort((a, b) => Number(a.match(/slide(\d+)/)[1]) - Number(b.match(/slide(\d+)/)[1]));
+  const presentationRels = zip['ppt/_rels/presentation.xml.rels'] ? xmlTree(zip['ppt/_rels/presentation.xml.rels'], 'ppt/_rels/presentation.xml.rels') : null;
+  const { slideParts: slidePaths } = templateSlideOrder(zip, pres, presentationRels);
   if (slidePaths.length > 200) throw new Error('模板最多检查 200 页；请提供精简后的模板。');
-  for (const path of slidePaths) {
+  for (const [index, sourcePart] of slidePaths.entries()) {
     abort(signal);
-    const sourceSlide = Number(path.match(/slide(\d+)/)[1]), root = xmlTree(zip[path], path), tree = descendants(root, 'spTree')[0];
+    const sourceSlide = index + 1, root = xmlTree(zip[sourcePart], sourcePart), tree = descendants(root, 'spTree')[0];
     const walk = (node, transform = { sx: 1, sy: 1, tx: 0, ty: 0 }) => {
       const collected = [];
       for (const child of node?.children || []) {
         if (['sp', 'cxnSp'].includes(child.name)) {
-          const shape = shapeFromXml(child, transform, theme.palette, sourceSlide, unsupported, ambiguousTheme);
+          const shape = shapeFromXml(child, transform, theme.palette, sourceSlide, sourcePart, unsupported, ambiguousTheme);
           if (shape) { shapes.push(shape); collected.push(shape); }
         } else if (child.name === 'grpSp') {
           const props = first(child, 'grpSpPr'), x = first(props, 'xfrm'), info = descendants(first(child, 'nvGrpSpPr'), 'cNvPr')[0];
           if (!x || num(attr(x, 'rot')) || ['1', 'true'].includes(attr(x, 'flipH')) || ['1', 'true'].includes(attr(x, 'flipV'))) {
-            unsupported.push({ sourceSlide, sourceShapeId: attr(info, 'id'), reason: '未导入旋转、翻转或缺少变换的组合' }); continue;
+            unsupported.push({ sourceSlide, sourcePart, sourceShapeId: attr(info, 'id'), reason: '未导入旋转、翻转或缺少变换的组合' }); continue;
           }
           const off = first(x, 'off'), ext = first(x, 'ext'), co = first(x, 'chOff'), ce = first(x, 'chExt');
           const sx = num(attr(ext, 'cx'), 1) / (num(attr(ce, 'cx')) || 1), sy = num(attr(ext, 'cy'), 1) / (num(attr(ce, 'cy')) || 1);
@@ -188,8 +190,8 @@ export async function inspectTemplate(filePath, { signal } = {}) {
             tx: transform.tx + transform.sx * (num(attr(off, 'x')) - num(attr(co, 'x')) * sx),
             ty: transform.ty + transform.sy * (num(attr(off, 'y')) - num(attr(co, 'y')) * sy) };
           const childShapes = walk(child, next); collected.push(...childShapes);
-          groups.push({ sourceSlide, sourceShapeId: attr(info, 'id'), sourceName: attr(info, 'name'), shapes: childShapes });
-        } else if (['pic', 'graphicFrame', 'contentPart', 'oleObj'].includes(child.name)) unsupported.push({ sourceSlide, reason: `${child.name} 不是支持的原生背景组件` });
+          groups.push({ sourceSlide, sourcePart, sourceShapeId: attr(info, 'id'), sourceName: attr(info, 'name'), shapes: childShapes });
+        } else if (['pic', 'graphicFrame', 'contentPart', 'oleObj'].includes(child.name)) unsupported.push({ sourceSlide, sourcePart, reason: `${child.name} 不是支持的原生背景组件` });
       }
       return collected;
     };
@@ -197,16 +199,17 @@ export async function inspectTemplate(filePath, { signal } = {}) {
   }
   const components = [];
   for (const group of groups) {
-    const component = makeComponent(`${prefix}-s${group.sourceSlide}-group-${group.sourceShapeId}`, group.shapes, { sourceSha256: sha256, sourceSlide: group.sourceSlide, sourceGroupId: group.sourceShapeId, sourceName: group.sourceName, derivation: 'native-group-backgrounds' });
+    const component = makeComponent(`${prefix}-s${group.sourceSlide}-group-${group.sourceShapeId}`, group.shapes, { sourceSha256: sha256, sourceSlide: group.sourceSlide, sourcePart: group.sourcePart, sourceGroupId: group.sourceShapeId, sourceName: group.sourceName, derivation: 'native-group-backgrounds' });
     if (component && component.width * component.height < width * height * .8) components.push(component);
   }
   for (const frame of shapes.filter(s => !s.text && s.kind === 'rect' && s.w * s.h < width * height * .65)) {
     const candidates = shapes.filter(s => s.sourceSlide === frame.sourceSlide && contained(frame, s));
-    const component = makeComponent(`${prefix}-s${frame.sourceSlide}-shape-${frame.sourceShapeId}`, candidates, { sourceSha256: sha256, sourceSlide: frame.sourceSlide, sourceFrameId: frame.sourceShapeId, sourceName: frame.sourceName, derivation: 'contained-native-backgrounds' });
+    const component = makeComponent(`${prefix}-s${frame.sourceSlide}-shape-${frame.sourceShapeId}`, candidates, { sourceSha256: sha256, sourceSlide: frame.sourceSlide, sourcePart: frame.sourcePart, sourceFrameId: frame.sourceShapeId, sourceName: frame.sourceName, derivation: 'contained-native-backgrounds' });
     if (component) components.push(component);
   }
+  const study = studyTemplateParts(zip, { parseXml: xmlTree, signal });
   return { format: 'academic-template-profile', version: 1, sourcePath: filePath, sha256, source: { path: filePath, sha256, width, height }, width, height, slideCount: slidePaths.length,
-    palette: theme.palette, fonts: theme.fonts, shapes, components, unsupported,
+    palette: theme.palette, fonts: theme.fonts, shapes, components, unsupported, study,
     scope: '提取显式位置的原生矩形、圆角、椭圆和线条背景、显式 RGB/唯一可解主题色、单一 alpha 与简单外阴影；保留来源 ID 与几何；旧文字不复制。母版/主题样式继承、旋转/翻转、SmartArt、图表、图片、颜色变换、复杂填充效果与动画不作无损导入，详见 unsupported。',
     visualReview: 'not-performed',
   };

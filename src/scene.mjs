@@ -10,7 +10,9 @@ export const DEFAULT_DESIGN = Object.freeze({
   fontFamily: 'Noto Sans CJK SC',
   palette: { background: '#FFFFFF', paper: '#FFFFFF', ink: '#171C22', muted: '#4F5D6A', accent: '#183B66', secondary: '#455C76', gold: '#9D3038', line: '#C5CFDA', tint: '#EEF2F6' },
 });
-const KIND_STYLE = { question: 'open-frame', method: 'academic-panel', setting: 'academic-side', result: 'paper-shadow', boundary: 'academic-tab', hypothesis: 'dashed-note' };
+// A scientific role changes emphasis, not the amount of decorative furniture.
+// Frames and tabs remain available when explicitly requested in a card.
+const KIND_STYLE = { question: 'plain', method: 'plain', setting: 'plain', result: 'plain', boundary: 'ruled', hypothesis: 'ruled' };
 const CONTENT = Object.freeze({ x:48, y:132, w:1184, h:513 });
 const clone = value => JSON.parse(JSON.stringify(value));
 const safeColor = (value, fallback) => /^#[a-f\d]{6}$/i.test(String(value)) ? value : fallback;
@@ -57,19 +59,54 @@ export function resolveDesign(input = {}) {
   return { ...DEFAULT_DESIGN, ...input, palette, fontFamily: asText(input.fontFamily).trim() || DEFAULT_DESIGN.fontFamily };
 }
 
-/** Predictable wrapping is shared by SVG and PPTX. It is an estimate, not a font renderer. */
-export function wrapText(value, width, size) {
-  const limit = Math.max(1, width / Math.max(size, 1));
+const graphemeSegmenter = new Intl.Segmenter('zh-CN', { granularity: 'grapheme' });
+const graphemes = value => [...graphemeSegmenter.segment(asText(value))].map(part => part.segment);
+
+/** Conservative sans-serif advances, in em. This is explicitly an estimate,
+ * not a claim that an installed font or an Office renderer was measured.
+ * Unlike a single Latin coefficient, wide capitals, narrow letters, numbers,
+ * combining marks and full-width punctuation have distinct advances.
+ */
+export function measureTextWidth(value, size, { bold = false } = {}) {
+  let advance = 0;
+  for (const glyph of graphemes(value)) {
+    if (/^[\p{Mark}\u200b-\u200f\u2060\ufe00-\ufe0f]+$/u.test(glyph)) continue;
+    if (glyph === '\t') { advance += 1.2; continue; }
+    if (glyph === '\u3000') { advance += 1; continue; }
+    if (/^\s+$/u.test(glyph)) { advance += .3; continue; }
+    const base = glyph.normalize('NFD').replace(/\p{Mark}/gu, '');
+    let em;
+    if (base === '@') em = 1.05;
+    else if (/^[MW]$/.test(base)) em = .94;
+    else if (/^[mw]$/.test(base)) em = base === 'm' ? .96 : .86;
+    else if (/^[ilIjtfr]$/.test(base)) em = /[fr]/.test(base) ? .43 : .36;
+    else if (/^[A-Z]$/.test(base)) em = .77;
+    else if (/^[a-z]$/.test(base)) em = .65;
+    else if (/^[0-9]$/.test(base)) em = .61;
+    else if (/^[.,:;'`!|]$/.test(base)) em = .34;
+    else if (/^[()\[\]{}]$/.test(base)) em = .42;
+    else if (/^[\-+*/=<>_%&#?\\~^]$/.test(base)) em = .67;
+    else if (/^[\u0370-\u03ff\u1f00-\u1fff±×÷−–—≤≥≈≠∞]$/u.test(base)) em = .78;
+    else em = 1; // CJK, full-width punctuation, unknown scripts and emoji.
+    advance += em * (bold && em < 1 ? 1.035 : 1);
+  }
+  return advance * Math.max(1, size);
+}
+
+/** Predictable, lossless wrapping is shared by SVG and PPTX. */
+export function wrapText(value, width, size, options = {}) {
+  const limit = Math.max(1, width);
   const lines = [];
   const closing=/^[，。！？；：、）》〉」』】〕）］｝’”….,!?;:\])}%％]+$/u;
   const opening=/^[（(［\[｛{《〈「『【〔‘“]+$/u;
-  const units=token=>[...token].reduce((sum,ch)=>sum+(/\s/u.test(ch)?.3:/[\u0000-\u024f]/u.test(ch)?.53:1),0);
+  const units = token => measureTextWidth(token, size, options);
   // Punctuation travels with the preceding lexical unit, and an opening
   // bracket travels with the next one. No character is deleted or replaced.
   // Long words are split only when that word cannot fit even on an empty line.
   const gluePunctuation=tokens=>{
     const out=[];let prefix='';
     for(const token of tokens){
+      if (out.length && (/^[\p{Mark}\ufe00-\ufe0f\u200d]+$/u.test(token) || out.at(-1).endsWith('\u200d'))) { out[out.length - 1] += token; continue; }
       if(opening.test(token)){prefix+=token;continue;}
       const chunk=prefix+token;prefix='';
       if(closing.test(token)&&out.length){
@@ -84,7 +121,7 @@ export function wrapText(value, width, size) {
     if (!paragraph) { lines.push(''); continue; }
     let line = '', weight = 0;
     const tokens=gluePunctuation(paragraph.match(/[A-Za-z0-9]+(?:[.'’:/+%−–-][A-Za-z0-9]+)*|\s+|[^A-Za-z0-9\s]/gu)||[]);
-    const fitted=tokens.flatMap(token=>units(token)<=limit? [token]:gluePunctuation([...token]).flatMap(part=>units(part)<=limit?[part]:[...part]));
+    const fitted=tokens.flatMap(token=>units(token)<=limit? [token]:gluePunctuation(graphemes(token)).flatMap(part=>units(part)<=limit?[part]:graphemes(part)));
     for(const token of fitted){
       const tw=units(token);
       if(line&&weight+tw>limit+1e-9){lines.push(line);line='';weight=0;}
@@ -98,8 +135,11 @@ export function wrapText(value, width, size) {
 function pageBuilder(slide, index, total, design) {
   const p = design.palette;
   const page = { id: slide.id || `slide-${index + 1}`, title: asText(slide.title), layout: slide.layout, notes: asText(slide.notes), seconds: slide.seconds || 0, width: CANVAS.width, height: CANVAS.height, background: p.background, nodes: [], issues: [] };
+  const regions = [];
+  const region = (key, box, type) => regions.push({ id: `${page.id}/${key}`, ...box, type });
   const add = (kind, key, props, cardId) => {
     const node = { ...props, kind, id: `${page.id}/${key}`, ...(cardId ? { cardId } : {}) };
+    if (kind === 'chart') region(key, props, 'chart');
     page.nodes.push(node); return node;
   };
   const rect = (key, box, fill = p.paper, stroke = p.line, more = {}, cardId) => add('rect', key, { ...box, fill, stroke, strokeWidth: 1, ...more }, cardId);
@@ -109,22 +149,27 @@ function pageBuilder(slide, index, total, design) {
     if (!content) return null;
     // Bold CJK/Latin fragments need a small width reserve before native export.
     const emphasis = arr(more.emphasis).filter(v => typeof v === 'string' && v.length);
-    const lines = wrapText(content, Math.max(1,box.w-(emphasis.length?fontSize*.22:0)), fontSize);
+    const metrics = { bold: !!more.bold || emphasis.length>0 };
+    const lines = wrapText(content, Math.max(1,box.w-(emphasis.length?fontSize*.22:0)), fontSize, metrics);
     const lineHeight = more.lineHeight || 1.28;
     const needed = lines.length * fontSize * lineHeight;
-    if (needed > box.h + 2) page.issues.push({ severity: 'warning', code: 'text-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, message: `文字估计需要 ${Math.ceil(needed)} px，分配 ${box.h} px；请查看最终渲染。` });
+    const lineWidths = lines.map(line => measureTextWidth(line,fontSize,metrics));
+    if (needed > box.h + 2) page.issues.push({ severity: 'error', code: 'text-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, requiredHeight: Math.ceil(needed), availableHeight: box.h, message: `文字估计需要 ${Math.ceil(needed)} px，分配 ${box.h} px。保留文字与字号，扩大区域、调整布局或拆页后再构建。` });
+    if (Math.max(...lineWidths) > box.w + 2) page.issues.push({ severity: 'error', code: 'text-width-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, message: `不可拆分字符宽度超过 ${box.w} px 的文字区域；扩大区域，不能裁掉原文。` });
     for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
-    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
+    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, estimatedTextHeight:needed, estimatedLineWidths:lineWidths, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
   };
-  rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
-  if(design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
-  text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
+  if (slide.layout !== 'cover') {
+    rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
+    if(design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
+    text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
+  }
   const customFigures=!slide.referenceTemplateId&&['figure-focus','figure-split'].includes(slide.layout)?slide.figureBoxes:undefined;
-  return { page, p, add, rect, line, text, customFigures };
+  return { page, p, add, rect, line, text, region, regions, customFigures };
 }
 
 function header(b, slide) {
-  const titleSize=40,titleY=22,titleH=Math.max(46,wrapText(slide.title,1184,titleSize).length*44.8);
+  const titleSize=40,titleY=22,titleH=Math.max(46,wrapText(slide.title,1184,titleSize,{bold:true}).length*44.8);
   b.text('title',slide.title,{x:48,y:titleY,w:1184,h:titleH},titleSize,{bold:true,lineHeight:1.12,role:'title'});
   let bottom=titleY+titleH;
   // Legacy kickers remain visible and retain their content, but become readable
@@ -140,6 +185,44 @@ function header(b, slide) {
   if(ruleY>122)b.page.issues.push({severity:'error',code:'header-content-overlap',slideId:b.page.id,message:'标题与副题超出页眉空间。删去冗余副题或改写标题，保留正文原字号。'});
 }
 
+/** A cover is an authored academic identity, not the first paper's detail page.
+ * Both variants are native geometry, with no borrowed template image or text.
+ */
+function cover(b, slide) {
+  const data = slide.cover || {}, minimal = data.variant === 'minimal';
+  const x = minimal ? 96 : 84, w = 1280 - x * 2, align = minimal ? 'center' : 'left';
+  const occasion = [...new Set([data.occasion,slide.kicker].map(asText).filter(Boolean))].join(' · ');
+  if (!minimal) b.rect('cover-edge', {x:0,y:0,w:16,h:720}, b.p.accent, 'none');
+  b.line('cover-rule',minimal?592:x,minimal?160:148,minimal?688:x+88,minimal?160:148,b.p.accent,{strokeWidth:4});
+  if (occasion) b.text('cover-occasion',occasion,{x,y:72,w,h:64},24,{align,color:b.p.muted,lineHeight:1.24,role:'cover-occasion'});
+
+  // Reserve the real metadata height before placing the subtitle. The title
+  // size stays fixed even when an unusually long identity needs revision.
+  const date = asText(data.date), metaWidth = !minimal && date ? 848 : w;
+  const meta = [['cover-presenter',data.presenter,26],['cover-affiliation',data.affiliation,22],...(minimal?[['cover-date',date,22]]:[])]
+    .filter(([,value])=>asText(value)).map(([key,value,size])=>({key,value:asText(value),size,h:wrapText(value,metaWidth,size).length*size*1.24}));
+  const metaHeight=meta.reduce((sum,item)=>sum+item.h,0)+Math.max(0,meta.length-1)*9;
+  let metaY=642-metaHeight;
+  const metaTop=meta.length?metaY:654;
+  if(metaHeight>156)b.page.issues.push({severity:'error',code:'cover-metadata-overflow',slideId:b.page.id,message:'封面署名与单位超过可用身份区域；精简重复身份、换行或使用另页，不缩小字号。'});
+  for(const item of meta){b.text(item.key,item.value,{x,y:metaY,w:metaWidth,h:item.h},item.size,{align,color:item.key==='cover-presenter'?b.p.ink:b.p.muted,lineHeight:1.24,role:'cover-metadata'});metaY+=item.h+9;}
+  if(date&&!minimal){const dateW=224,dateH=wrapText(date,dateW,22).length*22*1.24;b.text('cover-date',date,{x:972,y:642-dateH,w:dateW,h:dateH},22,{align:'right',color:b.p.muted,lineHeight:1.24,role:'cover-metadata'});}
+
+  let title=asText(slide.title);
+  if(arr(data.titleLines).length){
+    const requested=data.titleLines.map(asText).join('\n');
+    if(requested.replace(/\s/gu,'')!==title.replace(/\s/gu,''))b.page.issues.push({severity:'error',code:'cover-title-mismatch',slideId:b.page.id,message:'cover.titleLines 只能为完整标题指定换行，不能替换或删去标题文字。'});
+    else title=requested;
+  }
+  const size=60,titleY=minimal?198:180,lineHeight=1.15,titleH=Math.min(276,wrapText(title,w,size,{bold:true}).length*size*lineHeight);
+  b.text('title',title,{x,y:titleY,w,h:titleH},size,{align,bold:true,color:b.p.accent,lineHeight,role:'cover-title'});
+  if(slide.subtitle){
+    const y=titleY+titleH+24,needed=wrapText(slide.subtitle,w,28).length*28*1.24,h=Math.max(1,Math.min(needed,metaTop-y-30));
+    b.text('subtitle',slide.subtitle,{x,y,w,h},28,{align,color:b.p.muted,lineHeight:1.24,role:'cover-subtitle'});
+  }
+  if(titleY+titleH>metaTop-30)b.page.issues.push({severity:'error',code:'cover-title-metadata-overlap',slideId:b.page.id,message:'封面完整标题与身份信息区域相碰；调整标题换行或使用更短且完整的题名，保留字号与署名。'});
+}
+
 function metricString(metric) {
   if (typeof metric === 'string') return metric;
   if (!metric || typeof metric !== 'object') return '';
@@ -150,6 +233,7 @@ function metricString(metric) {
 function card(b, data, box, index, project, defaultStyle) {
   const c = data || {}, id = asText(c.id || `card-${index + 1}`);
   const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p);
+  b.region(key,box,'card');
   const accent=safeColor(c.accent,semantic.accent),tint=semantic.tint;
   const shadow={color:'#20334A',opacity:.1,blur:3,offset:2,angle:90};
   const R = (name, r, fill, stroke, more) => b.rect(`${key}/${name}`, r, fill, stroke, more, id);
@@ -177,7 +261,7 @@ function card(b, data, box, index, project, defaultStyle) {
     tx=x+13;ty=y+5;tw=w-26;th=31;bx=x+14;by=y+51;bw=w-28;
   } else if(style==='academic-tab'){
     R('frame',{x,y:y+12,w,h:h-12},p.paper,p.line,{strokeWidth:1.1});
-    const tabW=Math.min(w-28,Math.max(100,asText(c.title).length*26+28)),tabH=Math.min(h,Math.max(36,wrapText(c.title,tabW-22,26).length*29.9+6));
+    const tabW=Math.min(w-28,Math.max(100,measureTextWidth(c.title,26,{bold:true})+28)),tabH=Math.min(h,Math.max(36,wrapText(c.title,tabW-22,26,{bold:true}).length*29.9+6));
     R('tab',{x:x+12,y,w:tabW,h:tabH},accent,'none');
     tx=x+23;ty=y+3;tw=tabW-22;th=tabH-6;bx=x+14;by=y+tabH+15;bw=w-28;
   } else if(style==='academic-side'){
@@ -193,13 +277,13 @@ function card(b, data, box, index, project, defaultStyle) {
     }
   } else if (style === 'open-frame') {
     R('frame', { x, y: y + 17, w, h: h - 17 }, p.paper, accent, { strokeWidth: 1.5 });
-    const labelW = Math.min(w - 36, Math.max(112, wrapText(c.title, w - 72, 25)[0]?.length * 23 + 22));
+    const labelW = Math.min(w - 36, Math.max(112,measureTextWidth(wrapText(c.title,w-72,26,{bold:true})[0],26,{bold:true})+22));
     R('title-cutout', { x: x + 14, y: y + 1, w: labelW, h: 34 }, p.background, 'none');
     ty = y + 2; by = y + 58;
     L('base-rule', x + 20, y + h - 16, x + 55, y + h - 16, accent, { strokeWidth: 3 });
   } else if (style === 'floating-tab') {
     R('frame', { x, y: y + 19, w, h: h - 19 }, p.paper, p.line,{shadow});
-    R('tab', { x: x + 16, y, w: Math.min(w - 42, Math.max(138, asText(c.title).length * 24 + 30)), h: 42 }, accent, 'none');
+    R('tab', { x: x + 16, y, w: Math.min(w - 42, Math.max(138, measureTextWidth(c.title,26,{bold:true}) + 30)), h: 42 }, accent, 'none');
     tx = x + 28; ty = y + 6; tw = w - 54; by = y + 68;
   } else if (style === 'split-label') {
     const labelW = Math.min(132, w * .29);
@@ -238,6 +322,20 @@ function card(b, data, box, index, project, defaultStyle) {
   const darkTitle = !component && ['floating-tab', 'title-band','academic-tab'].includes(style);
   const flat=!component&&['plain','ruled','compact'].includes(style);
   const academic=!component&&['academic-panel','academic-tab','academic-side'].includes(style),compact=flat||academic;
+  const titleNeed=wrapText(c.title,tw,26,{bold:true}).length*26*1.15;
+  // Default text regions reflow within their authored frame; they never borrow
+  // space from the next card. Explicit imported text zones stay authoritative.
+  if(!component&&style!=='split-label'){
+    const extra=Math.max(0,titleNeed-th);
+    th=Math.max(th,titleNeed);
+    if(extra>0){
+      by+=extra;
+      for(const node of b.page.nodes.filter(n=>n.cardId===id)){
+        if(/\/(?:heading-fill|tab|band|title-cutout)$/.test(node.id))node.h+=extra;
+        if(/\/(?:heading-rule|heading-mark|title-rule|ledger-rule)$/.test(node.id))node.y+=extra;
+      }
+    }
+  }
   T('title', c.title, { x: tx, y: ty, w: tw, h: Math.max(th,30) },26,{bold:true,color:darkTitle?'#FFFFFF':accent,lineHeight:1.15,role:'card-title'});
   const metric = metricString(c.metric);
   if (metric) {
@@ -246,7 +344,7 @@ function card(b, data, box, index, project, defaultStyle) {
     if(c.metric?.label){const size=24,mh=wrapText(c.metric.label,bw,size).length*size*1.18;T('metric-label',c.metric.label,{x:bx,y:by,w:bw,h:mh},size,{color:p.ink,lineHeight:1.18,role:'metric-label'});by+=mh+4;}
     if(c.metric?.context){const size=24,mh=wrapText(c.metric.context,bw,size).length*size*1.2;T('metric-context',c.metric.context,{x:bx,y:by,w:bw,h:mh},size,{color:p.muted,role:'metric-context',lineHeight:1.2});by+=mh+8;}
   }
-  if(metric && by-8 > y+h-(flat?4:academic?10:20)+2)b.page.issues.push({severity:'warning',code:'card-metric-overflow',slideId:b.page.id,objectId:`${b.page.id}/${key}`,message:'指标、变量和口径的总高度超出卡片区域；扩大卡片或重排相关说明，不能让指标文字延伸到页脚。'});
+  if(metric && by-8 > y+h-(flat?4:academic?10:20)+2)b.page.issues.push({severity:'error',code:'card-metric-overflow',slideId:b.page.id,objectId:`${b.page.id}/${key}`,message:'指标、变量和口径的总高度超出卡片区域；扩大卡片或重排相关说明，不能让指标文字延伸到页脚。'});
   const body = Array.isArray(c.body) ? c.body.join('\n') : c.body;
   T('body',body,{x:bx,y:by,w:bw,h:Math.max(14,y+h-(flat?4:academic?10:20)-by)},24,{lineHeight:1.24,role:'body',emphasis:c.emphasis,emphasisColor:accent});
   return { id, box, style };
@@ -264,7 +362,7 @@ function cardsGrid(b, cards, box, columns, project, gap = 28) {
 function displayLegendLayout(items,width){
   const size=22,lineW=24,lineGap=9,itemGap=24,rows=[{items:[],width:0,height:34}];
   for(const [index,item] of arr(items).entries()){
-    const label=asText(item.label),estimated=[...label].reduce((n,ch)=>n+(/\s/u.test(ch)?.3:/[\u0000-\u024f]/u.test(ch)?.53:1),0)*size+4;
+    const label=asText(item.label),estimated=measureTextWidth(label,size)+4;
     const labelW=Math.max(1,Math.min(estimated,width-lineW-lineGap));
     const w=lineW+lineGap+labelW,h=Math.max(34,wrapText(label,labelW,size).length*size*1.2+4);
     let row=rows.at(-1);
@@ -279,6 +377,7 @@ function displayLegendLayout(items,width){
 
 function figure(b, project, id, box, key) {
   box=b.customFigures?.[Number(key.split(':')[1])]||box;
+  b.region(key,box,'figure');
   const asset = arr(project.assets).find(a => a.id === id) || project.assets?.[id];
   if (!asset) {
     b.text(`${key}:missing`, '未提供原图', { x: box.x + 20, y: box.y + box.h / 2 - 20, w: box.w - 40, h: 45 }, 24, { color: b.p.muted, align: 'center' });
@@ -289,7 +388,7 @@ function figure(b, project, id, box, key) {
   if(viewport&&(!['x','y','w','h'].every(k=>Number.isFinite(viewport[k]))||viewport.x<0||viewport.y<0||viewport.w<=0||viewport.h<=0||viewport.x+viewport.w>1.00000001||viewport.y+viewport.h>1.00000001)){
     b.page.issues.push({severity:'error',code:'invalid-viewport',slideId:b.page.id,assetId:id,message:'原图视窗必须是0–1范围内、正尺寸的归一化矩形。'});return;
   }
-  const caption=asset.displayCaption||[asset.paperId,asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
+  const caption=asset.displayCaption||[referenceLabel(project,asset.paperId),asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
   const captionLines=wrapText(caption,box.w,18),captionH=caption?Math.min(108,Math.max(26,captionLines.length*23+4)):0;
   const legend=displayLegendLayout(asset.displayLegend,box.w),legendH=legend.height?legend.height+8:0;
   if(legend.rows>2||legend.height>68)b.page.issues.push({severity:'error',code:'figure-legend-overflow',slideId:b.page.id,assetId:id,message:'辅助图例超过两行。保留原始身份，缩短转录标签或扩大区域，不能降低图例字号。'});
@@ -323,7 +422,7 @@ function pairedFigureBoxes(project, ids, area, gap = 18) {
   const vertical = [0, 1].map(i => ({ x: area.x, y: area.y + i * (area.h + gap) / 2, w: area.w, h: (area.h - gap) / 2 }));
   const visibleArea = boxes => boxes.reduce((sum, box, i) => {
     const asset = arr(project.assets).find(a => a.id === ids[i]) || project.assets?.[ids[i]];
-    const iw=Number(asset?.width||1)*(asset?.viewport?.w??1),ih=Number(asset?.height||1)*(asset?.viewport?.h??1),caption=asset?.displayCaption||[asset?.paperId,asset?.figure,asset?.panel,asset?.caption].filter(Boolean).join(' · ');
+    const iw=Number(asset?.width||1)*(asset?.viewport?.w??1),ih=Number(asset?.height||1)*(asset?.viewport?.h??1),caption=asset?.displayCaption||[referenceLabel(project,asset?.paperId),asset?.figure,asset?.panel,asset?.caption].filter(Boolean).join(' · ');
     const captionH=caption?Math.min(108,Math.max(26,wrapText(caption,box.w,18).length*23+4)):0;
     const legendHeight=displayLegendLayout(asset?.displayLegend,box.w).height;
     const scale=Math.min(box.w/iw,Math.max(1,box.h-9-captionH-(legendHeight?legendHeight+8:0))/ih);
@@ -335,17 +434,25 @@ function pairedFigureBoxes(project, ids, area, gap = 18) {
 function paperTitle(b, project, slide, box) {
   const papers = arr(project.papers).filter(p => arr(slide.paperIds).includes(p.id));
   if (!papers.length) return;
+  b.region('paper-heading',box,'paper-heading');
   const paper = papers[0];
-  const titleH=Math.max(30,wrapText(paper.title,box.w,25).length*30),allocatedTitleH=Math.min(titleH,Math.max(30,box.h-40));
+  const bibliography=[arr(paper.authors).join(', '),paper.journal,paper.year,paper.doi?`DOI: ${paper.doi}`:''].filter(Boolean).join(' · ');
+  const bibliographyH=wrapText(bibliography,box.w,17).length*17*1.22;
+  const titleH=Math.max(30,wrapText(paper.title,box.w,25,{bold:true}).length*30),allocatedTitleH=Math.min(titleH,Math.max(30,box.h-bibliographyH-6));
   b.text('paper-title',paper.title,{x:box.x,y:box.y,w:box.w,h:allocatedTitleH},25,{bold:true,role:'paper-title',lineHeight:1.2});
-  b.text('paper-bibliography',[arr(paper.authors).join(', '),paper.journal,paper.year,paper.doi?`DOI: ${paper.doi}`:''].filter(Boolean).join(' · '),{x:box.x,y:box.y+allocatedTitleH+6,w:box.w,h:Math.max(20,box.h-allocatedTitleH-6)},17,{color:b.p.muted,role:'citation',lineHeight:1.22});
+  b.text('paper-bibliography',bibliography,{x:box.x,y:box.y+allocatedTitleH+6,w:box.w,h:Math.max(20,box.h-allocatedTitleH-6)},17,{color:b.p.muted,role:'citation',lineHeight:1.22});
+}
+
+function referenceLabel(project,id) {
+  const index=arr(project.papers).findIndex(p=>p.id===id);
+  return index>=0?`[${index+1}]`:asText(id);
 }
 
 function footerSources(b, project, slide) {
-  if (slide.layout === 'references') return;
+  if (slide.layout === 'references' || slide.layout === 'cover') return;
   const ids = new Set(arr(slide.paperIds));
   for (const claim of arr(project.claims)) if (arr(slide.claimIds).includes(claim.id) && claim.paperId) ids.add(claim.paperId);
-  const sources = arr(project.papers).filter(p => ids.has(p.id)).map(p => [p.id, p.year, p.doi || p.url].filter(Boolean).join(' · '));
+  const sources = arr(project.papers).filter(p => ids.has(p.id)).map(p => [referenceLabel(project,p.id),arr(p.authors).length?`${p.authors[0]}${p.authors.length>1?' 等':''}`:'',p.year].filter(Boolean).join(' '));
   if(sources.length)b.text('sources',sources.join('  |  '),{x:48,y:660,w:1184,h:24},15,{color:b.p.muted,role:'citation',lineHeight:1.14});
 }
 
@@ -364,7 +471,7 @@ function diagram(b, project, slide, area, nodeBoxes) {
     }
     if(edge.label){
       const k=Math.floor((points.length-1)/2),a=points[k],z=points[k+1],mid={x:(a.x+z.x)/2,y:(a.y+z.y)/2};
-      const lw=Math.min(190,Math.max(80,asText(edge.label).length*16+12));
+      const lw=Math.min(190,Math.max(80,measureTextWidth(edge.label,17)+12));
       b.text(`edge:${index}:label`,edge.label,{x:Math.max(area.x,Math.min(area.x+area.w-lw,mid.x-lw/2)),y:Math.max(area.y,mid.y-24),w:lw,h:24},17,{align:'center',color:b.p.muted,role:'diagram-label',lineHeight:1.1});
     }
   };
@@ -392,12 +499,13 @@ function diagram(b, project, slide, area, nodeBoxes) {
   }
   for (const [i, n] of nodes.entries()) {
     const box = boxes.get(n.id);
+    b.region(`node:${n.id}`,box,'diagram-node');
     const semantic=semanticStyle(n.kind||'method',b.p);
-    const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,24).length*28),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?2:5,labelY=hasDetail?box.y+(small?6:10):box.y+Math.max(8,(box.h-labelH)/2);
+    const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,24,{bold:true}).length*28),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?1:5,labelY=hasDetail?box.y+(small?4:10):box.y+Math.max(8,(box.h-labelH)/2);
     b.rect(`node:${n.id}:frame`,box,n.kind?semantic.tint:b.p.paper,b.p.line,{strokeWidth:1.2,...(n.kind==='hypothesis'?{dash:'dash'}:{})});
     b.line(`node:${n.id}:heading-rule`,box.x,box.y,box.x+box.w,box.y,semantic.accent,{strokeWidth:2});
     b.text(`node:${n.id}:label`,n.label,{x:box.x+pad,y:labelY,w:iw,h:labelH},24,{bold:true,color:semantic.accent,align:'center',lineHeight:1.16,role:'diagram-label'});
-    if(hasDetail)b.text(`node:${n.id}:detail`,n.detail,{x:box.x+pad,y:labelY+labelH+detailGap,w:iw,h:Math.max(22,box.y+box.h-(small?5:9)-(labelY+labelH+detailGap))},22,{color:b.p.ink,align:'center',lineHeight:1.18,role:'diagram-body'});
+    if(hasDetail)b.text(`node:${n.id}:detail`,n.detail,{x:box.x+pad,y:labelY+labelH+detailGap,w:iw,h:Math.max(22,box.y+box.h-(small?3:9)-(labelY+labelH+detailGap))},22,{color:b.p.ink,align:'center',lineHeight:1.18,role:'diagram-body'});
   }
 }
 
@@ -411,9 +519,10 @@ function table(b, data, box, fontFamily) {
   // Native PowerPoint tables may grow rows when glyph widths trigger an
   // additional wrap. Keep a small conservative reserve inside the real cell
   // margins so caption placement does not depend on a near-boundary estimate.
-  const cellLines=all.map(row=>row.map((value,i)=>wrapText(value,Math.max(1,colWidths[i]-padX*2-wrapReserve),fontSize)));
+  const cellLines=all.map((row,ri)=>row.map((value,i)=>wrapText(value,Math.max(1,colWidths[i]-padX*2-wrapReserve),fontSize,{bold:ri===0})));
   const rowHeights=cellLines.map(row=>Math.max(...row.map(lines=>lines.length))*fontSize*lineHeight+padY*2);
   const h=rowHeights.reduce((sum,value)=>sum+value,0),captionH=data.caption?wrapText(data.caption,box.w,18).length*22+7:0;
+  b.region('data-table-region',{x:box.x,y:box.y,w:box.w,h:h+captionH},'table');
   if(h+captionH>box.h+2)b.page.issues.push({severity:'error',code:'table-overflow-estimate',slideId:b.page.id,objectId:`${b.page.id}/data-table`,message:`表格按17.25pt正文需要 ${Math.ceil(h+captionH)} px，区域只有 ${box.h} px；减少行列或拆页，不能缩小正文隐藏内容。`});
   b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p)});
   if(data.caption)b.text('table-caption',data.caption,{x:box.x,y:box.y+h+7,w:box.w,h:Math.max(22,captionH-7)},18,{color:b.p.muted,lineHeight:1.22,role:'caption'});
@@ -424,9 +533,9 @@ function references(b,project,slide,box) {
   const selected=arr(project.papers).filter(p=>!slide.paperIds?.length||slide.paperIds.includes(p.id));
   let y=box.y;
   for(const [i,p] of selected.entries()){
-    const titleW=box.w-70,titleH=wrapText(p.title,titleW,24).length*28.8;
-    const referenceId=p.id||`[${i+1}]`,indexLabel=wrapText(referenceId,58,22).length>1?`[${i+1}]`:referenceId;
-    const meta=[indexLabel!==referenceId?referenceId:'',arr(p.authors).join(', '),p.journal,p.year,p.doi?`DOI: ${p.doi}`:p.url,p.version].filter(Boolean).join(' · '),metaH=wrapText(meta,titleW,18).length*22.3;
+    const titleW=box.w-70,titleH=wrapText(p.title,titleW,24,{bold:true}).length*28.8;
+    const indexLabel=referenceLabel(project,p.id);
+    const meta=[arr(p.authors).join(', '),p.journal,p.year,p.doi?`DOI: ${p.doi}`:p.url,p.version].filter(Boolean).join(' · '),metaH=wrapText(meta,titleW,18).length*22.3;
     b.text(`ref:${p.id}:id`,indexLabel,{x:box.x,y:y+2,w:58,h:32},22,{color:b.p.accent,bold:true,role:'reference-index'});
     b.text(`ref:${p.id}:title`,p.title,{x:box.x+70,y,w:titleW,h:titleH},24,{bold:true,lineHeight:1.2,role:'reference-title'});
     b.text(`ref:${p.id}:meta`,meta,{x:box.x+70,y:y+titleH+7,w:titleW,h:metaH},18,{color:b.p.muted,lineHeight:1.24,role:'citation'});
@@ -454,7 +563,7 @@ function referenceLayout(b,project,slide,ref) {
       b.text(`${key}:title`,slide.panelTitles?.[i]??panel.title,{x:x+16,y:y+5,w:w-32,h:32},26,{bold:true,color:accent,lineHeight:1.15,role:'panel-title'});
     }else if(style==='academic-tab'){
       b.rect(`${key}:frame`,{x,y:y+12,w,h:h-12},b.p.paper,b.p.line,{strokeWidth:1.1});
-      const title=slide.panelTitles?.[i]??panel.title,tw=Math.min(w-28,Math.max(118,asText(title).length*26+38));
+      const title=slide.panelTitles?.[i]??panel.title,tw=Math.min(w-28,Math.max(118,measureTextWidth(title,26,{bold:true})+38));
       b.rect(`${key}:tab`,{x:x+12,y,w:tw,h:36},accent,'none');
       b.text(`${key}:title`,title,{x:x+23,y:y+3,w:tw-22,h:30},26,{bold:true,color:'#FFFFFF',lineHeight:1.15,role:'panel-title'});
     }else{
@@ -479,11 +588,20 @@ function referenceLayout(b,project,slide,ref) {
     if(!s.cards?.[i])return;
     let box=c.box||s.cards[i];
     if(flowIndexes.has(i)&&tableExtent){
-      if(!c.box)box={...box,y:tableExtent.bottom+(flow.gap??24)};
+      if(!c.box){
+        // A full-width explanation must clear a side note as well as the
+        // table; a shorter table is not permission to slide through that note.
+        const sideBottom=Math.max(0,...cards.flatMap((other,j)=>{
+          if(j===i||flowIndexes.has(j)||!s.cards?.[j])return [];
+          const sibling=other.box||s.cards[j];
+          return Math.min(box.x+box.w,sibling.x+sibling.w)-Math.max(box.x,sibling.x)>2?[sibling.y+sibling.h]:[];
+        }));
+        box={...box,y:Math.max(tableExtent.bottom,sideBottom)+(flow.gap??24)};
+      }
       flowBottom=Math.max(flowBottom,box.y+box.h);
       if(box.y<tableExtent.bottom+8||box.y+box.h>645)b.page.issues.push({severity:'error',code:'table-flow-overflow',slideId:b.page.id,cardId:c.id,message:'表格后的解释区域与证据相碰或超出正文区。减少表格内容、调整说明或拆页，保留原字号。'});
     }
-    card(b,c,box,i,project,ref.cardStyles?.[i]||'plain');
+    card(b,c,box,i,project,box.h<110?'compact':undefined);
   });
   if(hasTakeaway&&flow?.takeawayAfterCards){
     const box={...s.takeaway,y:flowBottom===undefined?s.takeaway.y:flowBottom+12};
@@ -492,22 +610,55 @@ function referenceLayout(b,project,slide,ref) {
   }
 }
 
+const intersection = (a,b) => ({w:Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x),h:Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y)});
+const intersects = (a,b) => {const hit=intersection(a,b);return hit.w>2&&hit.h>2;};
+const validBox = box => ['x','y','w','h'].every(key=>Number.isFinite(box[key]))&&box.w>0&&box.h>0;
+
+/** Check only semantic containers and painted content, never background shapes,
+ * borders, paper shadows or title-tab cutouts. Native table cells are kept in
+ * their table node and are not treated as overlapping external text objects.
+ */
+function inspectLayout(b) {
+  const page=b.page,regions=b.regions.filter(validBox),texts=page.nodes.filter(n=>n.kind==='text');
+  const fail=(code,first,second,message)=>page.issues.push({severity:'error',code,slideId:page.id,objectId:first.id,...(second?{relatedObjectId:second.id}:{}),message});
+  for(let i=0;i<regions.length;i++)for(let j=i+1;j<regions.length;j++){
+    const first=regions[i],second=regions[j];
+    if(intersects(first,second))fail('content-region-overlap',first,second,`正文区域 ${first.id} 与 ${second.id} 相撞。调整这两个区域的位置或尺寸，背景、边框和题签不参与此检查。`);
+  }
+  const ink=text=>text.lines.flatMap((line,i)=>{
+    if(!line.trim())return [];
+    const w=text.estimatedLineWidths?.[i]??measureTextWidth(line,text.fontSize,{bold:text.bold});
+    const x=text.align==='center'?text.x+(text.w-w)/2:text.align==='right'?text.x+text.w-w:text.x;
+    return [{x,y:text.y+i*text.fontSize*text.lineHeight+text.fontSize*.03,w,h:text.fontSize*1.02}];
+  });
+  const painted=texts.map(node=>({node,boxes:ink(node)}));
+  for(const item of painted){
+    const owner=item.node.cardId?regions.find(r=>r.type==='card'&&r.id===`${page.id}/card/${item.node.cardId}`):undefined;
+    if(owner&&item.boxes.some(box=>box.x<owner.x-2||box.y<owner.y-2||box.x+box.w>owner.x+owner.w+2||box.y+box.h>owner.y+owner.h+2)){
+      fail('text-outside-content-region',item.node,owner,`文字 ${item.node.id} 超出所属卡片 ${owner.id}；扩大本卡片、调整内部排布或拆页，不能延伸到相邻内容。`);
+    }
+    if(item.boxes.some(box=>box.x< -1||box.y< -1||box.x+box.w>1281||box.y+box.h>721))fail('text-outside-slide',item.node,undefined,'文字的实际估计行范围超出页面；完整文字已保留，需调整区域或拆页。');
+  }
+  for(let i=0;i<painted.length;i++)for(let j=i+1;j<painted.length;j++){
+    const first=painted[i],second=painted[j];
+    if(first.boxes.some(a=>second.boxes.some(z=>intersects(a,z))))fail('text-overlap-estimate',first.node,second.node,`文字 ${first.node.id} 与 ${second.node.id} 的行范围相撞；调整位置或内容分配后重新渲染。`);
+  }
+  for(const item of painted)for(const object of page.nodes.filter(n=>['image','chart','table'].includes(n.kind)&&validBox(n))){
+    if(item.boxes.some(box=>intersects(box,object)))fail('text-evidence-overlap',item.node,object,`文字 ${item.node.id} 覆盖证据对象 ${object.id}；为解释、图表及图注保留独立可读区域。`);
+  }
+}
+
 export function buildScenes(project) {
   const design = resolveDesign(project.design), slides = arr(project.slides);
   const pages = slides.map((slide, index) => {
     const b = pageBuilder(slide, index, slides.length, design), cards = arr(slide.cards), figures = arr(slide.figureIds);
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
-    header(b, slide);
+    if(slide.layout!=='cover')header(b, slide);
     const ref=slide.referenceTemplateId?getReferenceTemplate(slide.referenceTemplateId):undefined;
     if(slide.referenceTemplateId&&!ref)b.page.issues.push({severity:'error',code:'unknown-reference-template',slideId:b.page.id,message:`未找到参考页型 ${slide.referenceTemplateId}；不能静默替换成其他版式。`});
+    else if(slide.layout==='cover')cover(b,slide);
     else if(ref)referenceLayout(b,project,slide,ref);
-    else if(slide.layout==='cover'){
-      // A research opening starts with its question and bibliographic identity.
-      const subtitle=slide.subtitle||project.brief?.centralQuestion;
-      b.text('subtitle',subtitle,{x:48,y:148,w:1184,h:108},30,{lineHeight:1.24,role:'subtitle'});
-      paperTitle(b,project,slide,{x:48,y:300,w:1184,h:134});
-      if(project.brief?.talkMinutes)b.text('cover-duration',`${project.brief.talkMinutes} 分钟学术汇报`,{x:48,y:604,w:1184,h:30},21,{color:b.p.muted,role:'cover-duration'});
-    }else if(slide.layout==='paper'){
+    else if(slide.layout==='paper'){
       paperTitle(b,project,slide,{x:48,y:128,w:1184,h:120});
       if(figures.length){
         figure(b,project,figures[0],{x:48,y:268,w:cards.length?716:1184,h:377},'figure:0');
@@ -544,7 +695,7 @@ export function buildScenes(project) {
       let y=132;
       for(const field of ['subtitle','takeaway']){
         if(!slide[field]||(field==='takeaway'&&slide.takeaway===slide.subtitle))continue;
-        const h=Math.max(34,wrapText(slide[field],1184,26).length*31.2);
+        const h=Math.max(34,wrapText(slide[field],1184,26,{bold:field==='takeaway'}).length*31.2);
         b.text(field,slide[field],{x:48,y,w:1184,h},26,{bold:field==='takeaway',color:field==='takeaway'?b.p.accent:b.p.ink,lineHeight:1.2,role:field});
         y+=h+25;
       }
@@ -570,6 +721,7 @@ export function buildScenes(project) {
       if (![node.x, node.y, node.w, node.h].every(Number.isFinite)) b.page.issues.push({ severity: 'error', code: 'invalid-geometry', slideId: b.page.id, objectId: node.id, message: '对象坐标必须是有限数值。' });
       if (node.kind !== 'line' && (node.w <= 0 || node.h <= 0 || node.x < -1 || node.y < -1 || node.x + node.w > 1281 || node.y + node.h > 721)) b.page.issues.push({ severity: 'error', code: 'out-of-bounds', slideId: b.page.id, objectId: node.id, message: '对象尺寸无效或超出页面。' });
     }
+    inspectLayout(b);
     return b.page;
   });
   return { ...CANVAS, design, pages, issues: pages.flatMap(p => p.issues) };

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { unzipSync, strFromU8 } from 'fflate';
-import { buildScenes, CARD_STYLES, LAYOUTS, wrapText } from '../src/scene.mjs';
+import { buildScenes,measureTextWidth, CARD_STYLES, LAYOUTS, wrapText } from '../src/scene.mjs';
 import { renderProject, sceneToSvg } from '../src/render.mjs';
 import { XMLValidator, XMLParser } from 'fast-xml-parser';
 import { PNG } from './fixtures.mjs';
@@ -207,8 +207,10 @@ test('academic defaults have a compact white header and semantic panels while ex
   const page=buildScenes(p).pages[0];
   assert.equal(page.background,'#FFFFFF');
   const title=page.nodes.find(n=>n.id==='style/title');assert.ok(title.y+title.h<=122);
-  assert.ok(page.nodes.some(n=>n.id==='style/card/method/heading-fill'));
-  assert.ok(page.nodes.some(n=>n.id==='style/card/boundary/tab'));
+  assert.ok(!page.nodes.some(n=>n.id==='style/card/method/heading-fill'));
+  assert.ok(page.nodes.some(n=>n.id==='style/card/method/title'));
+  assert.ok(!page.nodes.some(n=>n.id==='style/card/boundary/tab'));
+  assert.ok(page.nodes.some(n=>n.id==='style/card/boundary/title'));
   assert.ok(page.nodes.filter(n=>n.role==='body').every(n=>n.fontSize>=23));
   assert.ok(!page.nodes.some(n=>n.id.includes('cover-sidebar')));
   const unknown=structuredClone(p);unknown.slides[0].referenceTemplateId='unknown-ref';
@@ -243,7 +245,7 @@ test('CJK line breaking preserves every scientific character and keeps closing p
     for(const line of lines){
       assert.ok(!/^[\s]*[，。！？；：、）》〉」』】〕）］｝’”….,!?;:\])}%％]/u.test(line),`illegal line start: ${line}`);
       assert.ok(!/[（(［\[｛{《〈「『【〔‘“]$/u.test(line),`illegal line end: ${line}`);
-      assert.ok(units(line)*size<=width+1e-8,`line exceeds assigned width: ${line}`);
+      assert.ok(measureTextWidth(line,size)<=width+1e-8,`line exceeds assigned width: ${line}`);
     }
   }
   assert.ok(wrapText('样本17/20；边界清楚。',207,23).some(line=>line.includes('17/20')),'a fitting denominator remains an intact lexical unit');
@@ -274,8 +276,9 @@ test('reference reading labels reflect full text, abstract or metadata access in
     }
   }
   const page=out.scenes.pages[2];
-  assert.equal(page.nodes.find(n=>n.role==='reference-index').text,'[1]');
-  assert.ok(page.nodes.some(n=>n.role==='citation'&&n.text.includes('P_SYNTHETIC_LONG_IDENTIFIER')));
+  assert.equal(page.nodes.find(n=>n.role==='reference-index').text,'[3]');
+  assert.ok(page.notes.includes('P_SYNTHETIC_LONG_IDENTIFIER'));
+  assert.ok(!page.nodes.some(n=>n.role==='citation'&&n.text.includes('P_SYNTHETIC_LONG_IDENTIFIER')));
   assert.ok(!out.issues.some(i=>i.objectId?.endsWith('/ref:P_SYNTHETIC_LONG_IDENTIFIER:id')));
 });
 

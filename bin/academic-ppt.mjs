@@ -11,14 +11,15 @@ const HELP = `DSH Academic PPT — 学术汇报工程工具
 
 命令：
   init      创建工程与汇报要求
-  record    分批登记论文、论点、素材与页面
+  contract  按需读取一类记录的完整字段契约
+  record    从recordsPath批次登记论文、论点、素材与页面（兼容内联CLI）
   context   获取下一阶段的精简上下文
   build     导出可编辑 PPTX、HTML 与检查材料
   edit      按稳定 ID 与修订号局部修改
   undo      以新修订恢复上一工程状态
   check     检查证据、版式和产物一致性
-  template  盘点本地 PPTX 模板的原生组件
-  reference 检索 48 种学术页型及可编辑模板资源
+  template  提取模板设计语法与受支持原生组件
+  reference 检索48种中性页型（includeExamples显式查看示范）
   render    用可选引擎渲染当前 PPTX 的实际页面
   review    记录实际完成的视觉检查
 

@@ -1,0 +1,142 @@
+{
+  "version": "0.4.0",
+  "date": "2026-10-20",
+  "baselineCommit": "7cee508b5beb87108f0fdba701f6f2dc0c68b576",
+  "runtime": {
+    "platform": "linux",
+    "node": "24.19.0",
+    "pptxRenderBackend": "wasm",
+    "libreofficeKit": "0.1.5",
+    "font": "Noto Sans CJK SC Regular/Bold"
+  },
+  "tests": {
+    "command": "node --test --test-isolation=none test/*.test.mjs",
+    "passed": 109,
+    "failed": 0,
+    "skipped": 0,
+    "cliSubprocessActuallyExecuted": true
+  },
+  "audit": {
+    "inputSlideCounts": [
+      19,
+      19,
+      20
+    ],
+    "sessionModelSteps": 358,
+    "sessionToolCalls": 484,
+    "sessionBuildCalls": 12,
+    "sessionRenders": 7,
+    "replayMissingStructuralFields": 53,
+    "replayMissingFieldsAreScientificErrors": false,
+    "privateInputsRedistributed": false
+  },
+  "toolDefinitions": {
+    "measure": "compact UTF-8 JSON of tool name + description + parameters",
+    "before": {
+      "tools": 11,
+      "bytes": 42293
+    },
+    "after": {
+      "tools": 12,
+      "bytes": 12860
+    },
+    "reductionPercent": 69.59307686851253,
+    "tokenMeasurement": false,
+    "billingMeasurement": false
+  },
+  "independentTrials": [
+    {
+      "id": "materials-progress",
+      "input": "new teaching simulation protocol and 48 independent specimens",
+      "pages": 8,
+      "budgetSeconds": 600,
+      "revision": 6,
+      "pptxSha256": "5a187a8703e6cdd91894b8e7fc7a031651dd6cf1cafcfcacb209b789a0912a01",
+      "errors": 0,
+      "warnings": 0,
+      "readyForDelivery": true,
+      "renderedPages": 8,
+      "reviewedPages": 8,
+      "missingFonts": [],
+      "nativeCharts": 1,
+      "nativeTables": 3,
+      "notesPages": 8,
+      "pluginCalls": 54,
+      "buildCalls": 6,
+      "renderCalls": 5,
+      "allHostCallsCounted": false,
+      "publicExample": "examples/materials-v04/README.md",
+      "primaryNumbersIndependentlyRecomputed": true,
+      "notesOnlyFinalChangePagePngHashesIdentical": true,
+      "renderedPngPixels": [
+        1441,
+        811
+      ]
+    },
+    {
+      "id": "conformal-paper-reading",
+      "input": "arXiv:2107.07511v6 51-page PDF",
+      "pages": 8,
+      "budgetSeconds": 600,
+      "revision": 5,
+      "pptxSha256": "053fb24d6478efc4eb58ce2ea2cb276d05a325ab195e527f56840f60fffde0b1",
+      "errors": 0,
+      "warnings": 4,
+      "readyForDelivery": true,
+      "renderedPages": 8,
+      "reviewedPages": 8,
+      "missingFonts": [],
+      "nativeTables": 1,
+      "pictureObjects": 5,
+      "nativeTextCharacters": 2481,
+      "notesPages": 8,
+      "buildCalls": 3,
+      "renderCalls": 3,
+      "reviewCalls": 3,
+      "publicOriginalFigures": false,
+      "scientificAgentReview": true,
+      "renderedPngPixels": [
+        1441,
+        811
+      ]
+    }
+  ],
+  "releaseReview": {
+    "transitiveSourceBypass": "fixed; original reproduction now has 7 errors and review build blocked",
+    "templateSlideProvenance": "fixed; actual presentation order shared across study and component extraction",
+    "remainingConfirmedBlockers": 0
+  },
+  "unperformed": [
+    "DSH Desktop/Web GUI end-to-end installation",
+    "paid DeepSeek-account matched cost/quality trial",
+    "PowerPoint/WPS GUI cross-platform editing",
+    "physical projector test",
+    "human timed rehearsal",
+    "independent repeat after final pre-build prose-and-notes guidance change"
+  ],
+  "limitations": [
+    "structural checks do not independently prove research truth, reading honesty or aesthetics",
+    "two trial tasks do not establish all-domain success rate",
+    "missingFonts=[] does not prove glyph coverage",
+    "notes changes invalidate the whole PPTX review; no validated incremental review yet"
+  ],
+  "packageCheck": {
+    "ok": true,
+    "tools": 12,
+    "referenceTemplates": 48,
+    "referencePptxDigestsChecked": 9,
+    "markdownFiles": 32,
+    "localLinksChecked": 159
+  },
+  "offlineRebuild": {
+    "example": "materials-v04",
+    "academicProfile": true,
+    "imageInput": "unknown",
+    "recordsPathBatches": 4,
+    "errors": 0,
+    "warnings": 0,
+    "inheritedVisualReviews": 0,
+    "readyForDelivery": false,
+    "portableAnalysisByteIdentical": true
+  }
+}

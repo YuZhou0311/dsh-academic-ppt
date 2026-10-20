@@ -1,15 +1,15 @@
 # 安装与首次使用
 
-本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十一个确定性工具。它使用当前 DSH 会话中的模型和宿主工具；插件本身不保存 DeepSeek 密钥，也不另行发起模型请求。
+本项目是 **DeepSeek Harness（DSH）的本地插件包**，v0.4 提供学术汇报技能与十二个确定性工具。它使用当前 DSH 会话中的模型和宿主工具；插件本身不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-当前交付方式是 [GitHub v0.3.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.3.0)提供的源码和本地安装包。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+当前交付方式是仓库源码及 [GitHub 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases)中的本地安装包。v0.4 源码版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
-推荐克隆固定版本，或下载发布页的 Source code 归档后解压：
+克隆当前源码，或下载所选发布版本的 Source code 归档后解压：
 
 ```sh
-git clone --branch v0.3.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
@@ -31,10 +31,10 @@ Node 版本以 [`package.json`](../package.json) 的 `engines.node` 为准。普
 
 ### 直接使用安装包
 
-只需安装插件时，可下载 `dsh-academic-ppt-0.3.0.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理，或在已经初始化的 desktop profile 中运行：
+只需安装插件时，可下载发布页中对应版本的 `.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理。也可在源码根目录运行 `npm pack --ignore-scripts` 得到当前版本包。v0.4.0 包的安装命令为：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.3.0.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.4.0.tgz"
 ```
 
 DSH 的包管理器负责解析依赖。安装包包含运行代码、技能、文档和示例；开发测试及根 `package-lock.json` 由源码归档提供。不要把本节的安装包解压后直接套用源码流程中的 `npm ci` 或 `npm test`。
@@ -75,10 +75,11 @@ dsh web
 | 工具 | 用途 |
 | --- | --- |
 | `academic_ppt_init` | 新建研究问题、时长与证据要求明确的工程 |
-| `academic_ppt_record` | 分批登记论文、论点、论文图与页面 |
+| `academic_ppt_contract` | 按主题取得精确字段、批次限额与提交说明 |
+| `academic_ppt_record` | 从 recordsPath 指定的工作区 JSON 文件登记来源、论点、图与页面 |
 | `academic_ppt_context` | 获取下一阶段的精简上下文 |
 | `academic_ppt_template` | 盘点本地 PPTX 模板及支持的原生组件 |
-| `academic_ppt_reference` | 列出或选择 48 个学术参考页型，获取原生 PPTX 与布局字段 |
+| `academic_ppt_reference` | 列出或选择 48 个中性参考页型；显式 includeExamples 才返回教学文件 |
 | `academic_ppt_build` | 生成可编辑 PPTX 与配套产物 |
 | `academic_ppt_render` | 使用可选引擎渲染当前 PPTX 的实际页面 |
 | `academic_ppt_edit` | 按页面/小卡片 ID 局部修改 |
@@ -98,6 +99,7 @@ dsh web
 
 ```sh
 node bin/academic-ppt.mjs init --args init.json
+node bin/academic-ppt.mjs contract --args contract.json
 node bin/academic-ppt.mjs record --args records.json
 node bin/academic-ppt.mjs context --args context.json
 node bin/academic-ppt.mjs build --args build.json
@@ -106,9 +108,19 @@ node bin/academic-ppt.mjs check --args check.json
 
 文件名只是你创建的参数文件名，**不是空白模板可以直接运行的保证**；具体参数以 [`src/schema.mjs`](../src/schema.mjs) 与随包示例为准。`edit`、`undo`、`template`、`reference`、`render`、`review` 采用相同 `--args` 形式。模板参数是 `filePath`，工程参数是 `projectPath`；源文件及输出目录必须位于调用会话的工作目录内，必要时先由用户把模板放入该工作目录。
 
-模板盘点会保存 `template-profile-<源文件摘要前 12 位>.json`。可用 `outputPath` 指定另一个工作区内位置；同名文件内容相同则复用，内容不同则拒绝覆盖。之后将返回的路径放入 `academic_ppt_record` 的 `templateProfilePaths`（一次 1–4 个），插件读取并合并组件，模型只需选择 `templateComponentId`，不必重新抄写形状几何。原模板和模板中的旧文字不会被改写。
+模板盘点会保存 `template-profile-<源文件摘要前 12 位>.json` 并返回不含旧正文的紧凑 `study`。可用 `outputPath` 指定另一个工作区内位置；同名文件内容相同则复用，内容不同则拒绝覆盖。之后将返回的路径放入 record 批次文件的 `templateProfilePaths`（一次 1–4 个），插件读取并合并组件，模型只需选择 `templateComponentId`，不必重新抄写形状几何。原模板不会被改写，统计不代替实际查看模板画面。
 
-参考页型查询不需要工程路径。把 `{}`、`{"category":"figure"}` 或 `{"templateId":"figure-detail-window"}` 写入参数文件，然后运行 `node bin/academic-ppt.mjs reference --args reference.json`。返回的 `files` 指向已安装包内资源；`referenceTemplateId` 与 `layout` 写入页面后，生成器实际使用对应几何。模板示例数据必须换成真实证据，不能直接作为论文结论。
+参考页型查询不需要工程路径。把 `{}`、`{"category":"figure"}` 或 `{"templateId":"figure-detail-window"}` 写入参数文件，然后运行 `node bin/academic-ppt.mjs reference --args reference.json`。默认返回中性槽位和空字段骨架；只有 `includeExamples: true` 才返回教学文件入口。`referenceTemplateId` 与 `layout` 写入页面后，生成器实际使用对应几何；含题签的页型还需逐项填写 `panelTitles`，避免沿用示例判断。教学数据不能作为当前研究结论。
+
+### v0.4 记录与升级
+
+先把 `{"topic":"paper"}` 写入 contract 参数文件取得来源契约。把内容写成另一个 UTF-8 文件，例如 `batch-papers.json` 的根为 `{"papers":[...]}`，再以 `{"projectPath":"project/project.json","expectedRevision":0,"recordsPath":"batch-papers.json"}` 调用 record。批次内不放 projectPath、expectedRevision 或 recordsPath；单文件不超过 1 MiB。CLI/core 的旧内联调用继续支持，但 DSH 注册不再每轮携带所有嵌套记录 schema。
+
+新工程默认采用 academic 质量记录：来源 `analysis`、claim 的 `reasoning`，推断/方案的 `dependsOn`，正文页的 `argument`。这不是字段填得长就通过学术评审，内容仍需对应真实材料。没有明确篇数要求时 targetPaperCount 为 0；逐篇导读仅由 requirePaperIntro 明确开启。
+
+旧工程与旧成品保留。旧质量 profile 可以继续读取、编辑与构建，但不会报告已达到新学术交付条件；补充真实分析后通过 record 更新 brief 的 qualityProfile，并重建、实际渲染和登记 observations。渲染器版本已更新，旧视觉验收不会自动继承。迁移不能凭空补造阅读或审查。
+
+最终 review 的每个 reviewedSlides ID 都需对应 observations：contentCheck、legibilityCheck 和 issue。未解决问题写入 issue 并登记 needs-fix。工程已保存后返回异常时先 context 确认 revision，避免盲目重放操作。
 
 ### 图片驱动的选版
 

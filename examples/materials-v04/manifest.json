@@ -1,0 +1,230 @@
+{
+  "format": "dsh-academic-ppt-example",
+  "version": 1,
+  "packageVersion": "0.4.0",
+  "name": "materials-v04",
+  "identity": "本轮新建教学模拟输入；合成记录，不对应用户真实实验、机构、项目或论文。",
+  "license": "LICENSE",
+  "pptxSha256": "5a187a8703e6cdd91894b8e7fc7a031651dd6cf1cafcfcacb209b789a0912a01",
+  "deck": {
+    "file": "deck.json",
+    "fields": [
+      "title",
+      "brief",
+      "design",
+      "papers",
+      "claims",
+      "assets",
+      "slides"
+    ],
+    "sources": 2,
+    "claims": 13,
+    "assets": 0,
+    "slides": 8,
+    "talkBudgetSeconds": 600,
+    "qualityProfile": "academic"
+  },
+  "sourceFiles": {
+    "protocol.md": {
+      "path": "protocol.md",
+      "sha256": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9"
+    },
+    "fatigue.csv": {
+      "path": "fatigue.csv",
+      "sha256": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+    }
+  },
+  "nativeObjects": {
+    "slides": 8,
+    "notes_slides": 8,
+    "native_charts": 1,
+    "native_tables": 3,
+    "text_runs": 166,
+    "embedded_picture_objects": 0,
+    "embedded_chart_workbooks": 1
+  },
+  "nativeObjectsBySlide": [
+    {
+      "page": 1,
+      "slideId": "S01",
+      "native_charts": 0,
+      "native_tables": 0,
+      "text_runs": 6,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 2,
+      "slideId": "S02",
+      "native_charts": 0,
+      "native_tables": 1,
+      "text_runs": 38,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 3,
+      "slideId": "S03",
+      "native_charts": 0,
+      "native_tables": 1,
+      "text_runs": 24,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 4,
+      "slideId": "S04",
+      "native_charts": 1,
+      "native_tables": 0,
+      "text_runs": 14,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 5,
+      "slideId": "S05",
+      "native_charts": 0,
+      "native_tables": 1,
+      "text_runs": 24,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 6,
+      "slideId": "S06",
+      "native_charts": 0,
+      "native_tables": 0,
+      "text_runs": 17,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 7,
+      "slideId": "S07",
+      "native_charts": 0,
+      "native_tables": 0,
+      "text_runs": 24,
+      "embedded_picture_objects": 0
+    },
+    {
+      "page": 8,
+      "slideId": "S08",
+      "native_charts": 0,
+      "native_tables": 0,
+      "text_runs": 19,
+      "embedded_picture_objects": 0
+    }
+  ],
+  "nativeObjectVerificationScope": "Counts measured from the published PPTX OOXML; not a PowerPoint/WPS application editing test.",
+  "renderedArtifacts": {
+    "sourcePptxSha256": "5a187a8703e6cdd91894b8e7fc7a031651dd6cf1cafcfcacb209b789a0912a01",
+    "backend": "wasm",
+    "renderer": "LibreOffice kit 0.1.5",
+    "pdf": "report.pdf",
+    "overview": "overview.png",
+    "pageImages": [
+      {
+        "path": "cover.png",
+        "page": 1,
+        "slideId": "S01"
+      },
+      {
+        "path": "evidence.png",
+        "page": 4,
+        "slideId": "S04"
+      }
+    ],
+    "pagePixels": {
+      "width": 1441,
+      "height": 811
+    },
+    "overviewPixels": {
+      "width": 1440,
+      "height": 1620
+    }
+  },
+  "analysis": {
+    "script": "analyze.py",
+    "result": "analysis.json",
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "exactRecomputationVerified": true,
+    "paths": "relative input filenames"
+  },
+  "rebuild": {
+    "command": "npm run demo",
+    "transport": "recordsPath",
+    "createsNewAcademicProject": true,
+    "imageInput": "unknown",
+    "inheritsVisualReviews": false,
+    "defaultRendering": "not-requested",
+    "defaultVisualVerification": "not-verified"
+  },
+  "files": {
+    "LICENSE": {
+      "path": "LICENSE",
+      "bytes": 1063,
+      "sha256": "b12d15143ff6a0a2bac4d3b06dde4b2295762805eaa5b9605093ec8d711a5ccb"
+    },
+    "README.md": {
+      "path": "README.md",
+      "bytes": 5342,
+      "sha256": "b61c97cc94cb7598b9ad66d4bf3b1266c101579713f28c78cc06ac8ff72ce82d"
+    },
+    "analysis.json": {
+      "path": "analysis.json",
+      "bytes": 4525,
+      "sha256": "e76fdd0fa794acb7124d6315d6fdda02d98772448c668899c4b8243168984e03"
+    },
+    "analyze.py": {
+      "path": "analyze.py",
+      "bytes": 4451,
+      "sha256": "25743ca14ea43efe91f1e285db485bfd91ddc271aad4111d4431c5c024fe72e8"
+    },
+    "cover.png": {
+      "path": "cover.png",
+      "bytes": 67365,
+      "sha256": "ef344b253d46a35797ccafce60315844dbcf2c093d0e046d5ac883ecb8344145"
+    },
+    "deck.json": {
+      "path": "deck.json",
+      "bytes": 48450,
+      "sha256": "a4f7456912c2c07d377b2662efe905270ffa97360dd932f5fa2e62a8803a82b6"
+    },
+    "evidence.png": {
+      "path": "evidence.png",
+      "bytes": 154947,
+      "sha256": "bdc22237a6a89134f5e9d8495109f52fd0337d18b71703a63c559b85b289842f"
+    },
+    "fatigue.csv": {
+      "path": "fatigue.csv",
+      "bytes": 2031,
+      "sha256": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+    },
+    "overview.png": {
+      "path": "overview.png",
+      "bytes": 654290,
+      "sha256": "0c444199aa3ecd73e3b197150284a91c28c9061738b52800a3a312976659d4de"
+    },
+    "protocol.md": {
+      "path": "protocol.md",
+      "bytes": 1410,
+      "sha256": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9"
+    },
+    "report.pdf": {
+      "path": "report.pdf",
+      "bytes": 313004,
+      "sha256": "030f0e648e09b6c4e410fb8de77f1be4b1d471cdfe38f01410b83d829d839e38"
+    },
+    "report.pptx": {
+      "path": "report.pptx",
+      "bytes": 295481,
+      "sha256": "5a187a8703e6cdd91894b8e7fc7a031651dd6cf1cafcfcacb209b789a0912a01"
+    },
+    "requirements.txt": {
+      "path": "requirements.txt",
+      "bytes": 27,
+      "sha256": "1668a3152e33680d94637b13421c15e68bd97cd8701f7f555c691f5bc5c0b9f3"
+    },
+    "speaker-notes.md": {
+      "path": "speaker-notes.md",
+      "bytes": 6913,
+      "sha256": "e2ff61d8f879b9c572d6b49e284fb6ff350eaf991c5571a8b7a3557d50c4a03f"
+    }
+  }
+}

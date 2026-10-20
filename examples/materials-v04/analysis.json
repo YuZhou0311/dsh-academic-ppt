@@ -1,0 +1,177 @@
+{
+  "identity": "教学模拟数据；合成记录，不对应真实实验、机构、项目或论文",
+  "sources": {
+    "protocol.md": {
+      "path": "protocol.md",
+      "sha256": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9"
+    },
+    "fatigue.csv": {
+      "path": "fatigue.csv",
+      "sha256": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+    }
+  },
+  "validation": {
+    "n": 48,
+    "unique_specimen_ids": 48,
+    "missing_fields": 0,
+    "all_cycles_positive": true,
+    "endpoint_counts": {
+      "failed": 46,
+      "runout": 2
+    },
+    "runouts_at_predefined_stop": true
+  },
+  "groups": [
+    {
+      "batch": "A",
+      "process": "conventional",
+      "n": 12,
+      "stress_MPa": 200,
+      "failed": 12,
+      "runout": 0,
+      "observed_mean": 236265.91666666666,
+      "observed_median": 221791.0,
+      "minimum": 125176,
+      "maximum": 429340,
+      "observed_sd": 91667.12726387037,
+      "values": [
+        128759,
+        429340,
+        300441,
+        209956,
+        176853,
+        317160,
+        140323,
+        125176,
+        278981,
+        233626,
+        196834,
+        297742
+      ]
+    },
+    {
+      "batch": "B",
+      "process": "conventional",
+      "n": 12,
+      "stress_MPa": 200,
+      "failed": 12,
+      "runout": 0,
+      "observed_mean": 303682.8333333333,
+      "observed_median": 309945.0,
+      "minimum": 233869,
+      "maximum": 349955,
+      "observed_sd": 30977.28122301402,
+      "values": [
+        301508,
+        308647,
+        311243,
+        288464,
+        349955,
+        233869,
+        297200,
+        319524,
+        327379,
+        264025,
+        311649,
+        330731
+      ]
+    },
+    {
+      "batch": "B",
+      "process": "modified",
+      "n": 12,
+      "stress_MPa": 200,
+      "failed": 12,
+      "runout": 0,
+      "observed_mean": 329305.0833333333,
+      "observed_median": 317262.0,
+      "minimum": 243382,
+      "maximum": 451032,
+      "observed_sd": 56622.7126216043,
+      "values": [
+        243382,
+        312279,
+        315384,
+        451032,
+        337178,
+        365648,
+        378531,
+        305223,
+        319140,
+        374917,
+        275120,
+        273827
+      ]
+    },
+    {
+      "batch": "C",
+      "process": "modified",
+      "n": 12,
+      "stress_MPa": 180,
+      "failed": 10,
+      "runout": 2,
+      "observed_mean": 434824.3333333333,
+      "observed_median": 428180.5,
+      "minimum": 384329,
+      "maximum": 500000,
+      "observed_sd": 43686.73798832554,
+      "values": [
+        384329,
+        500000,
+        435960,
+        388885,
+        386565,
+        410184,
+        428320,
+        500000,
+        472147,
+        428041,
+        400964,
+        482497
+      ]
+    }
+  ],
+  "batch_B": {
+    "n_conventional": 12,
+    "n_modified": 12,
+    "stress_MPa": 200,
+    "all_failed": true,
+    "mean_conventional": 303682.8333333333,
+    "mean_modified": 329305.0833333333,
+    "mean_difference": 25622.25,
+    "mean_ratio": 1.0843717431069806,
+    "relative_mean_difference_pct": 8.437174310698058,
+    "median_conventional": 309945.0,
+    "median_modified": 317262.0,
+    "median_difference": 7317.0,
+    "relative_median_difference_pct": 2.3607414218651757,
+    "bootstrap_percentile_95_ci_mean_difference": [
+      -8274.493750000018,
+      61628.681250000016
+    ],
+    "bootstrap_replicates": 100000,
+    "bootstrap_seed": 20261020,
+    "bootstrap_unit": "independent specimen, resampled separately within each B process group",
+    "welch_95_ci_mean_difference": [
+      -13679.799052276387,
+      64924.29905227639
+    ],
+    "welch_df": 17.04322629997631,
+    "uncertainty_boundary": "模型条件下的探索性区间，只反映组内试件差异；不能消除加工顺序与未测条件偏差或建立因果归因"
+  },
+  "pooled_observed_means": {
+    "conventional": 269974.375,
+    "modified": 382064.7083333333,
+    "relative_difference_pct": 41.51887872074278,
+    "interpretation": "仅为停止点500000下观察时长的描述，不是未截尾失效寿命总体均值；混合批次与应力，不可归因于工艺"
+  },
+  "C_runout": {
+    "n": 12,
+    "failed": 10,
+    "right_censored": 2,
+    "time_limit": 500000,
+    "failure_lifetimes_of_runout": "unknown, strictly greater than 500000 if absence of failure at stop is observed",
+    "survival_at_500000": 0.16666666666666666,
+    "restriction": "仅180 MPa改性C批次的描述，无常规对照，不能识别应力效应、批次效应或工艺效应"
+  }
+}

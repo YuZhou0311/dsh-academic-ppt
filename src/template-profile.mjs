@@ -10,7 +10,8 @@ const hex = {type:'string',pattern:'^#[0-9a-fA-F]{6}$'};
 const paint = {type:'string',pattern:'^(none|#[0-9a-fA-F]{6})$'};
 const sha = {type:'string',pattern:'^[a-f0-9]{64}$'};
 const geometry = {x:number(-20000,20000),y:number(-20000,20000),w:number(0,20000),h:number(0,20000)};
-const sourceFields = {sourceSlide:integer(1,200),sourceShapeId:text(200),sourceName:text(2000)};
+const sourcePart = {type:'string',pattern:'^ppt/slides/slide[0-9]+\\.xml$',maxLength:3000};
+const sourceFields = {sourceSlide:integer(1,200),sourcePart,sourceShapeId:text(200),sourceName:text(2000)};
 const primitive = object({
  ...geometry,...sourceFields,kind:{type:'string',enum:['rect','ellipse','line']},fill:paint,stroke:paint,
  strokeWidth:number(0,100),fillOpacity:number(0,1),strokeOpacity:number(0,1),radius:number(0,10000),
@@ -20,7 +21,7 @@ const primitive = object({
 const zone = object({x:number(0,1),y:number(0,1),w:number(.001,1),h:number(.001,1)},['x','y','w','h']);
 const component = object({
  id:{type:'string',pattern:'^[A-Za-z0-9][A-Za-z0-9:_-]{0,199}$'},
- sourceSha256:sha,sourceSlide:integer(1,200),sourceGroupId:text(200),sourceFrameId:text(200),sourceName:text(2000),
+ sourceSha256:sha,sourceSlide:integer(1,200),sourcePart,sourceGroupId:text(200),sourceFrameId:text(200),sourceName:text(2000),
  derivation:{type:'string',enum:['native-group-backgrounds','contained-native-backgrounds']},
  width:number(1,20000),height:number(1,20000),sourceBox:object(geometry,['x','y','w','h']),
  nodes:array(primitive,200,1),textZones:object({title:zone,body:zone},['title','body']),

@@ -1,20 +1,21 @@
-import {mkdir,writeFile,readFile,rm} from 'node:fs/promises';
+import {mkdir,writeFile,readFile,rm,stat} from 'node:fs/promises';
 import {dirname,join,relative} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {assertToolArgs,assertProject,contentOf} from './schema.mjs';
 import {normalizeTemplateProfiles} from './template-profile.mjs';
 import {getReferenceTemplate} from './reference-catalog.mjs';
+import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-quality.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {fontFamily:'Noto Sans CJK SC',palette:{ink:'#202632',paper:'#FFFFFF',background:'#FFFFFF',accent:'#173F75',secondary:'#9B303A',muted:'#536070',line:'#CCD2DA',soft:'#F1F4F8',gold:'#9B303A',tint:'#F1F4F8'}};
-const RENDERER_VERSION=3;
+const RENDERER_VERSION=4;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
 function snapshot(p){const c=clone(contentOf(p));c.assets=c.assets.map(({data,...a})=>a);return c;}
 function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
-function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,title,brief:brief??{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:5,requireFullText:true},design:design??clone(DEFAULT_DESIGN),capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
-async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
+function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',...brief,qualityProfile:'academic'},design:design??clone(DEFAULT_DESIGN),capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
+async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
 async function saveMutation(state,next,signal,{undo=false}={}){
  assertProject(next);abort(signal);
@@ -31,7 +32,16 @@ export async function createProject(options={}){
  return {ok:true,projectPath:path,revision:0,counts:counts(p),nextActions:['明确 brief.centralQuestion 与文献筛选条件。','逐篇阅读并以 academic_ppt_record 写入证据；每次最多 5 篇论文或 8 页。']};
 }
 export async function updateRecords(options={}){
- const a=argsFor('academic_ppt_record',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p);
+ let a=argsFor('academic_ppt_record',options);
+ if(a.recordsPath){
+  if(Object.keys(a).some(key=>!['projectPath','expectedRevision','recordsPath'].includes(key)))throw new Error('MIXED_RECORD_INPUT: recordsPath 与内联记录不能同时提交');
+  const file=await safePath(options.cwd,a.recordsPath,{mustExist:true});
+  const bytes=await readBounded(file,1024*1024);let payload;
+  try{payload=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{throw new Error('INVALID_RECORD_FILE: 需要有效UTF-8 JSON对象');}
+  if(!payload||Array.isArray(payload)||typeof payload!=='object'||['projectPath','expectedRevision','recordsPath'].some(key=>Object.hasOwn(payload,key)))throw new Error('INVALID_RECORD_FILE: 文件只包含记录批次，路径与修订号放在工具参数');
+  a={projectPath:a.projectPath,expectedRevision:a.expectedRevision,...payload};assertToolArgs('academic_ppt_record',a);
+ }
+ const state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p);
  if(![...fields,'brief','design','capabilities','templateProfilePaths'].some(k=>a[k]!==undefined))throw new Error('EMPTY_UPDATE');
  for(const key of fields){if(!a[key])continue;const seen=new Set();let incoming=a[key];
   if(key==='assets')incoming=await embedAssets(incoming,options.cwd,options.signal);
@@ -41,7 +51,9 @@ export async function updateRecords(options={}){
    if(index<0)next[key].push(item);else next[key][index]=item;
   }
  }
+ if(a.brief){const relaxed=constraintRelaxations(state.p.brief,a.brief);if(relaxed.length)throw new Error('REQUIREMENT_RELAXATION: 不能用降低 '+relaxed.join(', ')+' 消除材料缺口。保留本工程；仅在用户明确改变要求后另建带新要求的工程。');}
  for(const key of ['brief','design','capabilities'])if(a[key])next[key]=a[key];
+ if(state.p.brief.qualityProfile==='academic')next.brief.qualityProfile='academic';
  if(a.templateProfilePaths){const profiles=[];for(const path of a.templateProfilePaths){const file=await safePath(options.cwd,path,{mustExist:true});const bytes=await readBounded(file,4*1024*1024);profiles.push(JSON.parse(bytes));}next.design.templateProfile=normalizeTemplateProfiles(profiles);}
  next.assets=await embedAssets(next.assets,options.cwd,options.signal);
  return saveMutation(state,next,options.signal);
@@ -51,17 +63,18 @@ export function evidenceIssues(p){
  const papers=new Map(p.papers.map(x=>[x.id,x])),claims=new Map(p.claims.map(x=>[x.id,x])),assets=new Map(p.assets.map(x=>[x.id,x]));
  if(!p.brief.centralQuestion.trim())add('error','central-question','brief.centralQuestion','先明确汇报中心问题。');
  if(!p.slides.length)add('error','no-slides','slides','尚无幻灯片。');
- const used=new Set(p.slides.flatMap(s=>[...s.paperIds,...slideClaimIds(s).map(id=>claims.get(id)?.paperId),...s.figureIds.map(id=>assets.get(id)?.paperId)].filter(Boolean)));
- if(used.size<p.brief.targetPaperCount)add('error','paper-count','papers',`正文关联 ${used.size} 篇论文，要求至少 ${p.brief.targetPaperCount} 篇。`);
+ const used=new Set(p.slides.flatMap(s=>[...s.paperIds,...expandClaimIds(p.claims,slideClaimIds(s)).map(id=>claims.get(id)?.paperId),...s.figureIds.map(id=>assets.get(id)?.paperId)].filter(Boolean)));
+ const usedArticles=[...used].filter(id=>['article','preprint'].includes(papers.get(id)?.sourceType??'article'));
+ if(usedArticles.length<p.brief.targetPaperCount)add('error','paper-count','papers',`正文关联 ${usedArticles.length} 篇论文，要求至少 ${p.brief.targetPaperCount} 篇。`);
  const introduced=new Set(p.slides.filter(s=>s.layout==='paper').flatMap(s=>s.paperIds));
  const referenced=new Set(p.slides.filter(s=>s.layout==='references').flatMap(s=>s.paperIds));
  for(const id of used){const paper=papers.get(id);if(!paper)continue;
   if(p.brief.requireFullText&&paper.reading.status!=='full-text')add('error','full-text-required','papers.'+id,'全文阅读条件未满足，不能用摘要替代。');
   if(paper.reading.status==='full-text'&&(!paper.reading.notes.trim()||paper.reading.sections.length<3||!paper.methodSummary.trim()||!paper.limitations.length))add('error','reading-coverage','papers.'+id,'全文记录需覆盖至少三个实际章节、方法及局限。');
-  if(!introduced.has(id))add('error','full-title-on-slide','papers.'+id,'缺少 paper 导读页，完整论文题名必须在画面中呈现。');
+  if((p.brief.requirePaperIntro===true||!p.brief.qualityProfile)&&!introduced.has(id))add('error','full-title-on-slide','papers.'+id,'缺少 paper 导读页，完整论文题名必须在画面中呈现。');
   if(!referenced.has(id))add('error','reference-entry','papers.'+id,'参考文献页未包含该论文。');
-  if(!/^10\.\d{4,9}\/.+/.test(paper.doi))add('warning','doi-format','papers.'+id+'.doi','请核对 DOI；插件不会联网证明其真实。');
-  if(p.brief.impactFactorMin!==undefined){if(!paper.impactFactor)add('error','impact-factor-source','papers.'+id,'缺少有年份、来源及核验日期的期刊影响因子记录。');else if(paper.impactFactor.value<p.brief.impactFactorMin)add('error','impact-factor-threshold','papers.'+id,`记录的期刊影响因子低于 ${p.brief.impactFactorMin}，不能静默降低条件。`);}
+  if(['article','preprint'].includes(paper.sourceType??'article')&&!/^10\.\d{4,9}\/.+/.test(paper.doi))add('warning','doi-format','papers.'+id+'.doi','请核对 DOI；插件不会联网证明其真实。');
+  if(p.brief.impactFactorMin!==undefined&&['article','preprint'].includes(paper.sourceType??'article')){if(!paper.impactFactor)add('error','impact-factor-source','papers.'+id,'缺少有年份、来源及核验日期的期刊影响因子记录。');else if(paper.impactFactor.value<p.brief.impactFactorMin)add('error','impact-factor-threshold','papers.'+id,`记录的期刊影响因子低于 ${p.brief.impactFactorMin}，不能静默降低条件。`);}
  }
  for(const claim of p.claims){if(!papers.has(claim.paperId))add('error','dangling-paper','claims.'+claim.id,'引用的论文 ID 不存在。');
   if(!claim.verified)add('error','unverified-claim','claims.'+claim.id,'该证据记录尚未人工或模型核对原文。');
@@ -72,7 +85,7 @@ export function evidenceIssues(p){
  for(const [index,s] of p.slides.entries()){
   const path='slides.'+s.id;
   for(const id of s.paperIds)if(!papers.has(id))add('error','dangling-paper',path,'论文不存在：'+id);
-  for(const id of slideClaimIds(s)){const c=claims.get(id);if(!c)add('error','dangling-claim',path,'证据不存在：'+id);else{paperReferencedClaims.add(c.paperId);if(!s.paperIds.includes(c.paperId))add('error','claim-source-not-visible',path,`证据 ${id} 的论文需列入本页 paperIds。`);}}
+  for(const id of expandClaimIds(p.claims,slideClaimIds(s))){const c=claims.get(id);if(!c)add('error','dangling-claim',path,'证据或其前提不存在：'+id);else{paperReferencedClaims.add(c.paperId);if(!s.paperIds.includes(c.paperId))add('error','claim-source-not-visible',path,`证据 ${id}（包含推断前提）的来源需列入本页 paperIds。`);}}
   for(const id of s.figureIds){const f=assets.get(id);if(!f)add('error','dangling-figure',path,'图片不存在：'+id);else if(f.paperId&&!s.paperIds.includes(f.paperId))add('error','figure-source-not-visible',path,'图的论文需列入本页 paperIds。');}
   if(['figure-focus','figure-split'].includes(s.layout)&&!s.figureIds.length)add('error','missing-main-figure',path,'此页型需要原图。');
   if(s.layout==='figure-split'&&!s.referenceTemplateId&&s.figureIds.length>2)add('error','too-many-figures',path,'默认此页型最多两幅图；更多面板请使用匹配的 referenceTemplateId 或拆页。');
@@ -98,6 +111,7 @@ export function evidenceIssues(p){
   }
   if(s.panelTitles&&!s.referenceTemplateId)add('error','panel-titles-without-reference',path,'面板标题需要对应的 referenceTemplateId，不能配置后不显示。');
   if(s.referenceTemplateId){const template=getReferenceTemplate(s.referenceTemplateId);if(!template)add('error','unknown-reference-template',path,'未知学术模板 ID：'+s.referenceTemplateId);else{
+   if(p.brief.qualityProfile==='academic'&&template.slots.panels?.some(panel=>panel.title)&&!s.panelTitles)add('error','panel-titles-required',path,'参考页型包含题签，需用 panelTitles 按当前研究内容逐一命名，不能沿用模板默认判断。');
    if(s.panelTitles&&s.panelTitles.length!==(template.slots.panels?.length??0))add('error','panel-title-count',path,'panelTitles 必须与所选模板的 panels 一一对应；请按实际图文内容命名。');
    if(template.layout!==s.layout)add('error','reference-layout-mismatch',path,`模板 ${template.id} 要求 layout=${template.layout}，当前为 ${s.layout}。`);
    for(const [key,count] of [['cards',s.cards.length],['figures',s.figureIds.length],['nodes',(s.nodes??[]).length]]){const range=template.requirements?.[key];if(range&&(count<range.min||count>range.max))add('error','reference-content-count',path,`${template.name} 的 ${key} 需要 ${range.min}–${range.max} 个，当前 ${count} 个；选择匹配证据的页型。`);}
@@ -110,7 +124,7 @@ export function evidenceIssues(p){
  for(const id of used)if(!paperReferencedClaims.has(id))add('warning','paper-without-claims','papers.'+id,'论文尚未关联任何页内证据。');
  const seconds=p.slides.reduce((n,s)=>n+s.seconds,0),target=p.brief.talkMinutes*60;
  if(seconds<target*.8||seconds>target*1.12)add('warning','talk-budget','brief.talkMinutes',`逐页预算 ${Math.round(seconds)} 秒，目标 ${Math.round(target)} 秒；需要实际排练校准。`);
- return issues;
+ return [...issues,...academicIssues(p)];
 }
 function statusSummary(issues){return {errors:issues.filter(x=>x.severity==='error').length,warnings:issues.filter(x=>x.severity==='warning').length};}
 export function slideClaimIds(s){return [...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.table?.sourceClaimIds??[])])];}
@@ -130,22 +144,22 @@ export async function checkProject(options={}){
  const reviews=(p.visualReviews??[]).filter(r=>artifact.current&&r.pptxSha256===artifact.pptxSha256);
  const full=(basis)=>p.slides.every(s=>reviews.findLast(r=>r.basis===basis&&r.reviewedSlides.includes(s.id))?.result==='passed');
  const summary=statusSummary(issues),visual=artifact.current&&full('pptx-render')&&render.status==='rendered'?'reported-passed':'not-verified';
- const ready=summary.errors===0&&artifact.current&&p.artifact.mode==='review'&&visual==='reported-passed'&&!(render.missingFonts?.length);
+ const ready=p.brief.qualityProfile==='academic'&&summary.errors===0&&artifact.current&&p.artifact.mode==='review'&&visual==='reported-passed'&&!(render.missingFonts?.length);
  return {ok:summary.errors===0,projectPath:path,revision:p.revision,counts:counts(p),summary,issues,artifact,verification:{evidence:'records-checked-not-independently-verified',layout:'estimated',pptxRender:render.status,visual,htmlVisual:artifact.current&&full('html-preview')?'reported-passed':'not-verified',readyForDelivery:ready},render,slides:p.slides.map(s=>({id:s.id,title:s.title,layout:s.layout,seconds:s.seconds})),note:'格式和引用链检查不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。'};
 }
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),issues=evidenceIssues(p),summary=statusSummary(issues);
  let stage=a.stage??'auto';if(stage==='auto')stage=!p.papers.length?'research':!p.claims.length?'evidence':!p.slides.length?'storyboard':summary.errors?'evidence':!p.artifact?'render':'review';
- const nextActions={research:['按 brief 条件筛选论文，先核对全文和书目信息。','每篇读取方法、结果、图注、补充材料；写入结构化阅读记录。'],evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象、模拟或实体实验的适用范围。'],design:['先查看用户原模板的实际页面：标题比例、图文区域、边框与小题签。需要原生组件时调用 academic_ppt_template，并通过 templateProfilePaths 导入。','先实际查看论文图并记录 asset.reading；调用 academic_ppt_reference，按研究任务或 figure 尺寸/视窗/阅读条件比较最多三个候选。必要时用 figureBoxes 创造合适比例。'],storyboard:['先确定每页一个研究问题、主证据和时间预算，再选匹配的 referenceTemplateId；其 layout、卡片、图与流程数量必须符合模板。','每篇保留 paper 完整题名页和 references 书目。先做密集原图、方法和结果难页，以字号、语义 kind、精确 emphasis 和不同关系形式建立层级；重要限定不降为小字。信息不足补必要解释，拥挤先去重复或拆任务。'],render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],review:['调用 academic_ppt_render，再检查其返回的最终 PPTX 图片。','同时检查空疏和拥挤：主图有效面积、图例、解释长度、必要限定、卡片重复；按稳定 ID 局部修复后登记当前 hash 的视觉审查。'],delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。']}[stage];
+ const nextActions={research:['按 brief 条件筛选论文，先核对全文和书目信息。','每篇读取方法、结果、图注、补充材料；写入结构化阅读记录。'],evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象、模拟或实体实验的适用范围。'],design:['先查看用户原模板的实际页面：标题比例、图文区域、边框与小题签。需要原生组件时调用 academic_ppt_template，并通过 templateProfilePaths 导入。','先实际查看论文图并记录 asset.reading；调用 academic_ppt_reference，按研究任务或 figure 尺寸/视窗/阅读条件比较最多三个候选。必要时用 figureBoxes 创造合适比例。'],storyboard:['先确定每页一个研究问题、主证据和时间预算，再选匹配的 referenceTemplateId；其 layout、卡片、图与流程数量必须符合模板。','仅在任务需要时安排 paper 专页；references 保留完整书目。先做密集原图、方法和结果难页，以字号、语义 kind、精确 emphasis 和不同关系形式建立层级；重要限定不降为小字。信息不足补必要解释，拥挤先去重复或拆任务。'],render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],review:['调用 academic_ppt_render，再检查其返回的最终 PPTX 图片。','同时检查空疏和拥挤：主图有效面积、图例、解释长度、必要限定、卡片重复；按稳定 ID 局部修复后登记当前 hash 的视觉审查。'],delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。']}[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
  return {ok:true,projectPath:path,revision:p.revision,stage,brief:p.brief,capabilities:p.capabilities,counts:counts(p),summary,nextActions,issues:issues.slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }
 function speechMarkdown(p){let elapsed=0;return `# ${p.title}\n\n目标时长：${p.brief.talkMinutes} 分钟。以下为本次导出对应的备注，实际语速须排练。\n\n`+p.slides.map((s,i)=>{const start=elapsed;elapsed+=s.seconds;const t=n=>`${Math.floor(n/60)}:${String(Math.round(n%60)).padStart(2,'0')}`;return `## ${i+1}. ${s.title}\n\n页 ID：${s.id}。时间预算：${t(start)}–${t(elapsed)}。\n\n${s.notes||'此页尚无讲稿。'}\n\n`}).join('');}
 export async function buildProject(options={}){
  const a=argsFor('academic_ppt_build',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const p=state.p,mode=a.mode??'review';
- const before=evidenceIssues(p);if(!p.slides.length)throw new Error('NO_SLIDES');if(mode==='review'&&before.some(i=>i.severity==='error'))return {ok:false,status:'blocked',projectPath:state.path,revision:p.revision,summary:statusSummary(before),issues:before,nextActions:['修复证据错误后重试；资料仍待补齐的中间稿可显式使用 mode=draft。']};
+ const preflight=await scenesAndIssues(p),before=preflight.issues;if(!p.slides.length)throw new Error('NO_SLIDES');if(mode==='review'&&before.some(i=>i.severity==='error'))return {ok:false,status:'blocked',projectPath:state.path,revision:p.revision,summary:statusSummary(before),issues:before,nextActions:['修复证据错误后重试；资料仍待补齐的中间稿可显式使用 mode=draft。']};
  const {renderProject}=await import('./render.mjs');abort(options.signal);const generated=await renderProject(p,{signal:options.signal});abort(options.signal);
- const issues=[...before,...(generated.issues??[])];if(mode==='review'&&issues.some(i=>i.severity==='error'))return {ok:false,status:'blocked',projectPath:state.path,revision:p.revision,summary:statusSummary(issues),issues};
+ const issues=before;if(mode==='review'&&issues.some(i=>i.severity==='error'))return {ok:false,status:'blocked',projectPath:state.path,revision:p.revision,summary:statusSummary(issues),issues};
  const exportRoot=await safePath(options.cwd,join(dirname(state.path),'exports'));await mkdir(exportRoot,{recursive:true});
  const token=`r${p.revision}-${randomUUID().slice(0,8)}`,directory=join(exportRoot,token);await mkdir(directory);
  let committed=false;
@@ -168,12 +182,12 @@ function preservedScene(before,after,prefixes){
 export async function editProject(options={}){
  const a=argsFor('academic_ppt_edit',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p),seen=new Set(),prefixes=[];
  for(const change of a.changes){const slide=next.slides.find(s=>s.id===change.slideId);if(!slide)throw new Error('UNKNOWN_SLIDE: '+change.slideId);const key=change.slideId+'/'+(change.cardId??'');if(seen.has(key))throw new Error('DUPLICATE_TARGET');seen.add(key);
-  if(a.scope==='card-style'){if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');const allowed=new Set(['style','accent','templateComponentId']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId may change; words, values, box and slide remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
-  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');Object.assign(slide,change.patch);}
+  if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');const allowed=new Set(['style','accent','templateComponentId']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId may change; words, values, box and slide remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
+  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','argument']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
  }
  assertProject(next);let preservation;
  if(a.scope==='card-style'){const {buildScenes}=await import('./scene.mjs');const before=buildScenes(state.p),after=buildScenes(next);const protectedCount=preservedScene(before,after,prefixes);preservation={scope:'card-style',targetCards:a.changes.map(c=>({slideId:c.slideId,cardId:c.cardId})),protectedSceneObjects:protectedCount,notes:'preserved',content:'preserved',targetCardFrames:'preserved',targetCardInternalTextGeometry:'may-change-with-style',basis:'semantic scene comparison; not pixel or Office GUI proof'};}
- const result=await saveMutation(state,next,options.signal);return {...result,preservation};
+ const result=await saveMutation(state,next,options.signal);return {...result,...(preservation?{preservation}:{})};
 }
 export async function undoProject(options={}){
  const a=argsFor('academic_ppt_undo',options),state=await load(options);checkRevision(state.p,a.expectedRevision);if(!state.p.history.length)throw new Error('NO_UNDO');const history=clone(state.p.history),prior=history.pop(),current=new Map(state.p.assets.map(x=>[x.id,x]));
@@ -186,7 +200,12 @@ export async function recordReview(options={}){
  if(a.reviewer==='vision-model'&&state.p.capabilities.imageInput!=='supported')throw new Error('VISION_UNVERIFIED: selected host model has no verified image input');
  if(new Set(a.reviewedSlides).size!==a.reviewedSlides.length||a.reviewedSlides.some(id=>!state.p.slides.some(s=>s.id===id)))throw new Error('INVALID_REVIEW_SLIDES');
  if(a.basis==='pptx-render'){const render=await renderReceiptCheck(state.p,options.cwd);if(render.status!=='rendered')throw new Error('PPTX_RENDER_REQUIRED: HTML/SVG preview is not final PPTX rendering');}
- const review={pptxSha256:a.pptxSha256,reviewer:a.reviewer,basis:a.basis,reviewedSlides:a.reviewedSlides,result:a.result,notes:a.notes,createdAt:now(),attestation:'user-or-agent-recorded-not-an-automatic-visual-judgment'};
+ if(state.p.brief.qualityProfile==='academic'){
+  const observed=new Set((a.observations??[]).map(item=>item.slideId));
+  if((a.observations??[]).length!==a.reviewedSlides.length||observed.size!==a.reviewedSlides.length||a.reviewedSlides.some(id=>!observed.has(id))||(a.observations??[]).some(item=>!a.reviewedSlides.includes(item.slideId)))throw new Error('PER_SLIDE_REVIEW_REQUIRED: 当前版本每个 reviewedSlides ID 需要对应 observations，逐页写 contentCheck/legibilityCheck/issue。');
+  if(a.result==='passed'&&a.observations.some(item=>item.issue.trim()))throw new Error('UNRESOLVED_REVIEW_ISSUES: 有具体问题时登记 needs-fix，不能同时声称通过。');
+ }
+ const review={...(a.observations?{observations:a.observations}:{}),pptxSha256:a.pptxSha256,reviewer:a.reviewer,basis:a.basis,reviewedSlides:a.reviewedSlides,result:a.result,notes:a.notes,createdAt:now(),attestation:'user-or-agent-recorded-not-an-automatic-visual-judgment'};
  const next={...state.p,visualReviews:[...(state.p.visualReviews??[]).filter(r=>r.pptxSha256===a.pptxSha256),review].slice(-120)};
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
  return {ok:true,projectPath:state.path,revision:state.p.revision,summary:'已保存对应版本的视觉审查记录。',review};

@@ -12,7 +12,7 @@ const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
 assert.equal(packageJson.name,'dsh-academic-ppt');
 assert.equal(packageJson.dsh.bundle.patch,'./cordis.patch.yml');
 const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
-const tools=buildAcademicTools();assert.equal(tools.length,11);
+const tools=buildAcademicTools();assert.equal(tools.length,12);
 const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
@@ -43,7 +43,7 @@ for(const path of markdown){
   await stat(resolved).catch(()=>{throw new Error(`Broken link in ${relative(root,path)}: ${target}`)});links++;
  }
 }
-for(const ref of ['research','evidence','design','revision','deepseek','delivery']){
+for(const ref of ['research','evidence','design','template-learning','revision','deepseek','delivery']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
 process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');

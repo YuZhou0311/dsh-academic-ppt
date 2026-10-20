@@ -1,6 +1,6 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "DeepSeek Harness 学术汇报插件：论文证据、图片适配、语义版式、原生可编辑 PPTX 与局部修改保护。",
   "type": "module",
   "main": "src/index.mjs",

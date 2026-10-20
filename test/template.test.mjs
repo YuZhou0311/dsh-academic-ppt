@@ -4,6 +4,7 @@ import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { zipSync, strToU8, unzipSync, strFromU8 } from 'fflate';
 import { inspectTemplate } from '../src/template.mjs';
+import { normalizeTemplateProfiles } from '../src/template-profile.mjs';
 import { renderProject } from '../src/render.mjs';
 
 const emu = px => Math.round(px * 9525);
@@ -21,6 +22,7 @@ test('template native group transforms are flattened and selected backgrounds re
     assert.equal(profile.shapes.find(s => s.sourceShapeId === '3').w, 600);
     const component = profile.components.find(c => c.id.endsWith('-s1-group-2'));
     assert.ok(component); assert.equal(component.nodes.length, 2);
+    assert.equal(component.sourcePart, 'ppt/slides/slide1.xml');
     assert.ok(component.nodes.every(n => !n.text));
     assert.match(profile.sha256, /^[a-f\d]{64}$/);
     const project = { title: '模板子集测试', design: { templateProfile: profile }, papers: [], assets: [], claims: [], slides: [{ id: 's', layout: 'synthesis', title: '复用源模板卡片', cards: [{ id: 'c', title: '新标题', body: '新正文', kind: 'method', templateComponentId: component.id }], notes: '' }] };
@@ -29,6 +31,36 @@ test('template native group transforms are flattened and selected backgrounds re
     assert.match(xml, /B38D56/);
     assert.doesNotMatch(xml, /OLD TEMPLATE WORDS/);
     assert.match(xml, /新标题/);
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('component provenance uses presentation page order while retaining nonsequential XML part names', async () => {
+  const directory = await mkdtemp(join(process.cwd(), 'test-template-'));
+  try {
+    const ns = 'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+    const slide = body => `<p:sld ${ns}><p:cSld><p:spTree>${body}</p:spTree></p:cSld></p:sld>`;
+    const title = shape(2, { x: 80, y: 30, w: 1000, h: 70, text: 'First presentation page' }).replace('sz="1800"', 'sz="4400"');
+    const parts = {
+      'ppt/presentation.xml': `<p:presentation ${ns}><p:sldIdLst><p:sldId id="256" r:id="r2"/><p:sldId id="257" r:id="r1"/></p:sldIdLst><p:sldSz cx="12192000" cy="6858000"/></p:presentation>`,
+      'ppt/_rels/presentation.xml.rels': '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="r1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide7.xml"/><Relationship Id="r2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide205.xml"/></Relationships>',
+      'ppt/slides/slide7.xml': slide(shape(1, { x: 80, y: 200, w: 400, h: 100, color: '003399' }) + shape(3, { type: 'star5' })),
+      'ppt/slides/slide205.xml': slide(shape(1, { x: 80, y: 200, w: 600, h: 100, color: '990000' }) + title),
+    };
+    const file = join(directory, 'reordered.pptx');
+    await writeFile(file, zipSync(Object.fromEntries(Object.entries(parts).map(([name, xml]) => [name, strToU8(xml)]))));
+    const profile = await inspectTemplate(file), normalized = normalizeTemplateProfiles([profile]);
+    assert.equal(profile.study.slides.order, 'presentation-relationships');
+    assert.deepEqual(profile.study.pageRoleCandidates.cover, [1]);
+    assert.deepEqual(normalized.components.map(c => ({ page: c.sourceSlide, part: c.sourcePart, width: c.width })), [
+      { page: 1, part: 'ppt/slides/slide205.xml', width: 600 },
+      { page: 2, part: 'ppt/slides/slide7.xml', width: 400 },
+    ]);
+    for (const component of normalized.components) {
+      assert.ok(component.nodes.every(n => n.sourceSlide === component.sourceSlide && n.sourcePart === component.sourcePart));
+      assert.ok(component.id.includes(`-s${component.sourceSlide}-`));
+    }
+    assert.ok(profile.shapes.some(s => s.sourceSlide === 1 && s.sourcePart === 'ppt/slides/slide205.xml' && s.text === 'First presentation page'));
+    assert.ok(normalized.unsupported.some(s => s.sourceShapeId === '3' && s.sourceSlide === 2 && s.sourcePart === 'ppt/slides/slide7.xml'));
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 
