@@ -1,6 +1,6 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DeepSeek Harness 学术汇报插件：论文证据、模板组件、原生可编辑 PPTX 与局部修改保护。",
   "type": "module",
   "main": "src/index.mjs",
@@ -28,7 +28,8 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "demo": "node scripts/build-demo.mjs",
-    "check": "node scripts/check-package.mjs"
+    "check": "node scripts/check-package.mjs",
+    "references": "node scripts/build-references.mjs"
   },
   "dsh": {
     "bundle": {

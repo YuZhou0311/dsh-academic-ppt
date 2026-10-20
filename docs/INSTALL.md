@@ -1,15 +1,15 @@
 # 安装与首次使用
 
-本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十个确定性工具。它使用当前 DSH 会话中的模型和宿主工具；插件本身不保存 DeepSeek 密钥，也不另行发起模型请求。
+本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十一个确定性工具。它使用当前 DSH 会话中的模型和宿主工具；插件本身不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-当前交付方式是 [GitHub v0.1.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.1.0)提供的源码和本地安装包。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+当前交付方式是 [GitHub v0.2.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.2.0)提供的源码和本地安装包。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
 推荐克隆固定版本，或下载发布页的 Source code 归档后解压：
 
 ```sh
-git clone --branch v0.1.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.2.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
@@ -31,10 +31,10 @@ Node 版本以 [`package.json`](../package.json) 的 `engines.node` 为准。普
 
 ### 直接使用安装包
 
-只需安装插件时，可下载 `dsh-academic-ppt-0.1.0.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理，或在已经初始化的 desktop profile 中运行：
+只需安装插件时，可下载 `dsh-academic-ppt-0.2.0.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理，或在已经初始化的 desktop profile 中运行：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.1.0.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.2.0.tgz"
 ```
 
 DSH 的包管理器负责解析依赖。安装包包含运行代码、技能、文档和示例；开发测试及根 `package-lock.json` 由源码归档提供。不要把本节的安装包解压后直接套用源码流程中的 `npm ci` 或 `npm test`。
@@ -78,6 +78,7 @@ dsh web
 | `academic_ppt_record` | 分批登记论文、论点、论文图与页面 |
 | `academic_ppt_context` | 获取下一阶段的精简上下文 |
 | `academic_ppt_template` | 盘点本地 PPTX 模板及支持的原生组件 |
+| `academic_ppt_reference` | 列出或选择 48 个学术参考页型，获取原生 PPTX 与布局字段 |
 | `academic_ppt_build` | 生成可编辑 PPTX 与配套产物 |
 | `academic_ppt_render` | 使用可选引擎渲染当前 PPTX 的实际页面 |
 | `academic_ppt_edit` | 按页面/小卡片 ID 局部修改 |
@@ -103,9 +104,11 @@ node bin/academic-ppt.mjs build --args build.json
 node bin/academic-ppt.mjs check --args check.json
 ```
 
-文件名只是你创建的参数文件名，**不是空白模板可以直接运行的保证**；具体参数以 [`src/schema.mjs`](../src/schema.mjs) 与随包示例为准。`edit`、`undo`、`template`、`render`、`review` 采用相同 `--args` 形式。模板参数是 `filePath`，工程参数是 `projectPath`；源文件及输出目录必须位于调用会话的工作目录内，必要时先由用户把模板放入该工作目录。
+文件名只是你创建的参数文件名，**不是空白模板可以直接运行的保证**；具体参数以 [`src/schema.mjs`](../src/schema.mjs) 与随包示例为准。`edit`、`undo`、`template`、`reference`、`render`、`review` 采用相同 `--args` 形式。模板参数是 `filePath`，工程参数是 `projectPath`；源文件及输出目录必须位于调用会话的工作目录内，必要时先由用户把模板放入该工作目录。
 
 模板盘点会保存 `template-profile-<源文件摘要前 12 位>.json`。可用 `outputPath` 指定另一个工作区内位置；同名文件内容相同则复用，内容不同则拒绝覆盖。之后将返回的路径放入 `academic_ppt_record` 的 `templateProfilePaths`（一次 1–4 个），插件读取并合并组件，模型只需选择 `templateComponentId`，不必重新抄写形状几何。原模板和模板中的旧文字不会被改写。
+
+参考页型查询不需要工程路径。把 `{}`、`{"category":"figure"}` 或 `{"templateId":"figure-detail-window"}` 写入参数文件，然后运行 `node bin/academic-ppt.mjs reference --args reference.json`。返回的 `files` 指向已安装包内资源；`referenceTemplateId` 与 `layout` 写入页面后，生成器实际使用对应几何。模板示例数据必须换成真实证据，不能直接作为论文结论。
 
 默认输出简明操作摘要。调用程序若需要路径、修订号与完整检查对象，可显式添加 `--json`。CLI 的相对路径按启动命令时的工作目录解析；DSH 工具按调用会话的工作目录解析。改变一个会话的目录不会更改全局进程目录。
 

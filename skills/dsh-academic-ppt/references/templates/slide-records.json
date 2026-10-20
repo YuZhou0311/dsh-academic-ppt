@@ -1,0 +1,3401 @@
+{
+  "schemaVersion": 1,
+  "synthetic": true,
+  "bibliographicPlaceholders": true,
+  "purpose": "layout-templates-not-research-evidence",
+  "notice": "All bibliographic metadata is placeholder text and all numeric data is synthetic. Replace and verify before a scientific presentation.",
+  "design": {
+    "fontFamily": "Noto Sans CJK SC",
+    "palette": {
+      "background": "#FFFFFF",
+      "paper": "#FFFFFF",
+      "ink": "#1C2430",
+      "accent": "#173C70",
+      "secondary": "#355D88",
+      "gold": "#903543",
+      "muted": "#515B68",
+      "line": "#BEC8D4",
+      "soft": "#EEF3F8",
+      "tint": "#EEF3F8"
+    }
+  },
+  "brief": {
+    "centralQuestion": "原创学术版式、结构化填充指引与合成科学图",
+    "audience": "学术汇报制作者",
+    "talkMinutes": 48,
+    "targetPaperCount": 0,
+    "requireFullText": false
+  },
+  "papers": [
+    {
+      "id": "T1",
+      "title": "Full article title: connecting decision models, experimental evidence and independent validation in crop cultivation",
+      "authors": [
+        "作者姓名（替换）"
+      ],
+      "year": 2026,
+      "journal": "期刊与卷页（替换）",
+      "doi": "待替换",
+      "url": "https://example.invalid/replace-with-official-paper-url",
+      "version": "书目占位，非真实文献",
+      "studyType": "system-evaluation",
+      "reading": {
+        "status": "metadata-only",
+        "sections": [],
+        "source": "模板占位",
+        "notes": "不是已阅读全文的声明。"
+      },
+      "methodSummary": "填写实际方法。",
+      "limitations": [
+        "填写原论文局限。"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Full title of a related methods or validation study",
+      "authors": [
+        "作者姓名（替换）"
+      ],
+      "year": 2026,
+      "journal": "期刊与卷页（替换）",
+      "doi": "待替换",
+      "url": "https://example.invalid/replace-with-official-paper-url",
+      "version": "书目占位，非真实文献",
+      "studyType": "system-evaluation",
+      "reading": {
+        "status": "metadata-only",
+        "sections": [],
+        "source": "模板占位",
+        "notes": "不是已阅读全文的声明。"
+      },
+      "methodSummary": "填写实际方法。",
+      "limitations": [
+        "填写原论文局限。"
+      ]
+    },
+    {
+      "id": "T3",
+      "title": "Full title of the source for the supplementary evidence",
+      "authors": [
+        "作者姓名（替换）"
+      ],
+      "year": 2026,
+      "journal": "期刊与卷页（替换）",
+      "doi": "待替换",
+      "url": "https://example.invalid/replace-with-official-paper-url",
+      "version": "书目占位，非真实文献",
+      "studyType": "system-evaluation",
+      "reading": {
+        "status": "metadata-only",
+        "sections": [],
+        "source": "模板占位",
+        "notes": "不是已阅读全文的声明。"
+      },
+      "methodSummary": "填写实际方法。",
+      "limitations": [
+        "填写原论文局限。"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "C-TEMPLATE",
+      "paperId": "T1",
+      "kind": "proposal",
+      "text": "全部图表数字是合成排版示例，不是真实研究结论。",
+      "locator": "scripts/create-reference-figures.py 与 scripts/build-references.mjs",
+      "context": "仅用于教学模板；使用前替换并核查实际来源。",
+      "verified": false
+    }
+  ],
+  "assets": [
+    {
+      "id": "template-response",
+      "paperId": "T1",
+      "width": 1120,
+      "height": 672,
+      "sha256": "2ed71dbf0f6fb4152528eeefdde357a73024d52ea8767a541b34822877c82928",
+      "figure": "示例图",
+      "caption": "响应曲线；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/response.png"
+    },
+    {
+      "id": "template-distribution",
+      "paperId": "T1",
+      "width": 1120,
+      "height": 672,
+      "sha256": "c6afc2430887c009ff966fb795691af6cd1ac3bb79a3db5349b123d2477bfe80",
+      "figure": "示例图",
+      "caption": "独立观测分布；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/distribution.png"
+    },
+    {
+      "id": "template-transfer",
+      "paperId": "T1",
+      "width": 1120,
+      "height": 672,
+      "sha256": "62a9bd2343cd34d2aeccae2dff096312bd047163466a2b050b9473a10eb422c8",
+      "figure": "示例图",
+      "caption": "跨环境矩阵；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/transfer.png"
+    },
+    {
+      "id": "template-effect",
+      "paperId": "T1",
+      "width": 1120,
+      "height": 672,
+      "sha256": "b294b1f051847224a6e6ca4034ca21b3b40adca9b2cd29e9a6861e77daf46e2b",
+      "figure": "示例图",
+      "caption": "效应与区间；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/effect-interval.png"
+    },
+    {
+      "id": "template-composite",
+      "paperId": "T1",
+      "width": 1680,
+      "height": 1008,
+      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "figure": "示例图",
+      "caption": "多面板科学图；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/four-panels.png"
+    },
+    {
+      "id": "template-portrait",
+      "paperId": "T1",
+      "width": 910,
+      "height": 1512,
+      "sha256": "d3f60f809493c5b8178330e816856656da990bfad6ff48c6610daa2edf1daffc",
+      "figure": "示例图",
+      "caption": "竖向面板示例；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/portrait-panels.png"
+    },
+    {
+      "id": "template-wide",
+      "paperId": "T1",
+      "width": 2240,
+      "height": 532,
+      "sha256": "86a8dffd59d05fbfdb1f9f07c90d5385bfc51e50f09f0b8f455953112bc54d61",
+      "figure": "示例图",
+      "caption": "宽幅面板示例；合成演示值",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "完整原图，无裁切",
+      "path": "assets/wide-panels.png"
+    },
+    {
+      "id": "template-detail",
+      "paperId": "T1",
+      "width": 1680,
+      "height": 1008,
+      "sha256": "da61ff3567f40da15753e5f1fc3076c58e46e298167b909f148f74d35492d304",
+      "figure": "示例图",
+      "caption": "合成图面板 A 的局部视窗",
+      "sourceUrl": "https://github.com/YuZhou0311/dsh-academic-ppt",
+      "sourceVersion": "原创排版教学示例 v0.2.0",
+      "license": "MIT; all plotted values are synthetic",
+      "usage": "figure",
+      "cropNote": "视窗 x=.015,y=.025,w=.495,h=.49；包含面板标题、坐标、图例及单位，原始图像完整保留",
+      "viewport": {
+        "x": 0.015,
+        "y": 0.025,
+        "w": 0.495,
+        "h": 0.49
+      },
+      "path": "assets/four-panels.png"
+    }
+  ],
+  "slides": [
+    {
+      "id": "T01",
+      "layout": "paper",
+      "referenceTemplateId": "paper-overview",
+      "title": "单篇论文全景",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "hypothesis",
+          "title": "研究问题",
+          "body": "明确研究对象与问题边界\n给出当前方法尚未解释的关系",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "方法改变了什么",
+          "body": "说明输入、处理与输出\n指出新增方法实际介入的环节",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "结果及适用范围",
+          "body": "报告效果、分母与比较对象\n保留作者实际测试的场景",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID paper-overview。完整书目置顶，左侧主图，右侧依次解释问题、方法与结果边界。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：研究问题；方法改变了什么；结果及适用范围。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "关键证据图"
+      ]
+    },
+    {
+      "id": "T02",
+      "layout": "paper",
+      "referenceTemplateId": "paper-gap-hypothesis",
+      "title": "缺口与假说",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "已有认识",
+          "body": "列出已有研究共同支持的结论\n说明该结论依赖的数据条件",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "尚存缺口",
+          "body": "指出尚未验证的机制或条件\n将缺口定位到具体决策接口",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "hypothesis",
+          "title": "可检验假说",
+          "body": "明确干预变量与预期结果\n给出能够区分替代解释的观测",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-4",
+          "kind": "boundary",
+          "title": "预期观测与反证",
+          "body": "预先规定支持或否定的条件\n同时说明无效或负效应如何解释",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID paper-gap-hypothesis。区分已有认识、尚存缺口、研究假说及可观测预测。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：已有认识；尚存缺口；可检验假说；预期观测与反证。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T03",
+      "layout": "synthesis",
+      "referenceTemplateId": "paper-evidence-map",
+      "title": "核心论点与证据对应",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response",
+        "template-effect"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "论点一的依据",
+          "body": "对应面板 A 的变量与趋势",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "论点二的依据",
+          "body": "对应面板 B 的效应与区间",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "输入与测量",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "验证与比较",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "解释与限定",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID paper-evidence-map。左窄右宽两组证据，右组原图与解释链同框，底部保留共同边界。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：论点一的依据；论点二的依据。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "证据一：测量对象",
+        "证据二：效应与解释"
+      ],
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T04",
+      "layout": "paper",
+      "referenceTemplateId": "paper-study-scope",
+      "title": "研究对象与验证范围",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "研究对象",
+          "body": "填写物种、样本来源和实验单位\n区分个体数与重复观测次数",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "分析任务",
+          "body": "列出任务输入和预期输出\n说明是否承担实际管理决策",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "实验身份",
+          "body": "标明仿真、实验室或真实田间\n报告环境范围与观测周期",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "实际验证内容",
+          "body": "把作者已测量的能力逐项列出\n将系统可执行与结果正确分开",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-5",
+          "kind": "method",
+          "title": "外推范围",
+          "body": "指出未包含的场景与人群\n避免把短期结果扩展为长期收益",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID paper-study-scope。完整题名后将样本、任务与验证范围连续排布。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：研究对象；分析任务；实验身份；实际验证内容；外推范围。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T05",
+      "layout": "paper",
+      "referenceTemplateId": "paper-contribution-comparison",
+      "title": "贡献与基线的差异",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "关键改变",
+          "body": "区分新增信息与算法结构变化\n保持对应基线的输入条件一致",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "比较条件",
+          "body": "对齐样本、时间窗和评价方法\n说明额外调参或计算预算",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID paper-contribution-comparison。原生表格仅用于严格维度映射，侧栏说明新增贡献与公平性。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：关键改变；比较条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "比较维度",
+          "既有方法",
+          "本研究方法"
+        ],
+        "rows": [
+          [
+            "输入信息",
+            "原有观测",
+            "新增信息（填写）"
+          ],
+          [
+            "决策接口",
+            "原有算子",
+            "改变环节（填写）"
+          ],
+          [
+            "验证范围",
+            "已发表条件",
+            "新增场景（填写）"
+          ],
+          [
+            "资源预算",
+            "统一记录",
+            "统一记录"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T06",
+      "layout": "paper",
+      "referenceTemplateId": "paper-journal-club",
+      "title": "精读讨论提纲",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "本次讨论问题",
+          "body": "用一个具体科学问题组织精读\n方法、实验和局限围绕该问题展开",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "方法审查",
+          "body": "输入假设和关键算子是否明确\n机制图与实际实现是否一致\n额外模块提供了什么新信息",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "实验审查",
+          "body": "基线、划分与重复是否合适\n误差、失败与外推是否充分报告\n结果支持到哪个层级的结论",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID paper-journal-club。一幅关键图配研究问题与争议，底部展开方法和验证讨论。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：本次讨论问题；方法审查；实验审查。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "讨论依据"
+      ]
+    },
+    {
+      "id": "T07",
+      "layout": "method",
+      "referenceTemplateId": "method-agent-loop",
+      "title": "智能体执行与反馈",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "系统接口",
+          "body": "标出各步骤输入、输出和记录\n区分模型决策与确定性工具计算\n用箭头说明状态由谁更新",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "核验与失败处理",
+          "body": "列出错误触发与返回机制\n保存工具输出、引用和重试记录\n核验模块的成本也需要评价",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "任务与观测",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "计划与工具选择",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "执行与记录",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "结果检验",
+          "detail": ""
+        },
+        {
+          "id": "step-5",
+          "label": "状态更新",
+          "detail": ""
+        },
+        {
+          "id": "step-6",
+          "label": "后续任务",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        },
+        {
+          "from": "step-4",
+          "to": "step-5"
+        },
+        {
+          "from": "step-5",
+          "to": "step-6"
+        },
+        {
+          "from": "step-6",
+          "to": "step-1"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID method-agent-loop。六节点闭环说明规划、执行与核验，右侧保留接口和失败处理。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：系统接口；核验与失败处理。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "任务驱动的执行闭环"
+      ],
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T08",
+      "layout": "method",
+      "referenceTemplateId": "method-rl-interface",
+      "title": "强化学习的状态动作奖励",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "状态 s_t",
+          "body": "观测变量、历史和缺失值\n记录单位、采样频率与可得时间",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "动作 a_t",
+          "body": "管理对象、离散或连续范围\n说明执行频率和现实约束",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "奖励 r_t",
+          "body": "写出奖励组成与归一化方法\n区分即时奖励和最终目标",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "安全约束",
+          "body": "硬边界、软惩罚与终止条件\n单独报告约束违反情况",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "观测与状态估计",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "策略决策",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "环境与执行器",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "反馈与终止条件",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        },
+        {
+          "from": "step-4",
+          "to": "step-1"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID method-rl-interface。环境与策略构成闭环，右侧将状态、动作、奖励、约束分别定义。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：状态 s_t；动作 a_t；奖励 r_t；安全约束。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T09",
+      "layout": "method",
+      "referenceTemplateId": "method-tool-routing",
+      "title": "工具路由与能力边界",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "路由依据",
+          "body": "任务类型如何匹配工具能力\n工具选择是否使用相同的信息\n缺少工具时应明确退出或求助",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "工具覆盖范围",
+          "body": "列出工具能处理的对象和输入\n标注分布外样本与失败类别\n解释工具更新后需重做哪些验证",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "任务解析",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "感知模型",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "数据与统计工具",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "知识检索",
+          "detail": ""
+        },
+        {
+          "id": "step-5",
+          "label": "输出核验",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-1",
+          "to": "step-3"
+        },
+        {
+          "from": "step-1",
+          "to": "step-4"
+        },
+        {
+          "from": "step-2",
+          "to": "step-5"
+        },
+        {
+          "from": "step-3",
+          "to": "step-5"
+        },
+        {
+          "from": "step-4",
+          "to": "step-5"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID method-tool-routing。纵向任务入口分流到三类工具，再汇总到核验节点。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：路由依据；工具覆盖范围。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "任务、工具与输出"
+      ]
+    },
+    {
+      "id": "T10",
+      "layout": "method",
+      "referenceTemplateId": "method-model-coupling",
+      "title": "机理模型与优化器耦合",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "输入与单位",
+          "body": "同化观测、气象与管理输入\n逐项保留物理量单位和时间步\n说明缺失或预测数据的来源",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "校准与验证",
+          "body": "区分参数校准与独立验证\n报告校准范围与留出环境\n与观测比较误差而非只看拟合",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "模型失配",
+          "body": "列出结构误差与参数不确定性\n说明误差如何影响优化或策略\n补充越界状态的处理规则",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "环境与管理输入",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "机理模型",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "目标与约束计算",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "优化或策略更新",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID method-model-coupling。耦合链横向展开，下面交代接口、校准和模型失配。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：输入与单位；校准与验证；模型失配。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "耦合计算链"
+      ]
+    },
+    {
+      "id": "T11",
+      "layout": "method",
+      "referenceTemplateId": "method-algorithm-steps",
+      "title": "算法步骤与关键假设",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "关键运算",
+          "body": "写清关键更新或目标计算\n保留输入维度、输出与复杂度\n避免只写算法名而省略机制",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "更新规则",
+          "body": "说明批次、频率与停止条件\n区分训练更新和测试时的行为",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "hypothesis",
+          "title": "假设与计算条件",
+          "body": "列出独立性、可观测性与稳定性假设\n报告超参数、随机种子和预算",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "输入与初始化",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "构造候选",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "计算目标",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "更新参数",
+          "detail": ""
+        },
+        {
+          "id": "step-5",
+          "label": "停止与输出",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        },
+        {
+          "from": "step-4",
+          "to": "step-5"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID method-algorithm-steps。左列给出紧凑有序步骤，右侧给出核心算子与必要假设。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：关键运算；更新规则；假设与计算条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T12",
+      "layout": "method",
+      "referenceTemplateId": "method-objective-constraints",
+      "title": "目标函数与约束分解",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "优化目标",
+          "body": "示例：min L = Ldata + λ Lregularizer\n替换为原论文公式并解释每一项\n确认优化目标与评价指标的关系",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "约束集合",
+          "body": "示例：g(x) ≤ 0，a_t ∈ A\n说明约束作用对象与违反代价",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "求解与评价",
+          "body": "求解器负责怎样的搜索或更新\n独立测试怎样估计结果与不确定性",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "符号与单位",
+          "body": "统一状态、动作、参数与损失符号\n所有数值项保留量纲与归一化\n避免同一符号代表不同物理量",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-5",
+          "kind": "hypothesis",
+          "title": "可识别性假设",
+          "body": "解释哪些参数能由观测识别\n列出需要固定或外部提供的条件\n用消融或敏感性分析检查解释",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID method-objective-constraints。将目标函数、约束和变量定义并置，底部给出求解和评价分工。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：优化目标；约束集合；求解与评价；符号与单位；可识别性假设。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T13",
+      "layout": "method",
+      "referenceTemplateId": "experiment-cohort-design",
+      "title": "样本单位与重复测量",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "独立样本单位",
+          "body": "填写真正接受独立处理的个体\n随机种子、图像和轨迹分别计数\n用实验设计判断统计独立性",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "重复测量结构",
+          "body": "填写每个个体的时间点与采样频率\n说明分层或相关观测的处理方法\n缺失测量不应扩大独立样本数",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-3",
+          "kind": "boundary",
+          "title": "纳入排除与缺失值",
+          "body": "预先写明纳入、排除和质量控制规则\n报告各阶段样本量与缺失原因",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "目标总体",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "独立实验单位",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "分组与处理",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "重复测量",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-2",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID experiment-cohort-design。队列划分和采集过程在左，独立样本与观测次数在右明确区分。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：独立样本单位；重复测量结构；纳入排除与缺失值。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T14",
+      "layout": "comparison",
+      "referenceTemplateId": "experiment-factorial",
+      "title": "实验因子与处理组合",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "随机化与重复",
+          "body": "说明处理分配与区组\n写清每组独立重复数\n将技术重复与生物重复区分",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "效应解释",
+          "body": "分别解释主效应与交互作用\n比较应固定其他因素的条件\n多次比较的处理需在页上交代",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID experiment-factorial。用原生表格记录因子水平与处理，右侧解释随机化和交互作用。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：随机化与重复；效应解释。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "因子",
+          "水平 1",
+          "水平 2",
+          "设计说明"
+        ],
+        "rows": [
+          [
+            "处理强度",
+            "低",
+            "高",
+            "填写实际水平与单位"
+          ],
+          [
+            "环境条件",
+            "E1",
+            "E2",
+            "说明独立重复"
+          ],
+          [
+            "时间阶段",
+            "早期",
+            "后期",
+            "是否为重复测量"
+          ],
+          [
+            "随机化",
+            "按区组",
+            "组内分配",
+            "记录分配单位"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T15",
+      "layout": "method",
+      "referenceTemplateId": "experiment-train-test-split",
+      "title": "训练验证与独立测试",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "划分单位与留出条件",
+          "body": "按个体、站点或年份划分\n明确训练、验证与独立测试的职责\n测试集不能参与特征或阈值选择",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "信息泄漏检查",
+          "body": "同一对象的重复观测不得跨集合泄漏\n标准化、缺失填补应只拟合训练集\n报告时序数据可见的信息范围",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "原始样本：按独立单位划分",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "训练集",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "验证集",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "独立测试集",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-1",
+          "to": "step-3"
+        },
+        {
+          "from": "step-1",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID experiment-train-test-split。原始样本按独立单位划分到训练、验证与独立测试三个分支，下方说明划分职责与泄漏检查。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：划分单位与留出条件；信息泄漏检查。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "各集合承担不同职责"
+      ]
+    },
+    {
+      "id": "T16",
+      "layout": "comparison",
+      "referenceTemplateId": "experiment-baseline-controls",
+      "title": "基线与公平对照",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "共同预算",
+          "body": "观测、工具与训练预算保持一致\n固定调参和人工干预次数\n报告运行时间与失败成本",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "额外信息",
+          "body": "列出每种方法获得的新增信息\n通过单独对照区分信息优势\n不能只据结果提升归因于结构",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID experiment-baseline-controls。共同条件用表格对齐，额外信息、算力与调参预算在侧栏说明。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：共同预算；额外信息。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "条件",
+          "基线流程",
+          "干预流程"
+        ],
+        "rows": [
+          [
+            "观测数据",
+            "相同数据版本",
+            "相同数据版本"
+          ],
+          [
+            "工具与参数",
+            "预先冻结",
+            "只修改指定模块"
+          ],
+          [
+            "计算预算",
+            "统一上限",
+            "统一上限"
+          ],
+          [
+            "人工干预",
+            "记录每次介入",
+            "记录每次介入"
+          ],
+          [
+            "评价方法",
+            "同一盲评程序",
+            "同一盲评程序"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T17",
+      "layout": "method",
+      "referenceTemplateId": "experiment-measurement-chain",
+      "title": "测量到统计分析的链路",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "校准与误差",
+          "body": "报告仪器校准与测量不确定性\n记录异常检测和人工复核规则",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "分析单位",
+          "body": "区分记录行、图像、样本与场次\n模型估计应符合实际分层结构\n解释聚合前后的信息损失",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "实验对象",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "传感与成像",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "原始观测",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "质量控制",
+          "detail": ""
+        },
+        {
+          "id": "step-5",
+          "label": "特征构建",
+          "detail": ""
+        },
+        {
+          "id": "step-6",
+          "label": "统计估计",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        },
+        {
+          "from": "step-4",
+          "to": "step-5"
+        },
+        {
+          "from": "step-5",
+          "to": "step-6"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID experiment-measurement-chain。测量链用分层流程，误差来源与校准集中置于右侧。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：校准与误差；分析单位。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "从观测到估计"
+      ]
+    },
+    {
+      "id": "T18",
+      "layout": "comparison",
+      "referenceTemplateId": "experiment-parameter-protocol",
+      "title": "参数与复现实验协议",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "训练条件",
+          "body": "固定数据版本、目标与停止规则\n记录种子和选择超参数的依据",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "测试条件",
+          "body": "冻结模型后使用独立数据\n保留场景、尺度与失败记录",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "复现材料",
+          "body": "代码、数据、参数和运行环境\n明确哪些材料公开，哪些受限",
+          "claimIds": [],
+          "style": "open-frame"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID experiment-parameter-protocol。参数表配训练、测试和复现备注，避免参数被藏在讲稿中。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：训练条件；测试条件；复现材料。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "参数",
+          "设置（待替换）",
+          "依据或来源"
+        ],
+        "rows": [
+          [
+            "时间步",
+            "填写数值与单位",
+            "实验采样频率"
+          ],
+          [
+            "训练轮次",
+            "填写停止条件",
+            "验证集选择"
+          ],
+          [
+            "重复数量",
+            "填写独立重复数",
+            "样本量依据"
+          ],
+          [
+            "学习率",
+            "填写候选与最终值",
+            "仅训练/验证选取"
+          ],
+          [
+            "测试范围",
+            "列出年份与环境",
+            "独立留出记录"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T19",
+      "layout": "results",
+      "referenceTemplateId": "results-main-effect",
+      "title": "主结果与统计口径",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "主要效应",
+          "body": "报告效应大小与比较基线\n模板图中的数字仅为合成演示",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "统计口径",
+          "body": "给出样本、聚合方法与不确定性\n误差条含义不能只写 error",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "boundary",
+          "title": "解释边界",
+          "body": "统计差异与实际意义分别判断\n说明未测试的条件与替代解释",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-main-effect。主图占主要面积，右侧同时给出效应、样本与结论边界。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：主要效应；统计口径；解释边界。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "chart": {
+        "kind": "column",
+        "categories": [
+          "参考方法",
+          "设置一",
+          "设置二"
+        ],
+        "series": [
+          {
+            "name": "合成效应",
+            "values": [
+              24,
+              31,
+              37
+            ]
+          }
+        ],
+        "unit": "合成值 / a.u.",
+        "sourceClaimId": "C-TEMPLATE"
+      },
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T20",
+      "layout": "results",
+      "referenceTemplateId": "results-two-outcomes",
+      "title": "两个终点分别报告",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [
+        "template-distribution"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "终点一的解释",
+          "body": "定义单位、分母与评价时间窗\n单独报告该指标的效应与误差",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "终点二的解释",
+          "body": "明确与终点一的不同含义\n两个终点分别达标不等于同时达标",
+          "claimIds": [],
+          "style": "academic-panel"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-two-outcomes。左原生图表与右原图分别报告终点，解释各自的指标、分母与条件。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：终点一的解释；终点二的解释。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "终点一：组间比较",
+        "终点二：个体分布"
+      ],
+      "chart": {
+        "kind": "column",
+        "categories": [
+          "对照",
+          "低处理",
+          "高处理"
+        ],
+        "series": [
+          {
+            "name": "终点一（合成）",
+            "values": [
+              24,
+              29,
+              35
+            ]
+          }
+        ],
+        "unit": "合成终点一 / a.u.",
+        "sourceClaimId": "C-TEMPLATE"
+      }
+    },
+    {
+      "id": "T21",
+      "layout": "results",
+      "referenceTemplateId": "results-ablation",
+      "title": "消融比较与组件贡献",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "组件作用",
+          "body": "把消融操作和机制假设对应\n比较时其余输入与预算保持一致",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "替代解释",
+          "body": "消融同时改变了哪些条件\n检查调参、容量与数据的影响\n用进一步对照区分机制贡献",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "不确定性与重复",
+          "body": "报告独立重复、区间和显著性方法\n避免仅凭单次最佳值解释组件贡献",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-ablation。消融表与组件作用说明相邻，底部列出估计不确定性。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：组件作用；替代解释；不确定性与重复。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "设置",
+          "合成效应",
+          "合成区间",
+          "解释任务"
+        ],
+        "rows": [
+          [
+            "参考方法",
+            "0.00",
+            "−0.08…0.08",
+            "定义共同基线"
+          ],
+          [
+            "移除模块 A",
+            "0.22",
+            "0.11…0.33",
+            "核查机制贡献"
+          ],
+          [
+            "移除模块 B",
+            "0.31",
+            "0.17…0.45",
+            "核查信息变化"
+          ],
+          [
+            "完整方法",
+            "0.43",
+            "0.27…0.59",
+            "报告资源代价"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      }
+    },
+    {
+      "id": "T22",
+      "layout": "results",
+      "referenceTemplateId": "results-robustness",
+      "title": "跨环境表现与异质性",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "测试环境",
+          "body": "列出训练覆盖和独立留出条件\n分环境报告，不只给全局平均",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "最差情形",
+          "body": "展示失败环境与违反约束的次数\n讨论收益下降是否有系统性来源\n同时报告离群值和缺失情况",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "平均值以外的结论",
+          "body": "检查分位数、最差环境与个体差异\n总体均值不能替代条件层面的判断",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-robustness。趋势图展示环境差异，右侧记录训练覆盖与最差情形。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：测试环境；最差情形；平均值以外的结论。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "chart": {
+        "kind": "line",
+        "categories": [
+          "E1",
+          "E2",
+          "E3",
+          "E4"
+        ],
+        "series": [
+          {
+            "name": "条件 A（合成）",
+            "values": [
+              82,
+              78,
+              70,
+              63
+            ]
+          },
+          {
+            "name": "条件 B（合成）",
+            "values": [
+              85,
+              81,
+              76,
+              72
+            ]
+          }
+        ],
+        "unit": "合成指标 / a.u.",
+        "sourceClaimId": "C-TEMPLATE"
+      }
+    },
+    {
+      "id": "T23",
+      "layout": "results",
+      "referenceTemplateId": "results-tradeoff",
+      "title": "收益风险与代价权衡",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "收益指标",
+          "body": "定义收益、单位与基线\n说明是否包含预测或模拟项",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "风险指标",
+          "body": "报告违反约束的概率或幅度\n分开平均风险与极端情形",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "资源代价",
+          "body": "计算、人工、数据与执行成本\n权衡使用相同的时间与计量单位",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-tradeoff。定量图配三个不同角色的解释区，明确权衡的比较单位。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：收益指标；风险指标；资源代价。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "chart": {
+        "kind": "bar",
+        "categories": [
+          "参考方法",
+          "设置一",
+          "设置二"
+        ],
+        "series": [
+          {
+            "name": "合成指标",
+            "values": [
+              24,
+              31,
+              37
+            ]
+          }
+        ],
+        "unit": "合成值 / a.u.",
+        "sourceClaimId": "C-TEMPLATE"
+      },
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T24",
+      "layout": "results",
+      "referenceTemplateId": "results-error-analysis",
+      "title": "错误类型与任务分母",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "评价者与尺度",
+          "body": "人工、程序和模型评分分别记录\n说明评分规则与是否盲评\n任务完成和答案正确应分别评价",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "失败集中在哪一步",
+          "body": "将错误对应到数据、计划、工具或读图\n记录可复现的输入和失败输出\n避免用总分掩盖集中失效的环节",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "分母与统计单位",
+          "body": "报告任务数、重复数与实际评价单位\n模板计数仅用于验证表格表达",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID results-error-analysis。原生错误分类表与实际评价流程并置，避免评价口径混用。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：评价者与尺度；失败集中在哪一步；分母与统计单位。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "阶段",
+          "合成任务数",
+          "合成失败数",
+          "需核查的证据"
+        ],
+        "rows": [
+          [
+            "数据获取",
+            "10",
+            "1",
+            "原始输入与缺失"
+          ],
+          [
+            "工具执行",
+            "10",
+            "2",
+            "参数、日志与异常"
+          ],
+          [
+            "结果解释",
+            "10",
+            "3",
+            "答案与数据来源"
+          ],
+          [
+            "最终交付",
+            "10",
+            "1",
+            "完整性与可复现性"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      }
+    },
+    {
+      "id": "T25",
+      "layout": "figure-focus",
+      "referenceTemplateId": "figure-wide-annotated",
+      "title": "宽幅原图与读图说明",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-wide"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "图例与处理",
+          "body": "解释颜色、线型与实验条件\n读图前先明确比较对象",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "主要趋势",
+          "body": "指出具体面板和变化方向\n对照图注与原始数据核对数值",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "必要限定",
+          "body": "保留样本、误差与实验范围\n不从示意图推导真实研究结论",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-wide-annotated。完整宽幅原图置于上方，下面按图中元素组织读图说明。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：图例与处理；主要趋势；必要限定。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "证据图与面板顺序"
+      ]
+    },
+    {
+      "id": "T26",
+      "layout": "figure-split",
+      "referenceTemplateId": "figure-two-panels",
+      "title": "双面板对照解读",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response",
+        "template-effect"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "面板 A",
+          "body": "解释该面板的变量和处理\n对应的图注与样本条件独立保留",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "面板 B",
+          "body": "说明它如何补充前一面板\n确认两图尺度是否可以直接比较",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-two-panels。两面板共享高度，每幅图的解释直接放在对应面板下面。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：面板 A；面板 B。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "A  面板及对应解读",
+        "B  面板及对应解读"
+      ]
+    },
+    {
+      "id": "T27",
+      "layout": "figure-split",
+      "referenceTemplateId": "figure-three-panels",
+      "title": "三项互补证据",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response",
+        "template-effect",
+        "template-transfer"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "证据 A",
+          "body": "变量、样本和关键趋势\n对应来源面板及读图规则",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "证据 B",
+          "body": "使用不同观测检查同一解释\n保留自身单位与统计口径",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "证据 C",
+          "body": "补充机制或边界证据\n不要把相关性作为因果结论",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-three-panels。三图解释不同证据环节，结论限定沿底部展开。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：证据 A；证据 B；证据 C。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "A  对应证据",
+        "B  对应证据",
+        "C  对应证据"
+      ]
+    },
+    {
+      "id": "T28",
+      "layout": "figure-split",
+      "referenceTemplateId": "figure-detail-window",
+      "title": "全图定位与局部放大",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-composite",
+        "template-detail"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "全图定位",
+          "body": "保留图号和细节区域的位置",
+          "claimIds": [],
+          "style": "compact"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "局部读数与上下文",
+          "body": "放大指定面板，保留坐标、单位和邻近图例",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-detail-window。全图与细节分别保留为独立图像，附面板位置和放大范围说明。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：全图定位；局部读数与上下文。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T29",
+      "layout": "figure-focus",
+      "referenceTemplateId": "figure-portrait-reading",
+      "title": "竖向原图与分步解读",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-portrait"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "阅读顺序",
+          "body": "按面板和变量解释竖向图\n先识别输入、过程与输出",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "关键证据",
+          "body": "指出哪个面板支持具体论点\n把精确读数与正文或源数据对照",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-3",
+          "kind": "boundary",
+          "title": "局限与外推",
+          "body": "保留图中未覆盖的条件\n放大原图不改变其证据范围",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-portrait-reading。竖图使用整列高度，右侧先解释流程，再记录关键证据和局限。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：阅读顺序；关键证据；局限与外推。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "竖向证据图"
+      ]
+    },
+    {
+      "id": "T30",
+      "layout": "figure-focus",
+      "referenceTemplateId": "figure-legend-first",
+      "title": "图例变量与结果判读",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "坐标与变量",
+          "body": "解释横纵轴、量纲与归一化\n注明对数刻度或截断范围",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "颜色与处理",
+          "body": "颜色只编码条件或类别\n线型和符号也应能区分",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "判读规则",
+          "body": "说明点、带和误差条代表什么\n依据实验设计解释比较关系",
+          "claimIds": [],
+          "style": "plain"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID figure-legend-first。原图在右，左列明确变量、颜色和判读规则。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：坐标与变量；颜色与处理；判读规则。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "图像与图例"
+      ]
+    },
+    {
+      "id": "T31",
+      "layout": "synthesis",
+      "referenceTemplateId": "synthesis-mechanism-map",
+      "title": "多篇方法的接口对应",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "共同机制",
+          "body": "比较共同输入、动作和反馈的接口\n把机制相同与实现相同分开",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "关键差异",
+          "body": "额外知识、模型和控制权进入何处\n不同环境的数值不直接排序",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "共同输入",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "知识接入",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "决策接口",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "执行与反馈",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID synthesis-mechanism-map。以共有接口连接不同方法，下面说明差异来自哪里。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：共同机制；关键差异。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "在同一接口层级比较"
+      ]
+    },
+    {
+      "id": "T32",
+      "layout": "synthesis",
+      "referenceTemplateId": "synthesis-evidence-ladder",
+      "title": "证据等级与外推距离",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "离线与模拟",
+          "body": "明确模拟器和状态空间",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "受控实验",
+          "body": "说明受控条件与独立重复",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "独立环境验证",
+          "body": "报告年份、地点或对象留出",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "真实部署",
+          "body": "交代部署时间与干预后果",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-5",
+          "kind": "method",
+          "title": "共同评价对象",
+          "body": "先确定评价对象是否一致\n任务完成、预测性能和农艺收益分别比较",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-6",
+          "kind": "boundary",
+          "title": "外推边界",
+          "body": "不同证据层级支持不同结论\n指出升级验证还需要什么",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID synthesis-evidence-ladder。四类证据按验证层级展开，侧栏解释可支持的结论。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：离线与模拟；受控实验；独立环境验证；真实部署；共同评价对象；外推边界。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T33",
+      "layout": "comparison",
+      "referenceTemplateId": "synthesis-method-comparison",
+      "title": "同维度方法比较",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "比较维度",
+          "body": "只比较含义一致的输入与接口\n数值比较须使用相同任务和评价单位",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "不可比条件",
+          "body": "列出数据、预算和任务范围的差异\n报告不可比原因及需要补充的对照",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID synthesis-method-comparison。表格只比较输入、接口与验证范围，右侧解释不可比的数字。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：比较维度；不可比条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "研究",
+          "输入与知识",
+          "决策接口",
+          "验证范围"
+        ],
+        "rows": [
+          [
+            "论文 A（替换）",
+            "填写实际输入",
+            "策略更新",
+            "仿真或实体（填写）"
+          ],
+          [
+            "论文 B（替换）",
+            "填写新增信息",
+            "奖励或约束",
+            "独立留出（填写）"
+          ],
+          [
+            "论文 C（替换）",
+            "填写工具边界",
+            "计划与工具调用",
+            "任务评价（填写）"
+          ],
+          [
+            "共同问题",
+            "输入是否公平",
+            "机制能否区分",
+            "结论能外推到哪里"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T34",
+      "layout": "synthesis",
+      "referenceTemplateId": "synthesis-timeline",
+      "title": "研究进展与方法演化",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "方法演化",
+          "body": "记录新增的知识、工具或控制接口\n用具体模块变化解释方法进展",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "评价演化",
+          "body": "区分离线指标、任务评价与现场收益\n每个阶段注明实际验证范围",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "仍然缺少的验证",
+          "body": "指出现有证据尚未覆盖的条件\n提出升级验证需要的数据与对照",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "阶段一",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "阶段二",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "阶段三",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "当前研究",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID synthesis-timeline。时间节点上方对应技术变化，下方集中说明评价方式的变化。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：方法演化；评价演化；仍然缺少的验证。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T35",
+      "layout": "synthesis",
+      "referenceTemplateId": "synthesis-agreement-conflict",
+      "title": "一致发现与相互冲突",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response",
+        "template-effect"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "一致发现",
+          "body": "汇总可被不同证据重复支持的关系\n保留各论文共享的实验条件",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "冲突来源",
+          "body": "先检查任务、样本和测量尺度\n再分析机制解释是否相互排斥",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "可区分的解释",
+          "body": "列出能够解释分歧的具体条件\n设计只改变该条件的公平比较",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID synthesis-agreement-conflict。并列证据图后将一致结论、冲突来源与可能解释明确区分。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：一致发现；冲突来源；可区分的解释。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T36",
+      "layout": "synthesis",
+      "referenceTemplateId": "synthesis-open-questions",
+      "title": "证据缺口与研究问题",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "已知证据一",
+          "body": "汇总现有研究一致支持的发现\n保留场景与测量条件",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "hypothesis",
+          "title": "对应研究问题一",
+          "body": "新研究需要改变哪个接口\n给出具体可测的目标",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "已知证据二",
+          "body": "记录已有失败与反例\n说明信息是否足以解释",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-4",
+          "kind": "hypothesis",
+          "title": "对应研究问题二",
+          "body": "设计能区分替代解释的比较\n明确数据与预算",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-5",
+          "kind": "method",
+          "title": "下一步检验条件",
+          "body": "优先检验影响核心结论且能获得证据的问题",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID synthesis-open-questions。左列归纳已知证据，右侧提出对应问题，底部说明检验优先级。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：已知证据一；对应研究问题一；已知证据二；对应研究问题二；下一步检验条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T37",
+      "layout": "figure-focus",
+      "referenceTemplateId": "limitations-failure-case",
+      "title": "失败案例的逐步定位",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [
+        "template-response"
+      ],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "boundary",
+          "title": "失败条件",
+          "body": "填写可复现的输入、环境与触发点\n给出出现失败的任务分母",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "错误发生在哪一步",
+          "body": "对照日志定位第一个错误环节\n区分原始错误和后续传播",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "对结论的影响",
+          "body": "说明失败是否改变主要结果\n记录该条件是否已纳入评价",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID limitations-failure-case。失败原图保留在左，右侧按输入、错误步骤和后果解释。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：失败条件；错误发生在哪一步；对结论的影响。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "失败输入及输出记录"
+      ],
+      "takeaway": "统计口径、样本单位和适用条件需与原文一致"
+    },
+    {
+      "id": "T38",
+      "layout": "results",
+      "referenceTemplateId": "limitations-domain-shift",
+      "title": "分布变化与迁移边界",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "输入条件变化",
+          "body": "对齐训练和测试的变量范围\n用同一尺度表示发生变化的条件",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "机制失配",
+          "body": "指出原有假设在哪个环境失效\n检查模型、工具与执行约束的变化",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "可支持的迁移结论",
+          "body": "结论限定在已测试的条件变化内\n独立报告未覆盖环境",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID limitations-domain-shift。跨条件曲线配输入变化、机制失配和验证范围。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：输入条件变化；机制失配；可支持的迁移结论。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "chart": {
+        "kind": "line",
+        "categories": [
+          "E1",
+          "E2",
+          "E3",
+          "E4"
+        ],
+        "series": [
+          {
+            "name": "条件 A（合成）",
+            "values": [
+              82,
+              78,
+              70,
+              63
+            ]
+          },
+          {
+            "name": "条件 B（合成）",
+            "values": [
+              85,
+              81,
+              76,
+              72
+            ]
+          }
+        ],
+        "unit": "合成指标 / a.u.",
+        "sourceClaimId": "C-TEMPLATE"
+      }
+    },
+    {
+      "id": "T39",
+      "layout": "method",
+      "referenceTemplateId": "limitations-measurement-bias",
+      "title": "测量偏倚与替代解释",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "boundary",
+          "title": "偏倚来源",
+          "body": "区分选择、测量和遗漏变量\n说明偏倚可能影响的方向与对象",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "排查与敏感性分析",
+          "body": "改变可疑假设并重新估计主要效应\n比较结论是否依赖单一处理选择",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "真实状态",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "测量与选择",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "统计估计",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "研究结论",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID limitations-measurement-bias。因果链展示测量误差如何传入结论，下方给出排查与敏感性分析。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：偏倚来源；排查与敏感性分析。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T40",
+      "layout": "comparison",
+      "referenceTemplateId": "limitations-validity-audit",
+      "title": "效度与解释边界",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [
+        "C-TEMPLATE"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "内部效度",
+          "body": "对照是否隔离了目标干预\n检查混杂、泄漏与测量不一致",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "外部效度",
+          "body": "研究样本代表哪些对象和条件\n明确跨地点、年份和管理制度的限制",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID limitations-validity-audit。逐项对应威胁、证据与处理，避免笼统的局限清单。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：内部效度；外部效度。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "table": {
+        "columns": [
+          "威胁",
+          "可能影响",
+          "可核查证据"
+        ],
+        "rows": [
+          [
+            "选择偏倚",
+            "样本代表性下降",
+            "纳入与排除记录"
+          ],
+          [
+            "测量误差",
+            "效应估计偏移",
+            "校准与重复测量"
+          ],
+          [
+            "信息泄漏",
+            "测试结果偏高",
+            "完整数据处理链"
+          ],
+          [
+            "评价混淆",
+            "结论对象改变",
+            "统一分母与评价者"
+          ],
+          [
+            "环境变化",
+            "外推失效",
+            "独立环境测试"
+          ]
+        ],
+        "caption": "结构占位 / 合成数据，必须替换后才能用于学术结论",
+        "sourceClaimIds": [
+          "C-TEMPLATE"
+        ]
+      },
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T41",
+      "layout": "proposal",
+      "referenceTemplateId": "limitations-risk-mitigation",
+      "title": "风险触发与干预条件",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "boundary",
+          "title": "风险触发条件",
+          "body": "把失败或不确定性写成可监测信号\n提前规定何时停止、复核或回退",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "人工与计算代价",
+          "body": "记录复核次数、耗时与算力\n评价干预是否减少错误及其代价",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "boundary",
+          "title": "剩余风险",
+          "body": "列出核验后仍可能保留的错误\n据此限定自动执行的范围",
+          "claimIds": [],
+          "style": "compact"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "异常或不确定性",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "触发复核",
+          "detail": ""
+        },
+        {
+          "id": "step-3",
+          "label": "人工或工具核验",
+          "detail": ""
+        },
+        {
+          "id": "step-4",
+          "label": "返回与记录",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        },
+        {
+          "from": "step-4",
+          "to": "step-1"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID limitations-risk-mitigation。触发到复核的过程与风险分类、介入代价并列。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：风险触发条件；人工与计算代价；剩余风险。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "panelTitles": [
+        "触发、核验与记录"
+      ]
+    },
+    {
+      "id": "T42",
+      "layout": "synthesis",
+      "referenceTemplateId": "limitations-reproducibility",
+      "title": "复现材料与缺失信息",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "已公开材料",
+          "body": "逐项记录数据、代码和环境版本\n用最小实验核查能否恢复原结果",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "缺失与重建条件",
+          "body": "定位缺失参数、数据或执行步骤\n记录重建假设及其可能影响",
+          "claimIds": [],
+          "style": "dashed-note"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "数据与版本",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "环境与依赖",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "代码与参数",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "输出与核验",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID limitations-reproducibility。左侧记录材料依赖链，右侧列出可复现范围与缺失项。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：已公开材料；缺失与重建条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60,
+      "takeaway": "解释必须由本页证据支持，并保留样本、对照与适用条件。"
+    },
+    {
+      "id": "T43",
+      "layout": "proposal",
+      "referenceTemplateId": "plan-hypothesis-test",
+      "title": "从证据缺口到可检验假设",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "已有证据",
+          "body": "填写可追溯的已有发现\n指出效应与验证范围",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "尚存缺口",
+          "body": "将缺少的证据写成具体问题\n区分未知机制与未测环境",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-3",
+          "kind": "hypothesis",
+          "title": "研究假设",
+          "body": "改变一个明确的机制或接口\n预期哪个指标发生什么变化\n哪种观察会使假说不获支持",
+          "claimIds": [],
+          "style": "open-frame"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "实验对照",
+          "body": "冻结其余信息与工具预算\n设置基线、干预和必要消融\n保证同一评价和留出条件",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-5",
+          "kind": "boundary",
+          "title": "评价与反证",
+          "body": "预先定义主要终点与不确定性\n同时报告失败、成本和风险\n无效或负效应也应完整保留",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID plan-hypothesis-test。上方说明证据和缺口，下面以干预、对照和终点形成实验设计。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：已有证据；尚存缺口；研究假设；实验对照；评价与反证。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T44",
+      "layout": "method",
+      "referenceTemplateId": "plan-fair-comparison",
+      "title": "公平比较的实验结构",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "共同预算与信息",
+          "body": "双方使用同一任务、观测和工具\n固定调用次数、人工介入和预算\n明确干预只改变哪个环节",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "boundary",
+          "title": "主要终点与反证",
+          "body": "定义可测的主要终点\n统一盲评与统计单位\n预先规定不支持假说的结果",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "同一数据与任务集",
+          "detail": ""
+        },
+        {
+          "id": "step-2",
+          "label": "基线流程",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "干预流程",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "统一评价",
+          "detail": ""
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-1",
+          "to": "step-3"
+        },
+        {
+          "from": "step-2",
+          "to": "step-4"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID plan-fair-comparison。一套数据分配到两种流程，再用同一评价程序核查。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：共同预算与信息；主要终点与反证。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T45",
+      "layout": "proposal",
+      "referenceTemplateId": "plan-data-evaluation",
+      "title": "数据采集与评价计划",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "样本量与采集计划",
+          "body": "按独立实验单位规划采集\n依据预期效应与变异说明样本量",
+          "claimIds": [],
+          "style": "academic-panel"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "留出与分析计划",
+          "body": "在采集前明确主要终点和分析程序\n锁定独立留出条件与缺失值处理",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "step-1",
+          "label": "目标总体",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-2",
+          "label": "采集与质量控制",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-3",
+          "label": "预注册分析",
+          "detail": "填写接口与条件"
+        },
+        {
+          "id": "step-4",
+          "label": "独立验证",
+          "detail": "填写接口与条件"
+        }
+      ],
+      "edges": [
+        {
+          "from": "step-1",
+          "to": "step-2"
+        },
+        {
+          "from": "step-2",
+          "to": "step-3"
+        },
+        {
+          "from": "step-3",
+          "to": "step-4"
+        }
+      ],
+      "notes": "本页为原创学术版式模板，ID plan-data-evaluation。数据到评价的主线占上部，下方明确样本量依据与留出条件。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：样本量与采集计划；留出与分析计划。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T46",
+      "layout": "roadmap",
+      "referenceTemplateId": "plan-work-packages",
+      "title": "研究任务与阶段交付",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "阶段一：材料与基线",
+          "body": "确认数据版本、许可与基线\n产物：可复现的基线与证据记录",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "阶段二：机制与验证",
+          "body": "实施预定义干预与消融\n产物：按统一口径报告的比较结果",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-3",
+          "kind": "boundary",
+          "title": "阶段三：边界与复现",
+          "body": "补充留出、失败与稳健性分析\n产物：复现材料与解释边界",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-4",
+          "kind": "method",
+          "title": "阶段依赖",
+          "body": "说明各阶段所需输入与完成条件\n避免仅按日期排列任务",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-5",
+          "kind": "method",
+          "title": "停止与调整条件",
+          "body": "材料不足、效果无效或成本超出时如何调整\n把停止条件与研究问题对应",
+          "claimIds": [],
+          "style": "academic-tab"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID plan-work-packages。纵向三个研究阶段各自包含目标、方法与可检查的产物。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：阶段一：材料与基线；阶段二：机制与验证；阶段三：边界与复现；阶段依赖；停止与调整条件。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T47",
+      "layout": "closing",
+      "referenceTemplateId": "plan-conclusions",
+      "title": "结论证据与后续问题",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "结论一及证据",
+          "body": "用一句结论连接一项核心证据\n保留样本、比较与实验身份",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "结论二及证据",
+          "body": "解释与前一结论的关系\n避免重复陈述相同发现",
+          "claimIds": [],
+          "style": "ruled"
+        },
+        {
+          "id": "region-3",
+          "kind": "method",
+          "title": "结论三及证据",
+          "body": "总结机制或适用范围\n将推断与原文报告区分",
+          "claimIds": [],
+          "style": "plain"
+        },
+        {
+          "id": "region-4",
+          "kind": "boundary",
+          "title": "尚未验证",
+          "body": "列出论文没有测试的条件\n说明这些未知如何影响应用",
+          "claimIds": [],
+          "style": "academic-tab"
+        },
+        {
+          "id": "region-5",
+          "kind": "hypothesis",
+          "title": "优先研究问题",
+          "body": "提出能被实验区分的下一步问题\n保留公平对照和评价尺度",
+          "claimIds": [],
+          "style": "open-frame"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID plan-conclusions。结论分别连接对应证据，侧栏集中说明尚未解决的问题。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：结论一及证据；结论二及证据；结论三及证据；尚未验证；优先研究问题。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    },
+    {
+      "id": "T48",
+      "layout": "references",
+      "referenceTemplateId": "plan-reference-notes",
+      "title": "参考文献与补充说明",
+      "kicker": "结构模板 / 占位说明与合成数据",
+      "paperIds": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "region-1",
+          "kind": "method",
+          "title": "版本与补充材料",
+          "body": "记录正式稿、作者稿或预印本版本\n补充材料、代码和数据分别定位\n不要把链接存在当作已读全文",
+          "claimIds": [],
+          "style": "academic-side"
+        },
+        {
+          "id": "region-2",
+          "kind": "method",
+          "title": "图像与数据来源",
+          "body": "保留图号、面板、作者与许可\n裁切说明不能省略关键上下文\n替换本页所有占位书目后再汇报",
+          "claimIds": [],
+          "style": "ruled"
+        }
+      ],
+      "nodes": [],
+      "edges": [],
+      "notes": "本页为原创学术版式模板，ID plan-reference-notes。完整书目集中排列，右栏记录版本、补充材料与图像来源。\n全部文本为填写指引，图表值是合成演示值，不是任何研究结果。使用前替换论文、数据、原图与来源。\n内容职责：版本与补充材料；图像与数据来源。\n建议讲述时间只是排练起点，按实际内容调整。",
+      "seconds": 60
+    }
+  ]
+}

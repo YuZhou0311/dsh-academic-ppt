@@ -1,0 +1,234 @@
+{
+  "report": "dsh-academic-ppt v0.2.0 independent forward skill exercise",
+  "date": "2026-10-20",
+  "scope": "Offline public CLI exercise and actual PPTX inspection; not DeepSeek or DSH end-to-end model evaluation.",
+  "status": "needs-fix",
+  "remaining_reason": "Original Unicode subscript t fixture retains missing glyphs; an empty missingFonts array does not establish glyph coverage.",
+  "fixture": {
+    "description": "Six-slide synthetic teaching example of reinforcement-learning agricultural research structure",
+    "real_papers": 0,
+    "training_simulation_or_field_experiments_run": false,
+    "slides": [
+      {
+        "id": "S01",
+        "referenceTemplateId": "paper-study-scope"
+      },
+      {
+        "id": "S02",
+        "referenceTemplateId": "method-rl-interface"
+      },
+      {
+        "id": "S03",
+        "referenceTemplateId": "experiment-baseline-controls"
+      },
+      {
+        "id": "S04",
+        "referenceTemplateId": "figure-detail-window"
+      },
+      {
+        "id": "S05",
+        "referenceTemplateId": "results-main-effect"
+      },
+      {
+        "id": "S06",
+        "referenceTemplateId": "plan-reference-notes"
+      }
+    ]
+  },
+  "tools_exercised": [
+    "init",
+    "reference",
+    "record",
+    "context",
+    "build",
+    "edit",
+    "render",
+    "review",
+    "check"
+  ],
+  "runtime": {
+    "node": "24.19.0",
+    "python": "3.12.14",
+    "package_version_field": "0.2.0",
+    "renderer": "LibreOffice Kit 0.1.5 WASM",
+    "provided_fonts": "Noto Sans CJK SC Regular and Bold"
+  },
+  "artifacts": [
+    {
+      "role": "A_original_baseline",
+      "content_revision": 3,
+      "pptx_sha256": "ccd71290f26106bd40c8f37106e8aef9a17059675bdd9ed683ba7fbb06572fda"
+    },
+    {
+      "role": "B_single_card_style_edit",
+      "content_revision": 4,
+      "input_change": "S05/effect style only: academic-side to academic-tab",
+      "pptx_sha256": "5ea3ac94f1e208429f62e62be47632cd6b1cc8b905d84bd62a95f542b6cc30e1"
+    },
+    {
+      "role": "C_same_input_repair_retest",
+      "content_revision": 4,
+      "all_project_content_fields_equal_to": "B_single_card_style_edit",
+      "pptx_sha256": "06545c1c13b651eb88131596ebfa2b5a9ef66b532244e53d1b11c0106250baff"
+    }
+  ],
+  "source_timepoints": {
+    "git_baseline_head": "d17fb13c671d01f8c4feca259bca5fa02256abec",
+    "original_build_atomic_source_snapshot_captured": false,
+    "post_original_diff_capture": {
+      "recorded_at": "2026-10-20T04:21:33.879355+00:00",
+      "qualification": "Captured after original diff; not asserted to represent original build-time source.",
+      "sha256": {
+        "skills/dsh-academic-ppt/SKILL.md": "806e5892acf0baf5908de225fb107ef1386c6e9a71c9bc25f87842423e75b123",
+        "src/schema.mjs": "ab4e7ed8d2006928f6e1a2f3322ba73206c9282360376fef57d5f5b7768a5815",
+        "src/scene.mjs": "abb2ab32240ebcf68171ac76cc796885b5f79a3631a76176a560318ee375ae30",
+        "src/render.mjs": "142a3c14560cb9ac783c37b487a95d94a149746e985ed685f84f87ebb9ca3f31",
+        "src/core.mjs": "7f4b064388a6e5d941de8afa44c93f0464e56aca0bb62819e4f3b98088bbe9ba"
+      }
+    },
+    "repair_retest_capture": {
+      "recorded_at": "2026-10-20T04:24:53.806382+00:00",
+      "qualification": "File fingerprints collected after artifact C build returned; not a complete repository or release snapshot.",
+      "sha256": {
+        "src/schema.mjs": "ab4e7ed8d2006928f6e1a2f3322ba73206c9282360376fef57d5f5b7768a5815",
+        "src/core.mjs": "7f4b064388a6e5d941de8afa44c93f0464e56aca0bb62819e4f3b98088bbe9ba",
+        "src/scene.mjs": "abb2ab32240ebcf68171ac76cc796885b5f79a3631a76176a560318ee375ae30",
+        "src/render.mjs": "142a3c14560cb9ac783c37b487a95d94a149746e985ed685f84f87ebb9ca3f31"
+      }
+    },
+    "excluded_later_change": "Later long-permission-text layout work on S14 of a separate real-paper example is outside this audit."
+  },
+  "native_diff_A_to_B": {
+    "method": "Independent zipfile and XML comparison of actual PPTX by stable object names",
+    "top_level_objects": 141,
+    "text_shape_objects": 137,
+    "independent_pictures": 2,
+    "native_tables": 1,
+    "native_charts": 1,
+    "target": {
+      "slideId": "S05",
+      "cardId": "effect",
+      "objects_before": 4,
+      "objects_after": 4,
+      "changed_project_fields": [
+        "style"
+      ],
+      "outer_frame_and_content_preserved": true
+    },
+    "protected_objects_identical": 137,
+    "non_target_slide_xml_byte_identical": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S06"
+    ],
+    "notes_xml_byte_identical_count": 6,
+    "non_target_objects_changed": 0,
+    "page_order_and_notes_content_preserved": true,
+    "table_values_match_input": true,
+    "chart_values_match_recomputed_input": true,
+    "both_embedded_media_equal_original_png": true,
+    "original_png_sha256": "06fda14c3ed3e07cd3b3ae1596ac27d2d1cfbeff4eb850495a972ef6e97afbfc"
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "slide": "S06",
+      "initial": "metadata-only displayed as full-text reading",
+      "retest": "fixed; actual XML and PPTX render show bibliographic/material information"
+    },
+    {
+      "id": "F02",
+      "slide": "S03",
+      "initial": "native table caption overlapped wrapped Oracle row",
+      "retest": "fixed; same-input actual render separates caption; table values preserved"
+    },
+    {
+      "id": "F03",
+      "slide": "S02",
+      "initial": "subscript t missing glyph with empty missingFonts",
+      "retest": "retained unchanged; needs-fix"
+    },
+    {
+      "id": "F04",
+      "initial": "missing table evidence or unrendered qualifying text did not block review build",
+      "retest": "four current-code checks blocked, as listed below"
+    },
+    {
+      "id": "F05",
+      "slide": "S06",
+      "initial": "long bibliography identifier wrapped in narrow label",
+      "retest": "fixed; actual render shows [1] and retains identifier in bibliography"
+    }
+  ],
+  "blocking_checks_at_repair_retest": [
+    {
+      "slide": "S03",
+      "case": "missing table.sourceClaimIds with slide-level claim retained",
+      "comparison": "same earlier input",
+      "status": "blocked",
+      "error": "table-data-source"
+    },
+    {
+      "slide": "S03",
+      "case": "no table, slide, or card evidence associations",
+      "comparison": "same earlier input",
+      "status": "blocked",
+      "error": "table-data-source"
+    },
+    {
+      "slide": "S02",
+      "case": "subtitle not consumed by selected reference",
+      "comparison": "same earlier input",
+      "status": "blocked",
+      "error": "unrendered-subtitle"
+    },
+    {
+      "slide": "S02",
+      "case": "takeaway not consumed by selected reference",
+      "comparison": "new check at repair timepoint; not tested initially",
+      "status": "blocked",
+      "error": "unrendered-takeaway"
+    }
+  ],
+  "other_initial_guard_observations": {
+    "unknown_table_claim": "blocked: dangling-claim",
+    "unsupported_figure_count": "blocked: reference-content-count",
+    "unused_panel_titles": "blocked: panel-title-count"
+  },
+  "visual_record_for_C": {
+    "basis": "pptx-render",
+    "reviewer": "vision-model",
+    "reviewedSlides": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06"
+    ],
+    "all_slide_contact_sheet_viewed": true,
+    "full_size_rechecked": [
+      "S02",
+      "S03",
+      "S06"
+    ],
+    "result": "needs-fix",
+    "readyForDelivery": false
+  },
+  "boundaries": {
+    "glyph": "Font presence does not establish glyph coverage; original subscript fixture retained. T08 reference records separately checked as s_t/a_t/r_t.",
+    "viewport": "Positive B window retained axes, units, legend, and source identity; geometrically valid negative crop still built after removing scientific context. Visual inspection required.",
+    "not_verified": [
+      "DeepSeek/DSH end-to-end output",
+      "all 48 reference pages visually",
+      "original user template fidelity",
+      "PowerPoint/WPS GUI editing or Office JSON round trip",
+      "real scientific facts or journal/full-text requirements",
+      "projection and user aesthetic acceptance",
+      "later separate S14 layout fix"
+    ]
+  },
+  "publication_scope": "This report publishes aggregate observations and hashes, not test research PPTX files, raw project fixtures, or detailed internal logs."
+}

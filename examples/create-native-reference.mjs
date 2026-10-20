@@ -1,44 +1,54 @@
-/** Reproducible original reference deck, authored for this plugin (not a user template). */
+/** Newly authored native component sampler; user source decks are not redistributed. */
 import PptxGenJS from 'pptxgenjs';
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 
 export async function createNativeReference(path) {
-  const p = new PptxGenJS();
-  p.defineLayout({ name: 'ACADEMIC', width: 1280 / 96, height: 720 / 96 });
-  p.layout = 'ACADEMIC'; p.title = 'Academic native card reference';
-  p.author = 'DSH Academic PPT'; p.subject = 'Original demonstration components';
-  p.theme = { headFontFace: 'Noto Sans CJK SC', bodyFontFace: 'Noto Sans CJK SC', lang: 'zh-CN' };
-  const s = p.addSlide(); s.background = { color: 'F5F3EF' };
-  const box = (x,y,w,h) => ({x:x/96,y:y/96,w:w/96,h:h/96});
-  const rect = (name,x,y,w,h,fill,line='CFD7DA',more={}) => s.addShape(p.ShapeType.rect, {objectName:name,...box(x,y,w,h),fill:{color:fill},line:{color:line,width:.75},...more});
-  const line = (name,x1,y1,x2,y2,color,width=1,dash) => s.addShape(p.ShapeType.line,{objectName:name,...box(x1,y1,x2-x1,y2-y1),line:{color,width,...(dash?{dashType:dash}:{})}});
-  const text = (name,value,x,y,w,h,size,color='315B70') => s.addText(value,{objectName:name,...box(x,y,w,h),fontFace:'Noto Sans CJK SC',fontSize:size*.75,color,bold:name.includes('title'),margin:0,breakLine:false,wrap:false});
-  text('reference-title','学术原生组件 · 自制参考',52,50,1150,60,38);
-  text('reference-origin','本文件专为插件示例设计；用户此前两份模板原文件未在当前工程中提供。',52,118,1160,50,19,'607080');
-  // All decoration sits inside each source rectangle. Import retains the actual native geometry.
-  rect('academic-evidence-sheet',52,230,576,279,'FFFFFF');
-  rect('evidence-side-spine',52,230,7,279,'315B70','315B70');
-  line('evidence-heading-rule',76,286,604,286,'CFD7DA');
-  line('evidence-bottom-rule',76,490,132,490,'B38D56',2.25);
-  line('evidence-top-right',570,244,612,244,'527F7E',1.5);
-  text('evidence-title-zone','Evidence title',78,248,520,36,24);
-  text('evidence-body-zone','Evidence body placeholder',78,303,520,178,22,'243648');
-  rect('academic-boundary-fold',652,230,576,279,'FFFFFF','B38D56',{line:{color:'B38D56',width:1,dashType:'dash'}});
-  rect('boundary-top-marker',674,230,92,6,'B38D56','B38D56');
-  line('boundary-fold-diagonal',1196,230,1228,262,'B38D56',1);
-  line('boundary-fold-left',1196,230,1196,262,'B38D56',1);
-  line('boundary-fold-bottom',1196,262,1228,262,'B38D56',1);
-  line('boundary-heading-rule',676,286,1186,286,'CFD7DA');
-  text('boundary-title-zone','Boundary title',678,248,494,36,24);
-  text('boundary-body-zone','Boundary body placeholder',678,303,520,178,22,'243648');
-  text('reference-notes','左：证据纸页（侧脊、细线、短金线）；右：边界便笺（虚线、角折、顶标）。旧文字仅用于定位文字区。',52,552,1176,90,20,'607080');
-  s.addNotes('Original native shapes, lines and editable text. MIT-licensed with the plugin. No prior user template was recovered or imitated as a claim of provenance.');
+  const p=new PptxGenJS();
+  p.defineLayout({name:'ACADEMIC',width:1280/96,height:720/96});
+  p.layout='ACADEMIC';p.title='学术小面板与原生组件参考';p.author='DSH Academic PPT';
+  p.subject='New native shape examples based on observed academic layout principles';
+  p.theme={headFontFace:'Noto Sans CJK SC',bodyFontFace:'Noto Sans CJK SC',lang:'zh-CN'};
+  const s=p.addSlide();s.background={color:'FFFFFF'};
+  const box=(x,y,w,h)=>({x:x/96,y:y/96,w:w/96,h:h/96});
+  const rect=(name,x,y,w,h,fill,line='CBD5E1',more={})=>s.addShape(p.ShapeType.rect,{objectName:name,...box(x,y,w,h),fill:{color:fill},line:{color:line,width:.6},...more});
+  const line=(name,x1,y1,x2,y2,color='184578',width=1)=>s.addShape(p.ShapeType.line,{objectName:name,...box(x1,y1,x2-x1,y2-y1),line:{color,width}});
+  const text=(name,value,x,y,w,h,size=22,color='222B36',bold=false)=>s.addText(value,{objectName:name,...box(x,y,w,h),fontFace:'Noto Sans CJK SC',fontSize:size*.75,color,bold,margin:0,wrap:true,breakLine:false});
+  text('page-title','学术小面板：边框与题签服务内容层级',48,30,1184,54,34,'14326C',true);
+  line('title-rule',48,96,1232,96);
+  text('page-guide','六种局部组件可组合到不同图文页；示例文字用于说明布局，导入时不作为新研究内容。',48,108,1184,38,21,'526173');
+  rect('academic-evidence-sheet',48,160,576,146,'FFFFFF');
+  rect('evidence-heading-band',48,160,576,40,'EBF1F8');
+  text('evidence-title','淡蓝表头 · 研究方法',64,166,536,30,23,'14326C',true);
+  text('evidence-body','题签交代区域职责。正文说明输入、处理与输出，图像或流程可在相邻区域展开。',64,212,536,80,23);
+  rect('academic-boundary-fold',656,160,576,146,'FFFFFF','BDA0A4');
+  line('boundary-top-line',672,160,768,160,'9B303A',2);
+  line('boundary-fold-a',1212,160,1212,180,'9B303A');
+  line('boundary-fold-b',1212,180,1232,180,'9B303A');
+  line('boundary-fold-c',1212,160,1232,180,'9B303A');
+  text('boundary-title','边界提示 · 适用范围',672,174,520,30,23,'9B303A',true);
+  text('boundary-body','限定词靠近结果。折角只作定位，保持细线与留白，不用大色块遮盖解释。',672,212,532,80,23);
+  rect('academic-short-tab',48,330,576,146,'FFFFFF');
+  rect('short-tab-label',64,330,120,36,'14326C','14326C');
+  text('short-tab-title','研究问题',74,334,108,30,23,'FFFFFF',true);
+  text('short-tab-body','短签与框体分工：签概括主题，正文提出具体问题、已有证据及需要检验的关系。',64,386,536,78,23);
+  rect('academic-side-label',656,330,576,146,'F5F7FA');
+  rect('side-label-band',656,330,88,146,'184578','184578');
+  text('side-label-title','实验\n设置',670,372,62,68,24,'FFFFFF',true);
+  text('side-label-body','明确样本单位、处理条件和对照。侧签适合短主题；长标题改用顶部题签。',764,356,450,108,23);
+  rect('academic-open-rule',48,500,576,146,'FFFFFF','FFFFFF');
+  line('open-rule-top',48,500,624,500,'14326C');
+  line('open-rule-left',48,500,48,532,'14326C');
+  text('open-rule-title','开放线框 · 读图说明',64,516,536,32,23,'14326C',true);
+  text('open-rule-body','解释贴近相应图，指出坐标、颜色和趋势；不要把图注再重复一遍。',64,564,536,74,23);
+  rect('academic-compact-note',656,500,576,146,'F3F6FA');
+  line('compact-note-accent',656,500,656,646,'14326C',2);
+  text('compact-note-title','紧凑浅底 · 对照条件',672,516,536,32,23,'14326C',true);
+  text('compact-note-body','比较条目维度相同，结构可以一致。数量多时重新组织任务，不机械增加卡片。',672,564,536,74,23);
+  text('page-source','新制作的原生形状示范；完整内容页型见 references/templates/。',48,674,1120,24,16,'526173');
+  s.addNotes('New academic component sampler. The source user templates were studied for structure, not redistributed. All titles, frames, rules and explanatory text in this file are native editable objects. MIT with the plugin.');
   await writeFile(path,Buffer.from(await p.write({outputType:'nodebuffer',compression:true})),{flag:'wx'});
   return path;
 }
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const path = resolve(process.argv[2] || fileURLToPath(new URL('./native-card-reference.pptx',import.meta.url)));
-  console.log(await createNativeReference(path));
-}
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))console.log(await createNativeReference(resolve(process.argv[2]||fileURLToPath(new URL('./native-card-reference.pptx',import.meta.url)))));

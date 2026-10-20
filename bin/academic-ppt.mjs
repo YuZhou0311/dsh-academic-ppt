@@ -18,6 +18,7 @@ const HELP = `DSH Academic PPT — 学术汇报工程工具
   undo      以新修订恢复上一工程状态
   check     检查证据、版式和产物一致性
   template  盘点本地 PPTX 模板的原生组件
+  reference 检索 48 种学术页型及可编辑模板资源
   render    用可选引擎渲染当前 PPTX 的实际页面
   review    记录实际完成的视觉检查
 

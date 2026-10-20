@@ -4,13 +4,34 @@
 
 把研究问题、论文证据、真实原图和模板组件组织成可编辑 PPTX，同时保留讲稿、来源记录和可以继续修改的工程。让模型负责阅读与判断，让工具负责可追溯的数据结构、排版、版本和检查。
 
-当前版本为 **0.1.0 公开预览版**。源码和版本包发布于本仓库；尚未发布 npm。它是独立插件，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存；学术工程使用自己的 `academic_ppt_*` 工具和 JSON 格式。
+当前版本为 **0.2.0 公开预览版**。源码和版本包发布于本仓库；尚未发布 npm。它是独立插件，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存；学术工程使用自己的 `academic_ppt_*` 工具和 JSON 格式。
 
-[安装与首次使用](docs/INSTALL.md) · [设计说明](docs/DESIGN.md) · [验证范围](docs/VALIDATION.md) · [学术工作流](skills/dsh-academic-ppt/SKILL.md) · [真实论文示例](examples/README.md)
+[安装与首次使用](docs/INSTALL.md) · [48 页学术模板](skills/dsh-academic-ppt/references/templates/README.md) · [原模板研究](docs/USER_TEMPLATE_STUDY.md) · [设计说明](docs/DESIGN.md) · [验证范围](docs/VALIDATION.md) · [学术工作流](skills/dsh-academic-ppt/SKILL.md) · [真实论文示例](examples/README.md)
 
-![随附九页学术汇报的实际 PPTX 渲染](examples/preview.png)
+![随附十四页学术汇报的实际 PPTX 渲染](examples/preview.png)
 
-上图来自随附的真实论文示例：[可编辑 PPTX](examples/report.pptx) · [讲稿](examples/speaker-notes.md) · [原图与授权](examples/ASSETS.md)。页面标题、论证、卡片、流程和数据图表均为原生对象；论文原图作为独立图片保留。
+上图来自随附的真实论文示例：[可编辑 PPTX](examples/report.pptx) · [讲稿](examples/speaker-notes.md) · [原图与授权](examples/ASSETS.md)。页面标题、论证、卡片、流程、必要表格和数据图表均为原生对象；论文原图作为独立图片保留。原图可设置非破坏的局部展示窗口，原始媒体仍保存在 PPTX 中。
+
+## 学术模板参考包
+
+本次重新读取并实际查看两份用户学术模板的 **39 页**，提炼紧凑标题、目标横条、细边框题签、图文交错与局部放大等结构，再制作新的参考包。模板用于帮助模型按内容选版；不要求每页填满所有信息，也不把“主张、证据、边界”固定成三张卡片。
+
+- [48 页可编辑模板全集](skills/dsh-academic-ppt/references/templates/academic-templates-48.pptx)
+- [分类说明与使用入口](skills/dsh-academic-ppt/references/templates/README.md) · [本地可浏览画廊](skills/dsh-academic-ppt/references/templates/gallery.html)
+- [逐页输入记录](skills/dsh-academic-ppt/references/templates/slide-records.json) · [模板索引](skills/dsh-academic-ppt/references/templates/manifest.json)
+
+| 类别 | 可编辑参考包 | 覆盖任务 |
+| --- | --- | --- |
+| 论文导读 | [6 页](skills/dsh-academic-ppt/references/templates/paper.pptx) | 完整题名、缺口、贡献与证据范围 |
+| 方法与机制 | [6 页](skills/dsh-academic-ppt/references/templates/method.pptx) | 智能体闭环、工具路由、强化学习接口与模型耦合 |
+| 实验设计 | [6 页](skills/dsh-academic-ppt/references/templates/experiment.pptx) | 独立样本、因子、对照、数据划分与测量链 |
+| 结果与统计 | [6 页](skills/dsh-academic-ppt/references/templates/results.pptx) | 主效应、消融、鲁棒性、权衡与错误分析 |
+| 原图解读 | [6 页](skills/dsh-academic-ppt/references/templates/figure.pptx) | 宽图、竖图、双/三面板、局部放大与图例 |
+| 跨文献综合 | [6 页](skills/dsh-academic-ppt/references/templates/synthesis.pptx) | 方法对应、证据等级、进展、分歧与研究缺口 |
+| 局限与失败 | [6 页](skills/dsh-academic-ppt/references/templates/limitations.pptx) | 失败过程、迁移、偏倚、效度与复现 |
+| 研究方案与附录 | [6 页](skills/dsh-academic-ppt/references/templates/plan.pptx) | 可检验假设、公平对照、工作计划、结论与书目 |
+
+参考包中的图表和数据均标为教学示例；真实论文示例另列来源。公开包中的模板是本项目新制作的原生对象，不包含用户完整源模板及其中原有研究材料。
 
 ## 能解决什么问题
 
@@ -18,7 +39,7 @@
 - **用户条件得到保留。** 按要求检查已关联论文的篇数、全文记录，以及带年度和来源的期刊影响因子。缺项会阻止 review 构建，不会静默降低条件。
 - **科学图可追溯。** 引用真实论文图，登记图号、面板、图注、版本、裁切说明和许可；图保持比例，说明与来源作为独立可编辑对象。
 - **模板进入具体组件。** 读取 PPTX 的字体、颜色及受支持的原生矩形、椭圆、线条与其组合，保留源组件 ID；按路径导入模板资料，模型不必重写大段几何数据。模板中的旧文字不会被当作新论文内容导入。
-- **页面和卡片有结构变化。** 提供 12 种页面布局与 8 种卡片结构，适配方法图、结果图、机制比较、数值与研究假设。结构变化服从内容，保持字体、对齐与留白的一致性。
+- **页面和卡片有结构变化。** 提供 48 个可直接驱动生成的学术页型和 14 种局部块样式，包含淡蓝表头、嵌边题签、侧签与开放解释区。根据研究任务、主图方向和证据关系选择，兼顾紧凑程度与阅读主次。
 - **局部修改可以核查。** 用户只要求小卡片时，样式修改保留卡片内容、数值、外框位置和大小，以及目标以外的场景对象与备注；返回修改范围检查。目标卡片内部文字位置可以随所选结构调整。
 - **讲稿与版本同步。** 将逐页备注和时间预算导出为 Markdown；修改后重新构建，避免旧讲稿对应新页面。
 - **检查范围明确。** 分开记录证据结构检查、几何估计、HTML 预览、真实 PPTX 渲染和视觉审查；审查与具体成品哈希绑定。选定页型没有实际呈现已配置的图、卡片、图表或流程时，review 构建会报告问题。
@@ -31,10 +52,10 @@
 
 ## 安装
 
-需要 Node **`^22.19.0 || >=24.0.0`**，以 [package.json](package.json) 为准。下载本仓库源码，或克隆首个发布版本：
+需要 Node **`^22.19.0 || >=24.0.0`**，以 [package.json](package.json) 为准。下载本仓库源码，或克隆固定发布版本：
 
 ```sh
-git clone --branch v0.1.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.2.0 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 node bin/academic-ppt.mjs --help
@@ -72,7 +93,7 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt"
 
 > 打开这个项目的 project.json，用 academic_ppt_context 恢复当前版本、证据缺项和后续任务。从已经完成的步骤继续，不重新选文或重设计全稿。
 
-## 十个工具
+## 十一个工具
 
 | 工具 | 作用 |
 | --- | --- |
@@ -80,6 +101,7 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt"
 | `academic_ppt_record` | 分批登记论文、证据、资产、页面和模板 profile 路径 |
 | `academic_ppt_context` | 读取当前状态、缺项与聚焦记录，恢复长任务 |
 | `academic_ppt_template` | 盘点模板，保存受支持原生组件及不支持项 |
+| `academic_ppt_reference` | 按研究任务检索 48 个页型，读取实际布局与可编辑模板资源 |
 | `academic_ppt_build` | 构建可编辑 PPTX、HTML、备注与来源产物 |
 | `academic_ppt_edit` | 按稳定 ID 进行卡片样式或明确的页面内容修改 |
 | `academic_ppt_undo` | 将上一内容状态恢复为新修订 |

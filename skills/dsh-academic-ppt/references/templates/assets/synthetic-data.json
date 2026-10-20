@@ -1,0 +1,55 @@
+{
+  "notice": "Synthetic demonstration values only. Replace with verified paper source data before reporting scientific findings.",
+  "time": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20
+  ],
+  "conditionA": [
+    12,
+    18,
+    23,
+    27,
+    31,
+    34,
+    36,
+    38,
+    39,
+    40,
+    41
+  ],
+  "conditionB": [
+    12,
+    20,
+    28,
+    34,
+    39,
+    43,
+    46,
+    48,
+    49,
+    50,
+    51
+  ],
+  "illustrativeIntervalHalfWidth": [
+    2,
+    2,
+    3,
+    3,
+    4,
+    4,
+    4,
+    5,
+    5,
+    5,
+    5
+  ]
+}

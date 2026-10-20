@@ -1,0 +1,227 @@
+{
+  "format": "dsh-academic-ppt-release-validation",
+  "version": "0.2.0",
+  "date": "2026-10-20",
+  "environment": {
+    "node": "24.19.0",
+    "renderEngine": "@deepseek-ai/libreoffice-kit",
+    "engineVersion": "0.1.5",
+    "backend": "wasm",
+    "fonts": [
+      "Noto Sans CJK SC Regular",
+      "Noto Sans CJK SC Bold"
+    ],
+    "DeepSeekModelCalled": false,
+    "DSHGuiTested": false,
+    "OfficeGuiTested": false
+  },
+  "tests": {
+    "command": "node --test --test-isolation=none test/*.test.mjs",
+    "passed": 60,
+    "failed": 0,
+    "skipped": 0,
+    "rendererTests": 20
+  },
+  "originalTemplatesStudied": {
+    "decks": 2,
+    "pages": [
+      20,
+      19
+    ],
+    "supportedComponentCounts": [
+      12,
+      3
+    ],
+    "unsupportedRecordCounts": [
+      322,
+      400
+    ],
+    "originalAssetsRedistributed": false
+  },
+  "referencePack": {
+    "file": "skills/dsh-academic-ppt/references/templates/academic-templates-48.pptx",
+    "sha256": "8198c410d751f9028d82420f445ee5933a2831665f640aa1392ff64773770fbe",
+    "slides": 48,
+    "staticIssues": [],
+    "visualStatus": "reviewed",
+    "missingFonts": [],
+    "nativeObjects": {
+      "slides": 48,
+      "editableShapes": 1322,
+      "textRuns": 1017,
+      "independentPictures": 18,
+      "nativeTables": 8,
+      "nativeCharts": 5,
+      "verification": "Counts parsed from the final PPTX slide XML; the separate picture objects are figure assets, not full-slide screenshots."
+    }
+  },
+  "scienceExample": {
+    "file": "examples/report.pptx",
+    "sha256": "b0318bd8dc4e0646db249f268df41338eb8722c4ffbdfe2efa593512076fc409",
+    "slides": 14,
+    "seconds": 670,
+    "static": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "verification": {
+      "evidence": "records-checked-not-independently-verified",
+      "layout": "estimated",
+      "pptxRender": "rendered",
+      "visual": "reported-passed",
+      "htmlVisual": "not-verified",
+      "readyForDelivery": true
+    },
+    "review": {
+      "pptxSha256": "b0318bd8dc4e0646db249f268df41338eb8722c4ffbdfe2efa593512076fc409",
+      "reviewer": "vision-model",
+      "basis": "pptx-render",
+      "reviewedSlides": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14"
+      ],
+      "result": "passed",
+      "notes": "Actual LibreOffice-kit PPTX contact sheets inspected for all 14 pages; S01/04/05/06/08/13 examined at full size across two reviewers. Final S06/S14 rechecked at full size after figure-tab and per-asset license fixes. Other 12 final PNGs match the previously inspected render byte for byte. No clipping/overlap observed in this supplied fixture; source-figure resolution limits remain. This review is by the current ChatGPT image environment, not a DeepSeek model evaluation.",
+      "createdAt": "2026-10-20T04:35:44.108Z",
+      "attestation": "user-or-agent-recorded-not-an-automatic-visual-judgment"
+    },
+    "render": {
+      "slideCount": 14,
+      "sourceSha256": "b0318bd8dc4e0646db249f268df41338eb8722c4ffbdfe2efa593512076fc409",
+      "missingFonts": []
+    },
+    "nativeObjects": {
+      "slides": 14,
+      "editableShapes": 390,
+      "pictures": 5,
+      "tables": 3,
+      "charts": 1,
+      "notes": 14,
+      "eachOriginalPngRetainedByteForByte": true,
+      "originalImageSha256": {
+        "pheno-figure3.png": "c218efa2ab6fa55feb45873c6e11635db4d5e422aa080cd08a705f3ddf67d671",
+        "pheno-figure4.png": "01b4f1ef63055d32be3df7b3070325c39401385e41aaab0481935658c1849467"
+      }
+    },
+    "pageHashes": [
+      {
+        "page": 1,
+        "sha256": "2741f88f157bd52054fc34887911177287eabcca04db5e32bba505780dbb9562"
+      },
+      {
+        "page": 2,
+        "sha256": "ac43564b534b30e252c40e582f286b3388f63e66d45f68f2c3fcbb105d11fc54"
+      },
+      {
+        "page": 3,
+        "sha256": "2661984ad4a9abc4832408d144e9e111092a27dbd0b52338f3b935b8b978145a"
+      },
+      {
+        "page": 4,
+        "sha256": "39ce78ba656288cd3fa3a6c313c9f5cd89331f9a7a9dc71b1f2d42a058ce9ae5"
+      },
+      {
+        "page": 5,
+        "sha256": "453fa231b58b0835529b1371a2c9ccdc8f3ee5ddc462785282d748f27fa0fcef"
+      },
+      {
+        "page": 6,
+        "sha256": "5d1b23719eb43921f159e513d7f6b3c48541b1eacc4d1cd1fdbd92c388a2a698"
+      },
+      {
+        "page": 7,
+        "sha256": "cb052a0f0b6eda032d717f0ff807414f75e4babd7030df1efda1d65fb27d8a88"
+      },
+      {
+        "page": 8,
+        "sha256": "ae6a879e24b1eda42524bb817bbc630b4a435c4960e38cade041069c00359829"
+      },
+      {
+        "page": 9,
+        "sha256": "622a7ff11cb748635d232478c853796fa3f8b5ab2c29b7663aecac976e993733"
+      },
+      {
+        "page": 10,
+        "sha256": "6546d21b7fab24760cd16afa1a588041302ce6fb6a2e3faf2137769415df50c4"
+      },
+      {
+        "page": 11,
+        "sha256": "3457c44266c91cbd42ffe9bfbb862d371be7c87988099b6bd407af0f0dbf4595"
+      },
+      {
+        "page": 12,
+        "sha256": "322524fce3056fa922db2b4dc3c4f6c795ffbcdbfc8a923e2cae5a1c718a1658"
+      },
+      {
+        "page": 13,
+        "sha256": "506210e8cf64ad96e07f07f4e828cb523380960726ab3080b6b562bba446f4fe"
+      },
+      {
+        "page": 14,
+        "sha256": "8d04e64cc4db6e35bc9e07c744d93c62f8511a7a81f843af1b380564326cd9f1"
+      }
+    ],
+    "finalChanges": {
+      "changedPages": [
+        6,
+        14
+      ],
+      "unchangedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    }
+  },
+  "nativeComponentSample": {
+    "file": "examples/native-card-reference.pptx",
+    "sha256": "936af57b94e65d55fe1f0a0bb0e10f6a9da446151bc7e957a7ed1193b15cc4a0",
+    "slides": 1,
+    "rendered": true,
+    "missingFonts": [],
+    "actualImageReviewed": true
+  },
+  "independentAudit": "docs/forward-review-v0.2.0.json",
+  "sourceFileSha256": {
+    "src/core.mjs": "7f4b064388a6e5d941de8afa44c93f0464e56aca0bb62819e4f3b98088bbe9ba",
+    "src/index.mjs": "0d1f1434f8ec835b4ae0411af6da7bbc5d7a4af6b01e2e4ce438a44198a6ad75",
+    "src/io.mjs": "c2c3e8c708fe21d821cbad5bacb771f50cfab36050a748944f65670fa9b451f3",
+    "src/reference-catalog.mjs": "eb5807121a8f3a2bc54596d20a784ef544359521ac624ccc59e853841d4e5532",
+    "src/reference.mjs": "808107724f0646ba9973caa45a1ba05df76a5d2958ff292dee168b3adf6cd46e",
+    "src/render.mjs": "142a3c14560cb9ac783c37b487a95d94a149746e985ed685f84f87ebb9ca3f31",
+    "src/scene.mjs": "e2f96d416adc97f8fac322c18894b1a00781a1d61c38210da18f093f7e947428",
+    "src/schema.mjs": "ab4e7ed8d2006928f6e1a2f3322ba73206c9282360376fef57d5f5b7768a5815",
+    "src/template-profile.mjs": "711de1520b49bac1ec9c28febf910da2340de50e3cac091e9956ac060ee2a3a1",
+    "src/template.mjs": "2ea2e8c36aeb2b991e3855b4fda352d2ec706498cbcf484ab1c3204cf3525f84",
+    "src/tools.mjs": "6caa4feb2355511852aa68fc2c39d0bb5130c53822babccef3972f0189e6c70c",
+    "src/vendor/dsh-ppt-render.mjs": "638e5b18d6994b11d1be0146b6e294a0105168168eb3a172fc7657d304b7bd82"
+  },
+  "boundaries": [
+    "Source reading/evidence records require actual scholarly verification.",
+    "Visual review is attributed to the supplied artifact and current font/render environment.",
+    "Geometrically valid viewports do not prove axes/controls were preserved.",
+    "Font-family availability does not guarantee Unicode glyph coverage.",
+    "No DeepSeek end-to-end efficacy, DSH GUI installation, or PowerPoint/WPS GUI editability evaluation was performed."
+  ]
+}

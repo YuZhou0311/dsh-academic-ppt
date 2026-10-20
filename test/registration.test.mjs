@@ -29,10 +29,10 @@ async function folder(t) {
   return path
 }
 
-test('DSH registers the academic skill and all ten raw-schema tools and disposes them', () => {
+test('DSH registers the academic skill and all eleven raw-schema tools and disposes them', () => {
   assert.deepEqual(inject, ['tools', 'skills'])
   const host = fakeHost(); apply(host.ctx)
-  assert.equal(host.tools.size, 10)
+  assert.equal(host.tools.size, 11)
   assert.deepEqual([...host.tools.keys()].sort(), Object.values(TOOL_COMMANDS).sort())
   const skill = host.skills.get('dsh-academic-ppt')
   assert.equal(skill.source, 'runtime')

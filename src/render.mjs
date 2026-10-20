@@ -3,11 +3,11 @@ import PptxGenJS from 'pptxgenjs';
 import { buildScenes } from './scene.mjs';
 
 const esc = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-const hex = value => /^#[a-f\d]{6}$/i.test(String(value)) ? value.slice(1) : '243648';
+const hex = value => /^#[a-f\d]{6}$/i.test(String(value)) ? value.slice(1) : '171C22';
 const abort = signal => { if (signal?.aborted) throw signal.reason || new Error('操作已取消'); };
 const inch = px => px / 96;
 const pos = n => ({ x: inch(n.x), y: inch(n.y), w: inch(n.w), h: inch(n.h) });
-const drawColors = p => [p.accent, p.secondary, p.gold, '#8A87A8', '#7694AD', '#8C9A70'];
+const drawColors = p => [p.accent, p.secondary, p.gold, '#70859A', '#385866', '#929EAB'];
 const chartScale = values => {
   const lo = Math.min(0, ...values), hi = Math.max(0, ...values), span = hi - lo || 1;
   const rawStep = span / 4, base = 10 ** Math.floor(Math.log10(rawStep));
@@ -29,10 +29,10 @@ function chartSvg(node) {
   const c = node.chart, p = node.palette, colors = drawColors(p).map(v => paint(v, '#315B70')), horizontal = c.kind === 'bar';
   const series = c.series, categories = c.categories, all = series.flatMap(s => s.values);
   const { min, max, step } = chartScale(all), span = max - min;
-  const x0 = node.x + (horizontal ? 135 : 66), y0 = node.y + 36, width = node.w - (horizontal ? 172 : 101), height = node.h - 117;
+  const x0 = node.x + (horizontal ? 151 : 76), y0 = node.y + 39, width = node.w - (horizontal ? 195 : 120), height = node.h - 123;
   const vx = v => x0 + ((v - min) / span) * width, vy = v => y0 + height - ((v - min) / span) * height;
   let out = svgEl('rect', { x: node.x, y: node.y, width: node.w, height: node.h, fill: paint(p.paper, '#FFFFFF') });
-  const text = (x, y, v, anchor = 'start', size = 16, color = p.muted) => svgEl('text', { x, y, 'text-anchor': anchor, 'font-size': size, fill: paint(color, '#607080'), 'font-family': node.fontFamily }, esc(v));
+  const text = (x, y, v, anchor = 'start', size = 20, color = p.muted) => svgEl('text', { x, y, 'text-anchor': anchor, 'font-size': size, fill: paint(color, '#4F5D6A'), 'font-family': node.fontFamily }, esc(v));
   const line = (x1, y1, x2, y2, color = p.line, sw = 1) => svgEl('line', { x1, y1, x2, y2, stroke: paint(color, '#CFD7DA'), 'stroke-width': sw });
   for (let i = 0; i <= Math.round(span / step); i++) {
     const value = min + step * i, label = Number(value.toPrecision(4));
@@ -40,8 +40,8 @@ function chartSvg(node) {
       : line(x0, vy(value), x0 + width, vy(value)) + text(x0 - 11, vy(value) + 5, label, 'end');
   }
   categories.forEach((category, i) => {
-    out += horizontal ? text(x0 - 12, y0 + (i + .5) / categories.length * height + 5, category, 'end', 17, p.ink)
-      : text(x0 + (i + .5) / categories.length * width, y0 + height + 29, category, 'middle', 17, p.ink);
+    out += horizontal ? text(x0 - 12, y0 + (i + .5) / categories.length * height + 5, category, 'end', 21, p.ink)
+      : text(x0 + (i + .5) / categories.length * width, y0 + height + 31, category, 'middle', 21, p.ink);
   });
   for (const [s, seriesData] of series.entries()) {
     if (c.kind === 'line') {
@@ -54,14 +54,32 @@ function chartSvg(node) {
       const color=colors[(series.length===1?i:s)%colors.length];
       out += horizontal ? svgEl('rect', { x: Math.min(vx(0), vx(value)), y: y0 + band, width: Math.abs(vx(value) - vx(0)), height: Math.max(1, thickness - 2), fill: color })
         : svgEl('rect', { x: x0 + band, y: Math.min(vy(0), vy(value)), width: Math.max(1, thickness - 3), height: Math.abs(vy(value) - vy(0)), fill: color });
-      out += horizontal ? text(vx(value) + (value < 0 ? -8 : 8), y0 + band + thickness / 2 + 5, value, value < 0 ? 'end' : 'start', 18, p.ink)
-        : text(x0 + band + thickness / 2, vy(value) + (value < 0 ? 24 : -10), value, 'middle', 18, p.ink);
+      out += horizontal ? text(vx(value) + (value < 0 ? -8 : 8), y0 + band + thickness / 2 + 5, value, value < 0 ? 'end' : 'start', 22, p.ink)
+        : text(x0 + band + thickness / 2, vy(value) + (value < 0 ? 24 : -10), value, 'middle', 22, p.ink);
     }
   }
   out += horizontal ? line(vx(0), y0, vx(0), y0 + height, p.ink, 1.5) : line(x0, vy(0), x0 + width, vy(0), p.ink, 1.5);
-  if(series.length>1)series.forEach((s, i) => { const x = node.x + 43 + i * Math.min(210, (node.w - 86) / series.length); out += svgEl('rect', { x, y: node.y + node.h - 32, width: 13, height: 13, fill: colors[i % colors.length] }) + text(x + 21, node.y + node.h - 19, s.name, 'start', 15, p.ink); });
-  out += text(node.x + node.w - 18, node.y + 23, c.unit || '', 'end', 15, p.muted);
+  if(series.length>1)series.forEach((s, i) => { const x = node.x + 43 + i * Math.min(230, (node.w - 86) / series.length); out += svgEl('rect', { x, y: node.y + node.h - 33, width: 15, height: 15, fill: colors[i % colors.length] }) + text(x + 24, node.y + node.h - 17, s.name, 'start', 19, p.ink); });
+  out += text(node.x + node.w - 18, node.y + 25, c.unit || '', 'end', 19, p.muted);
   return svgEl('g', { 'data-object-id': node.id, role: 'img', 'aria-label': c.unit || '数据图表' }, out);
+}
+
+function tableSvg(n) {
+  const p=n.palette,rows=[n.table.columns,...n.table.rows];let y=n.y,out='';
+  for(let ri=0;ri<rows.length;ri++){
+    let x=n.x;
+    out+=svgEl('rect',{x:n.x,y,width:n.w,height:n.rowHeights[ri],fill:paint(ri===0?p.tint:p.paper,'#FFFFFF')});
+    for(let ci=0;ci<rows[ri].length;ci++){
+      const lines=n.cellLines[ri][ci],tx=x+n.padX;
+      const content=lines.map((line,li)=>svgEl('tspan',{x:tx,y:y+n.padY+n.fontSize*.96+li*n.fontSize*n.lineHeight},esc(line))).join('');
+      out+=svgEl('text',{'data-cell':`${ri}:${ci}`,'font-family':n.fontFamily,'font-size':n.fontSize,'font-weight':ri===0?700:400,fill:paint(ri===0?p.accent:p.ink,'#171C22')},content);
+      x+=n.colWidths[ci];
+    }
+    y+=n.rowHeights[ri];
+    out+=svgEl('line',{x1:n.x,y1:y,x2:n.x+n.w,y2:y,stroke:paint(ri===0||ri===rows.length-1?p.accent:p.line,'#C5CFDA'),'stroke-width':ri===0||ri===rows.length-1?1.3:.7});
+  }
+  out+=svgEl('line',{x1:n.x,y1:n.y,x2:n.x+n.w,y2:n.y,stroke:paint(p.accent,'#183B66'),'stroke-width':1.5});
+  return svgEl('g',{'data-object-id':n.id,role:'table','aria-label':n.table.caption||'研究数据表'},out);
 }
 
 export function sceneToSvg(page) {
@@ -94,11 +112,17 @@ export function sceneToSvg(page) {
       nodes.push(svgEl('line', { ...attrs, x1: n.x, y1: n.y, x2: n.x + n.w, y2: n.y + n.h, stroke: paint(n.stroke, '#315B70'), 'stroke-width': n.strokeWidth || 1, ...(n.dash ? { 'stroke-dasharray': '7 5' } : {}), 'marker-end': marker }));
     } else if (n.kind === 'image') {
       if (!/^data:image\/(?:png|jpeg);base64,[A-Za-z\d+/=\s]+$/.test(n.data || '')) throw new Error(`图像 ${n.assetId} 缺少已嵌入且经过校验的 PNG/JPEG 数据。`);
-      nodes.push(svgEl('image', { ...attrs, x: n.x, y: n.y, width: n.w, height: n.h, href: n.data, preserveAspectRatio: 'xMidYMid meet' }, svgEl('title', {}, esc(n.alt))));
+      if(n.viewport){
+        const v=n.viewport,cid=`viewport-${pagePrefix}-${i}`;
+        if(!['x','y','w','h'].every(key=>Number.isFinite(v[key]))||v.x<0||v.y<0||v.w<=0||v.h<=0||v.x+v.w>1.00000001||v.y+v.h>1.00000001)throw new Error(`图像 ${n.assetId} 的原图视窗无效。`);
+        defs.push(svgEl('clipPath',{id:cid},svgEl('rect',{x:n.x,y:n.y,width:n.w,height:n.h})));
+        nodes.push(svgEl('image',{...attrs,x:n.x-v.x*n.w/v.w,y:n.y-v.y*n.h/v.h,width:n.w/v.w,height:n.h/v.h,href:n.data,preserveAspectRatio:'none','clip-path':`url(#${cid})`},svgEl('title',{},esc(n.alt))));
+      }else nodes.push(svgEl('image', { ...attrs, x: n.x, y: n.y, width: n.w, height: n.h, href: n.data, preserveAspectRatio: 'xMidYMid meet' }, svgEl('title', {}, esc(n.alt))));
     } else if (n.kind === 'chart') nodes.push(chartSvg(n));
+    else if(n.kind==='table')nodes.push(tableSvg(n));
     else throw new Error(`不支持的场景对象：${n.kind}`);
   }
-  return svgEl('svg', { xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': 'http://www.w3.org/1999/xlink', viewBox: '0 0 1280 720', width: 1280, height: 720, role: 'img', 'aria-label': page.title }, svgEl('title', {}, esc(page.title)) + svgEl('defs', {}, defs.join('')) + svgEl('rect', { x: 0, y: 0, width: 1280, height: 720, fill: paint(page.background, '#F5F3EF') }) + nodes.join(''));
+  return svgEl('svg', { xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': 'http://www.w3.org/1999/xlink', viewBox: '0 0 1280 720', width: 1280, height: 720, role: 'img', 'aria-label': page.title }, svgEl('title', {}, esc(page.title)) + svgEl('defs', {}, defs.join('')) + svgEl('rect', { x: 0, y: 0, width: 1280, height: 720, fill: paint(page.background, '#FFFFFF') }) + nodes.join(''));
 }
 
 function renderHtml(project, scenes, svgPages) {
@@ -123,18 +147,31 @@ async function nativePptx(project, scenes, signal) {
     for (const n of page.nodes) {
       abort(signal);
       const base = { ...pos(n), objectName: n.id };
-      if (n.kind === 'text') slide.addText((n.lines || [n.text]).join('\n'), { ...base, fontFace: n.fontFamily, fontSize: n.fontSize * .75, color: hex(n.color), bold: !!n.bold, align: n.align || 'left', valign: 'top', margin: 0, breakLine: false, lineSpacingMultiple: n.lineHeight || 1.28, paraSpaceAfter: 0, paraSpaceBefore: 0, fit: 'none', wrap: false, lang: 'zh-CN' });
+      // Exact point spacing matches the scene's em-based baseline step.
+      // A percentage of the font's natural line height adds a second leading
+      // factor (notably for CJK fonts) and can overflow otherwise valid slots.
+      if (n.kind === 'text') slide.addText((n.lines || [n.text]).join('\n'), { ...base, fontFace: n.fontFamily, fontSize: n.fontSize * .75, color: hex(n.color), bold: !!n.bold, align: n.align || 'left', valign: 'top', margin: 0, breakLine: false, lineSpacing: n.fontSize * .75 * (n.lineHeight || 1.28), paraSpaceAfter: 0, paraSpaceBefore: 0, fit: 'none', wrap: false, lang: 'zh-CN' });
       else if (n.kind === 'rect' || n.kind === 'ellipse') {
         const fill = n.fill && n.fill !== 'none' ? { color: hex(n.fill), transparency: (1 - (n.fillOpacity ?? 1)) * 100 } : { type: 'none', transparency: 100 };
         const line = n.stroke && n.stroke !== 'none' ? { color: hex(n.stroke), transparency: (1 - (n.strokeOpacity ?? 1)) * 100, width: (n.strokeWidth || 1) * .75, dashType: n.dash === 'dot' ? 'sysDot' : n.dash ? 'dash' : 'solid' } : { color: 'FFFFFF', transparency: 100 };
         const shadow = n.shadow ? { type: 'outer', color: hex(n.shadow.color || '#223344'), opacity: n.shadow.opacity ?? .12, blur: Math.max(.1, (n.shadow.blur || 2) * .75), offset: Math.max(.1, (n.shadow.offset || 2) * .75), angle: n.shadow.angle ?? 45 } : undefined;
         slide.addShape(n.kind === 'ellipse' ? pptx.ShapeType.ellipse : n.radius ? pptx.ShapeType.roundRect : pptx.ShapeType.rect, { ...base, fill, line, ...(n.radius ? { rectRadius: Math.min(.5, n.radius / Math.min(n.w, n.h)) } : {}), ...(shadow ? { shadow } : {}) });
       } else if (n.kind === 'line') slide.addShape(pptx.ShapeType.line, { x: inch(Math.min(n.x, n.x + n.w)), y: inch(Math.min(n.y, n.y + n.h)), w: inch(Math.abs(n.w)), h: inch(Math.abs(n.h)), flipH: n.w < 0, flipV: n.h < 0, objectName: n.id, line: { color: hex(n.stroke), width: (n.strokeWidth || 1) * .75, ...(n.dash ? { dashType: 'dash' } : {}), ...(n.endArrow ? { endArrowType: 'triangle' } : {}) } });
-      else if (n.kind === 'image') slide.addImage({ ...base, data: n.data, altText: n.alt || n.assetId });
+      else if (n.kind === 'image') {
+        if(n.viewport){
+          const v=n.viewport,fullW=n.w/v.w,fullH=n.h/v.h;
+          slide.addImage({...base,w:inch(fullW),h:inch(fullH),data:n.data,altText:n.alt||n.assetId,sizing:{type:'crop',x:inch(fullW*v.x),y:inch(fullH*v.y),w:inch(n.w),h:inch(n.h)}});
+        }else slide.addImage({ ...base, data: n.data, altText: n.alt || n.assetId });
+      }
+      else if(n.kind==='table'){
+        const p=n.palette,none={type:'none',pt:0,color:hex(p.paper)},all=[n.table.columns,...n.table.rows];
+        const rows=all.map((row,ri)=>row.map((cell,ci)=>({text:n.cellLines[ri][ci].join('\n'),options:{bold:ri===0,color:hex(ri===0?p.accent:p.ink),fill:{color:hex(ri===0?p.tint:p.paper)},lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceBefore:0,paraSpaceAfter:0,lang:'zh-CN',border:[ri===0?{type:'solid',pt:1.125,color:hex(p.accent)}:none,none,{type:'solid',pt:(ri===0||ri===all.length-1)?.975:.525,color:hex(ri===0||ri===all.length-1?p.accent:p.line)},none]}})));
+        slide.addTable(rows,{...base,colW:n.colWidths.map(inch),rowH:n.rowHeights.map(inch),autoPage:false,fontFace:n.fontFamily,fontSize:n.fontSize*.75,color:hex(p.ink),align:'left',valign:'top',margin:[n.padY*.75,n.padX*.75,n.padY*.75,n.padX*.75],border:none,lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceAfter:0,paraSpaceBefore:0,verbose:false});
+      }
       else if (n.kind === 'chart') {
         const c = n.chart, p = n.palette;
         const values = c.series.flatMap(s => s.values), { min, max, step } = chartScale(values);
-        slide.addChart(c.kind === 'line' ? pptx.ChartType.line : pptx.ChartType.bar, c.series.map(s => ({ name: s.name, labels: c.categories, values: s.values })), { ...base, catAxisLabelFontFace: n.fontFamily, valAxisLabelFontFace: n.fontFamily, legendFontFace: n.fontFamily, catAxisLabelFontSize: 12, valAxisLabelFontSize: 11, legendFontSize: 11, catAxisLabelColor: hex(p.ink), valAxisLabelColor: hex(p.muted), chartColors: drawColors(p).map(hex), showLegend: c.series.length > 1, legendPos: 'b', showTitle: false, showValue: c.kind !== 'line', dataLabelPosition: 'outEnd', dataLabelColor: hex(p.ink), dataLabelFontFace: n.fontFamily, dataLabelFontSize: 13.5, dataLabelFormatCode: '0.############', showBorder: false, lineDataSymbol: c.kind === 'line' ? 'circle' : 'none', lineDataSymbolSize: 4, lineSize: 2, showValAxisTitle: Boolean(c.unit), valAxisTitle: c.unit || '', valAxisTitleFontSize: 12, valAxisTitleFontFace: n.fontFamily, valAxisTitleColor: hex(p.muted), valAxisMinVal: min, valAxisMaxVal: max, valAxisMajorUnit: step, showCatName: false, catAxisLineColor: hex(p.line), valAxisLineColor: hex(p.line), valGridLine: { color: hex(p.line), width: .6 }, chartArea: { fill: { color: hex(p.paper) }, border: { color: hex(p.paper), pt: 0 } }, plotArea: { fill: { color: hex(p.paper) } }, ...(c.kind === 'line' ? {} : { barDir: c.kind === 'bar' ? 'bar' : 'col', catAxisLabelPos: 'low', barGrouping: 'clustered', barGapWidthPct: 60 }) });
+        slide.addChart(c.kind === 'line' ? pptx.ChartType.line : pptx.ChartType.bar, c.series.map(s => ({ name: s.name, labels: c.categories, values: s.values })), { ...base, catAxisLabelFontFace: n.fontFamily, valAxisLabelFontFace: n.fontFamily, legendFontFace: n.fontFamily, catAxisLabelFontSize: 15.75, valAxisLabelFontSize: 15, legendFontSize: 14.25, catAxisLabelColor: hex(p.ink), valAxisLabelColor: hex(p.muted), chartColors: drawColors(p).map(hex), showLegend: c.series.length > 1, legendPos: 'b', showTitle: false, showValue: c.kind !== 'line', dataLabelPosition: 'outEnd', dataLabelColor: hex(p.ink), dataLabelFontFace: n.fontFamily, dataLabelFontSize: 16.5, dataLabelFormatCode: '0.############', showBorder: false, lineDataSymbol: c.kind === 'line' ? 'circle' : 'none', lineDataSymbolSize: 4, lineSize: 2, showValAxisTitle: Boolean(c.unit), valAxisTitle: c.unit || '', valAxisTitleFontSize: 14.25, valAxisTitleFontFace: n.fontFamily, valAxisTitleColor: hex(p.muted), valAxisMinVal: min, valAxisMaxVal: max, valAxisMajorUnit: step, showCatName: false, catAxisLineColor: hex(p.line), valAxisLineColor: hex(p.line), valGridLine: { color: hex(p.line), width: .6 }, chartArea: { fill: { color: hex(p.paper) }, border: { color: hex(p.paper), pt: 0 } }, plotArea: { fill: { color: hex(p.paper) } }, ...(c.kind === 'line' ? {} : { barDir: c.kind === 'bar' ? 'bar' : 'col', catAxisLabelPos: 'low', barGrouping: 'clustered', barGapWidthPct: 60 }) });
       } else throw new Error(`不支持的场景对象：${n.kind}`);
     }
     slide.addNotes(page.notes || '');
