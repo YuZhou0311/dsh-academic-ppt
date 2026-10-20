@@ -4,7 +4,7 @@
 
 适用于论文精读、文献综述、研究进展、开题、学位答辩和项目汇报。研究问题、原始证据、解释边界和验证方案保存在可恢复工程中；文字、机制图、表格与支持的图表使用原生对象，论文原图独立保留。
 
-当前源码版本 **0.5.0**。安装包发布入口见 [Releases](https://github.com/YuZhou0311/dsh-academic-ppt/releases)。尚未发布 npm。插件使用当前 DSH 会话的模型和工具，不另行调用付费模型，也不管理 DeepSeek 密钥。可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
+当前源码版本 **0.5.0**。[v0.5.0 已公开发布](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.5.0)，包含安装包、完整材料样例与可复核源码；[发布凭证及附件校验](docs/PUBLICATION_V05.md)已归档。尚未发布 npm。插件使用当前 DSH 会话的模型和工具，不另行调用付费模型，也不管理 DeepSeek 密钥。可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
 
 [安装与升级](docs/INSTALL.md) · [为什么重做 v0.5](docs/AUDIT_V05.md) · [验证范围](docs/VALIDATION.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [设计与边界](docs/DESIGN.md)
 
