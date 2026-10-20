@@ -6,16 +6,17 @@ import {normalizeTemplateProfiles} from './template-profile.mjs';
 import {DEFAULT_ACADEMIC_SYSTEM} from './design-system.mjs';
 import {getReferenceTemplate} from './reference-catalog.mjs';
 import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-quality.mjs';
+import {designIssues} from './design-quality.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
-export const DEFAULT_DESIGN = {fontFamily:'Noto Sans CJK SC',palette:{ink:'#161D27',paper:'#FFFFFF',background:'#FFFFFF',accent:'#0B4D89',secondary:'#B13E36',muted:'#536070',line:'#C8D4DF',soft:'#EFF4F8',gold:'#B13E36',tint:'#EFF4F8'},system:{...DEFAULT_ACADEMIC_SYSTEM}};
-const RENDERER_VERSION=5;
+export const DEFAULT_DESIGN = {mode:'content-led',fontFamily:'Noto Sans CJK SC',palette:{ink:'#161D27',paper:'#FFFFFF',background:'#FFFFFF',accent:'#0B4D89',secondary:'#B13E36',muted:'#536070',line:'#C8D4DF',soft:'#EFF4F8',gold:'#B13E36',tint:'#EFF4F8'},system:{...DEFAULT_ACADEMIC_SYSTEM}};
+const RENDERER_VERSION=6;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
 function snapshot(p){const c=clone(contentOf(p));c.assets=c.assets.map(({data,...a})=>a);return c;}
 function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
-function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',...brief,qualityProfile:'academic'},design:design??clone(DEFAULT_DESIGN),capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
+function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',...brief,qualityProfile:'academic'},design:{mode:'content-led',...clone(design??DEFAULT_DESIGN)},capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
 async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
 async function saveMutation(state,next,signal,{undo=false}={}){
@@ -53,7 +54,8 @@ export async function updateRecords(options={}){
   }
  }
  if(a.brief){const relaxed=constraintRelaxations(state.p.brief,a.brief);if(relaxed.length)throw new Error('REQUIREMENT_RELAXATION: 不能用降低 '+relaxed.join(', ')+' 消除材料缺口。保留本工程；仅在用户明确改变要求后另建带新要求的工程。');}
- for(const key of ['brief','design','capabilities'])if(a[key])next[key]=a[key];
+ for(const key of ['brief','capabilities'])if(a[key])next[key]=a[key];
+ if(a.design)next.design={...(state.p.design.mode?{mode:state.p.design.mode}:{}),...a.design};
  if(state.p.brief.qualityProfile==='academic')next.brief.qualityProfile='academic';
  if(a.templateProfilePaths){const profiles=[];for(const path of a.templateProfilePaths){const file=await safePath(options.cwd,path,{mustExist:true});const bytes=await readBounded(file,4*1024*1024);profiles.push(JSON.parse(bytes));}next.design.templateProfile=normalizeTemplateProfiles(profiles);}
  if(a.slideOrder){const byId=new Map(next.slides.map(slide=>[slide.id,slide]));if(a.slideOrder.length!==byId.size||new Set(a.slideOrder).size!==byId.size||a.slideOrder.some(id=>!byId.has(id)))throw new Error('INVALID_SLIDE_ORDER: slideOrder 必须恰好包含当前所有页面ID一次。');next.slides=a.slideOrder.map(id=>byId.get(id));}
@@ -135,14 +137,11 @@ export function evidenceIssues(p){
    for(const [key,count] of [['cards',s.cards.length],['figures',s.figureIds.length],['nodes',(s.nodes??[]).length]]){const range=template.requirements?.[key];if(range&&(count<range.min||count>range.max))add('error','reference-content-count',path,`${template.name} 的 ${key} 需要 ${range.min}–${range.max} 个，当前 ${count} 个；选择匹配证据的页型。`);}
    for(const key of ['chart','table']){const required=template.requirements?.[key];if(required===true&&!s[key])add('error','reference-content-missing',path,`${template.name} 需要 ${key}，不能以空白占位代替证据。`);if(s[key]&&!template.slots?.[key])add('error','reference-content-unused',path,`${template.name} 没有 ${key} 区域，请选择支持此内容的页型。`);}
   }}
-  const structureOf=slide=>slide.composition?JSON.stringify(slide.composition.rows.map(row=>row.panels.map(panel=>[panel.weight??1,panel.figureIds?.length||0,Boolean(panel.chart),Boolean(panel.plot||panel.plotId),Boolean(panel.table),Boolean(panel.diagram),panel.cardIds?.length||0]))):slide.referenceTemplateId??(slide.figureBoxes?JSON.stringify({layout:slide.layout,figures:slide.figureBoxes.map(box=>['x','y','w','h'].map(k=>Math.round(box[k]/32))),cards:slide.cards.map(card=>card.box?['x','y','w','h'].map(k=>Math.round(card.box[k]/32)):null)}):slide.layout);
-  const structure=structureOf(s);
-  if(index>=2&&structureOf(p.slides[index-1])===structure&&structureOf(p.slides[index-2])===structure&&!['paper','references'].includes(s.layout))add('warning','layout-repetition',path,'连续三页同构。检查证据是否适合换用不同图文结构。');
  }
  for(const id of used)if(!paperReferencedClaims.has(id))add('warning','paper-without-claims','papers.'+id,'论文尚未关联任何页内证据。');
  const seconds=p.slides.reduce((n,s)=>n+s.seconds,0),target=p.brief.talkMinutes*60;
  if(seconds<target*.8||seconds>target*1.12)add('warning','talk-budget','brief.talkMinutes',`逐页预算 ${Math.round(seconds)} 秒，目标 ${Math.round(target)} 秒；需要实际排练校准。`);
- return [...issues,...academicIssues(p)];
+ return [...issues,...academicIssues(p),...designIssues(p)];
 }
 function statusSummary(issues){return {errors:issues.filter(x=>x.severity==='error').length,warnings:issues.filter(x=>x.severity==='warning').length};}
 export function slideClaimIds(s){return [...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[])])];}
@@ -168,9 +167,23 @@ export async function checkProject(options={}){
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),issues=evidenceIssues(p),summary=statusSummary(issues);
  let stage=a.stage??'auto';if(stage==='auto')stage=!p.papers.length?'research':!p.claims.length?'evidence':!p.slides.length?'storyboard':summary.errors?'evidence':!p.artifact?'render':'review';
- const nextActions={research:['按 brief 条件筛选论文，先核对全文和书目信息。','每篇读取方法、结果、图注、补充材料；写入结构化阅读记录。'],evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象、模拟或实体实验的适用范围。'],design:['先查看用户原模板的实际页面：标题比例、图文区域、边框与小题签。需要原生组件时调用 academic_ppt_template，并通过 templateProfilePaths 导入。','先实际查看论文图并记录 asset.reading；调用 academic_ppt_reference，按研究任务或 figure 尺寸/视窗/阅读条件比较最多三个候选。必要时用 figureBoxes 创造合适比例。'],storyboard:['先确定每页一个研究问题、主证据和时间预算，再选匹配的 referenceTemplateId；其 layout、卡片、图与流程数量必须符合模板。','仅在任务需要时安排 paper 专页；references 保留完整书目。先做密集原图、方法和结果难页，以字号、语义 kind、精确 emphasis 和不同关系形式建立层级；重要限定不降为小字。信息不足补必要解释，拥挤先去重复或拆任务。'],render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],review:['调用 academic_ppt_render，再检查其返回的最终 PPTX 图片。','同时检查空疏和拥挤：主图有效面积、图例、解释长度、必要限定、卡片重复；按稳定 ID 局部修复后登记当前 hash 的视觉审查。'],delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。']}[stage];
+ const mode=p.design.mode??'legacy';
+ const nextActions={
+  research:['按 brief 条件筛选来源，先核对全文和书目信息。','记录问题、机制、验证与边界；区分 reported / inference / proposal，主动检查替代解释。'],
+  evidence:['按 issues 定位缺失或冲突的证据，核对原文后修复。','保留统计分母、单位、比较对象和适用范围；设计自由不授权补造结果。'],
+  design:[`当前设计模式 ${mode}。legacy 表示旧工程未登记模式，不能作为design.mode提交；content-led 从当前论证设计；reference-guided 只迁移审定的字体、色彩和层级；template-faithful 用于用户明确要求沿用版式。`,
+   '先读 references/visual-decision.md。确定信息关系、主证据和阅读顺序；关键页比较两个构图，保存简短选择理由。固定全稿设计变量，逐页重组 composition.rows。',
+   '用户提供参考时才用 academic_ppt_template 查看实际代表页。suggestedDesign 是候选设计变量，不是复制指令；按当前内容修改后记录。academic_ppt_reference 仅按需查询，不是必经步骤。'],
+  storyboard:[mode==='template-faithful'?'先写 argument，并在支持范围内适配用户指定的页序与结构；不要为求新改变用户要求保留的版式。组合正文页可用 visualPlan 记录面板决策，固定页型不要填写此字段。':'先写 argument；组合正文页再用 visualPlan 记录关系、焦点面板、阅读顺序和适配理由。layout=academic 的 composition.rows 由当前证据决定，不必选择 referenceTemplateId；固定页型不要填写 visualPlan。',
+   '根据证据选择原图、科学图、矩阵、机制与解释。panel.surface 支持 plain/rule/tint/band；短旁注可 align=start，主证据通常 stretch。无需固定卡片数或每页强制不同。',
+   '先完成封面、最难证据页和机制/综合页的小样。只在任务需要时安排 paper 专页，references 保留完整书目；保留重要限定，拥挤先去重复或拆任务。'],
+  render:['调用 academic_ppt_build，mode=review；证据未齐时仅用 draft。'],
+  review:['调用 academic_ppt_render，再查看当前最终 PPTX 的每页图片与全稿概览。',
+   '检查证据是否占据焦点、比较条件是否对齐、分组有无语义、短旁注是否被拉成空框；有理由的重复可保留，换颜色不算新的构图。修改后复审当前 hash。'],
+  delivery:['用 academic_ppt_check 核对成品哈希、渲染与审查范围。','交付 PPTX、HTML、讲稿、证据/资产清单及可恢复工程。'],
+ }[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
- return {ok:true,projectPath:path,revision:p.revision,stage,brief:p.brief,capabilities:p.capabilities,counts:counts(p),summary,nextActions,issues:issues.slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
+ return {ok:true,projectPath:path,revision:p.revision,stage,brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,issues:issues.slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }
 function speechMarkdown(p){let elapsed=0;return `# ${p.title}\n\n目标时长：${p.brief.talkMinutes} 分钟。以下为本次导出对应的备注，实际语速须排练。\n\n`+p.slides.map((s,i)=>{const start=elapsed;elapsed+=s.seconds;const t=n=>`${Math.floor(n/60)}:${String(Math.round(n%60)).padStart(2,'0')}`;return `## ${i+1}. ${s.title}\n\n页 ID：${s.id}。时间预算：${t(start)}–${t(elapsed)}。\n\n${s.notes||'此页尚无讲稿。'}\n\n`}).join('');}
 export async function buildProject(options={}){
@@ -201,7 +214,7 @@ export async function editProject(options={}){
  const a=argsFor('academic_ppt_edit',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p),seen=new Set(),prefixes=[];
  for(const change of a.changes){const slide=next.slides.find(s=>s.id===change.slideId);if(!slide)throw new Error('UNKNOWN_SLIDE: '+change.slideId);const key=change.slideId+'/'+(change.cardId??'');if(seen.has(key))throw new Error('DUPLICATE_TARGET');seen.add(key);
   if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');if(slide.composition&&(change.patch.templateComponentId||change.patch.style&&!['plain','compact'].includes(change.patch.style)))throw new Error('COMPOSITION_CARD_STYLE: 组合页解释卡支持plain/compact；外层学术分组框由design.system.panel控制。');const allowed=new Set(['style','accent','templateComponentId']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId may change; words, values, box and slide remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
-  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','argument','composition','section','agenda','diagram','plot','plots']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
+  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','argument','visualPlan','composition','section','agenda','diagram','plot','plots']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
  }
  assertProject(next);let preservation;
  if(a.scope==='card-style'){const {buildScenes}=await import('./scene.mjs');const before=buildScenes(state.p),after=buildScenes(next);const protectedCount=preservedScene(before,after,prefixes);preservation={scope:'card-style',targetCards:a.changes.map(c=>({slideId:c.slideId,cardId:c.cardId})),protectedSceneObjects:protectedCount,notes:'preserved',content:'preserved',targetCardFrames:'preserved',targetCardInternalTextGeometry:'may-change-with-style',basis:'semantic scene comparison; not pixel or Office GUI proof'};}

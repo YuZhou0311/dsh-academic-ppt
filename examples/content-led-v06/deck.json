@@ -1,0 +1,1190 @@
+{
+  "title": "教学模拟：土壤水分预测的跨站点表现",
+  "brief": {
+    "centralQuestion": "在教学模拟资料中，结合过程模型的混合预测方法H在开发站点A的误差较低，能否支持对站点B的泛化优势？本次严格限定protocol.md和observations.csv两份本地材料，制作8分钟、7页中文组会汇报（含封面和书目），解释方法、比较数据、讨论结果与适用边界，并提出有依据且未实施的后续检验。仅参考experiment.pptx的设计语言，不引入其他研究事实。交付可编辑PPTX、逐页讲稿和可恢复工程，并实际渲染逐页审查。",
+    "audience": "组会听众；需区分开发期表现、外部站点表现与泛化推断",
+    "talkMinutes": 8,
+    "targetPaperCount": 0,
+    "requireFullText": false,
+    "genre": "research-progress",
+    "qualityProfile": "academic",
+    "requirePaperIntro": false
+  },
+  "design": {
+    "mode": "reference-guided",
+    "fontFamily": "Noto Sans CJK SC",
+    "palette": {
+      "ink": "#1C2430",
+      "paper": "#FFFFFF",
+      "background": "#FFFFFF",
+      "accent": "#173C70",
+      "secondary": "#146C63",
+      "muted": "#515B68",
+      "line": "#BEC8D4",
+      "soft": "#EEF3F8",
+      "tint": "#EAF2FA",
+      "gold": "#8C5B32"
+    },
+    "system": {
+      "preset": "academic-report",
+      "header": "rule",
+      "cover": "framed",
+      "panel": "tint",
+      "titleSize": 40,
+      "coverTitleSize": 64,
+      "bodySize": 24,
+      "panelTitleSize": 26,
+      "captionSize": 18,
+      "sectionSize": 26
+    },
+    "branding": {
+      "label": "教学模拟 · synthetic-v1"
+    }
+  },
+  "papers": [
+    {
+      "authors": [
+        "插件验证用例"
+      ],
+      "year": 2026,
+      "doi": "",
+      "version": "synthetic-v1",
+      "studyType": "simulation",
+      "id": "protocol",
+      "title": "教学模拟：土壤水分预测的跨站点表现",
+      "journal": "本地教学协议，未投稿、未发表",
+      "url": "sources/protocol.md",
+      "sourceType": "protocol",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "研究问题",
+          "方法",
+          "数据与比较口径",
+          "解释边界与后续",
+          "来源信息"
+        ],
+        "source": "sources/protocol.md",
+        "notes": "已完整读取用户指定原文件并保存逐字一致副本。为软件设计验证编写的模拟教学材料，无DOI，不支持现实农业结论。"
+      },
+      "methodSummary": "B以相同的天气和土壤传感器输入直接预测下一日含水率。H先用作物过程模型估计状态，再用残差模型校正。A用于开发调参，A结果来自开发期保留块。B站点不参与调参，使用固定模型。两法在各块使用同日期和观测。",
+      "limitations": [
+        "一次固定评估，只有两个站点，每站4块。",
+        "A开发期保留块不能等同于完全独立外部检验。",
+        "未提供块间相关性、样本量规划、区间计算或显著性检验。",
+        "模拟教学资料不支持现实农业结论，过程模型加残差校正不等于因果机制已获证明。"
+      ],
+      "analysis": {
+        "question": "A站点较低误差是否支持对B站点的泛化优势？",
+        "gap": "研究问题节只允许对两个站点的一次固定评估作判断；没有独立目标站点群体、多年和多土壤覆盖。",
+        "mechanism": "相同天气与土壤传感器信息进入B的直接预测路径，或H的过程状态估计与残差校正路径。改动发生在预测计算路径，原文未给训练细节或机制消融。",
+        "design": "A开发调参并以保留块描述内部表现。固定模型在未参与调参的B站点评估。每块相同日期与观测生成B/H各一项RMSE，原始日序列未提供。",
+        "unitOfAnalysis": "每个记录行为一个评估块的配对误差，4块同属1站点，不能按4个独立站点作推断。当前只有2站点。",
+        "comparators": [
+          "基线B与混合H使用同输入、同块日期和同观测。",
+          "传感器校准、土壤性质、管理条件或开发调参偏差均为尚未区分的替代解释。"
+        ],
+        "validity": "可描述当前固定评估中的逐块差和站点内块RMSE算术均值。不能推出现实农业有效性、区域/多年普遍泛化、因果机制、显著性或等效性。",
+        "locators": [
+          "protocol.md：方法",
+          "protocol.md：数据与比较口径",
+          "protocol.md：解释边界与后续",
+          "protocol.md：来源信息"
+        ]
+      }
+    },
+    {
+      "authors": [
+        "插件验证用例"
+      ],
+      "year": 2026,
+      "doi": "",
+      "version": "synthetic-v1",
+      "studyType": "simulation",
+      "id": "data",
+      "title": "土壤水分预测的跨站点表现：observations.csv",
+      "journal": "本地教学附表，未发表",
+      "url": "sources/observations.csv",
+      "sourceType": "dataset",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "表头",
+          "A1—A4（第2—5行）",
+          "B1—B4（第6—9行）"
+        ],
+        "source": "sources/observations.csv",
+        "notes": "已完整读取8行原始记录。列为site、block、baseline_rmse_pp、hybrid_rmse_pp。未重建或补造块内日序列。"
+      },
+      "methodSummary": "两个站点各4块，逐块记录B与H的RMSE，单位为体积含水率百分点。按协议仅作描述性配对比较与块均值计算。",
+      "limitations": [
+        "只有8行块级完整输入，无日序列与块长度。",
+        "块间相关性未知，不能据此推断置信区间、显著性或等效性。",
+        "表中块不是独立站点。"
+      ],
+      "analysis": {
+        "question": "B与H的块RMSE在A/B站点如何比较？",
+        "gap": "附表只给块级RMSE，缺少日级误差和块间相关结构，无法计算跨日合并RMSE或可靠的站点总体不确定性。",
+        "mechanism": "附表不报告模型机制，方法身份由protocol.md规定。数据支持配对差H减B和站点内4块的算术均值。",
+        "design": "A1—A4与B1—B4共8个配对块。分别保留原始B/H值，使用十进制精度计算每块差和各站点等权块均值。",
+        "unitOfAnalysis": "每行是一个评估块。站点层面为A和B两个单位，不把8个块视为8个独立站点。",
+        "comparators": [
+          "每块的H对B配对比较。",
+          "各站点内B和H各4个块RMSE的算术均值；不是跨所有日期重新计算的RMSE。"
+        ],
+        "validity": "完整覆盖给定8行输入，得到的是描述性统计。不能把A/B差异归因于特定环境因素，不能增加显著性结论。",
+        "locators": [
+          "observations.csv：第1行表头",
+          "observations.csv：第2—5行A站点",
+          "observations.csv：第6—9行B站点"
+        ]
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "identity",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "当前资料是软件设计验证用的模拟教学材料，synthetic-v1，未发表，不支持现实农业结论。",
+      "locator": "protocol.md：首段、来源信息",
+      "context": "仅使用本地教学协议与附表。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "协议首段将资料定义为软件设计验证用模拟教学资料，来源信息明确作者、年份、版本、未发表状态和无DOI，因此这些身份限定必须随结果一起呈现。",
+        "boundary": "所有结果和解释仅针对该模拟教学案例。"
+      },
+      "metrics": []
+    },
+    {
+      "id": "method",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "B直接预测下一日含水率；H先用作物过程模型估计状态，再由残差模型校正预测。两法使用相同天气和土壤传感器输入。",
+      "locator": "protocol.md：方法，第1段",
+      "context": "输入信息与预测目标相同，计算路径不同。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "协议逐项给出两种方法的输入、处理和输出。",
+        "boundary": "仅为方法描述，没有机制有效性或因果证据。"
+      },
+      "metrics": []
+    },
+    {
+      "id": "design",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "A用于开发调参，误差取自开发期保留块；B站点不参与调参并使用同一固定模型。各块内两法日期与观测相同。",
+      "locator": "protocol.md：方法，第2段",
+      "context": "两个站点的一次固定评估。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "同块配对保证当前误差比较共享日期和观测，A/B角色按协议区分。",
+        "boundary": "A不是完全独立外部检验，B只是一个外部站点。"
+      },
+      "metrics": []
+    },
+    {
+      "id": "limits",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "每站4块不是4个独立站点；没有提供块间相关性、样本量规划、区间或显著性检验；候选解释均未区分。",
+      "locator": "protocol.md：数据与比较口径、解释边界与后续",
+      "context": "块级RMSE是完整输入，未提供日序列。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "协议明示缺失信息及允许的比较口径。",
+        "boundary": "不能补造日数据、宣称显著或等效、跨站点普遍泛化或机制因果成立。"
+      },
+      "metrics": []
+    },
+    {
+      "id": "raw",
+      "paperId": "data",
+      "kind": "reported",
+      "text": "附表含A1—A4和B1—B4共8个B/H配对块RMSE。",
+      "locator": "observations.csv：第2—9行",
+      "context": "按原始顺序逐行保留B与H误差，单位均为体积含水率百分点。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "8行数据均已读取并与原文件核对。",
+        "boundary": "原始观测只到块级，不包含可反推的日序列。"
+      },
+      "metrics": [
+        {
+          "label": "A1的B/H RMSE",
+          "value": "3.2 / 2.5",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "A2的B/H RMSE",
+          "value": "3.5 / 2.8",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "A3的B/H RMSE",
+          "value": "2.9 / 2.4",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "A4的B/H RMSE",
+          "value": "3.4 / 2.7",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "B1的B/H RMSE",
+          "value": "4.1 / 4.4",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "B2的B/H RMSE",
+          "value": "3.8 / 3.9",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "B3的B/H RMSE",
+          "value": "4.3 / 4.2",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        },
+        {
+          "label": "B4的B/H RMSE",
+          "value": "4.0 / 4.3",
+          "unit": "体积含水率百分点",
+          "baseline": "同块基线B",
+          "denominator": "该块同日期观测",
+          "aggregation": "块内日误差先汇总为RMSE；原日误差未提供"
+        }
+      ]
+    },
+    {
+      "id": "delta",
+      "paperId": "data",
+      "kind": "inference",
+      "text": "H减B的逐块差为A：−0.7、−0.7、−0.5、−0.7；B：+0.3、+0.1、−0.1、+0.3个百分点。A有4/4块H更低，B有3/4块H更高。",
+      "locator": "observations.csv：第2—9行；analysis/calculations.json",
+      "context": "差值为同块H的RMSE减去B的RMSE，负值表示H当前误差更低。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "直接对同块两列相减，方向计数来自8个配对差。",
+        "boundary": "这是当前块的描述，不是独立站点重复或显著性判断。",
+        "alternatives": "正负方向是数值事实；观测变化可来自多个未区分因素，不能仅由差值认定机制。"
+      },
+      "metrics": [
+        {
+          "label": "A逐块差",
+          "value": "−0.7, −0.7, −0.5, −0.7",
+          "unit": "体积含水率百分点",
+          "baseline": "同块B",
+          "denominator": "A站点4块",
+          "aggregation": "H−B逐行相减"
+        },
+        {
+          "label": "B逐块差",
+          "value": "+0.3, +0.1, −0.1, +0.3",
+          "unit": "体积含水率百分点",
+          "baseline": "同块B",
+          "denominator": "B站点4块",
+          "aggregation": "H−B逐行相减"
+        }
+      ],
+      "dependsOn": [
+        "raw",
+        "design",
+        "limits"
+      ]
+    },
+    {
+      "id": "means",
+      "paperId": "data",
+      "kind": "inference",
+      "text": "A站点块RMSE算术均值为B=3.25、H=2.60，H−B=−0.65；B站点为B=4.05、H=4.20，H−B=+0.15个百分点。",
+      "locator": "observations.csv：第2—9行；analysis/calculations.json",
+      "context": "每站各4块等权平均，各块RMSE本身按协议已计算。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "分别将4个块RMSE求和除以4，均值差等于配对差的算术均值。",
+        "boundary": "不是把全部日期合并后重新计算的RMSE；没有区间或统计检验。",
+        "alternatives": "若问题改为按日期加权或全日序列合并RMSE，所需块长度与日误差缺失，不能用当前块均值替代。"
+      },
+      "metrics": [
+        {
+          "label": "A：B / H 块均值",
+          "value": "3.25 / 2.60",
+          "unit": "体积含水率百分点",
+          "baseline": "B=3.25",
+          "denominator": "A站点4块",
+          "aggregation": "块RMSE算术均值，各块等权"
+        },
+        {
+          "label": "A：均值差",
+          "value": "−0.65",
+          "unit": "体积含水率百分点",
+          "baseline": "同站点B均值",
+          "denominator": "A站点4块",
+          "aggregation": "H均值−B均值"
+        },
+        {
+          "label": "B：B / H 块均值",
+          "value": "4.05 / 4.20",
+          "unit": "体积含水率百分点",
+          "baseline": "B=4.05",
+          "denominator": "B站点4块",
+          "aggregation": "块RMSE算术均值，各块等权"
+        },
+        {
+          "label": "B：均值差",
+          "value": "+0.15",
+          "unit": "体积含水率百分点",
+          "baseline": "同站点B均值",
+          "denominator": "B站点4块",
+          "aggregation": "H均值−B均值"
+        }
+      ],
+      "dependsOn": [
+        "raw",
+        "delta",
+        "limits"
+      ]
+    },
+    {
+      "id": "interpretation",
+      "paperId": "protocol",
+      "kind": "inference",
+      "text": "当前模拟评估中，H在A内部表现较好，但B站点块均值略高且多数块更高，因此A的内部优势不足以支持H在外部站点普遍更优。",
+      "locator": "protocol.md：方法、解释边界与后续；observations.csv：第2—9行",
+      "context": "A参与开发，B不参与调参；两个站点、一次固定评估。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "外部站点B没有延续A的误差优势，反驳了仅凭A均值主张普遍优势的依据。",
+        "boundary": "既不能由B宣布H在所有站点无效，也不能由结果方向判断统计显著、机制有效或现实农业效果。",
+        "alternatives": "传感器校准、土壤性质、管理条件和开发调参偏差均可能解释站点差异，当前数据未区分。"
+      },
+      "metrics": [],
+      "dependsOn": [
+        "design",
+        "limits",
+        "delta",
+        "means"
+      ]
+    },
+    {
+      "id": "proposal",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "未实施方案：先预定义目标站点范围并锁定B/H，再在未参与开发的新站点作同日期配对评估，以站点为独立单位检验站点等权平均配对差是否低于0。",
+      "locator": "protocol.md：解释边界与后续；当前报告提出的检验方案",
+      "context": "模型版本、预处理、目标站点范围、分块与缺测规则、主要终点和区间方法均在看结果前固定；新站点独立采样，块保留在站点内。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "当前只有一个外部站点且可能混杂环境与开发差异，新的独立站点评估才能检验是否可重复外推。",
+        "boundary": "方案尚未执行；95%区间为未来分析规则，当前8行数据未计算区间。新站点数需按站点差异与目标区间精度规划，不能从当前4块冒定。",
+        "alternatives": "若区间整体大于0，支持误差上升；若含0则方向证据不足，不能称等效；若协议或数据前提不成立则暂停该次判定。"
+      },
+      "metrics": [],
+      "dependsOn": [
+        "design",
+        "limits",
+        "interpretation"
+      ]
+    },
+    {
+      "id": "decision",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "对未来站点等权平均H−B差构造95%区间[L,U]：U<0支持平均误差下降；L>0支持平均误差上升；L≤0≤U为方向证据不足；评价前提失效则暂停判定并按预设规则处理。",
+      "locator": "当前报告后续方案；protocol.md：解释边界与后续",
+      "context": "区间拟按独立站点重采样，保留站内全部预定块；正式采集前做站点数与区间稳定性规划。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "有效且有序区间必为全负、全正或包含0，三方向分支穷尽；协议失效单列。",
+        "boundary": "这是未实施的方向性检验，不是等效检验，也不自动判断实际应用价值。若需实际收益门槛，应在观察结果前另行定义。",
+        "alternatives": "反例检查：全正区间不能写成不确定；区间触及0不能写成已证实下降；数据不符合预设条件不能判为H无效。"
+      },
+      "metrics": [],
+      "dependsOn": [
+        "proposal",
+        "limits"
+      ]
+    }
+  ],
+  "assets": [],
+  "slides": [
+    {
+      "id": "s01",
+      "layout": "cover",
+      "title": "教学模拟：土壤水分预测的跨站点表现",
+      "paperIds": [
+        "protocol"
+      ],
+      "claimIds": [
+        "identity"
+      ],
+      "notes": "这次汇报使用一套明确标注为教学模拟的资料，目的是讨论跨站点预测证据如何解释，不代表真实农业实验。中心问题是：混合方法在开发站点的误差较低，是否足以支持它在另一站点也更好？接下来依次看方法、块级数据、站点均值和后续验证。",
+      "seconds": 25,
+      "figureIds": [],
+      "cards": [],
+      "argument": {
+        "role": "question",
+        "question": "开发站点优势能否支持外部泛化？",
+        "contribution": "明确教学模拟身份与报告中心问题。",
+        "boundary": "只依据两份本地资料，不支持现实农业结论。"
+      },
+      "subtitle": "固定评估中的方法比较、证据边界与后续检验",
+      "cover": {
+        "occasion": "8分钟组会汇报 · synthetic-v1",
+        "titleLines": [
+          "教学模拟：",
+          "土壤水分预测的",
+          "跨站点表现"
+        ],
+        "variant": "framed"
+      }
+    },
+    {
+      "id": "s02",
+      "layout": "academic",
+      "title": "方法与固定评估设计",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "method",
+        "design",
+        "limits"
+      ],
+      "notes": "先说明我们实际比较的对象。基线B直接用天气和土壤传感器输入预测下一日含水率。混合H使用相同的信息，但先由作物过程模型估计状态，再用残差模型修正预测。箭头描述计算顺序，不表示过程机制已经被数据验证。\n下面区分两个站点。A参与开发和调参，表中的A误差来自开发期保留块，因此只能说明内部表现，不能当成完全独立的外部检验。B不参与调参，使用同一固定模型，提供一次外部站点评估。每个块内两法使用相同日期与观测，当前配对比较是对齐的。每站有四个块，但四个块始终属于同一个站点，不能把块数当作独立站点数。",
+      "seconds": 80,
+      "figureIds": [],
+      "cards": [],
+      "argument": {
+        "role": "mechanism",
+        "question": "两法改变了什么，A/B站点分别检验什么？",
+        "contribution": "对齐同输入和同目标，区分计算路径以及开发与外部评估角色。",
+        "boundary": "机制图仅表达协议中的预测计算流程，不代表因果机制得到验证。"
+      },
+      "composition": {
+        "rows": [
+          {
+            "weight": 1.15,
+            "panels": [
+              {
+                "id": "paths",
+                "title": "两条预测计算路径（仅为方法描述）",
+                "diagram": true,
+                "surface": "plain"
+              }
+            ]
+          },
+          {
+            "weight": 1,
+            "panels": [
+              {
+                "id": "setting",
+                "title": "两站点承担不同的评估角色",
+                "table": true,
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "nodes": [
+        {
+          "id": "bin",
+          "label": "相同输入",
+          "detail": "天气、土壤传感器",
+          "kind": "setting"
+        },
+        {
+          "id": "base",
+          "label": "基线方法B",
+          "detail": "直接预测",
+          "kind": "method"
+        },
+        {
+          "id": "bout",
+          "label": "下一日含水率",
+          "detail": "B的预测值",
+          "kind": "result"
+        },
+        {
+          "id": "hin",
+          "label": "相同输入",
+          "detail": "天气、土壤传感器",
+          "kind": "setting"
+        },
+        {
+          "id": "process",
+          "label": "作物过程模型",
+          "detail": "估计状态",
+          "kind": "method"
+        },
+        {
+          "id": "residual",
+          "label": "残差模型",
+          "detail": "校正预测",
+          "kind": "method"
+        },
+        {
+          "id": "hout",
+          "label": "下一日含水率",
+          "detail": "H的预测值",
+          "kind": "result"
+        }
+      ],
+      "diagram": {
+        "rows": [
+          [
+            "bin",
+            "base",
+            "bout"
+          ],
+          [
+            "hin",
+            "process",
+            "residual",
+            "hout"
+          ]
+        ],
+        "rowLabels": [
+          "基线B",
+          "混合H"
+        ]
+      },
+      "edges": [
+        {
+          "from": "bin",
+          "to": "base",
+          "kind": "flow"
+        },
+        {
+          "from": "base",
+          "to": "bout",
+          "kind": "flow"
+        },
+        {
+          "from": "hin",
+          "to": "process",
+          "kind": "flow"
+        },
+        {
+          "from": "process",
+          "to": "residual",
+          "kind": "flow"
+        },
+        {
+          "from": "residual",
+          "to": "hout",
+          "kind": "flow"
+        }
+      ],
+      "table": {
+        "columns": [
+          "站点",
+          "模型使用与数据",
+          "可支持的判断"
+        ],
+        "rows": [
+          [
+            "A",
+            "参与开发与调参；开发期保留块",
+            "内部表现说明"
+          ],
+          [
+            "B",
+            "不参与调参；同一固定模型",
+            "一个外部站点的表现"
+          ]
+        ],
+        "columnWeights": [
+          0.5,
+          2.7,
+          1.6
+        ],
+        "sourceClaimIds": [
+          "design"
+        ],
+        "caption": "教学模拟；每站4块，两法同日期与观测。A保留块不等于独立外部检验。"
+      },
+      "visualPlan": {
+        "relationship": "mechanism",
+        "primaryPanelId": "paths",
+        "readingOrder": [
+          "paths",
+          "setting"
+        ],
+        "rationale": "上部按两条真实计算路径画原生节点，下部对齐A/B角色，避免把模型结构与验证强度混为一谈。",
+        "alternatives": [
+          {
+            "structure": "左侧流程、右侧站点说明",
+            "tradeoff": "混合路径含四个阶段，横向分栏会压缩节点宽度并降低中文标签可读性。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "layout": "academic",
+      "title": "逐块配对：A四块更低，B三块更高",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "raw",
+        "delta",
+        "limits"
+      ],
+      "notes": "这一页保留了附表全部八行。左表的B和H都是块内每天误差先汇总得到的RMSE，单位是体积含水率百分点，最后一列按同一块做H减B。右图把相同的配对差画成点，零线只帮助辨别方向。\nA的四个差值都是负数，分别为负0.7、负0.7、负0.5和负0.7，说明这四个开发期保留块中H都更低。B的差值是正0.3、正0.1、负0.1和正0.3，三个块H更高，B3则略低。因此不能把B描述成每个块都恶化。点的个数是块数，并不是独立站点数。我们没有日序列，也没有块间相关性信息，所以这里不增加误差线、显著性或者等效结论。",
+      "seconds": 80,
+      "figureIds": [],
+      "cards": [],
+      "argument": {
+        "role": "evidence",
+        "question": "每个评估块中，H相对于B的误差方向是否一致？",
+        "contribution": "完整保留8行数值，用配对差显示A/B的不同方向与B3例外。",
+        "boundary": "块级描述，不计算置信区间，不把四块解释为独立站点。"
+      },
+      "table": {
+        "columns": [
+          "块",
+          "B",
+          "H",
+          "H−B"
+        ],
+        "rows": [
+          [
+            "A1",
+            "3.2",
+            "2.5",
+            "−0.7"
+          ],
+          [
+            "A2",
+            "3.5",
+            "2.8",
+            "−0.7"
+          ],
+          [
+            "A3",
+            "2.9",
+            "2.4",
+            "−0.5"
+          ],
+          [
+            "A4",
+            "3.4",
+            "2.7",
+            "−0.7"
+          ],
+          [
+            "B1",
+            "4.1",
+            "4.4",
+            "+0.3"
+          ],
+          [
+            "B2",
+            "3.8",
+            "3.9",
+            "+0.1"
+          ],
+          [
+            "B3",
+            "4.3",
+            "4.2",
+            "−0.1"
+          ],
+          [
+            "B4",
+            "4.0",
+            "4.3",
+            "+0.3"
+          ]
+        ],
+        "columnWeights": [
+          1.7,
+          1,
+          1,
+          1.3
+        ],
+        "caption": "教学模拟；每站4块不等于4个独立站点。",
+        "sourceClaimIds": [
+          "raw",
+          "delta"
+        ]
+      },
+      "plots": [
+        {
+          "id": "paired-diff",
+          "kind": "distribution",
+          "unit": "H−B（体积含水率百分点）",
+          "groups": [
+            {
+              "label": "A：开发保留块",
+              "values": [
+                -0.7,
+                -0.7,
+                -0.5,
+                -0.7
+              ]
+            },
+            {
+              "label": "B：固定模型外部块",
+              "values": [
+                0.3,
+                0.1,
+                -0.1,
+                0.3
+              ]
+            }
+          ],
+          "reference": 0,
+          "sourceClaimIds": [
+            "delta"
+          ],
+          "caption": "每点为1块，负值表示H误差更低。零线仅判方向，无置信区间。"
+        }
+      ],
+      "composition": {
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "rawtable",
+                "title": "块RMSE（体积含水率百分点）",
+                "table": true,
+                "weight": 1.15,
+                "surface": "plain"
+              },
+              {
+                "id": "difference",
+                "title": "配对差的方向与分布",
+                "plotId": "paired-diff",
+                "weight": 1,
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "comparison",
+        "primaryPanelId": "rawtable",
+        "readingOrder": [
+          "rawtable",
+          "difference"
+        ],
+        "rationale": "原始配对数值与零线差值图并置，既能复核全部输入，也能一眼看到站点方向和B3例外。",
+        "alternatives": [
+          {
+            "structure": "8组双柱图配旁注",
+            "tradeoff": "双柱图需16根柱且更难核对小差值，原生表格与差值点图更直接保留数值及配对口径。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "layout": "academic",
+      "title": "站点均值：A的优势未在B延续",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "means",
+        "interpretation",
+        "limits"
+      ],
+      "notes": "把每个站点的四个块等权平均，A的基线B为3.25，混合H为2.60，H减B是负0.65个百分点。B站点的基线为4.05，混合为4.20，差值是正0.15。右侧同时保留站点角色，以免把A的开发期结果与B的外部评估混为一谈。\n这里的算术均值严格对应协议允许的口径。它不是将全部日期的误差重新合并后计算的RMSE，因为我们并没有原始日误差和块长度。结果表明，A的内部优势没有在这次B评估中延续，因此不能凭A支持普遍泛化优势。反过来，一个B站点也不足以说明H在所有站点都无效。这里陈述数值方向，没有统计显著性的含义。",
+      "seconds": 75,
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "meanA",
+          "title": "A：均值差 −0.65",
+          "body": "B 3.25  →  H 2.60\n四个开发期保留块均值。\n支持当前内部误差较低。",
+          "kind": "result",
+          "claimIds": [
+            "means",
+            "design"
+          ],
+          "style": "plain"
+        },
+        {
+          "id": "meanB",
+          "title": "B：均值差 +0.15",
+          "body": "B 4.05  →  H 4.20\n四个固定模型外部块均值。\n未延续A的误差优势。",
+          "kind": "boundary",
+          "claimIds": [
+            "means",
+            "interpretation"
+          ],
+          "style": "plain"
+        }
+      ],
+      "argument": {
+        "role": "evidence",
+        "question": "按协议允许的块均值口径，A/B的对比如何概括？",
+        "contribution": "对齐站点内4块算术均值，并把均值差与评估角色一起解释。",
+        "boundary": "不是全日期合并RMSE，也没有不确定区间；只能描述这次模拟评估。"
+      },
+      "chart": {
+        "kind": "column",
+        "categories": [
+          "A：开发期保留块",
+          "B：固定模型外部块"
+        ],
+        "series": [
+          {
+            "name": "基线B",
+            "values": [
+              3.25,
+              4.05
+            ]
+          },
+          {
+            "name": "混合H",
+            "values": [
+              2.6,
+              4.2
+            ]
+          }
+        ],
+        "unit": "块RMSE均值（体积含水率百分点）",
+        "sourceClaimId": "means",
+        "valueDecimals": 2
+      },
+      "composition": {
+        "lead": "教学模拟。每站4块等权求算术均值，H−B仍以百分点表示。",
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "meanschart",
+                "title": "同一尺度的站点内块均值",
+                "chart": true,
+                "weight": 2.1,
+                "surface": "plain"
+              },
+              {
+                "id": "readout",
+                "title": "均值差及其含义",
+                "cardIds": [
+                  "meanA",
+                  "meanB"
+                ],
+                "weight": 1,
+                "surface": "rule"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "label": "支持范围",
+          "text": "这次固定评估不足以支持H的普遍泛化优势，也不能据B一个站点宣布H普遍无效。"
+        }
+      },
+      "visualPlan": {
+        "relationship": "evidence-explanation",
+        "primaryPanelId": "meanschart",
+        "readingOrder": [
+          "meanschart",
+          "readout"
+        ],
+        "rationale": "两站点共用一个零起点柱图尺度，均值差与开发/外部角色紧邻呈现，避免只看A的较大改善。"
+      }
+    },
+    {
+      "id": "s05",
+      "layout": "academic",
+      "title": "解释边界：站点差异尚未被分解",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "design",
+        "limits",
+        "interpretation",
+        "method"
+      ],
+      "notes": "现在区分三个层面的结论。第一，A和B的结果方向不同，支持的是这次评估中表现随站点与开发安排发生变化。要说这种结果是否可重复，需要更多独立外部站点。第二，同块日期和观测一致，让当前B与H的误差具有可比性，但这种公平配对并不自动证明过程模块发挥了因果作用。机制贡献需要专门的去模块对照。第三，我们只有两个站点各四个块，不能将描述推广到多年、多土壤或区域尺度。\n协议给出四类可能解释：传感器校准、土壤、管理条件和开发调参偏差。当前数据没有区分它们，所以我们只能把它们列为待核查原因。后续的优先任务应是检验H在新站点是否降低误差，并同步收集解释差异所需的信息。",
+      "seconds": 80,
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "alternatives",
+          "title": "可能解释，尚未区分",
+          "body": "传感器校准差异\n土壤性质差异\n管理条件差异\n开发与调参偏差",
+          "kind": "boundary",
+          "claimIds": [
+            "limits",
+            "interpretation"
+          ],
+          "style": "plain"
+        },
+        {
+          "id": "inference-limit",
+          "title": "机制与统计结论",
+          "body": "H的结构描述不等于因果证明。\n缺少区间与检验，不能宣称显著或等效。",
+          "kind": "boundary",
+          "claimIds": [
+            "method",
+            "limits"
+          ],
+          "style": "plain"
+        }
+      ],
+      "argument": {
+        "role": "synthesis",
+        "question": "当前证据支持什么，哪些结论还缺验证？",
+        "contribution": "将配对比较的可比性与跨站点推广、机制归因的证据缺口逐一对照。",
+        "boundary": "校准、土壤、管理与开发偏差都是未区分解释，不能当成已识别原因。"
+      },
+      "table": {
+        "columns": [
+          "当前证据",
+          "可以说",
+          "仍缺的依据"
+        ],
+        "rows": [
+          [
+            "H相对基线：A站较低，B站略高",
+            "本次表现随站点安排改变",
+            "多个独立外部站点的可重复性"
+          ],
+          [
+            "同块同日期、同观测",
+            "当前B/H配对误差可比较",
+            "过程模块贡献的专门对照"
+          ],
+          [
+            "2站点，各4个块",
+            "一次固定评估的描述",
+            "多年、多土壤与区域覆盖"
+          ]
+        ],
+        "columnWeights": [
+          1.4,
+          1.4,
+          1.9
+        ],
+        "caption": "所有判断仅适用于synthetic-v1教学模拟资料。",
+        "sourceClaimIds": [
+          "design",
+          "limits",
+          "interpretation"
+        ]
+      },
+      "composition": {
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "boundarymatrix",
+                "title": "判断与证据逐项对应",
+                "table": true,
+                "weight": 2.05,
+                "surface": "plain"
+              },
+              {
+                "id": "unresolved",
+                "title": "差异来源仍然开放",
+                "cardIds": [
+                  "alternatives",
+                  "inference-limit"
+                ],
+                "weight": 1,
+                "surface": "rule"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "label": "下一步依据",
+          "text": "先在新站点检验H是否降低误差，再用校准记录和专门对照区分差异来源。"
+        }
+      },
+      "visualPlan": {
+        "relationship": "synthesis",
+        "primaryPanelId": "boundarymatrix",
+        "readingOrder": [
+          "boundarymatrix",
+          "unresolved"
+        ],
+        "rationale": "用三行证据矩阵把每条可支持判断与缺失验证对应，旁注仅列当前无法区分的解释。"
+      }
+    },
+    {
+      "id": "s06",
+      "layout": "academic",
+      "title": "后续检验：新站点配对评估与判定",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "proposal",
+        "decision",
+        "limits"
+      ],
+      "notes": "最后提出一个尚未实施的检验方案。首先在观察结果前定义目标站点的土壤与管理范围，固定B和H的模型版本、预处理、日期分块和缺测规则，再到未参与开发的新站点进行同日期、同观测的配对评估。独立单位应是新站点，不能把同站点的多个块当成额外站点。站点数需要根据站点间差异和希望达到的区间精度规划，当前四个块不足以给出可靠的站点数。\n主要终点分两步：先计算每个站点内部H减B的平均块差，再对站点等权平均。拟采用按独立站点重采样的方法保留站内块结构，形成这个均值差的95%区间。这里的区间是未来分析规则，当前八行没有计算任何区间。\n判定必须覆盖全部结果。如果区间上界小于零，支持平均误差下降。如果下界大于零，支持平均误差上升，这不能被归为简单的不确定。如果区间包含或触及零，只能说方向证据不足，不能称两法等效。若模型冻结、观测配对或数据质量等预设前提未满足，应先暂停该次判定，按事先规则处理。方向下降也不自动等于有实际应用价值，收益门槛需要另行预先定义。\n同时记录传感器校准、土壤和管理条件。若进一步追问过程模块为什么有效，还需要同信息、同调参预算的去模块对照，避免把外部表现直接当成机制证明。",
+      "seconds": 120,
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "fair-test",
+          "title": "固定模型，扩展独立站点",
+          "body": "预定义目标土壤与管理范围。\n锁定B/H、预处理和缺测规则。\n新站点同日期、同观测配对。\n按站点差异规划数量与精度。",
+          "kind": "hypothesis",
+          "claimIds": [
+            "proposal"
+          ],
+          "style": "plain"
+        },
+        {
+          "id": "endpoint",
+          "title": "主要终点与未来区间",
+          "body": "先求各站点的平均H−B块差，\n再对站点等权平均。\n拟按独立站点重采样，计算\n该均值差的95%区间[L, U]。",
+          "kind": "hypothesis",
+          "claimIds": [
+            "proposal",
+            "decision"
+          ],
+          "style": "plain"
+        }
+      ],
+      "argument": {
+        "role": "proposal",
+        "question": "怎样获得能支持或反驳泛化优势的新证据？",
+        "contribution": "将一个外部站点的缺口转成独立新站点、冻结规则与完整方向判定的方案。",
+        "boundary": "方案未实施，95%区间属于未来规则；不由当前8行补算，样本规模需另做规划。"
+      },
+      "table": {
+        "columns": [
+          "未来结果条件",
+          "判定含义"
+        ],
+        "rows": [
+          [
+            "U < 0",
+            "支持平均误差下降"
+          ],
+          [
+            "L > 0",
+            "支持平均误差上升"
+          ],
+          [
+            "L ≤ 0 ≤ U",
+            "方向证据不足，不能称等效"
+          ],
+          [
+            "评价前提不满足",
+            "暂停判定，按预设规则处理"
+          ]
+        ],
+        "columnWeights": [
+          1.05,
+          1.65
+        ],
+        "caption": "只判断误差方向。实际收益门槛需在观察结果前另行定义。",
+        "sourceClaimIds": [
+          "decision"
+        ]
+      },
+      "composition": {
+        "lead": "未实施提案。新站点是独立评估单位，块保留在站点内；当前数据没有计算区间。",
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "futuredesign",
+                "title": "评价设计与统计单位",
+                "cardIds": [
+                  "fair-test",
+                  "endpoint"
+                ],
+                "weight": 1.12,
+                "surface": "rule"
+              },
+              {
+                "id": "branches",
+                "title": "预先写清全部结果分支",
+                "table": true,
+                "weight": 1.4,
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "sequence",
+        "primaryPanelId": "branches",
+        "readingOrder": [
+          "futuredesign",
+          "branches"
+        ],
+        "rationale": "左侧先定义公平比较与独立单位，右侧将未来区间的全负、全正、含零和前提失效分支一一列出。",
+        "alternatives": [
+          {
+            "structure": "单行流程接多个结果分叉",
+            "tradeoff": "分叉需要重复区间文字且压缩判定细节，原生表格更便于核对全正与含零两类不同结论。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "layout": "references",
+      "title": "参考资料（教学模拟，未发表）",
+      "paperIds": [
+        "protocol",
+        "data"
+      ],
+      "claimIds": [
+        "identity",
+        "limits"
+      ],
+      "notes": "本报告仅使用这两份本地教学资料，作者为插件验证用例，版本synthetic-v1，未发表。讨论问题是：外部表现未延续时，应先检验可重复性，还是先追查差异来源？",
+      "seconds": 20,
+      "figureIds": [],
+      "cards": [],
+      "argument": {
+        "role": "synthesis",
+        "question": "如何复核本次汇报的材料身份和计算？",
+        "contribution": "保留唯一两份本地来源的完整身份与版本。",
+        "boundary": "无其他文献，不编造DOI、期刊、机构、人员或资助。"
+      }
+    }
+  ]
+}

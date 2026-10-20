@@ -154,7 +154,7 @@ export function inferTemplateDesign({ study = {}, shapes = [], width = 1280, hei
   ];
   if (Math.abs(sourceWidth / sourceHeight - 16 / 9) > .01) limits.push('源画幅不是 16:9；几何与字号建议适配至 1280×720，不保留源画幅。');
   return {
-    suggestedDesign: { fontFamily, palette, system },
+    suggestedDesign: { mode: 'reference-guided', fontFamily, palette, system },
     designInference: { basis: 'pptx-xml-structural', visualReview: 'not-performed', ...(sha256 ? { sourceSha256: sha256 } : {}), targetCanvas: { width: 1280, height: 720, unit: 'px' }, decisions, limitations: limits },
   };
 }

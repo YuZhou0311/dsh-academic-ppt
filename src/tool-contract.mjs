@@ -22,11 +22,11 @@ const contracts = {
   },
   slide: {
     schema: slideSchema, recordKey: 'slides', maxItems: 8,
-    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿优先layout=academic + composition.rows。panel引用本页cards/figureIds/chart/table/nodes/plots；每项恰好显示一次，plotId支持同页多个科学图。机制图用diagram.rows指定节点行、edges明确关系。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
+    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '组合正文页先用visualPlan简短记录信息关系、primaryPanelId、readingOrder和rationale，再决定composition；固定页型不要填写visualPlan。计划中的面板必须实际存在且readingOrder覆盖每个面板一次。它记录可审阅的设计选择，不是长思维链，也不会自动重排页面。关键页可记最多两个alternatives及取舍。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿优先layout=academic + composition.rows，不必先选referenceTemplateId。panel引用本页cards/figureIds/chart/table/nodes/plots；每项恰好显示一次。surface可选inherit/plain/rule/tint/band；align=start按内容最小高度顶对齐，适合短旁注，不与该面板card.box或所消费节点node.box混用。省略字段保留旧渲染。', 'plotId支持同页多个科学图。机制图用diagram.rows指定节点行、edges明确关系；主图通常stretch，不为外观制造数据或因果箭头。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
   },
   design: {
     schema: designSchema, recordKey: 'design',
-    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', '用户PPTX先由academic_ppt_template取得suggestedDesign与真实预览；看图选定主模板后把suggestedDesign作为design记录。system控制实际封面、章节页眉、面板与字号；templateProfilePaths仅导入局部背景组件。模板旧文字和机构不作为当前内容。'],
+    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', 'mode=content-led 为新工程默认；有参考时通常用reference-guided，只迁移字体、配色和层级；用户明确要求沿用版式时才用template-faithful。mode控制工作指引与软性诊断，不自动生成布局，也不代表任意模板无损复刻。', '新建时自定义design省略mode仍采用content-led；record替换design省略mode保留原模式。旧文件未登记模式时context.designMode显示legacy，但legacy不是可提交的mode值。', 'academic_ppt_template 的suggestedDesign是候选设计变量，须查看真实代表页并按当前内容适配后记录。system固定全稿封面、页眉与字号；composition自主决定正文拓扑和局部分组。templateProfilePaths仅按需导入局部背景组件，模板旧文字和机构不作为当前内容。'],
   },
   assessment: {
     schema: assessmentSchema, recordKey: 'observations',

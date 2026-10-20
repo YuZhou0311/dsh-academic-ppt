@@ -369,3 +369,109 @@ test('composition allocates the shared full diagram-label minimum before reporti
     assert.equal(edgeLabel.text, slide.edges[0].label); assert.equal(edgeLabel.fontSize, 22);
   }
 });
+
+test('optional panel controls preserve the exact legacy scene when inherited and stretched', () => {
+  for (const panelStyle of ['band', 'tint', 'line']) {
+    const slide = authoredSlide({ cards: [authoredCard('a')], composition: { rows: [{ panels: [{ id: 'one', title: '原有分组规则', cardIds: ['a'] }] }] } });
+    const p = project(slide); p.design.system.panel = panelStyle;
+    const original = buildScenes(p).pages[0];
+    Object.assign(slide.composition.rows[0].panels[0], { surface: 'inherit', align: 'stretch' });
+    assert.deepEqual(buildScenes(p).pages[0], original, `${panelStyle} must retain every legacy native object and coordinate`);
+  }
+});
+
+test('authored panel surfaces preserve all scientific text and only change native furniture', () => {
+  const bodies = new Set();
+  for (const surface of ['plain', 'rule', 'tint', 'band']) {
+    const slide = authoredSlide({ cards: [authoredCard('a', { title: '明确适用条件', body: '保留样本单位、比较基线与结论边界。' })], composition: { rows: [{ panels: [{ id: 'one', title: '条件与解释', surface, cardIds: ['a'] }] }] } });
+    const p = project(slide), before = structuredClone(p), page = buildScenes(p).pages[0];
+    assert.deepEqual(errors(page), []);
+    for (const value of [slide.composition.rows[0].panels[0].title, slide.cards[0].title, slide.cards[0].body]) assert.ok(hasPayload(page, value), `${surface}: ${value}`);
+    const groupNodes = page.nodes.filter(node => node.id.startsWith('s/composition/panel/one/'));
+    const heading = groupNodes.find(node => node.role === 'panel-title');
+    assert.equal(heading.fontSize, 26, 'surface changes cannot shrink the heading');
+    assert.equal(heading.color, surface === 'band' ? '#FFFFFF' : surface === 'plain' ? p.design.palette.ink : p.design.palette.accent);
+    if (surface === 'plain') assert.deepEqual(groupNodes.map(node => node.kind), ['text'], 'plain keeps the semantic heading without adding a border or backdrop');
+    if (surface === 'rule') assert.equal(groupNodes.filter(node => node.kind === 'line').length, 3);
+    if (surface === 'tint' || surface === 'band') assert.ok(groupNodes.some(node => node.role === 'panel-frame'));
+    const body = find(page, '/card/a/body'); bodies.add(JSON.stringify({ text: body.text, lines: body.lines, size: body.fontSize, x: body.x, y: body.y, w: body.w, h: body.h }));
+    assert.deepEqual(p, before, 'rendering must not rewrite source content');
+  }
+  assert.equal(bodies.size, 1, 'furniture choices do not alter authored text, body geometry or scientific meaning');
+});
+
+test('a short content-sized sidebar shares the baseline while the main evidence retains its full area', () => {
+  const chart = { kind: 'bar', categories: ['条件一', '条件二'], series: [{ name: '计数', values: [3, 2] }], unit: '项', sourceClaimId: 'C1' };
+  const slide = authoredSlide({ chart, cards: [authoredCard('scope', { title: '适用范围', body: '仅覆盖这两个预定条件。' })], composition: { rows: [{ panels: [
+    { id: 'evidence', title: '同条件比较', weight: 1.8, surface: 'plain', chart: true },
+    { id: 'scope', title: '解释边界', weight: 1, surface: 'tint', align: 'start', cardIds: ['scope'] },
+  ] }] } });
+  const p = project(slide), before = structuredClone(p), page = buildScenes(p).pages[0];
+  assert.deepEqual(errors(page), []);
+  const evidence = page.nodes.find(node => node.kind === 'chart'), sidebar = find(page, '/composition/panel/scope/frame');
+  assert.ok(evidence.h > sidebar.h * 1.8, 'the main comparison keeps the surplus row height');
+  assert.ok(bottom(sidebar) < bottom(evidence), 'the sidebar ends after its complete content instead of stretching to match evidence');
+  assert.equal(find(page, '/composition/panel/evidence/title').y, find(page, '/composition/panel/scope/title').y);
+  assert.ok(bottom(find(page, '/card/scope/body')) <= bottom(sidebar));
+  assert.deepEqual(evidence.chart, chart, 'all values, units and source identity reach the native chart unchanged');
+  assert.equal(find(page, '/card/scope/body').text, slide.cards[0].body);
+  assert.equal(find(page, '/card/scope/body').fontSize, 24);
+  assert.deepEqual(p, before);
+});
+
+test('content-sized panels keep multi-line headings, qualifiers and stacked card text inside their frame', () => {
+  const metric = { value: '3/4', unit: '项', label: '固定输入计数', context: '分母为四项独立软件输入。' };
+  const slide = authoredSlide({ cards: [authoredCard('a', { title: '计数与口径', metric }), authoredCard('b', { title: '解释边界', body: '没有外推到其他输入。' })], composition: { rows: [{ panels: [{ id: 'scope', title: '完整限定和不同论证层级\n共同保持可读', surface: 'tint', align: 'start', cardIds: ['a', 'b'] }] }] } });
+  const p = project(slide), page = buildScenes(p).pages[0];
+  assert.deepEqual(errors(page), []);
+  const frame = find(page, '/composition/panel/scope/frame');
+  for (const value of [metric.label, metric.context, slide.cards[0].body, slide.cards[1].body]) assert.ok(hasPayload(page, value));
+  assert.ok(bottom(find(page, '/card/b/body')) <= bottom(frame));
+  const firstBody = find(page, '/card/a/body'), secondTitle = find(page, '/card/b/title');
+  assert.ok(secondTitle.y > bottom(firstBody));
+  assert.equal(firstBody.fontSize, 24);
+  assert.equal(find(page, '/card/a/metric').fontSize, 38);
+});
+
+test('unsupported surfaces and alignment conflicts produce blocking diagnostics without moving absolute cards', () => {
+  const box = { x: 62, y: 520, w: 1156, h: 100 };
+  const slide = authoredSlide({ cards: [authoredCard('a', { box })], composition: { rows: [{ panels: [{ id: 'scope', title: '显式几何', surface: 'glass', align: 'start', cardIds: ['a'] }] }] } });
+  const p = project(slide), result = recording(p, slide);
+  assert.ok(errors(result.page).some(issue => issue.code === 'composition-panel-surface'));
+  assert.ok(errors(result.page).some(issue => issue.code === 'composition-panel-align-box-conflict'));
+  assert.deepEqual(result.calls.find(call => call.kind === 'card').box, box, 'a failed start alignment preserves the requested absolute geometry');
+  slide.composition.rows[0].panels[0].align = 'center';
+  assert.ok(errors(recording(p, slide).page).some(issue => issue.code === 'composition-panel-align'));
+});
+
+test('content-sized diagram panels reject absolute nodes and preserve their authored geometry', () => {
+  const box = { x: 62, y: 500, w: 600, h: 100 };
+  const slide = authoredSlide({ layout: 'academic', nodes: [{ id: 'n', label: 'Kept at authored position', box }], composition: { rows: [{ panels: [{ id: 'diagram', title: 'Diagram panel', surface: 'tint', align: 'stretch', diagram: true }] }] } });
+  const p = project(slide), stretched = buildScenes(p).pages[0];
+  assert.deepEqual(errors(stretched), []);
+  slide.composition.rows[0].panels[0].align = 'start';
+  const before = structuredClone(p), page = buildScenes(p).pages[0];
+  const issue = errors(page).find(item => item.code === 'composition-panel-align-box-conflict');
+  assert.ok(issue, 'absolute nodes cannot escape a compact frame without a blocking diagnostic');
+  assert.equal(issue.panelId, 'diagram');
+  assert.match(issue.message, /node\.box/);
+  const node = find(page, '/node:n:frame'), frame = find(page, '/composition/panel/diagram/frame');
+  assert.deepEqual({ x: node.x, y: node.y, w: node.w, h: node.h }, box);
+  assert.deepEqual(node, find(stretched, '/node:n:frame'), 'the diagnostic must not relocate or resize authored scientific nodes');
+  assert.deepEqual(frame, find(stretched, '/composition/panel/diagram/frame'), 'failed compact alignment keeps the original stretched frame for inspection');
+  assert.ok(bottom(node) <= bottom(frame));
+  assert.deepEqual(p, before);
+  delete slide.nodes[0].box;
+  assert.deepEqual(errors(buildScenes(p).pages[0]), [], 'automatic diagram geometry can still use content-sized alignment');
+});
+
+test('content-sized alignment cannot hide overfull scientific qualifiers', () => {
+  const body = '独立样本、预定对照与不确定区间必须保持完整。'.repeat(34);
+  const slide = authoredSlide({ cards: [authoredCard('a', { body })], composition: { rows: [{ panels: [{ id: 'scope', title: '必须拆页的长解释', surface: 'plain', align: 'start', cardIds: ['a'] }] }] } });
+  const page = buildScenes(project(slide)).pages[0];
+  assert.ok(errors(page).some(issue => issue.code === 'composition-page-overflow'));
+  const node = find(page, '/card/a/body');
+  assert.equal(node.text, body);
+  assert.equal(node.lines.join(''), body);
+  assert.equal(node.fontSize, 24);
+});

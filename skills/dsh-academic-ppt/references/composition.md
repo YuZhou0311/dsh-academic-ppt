@@ -6,6 +6,8 @@
 
 使用 `layout:"academic"`、`section:{number:"02",title:"研究设计"}`。`composition.rows` 是从上到下的行，每行 `panels` 从左到右。weight是可用空间的正数比例，不是重要性评分；工具同时满足真实文字和证据的最小尺寸。默认等权；主证据通常比解释区宽。最多3行、每行4面板、全页8面板。
 
+先按 [visual-decision.md](visual-decision.md) 写本页visualPlan，再分配这些行列；计划记录焦点和阅读顺序，不会自动替你布局。不同科学关系可产生不同结构，用户明确的共同尺度比较也可以保持同构。
+
 每个面板有稳定id与说明其论证职责的title；引用当前页的既有内容：
 
 | 面板字段 | 内容存放位置 | 使用条件 |
@@ -36,7 +38,11 @@
 }
 ```
 
-正文解释卡默认compact，明确的plain/compact也会保留。学术分组框由design.system.panel控制；不要给内层解释卡再套学术题签、纸张阴影或模板组件。需要自由图框时使用旧figure-focus/figure-split接口，不与composition混用。card.box一般省略；若明确提供，它须位于本面板的可用内容区，不移动相邻证据。
+正文解释卡默认compact，明确的plain/compact也会保留。分组框默认由design.system.panel控制，每个面板可用surface覆盖：inherit / plain / rule / tint / band。plain保留标题和全部内容，只去掉分组家具；rule对应全稿line样式；混合外观仍遵循共同配色与字体。不要给内层解释卡再套学术题签、纸张阴影或模板组件。
+
+panel.align默认为stretch；短旁注可选start，按完整测量的最小高度顶对齐，不再撑满同行。主证据通常保留stretch。start与该面板任何显式card.box或所消费机制节点的node.box冲突，会报告composition-panel-align-box-conflict。需要绝对图框时使用旧figure-focus/figure-split接口，不与composition混用；使用card.box时保留stretch且外框须在本面板正文区内。
+
+这些是局部组件选择，使用场合见 [component-grammar.md](component-grammar.md)。不要把surface枚举当成每页依次套用的新模板。
 
 ## 3. 按论证任务组织，不按模板槽凑内容
 
@@ -86,4 +92,4 @@ design.system允许受控字号范围，默认正文24px（18pt）、面板标�
 
 check中会给出哪个面板缺少载体、遗漏哪个ID、哪段文字需要多高、哪条边穿过节点。集中修这批具体问题，再build/render。不要每改一个词就重新导出。
 
-一份好看的HTML不保证PPTX相同。实际render会提供编号概览和各页PNG。先检查全稿节奏，再看每页的图、单位、结论与源材料对应。模板对照尤其看封面层级、证据与解释的面积比例、关系图是否完整，以及页面是否退化成重复文字区。计数和自动检查不作审美评分。
+一份好看的HTML不保证PPTX相同。实际render会提供编号概览和各页PNG。先检查全稿节奏，再看每页的图、单位、结论与源材料对应。有参考时按design.mode检查应保留的字体与层级或用户指定结构；重点看当前证据与解释是否分清主次、关系图是否完整，以及页面是否退化成重复文字区。计数和自动检查不作审美评分。

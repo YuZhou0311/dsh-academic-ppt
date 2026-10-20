@@ -31,8 +31,8 @@ const descriptions = {
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
   academic_ppt_check: '只读检查论文证据、版式与产物摘要，列出可定位的问题。静态检查不能代替逐页看最终 PPTX。Inspect evidence, geometry and output integrity.',
-  academic_ppt_template: '研究本地PPTX并返回可记录的suggestedDesign，另存profile。render:true可一次生成实际模板页面和编号概览，用fontDirectories提供本地字体。先看图选主模板再应用，不复制旧研究正文。Study an applicable academic design system.',
-  academic_ppt_reference: '按学术任务查询48种布局的紧凑索引；templateId返回中性槽位、单位、数量限制与空字段骨架。figure可取得最多3个适配候选，不自动识别科学图。教学示例资源仅includeExamples=true返回，示例正文不得复制进汇报。Inspect neutral reference geometries.',
+  academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，只借字体、色彩和层级，当前内容决定页面结构；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
+  academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
   academic_ppt_contract: '按brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
   academic_ppt_render: '通过可选渲染引擎读取当前交付 PPTX，生成实际页面画面并记录摘要；引擎缺失时如实返回未验证。Render the current PPTX without changing the editable source.',
   academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
@@ -99,7 +99,7 @@ function templateSummary(profile, profilePath) {
     study: profile.study, suggestedDesign:profile.suggestedDesign, designInference:profile.designInference, components,
     componentIndex: { total: profile.components?.length ?? 0, returned: components.length, truncated: (profile.components?.length ?? 0) > components.length },
     scope: profile.scope, visualReview: profile.visualReview,
-    instructions: ['结构推断尚未视觉确认；实际看封面、证据和机制页后选定一个主模板，避免混合两个模板的身份体系。', '将选定模板的suggestedDesign作为recordsPath批次的design保存。其system控制真实封面、章节页眉、面板和字体；必要时只调整已验证的token。', '正文优先layout=academic、composition.rows按研究关系组合原图/科学图/表格/机制图/解释；完整字段见contract(topic=slide)。', '仅需复用局部原生背景时才另用templateProfilePaths；组件不包含旧正文，不能借用模板机构、数据和图像。'],
+    instructions: ['结构推断尚未视觉确认。查看实际代表页，提取适合当前报告的字体、配色、对齐与层级；模板的页序、卡片数量和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据，不逐页映射源模板；template-faithful尊重用户指定的页序和结构。panel.surface可混合开放区与分组，短旁注可align=start。完整字段见contract(topic=slide)。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。组件不是必用卡片；模板机构、旧正文、数据与图像不能移入当前研究。'],
   }
 }
 
@@ -155,7 +155,7 @@ export function formatToolResult(name, result) {
     lines.push(`支持的组件：${data.componentIndex?.total ?? data.components?.length ?? 0}`)
     if (typeof data.profilePath === 'string') lines.push(`模板 profile：${clip(data.profilePath)}`)
     if (data.summary) lines.push(`结构统计：${JSON.stringify(data.summary)}`)
-    if (data.suggestedDesign) lines.push(`可应用设计（作为record批次的design保存）：${JSON.stringify(data.suggestedDesign)}`)
+    if (data.suggestedDesign) lines.push(`候选设计变量（审定并适配后记录，页面结构由当前论证决定）：${JSON.stringify(data.suggestedDesign)}`)
     if (data.designInference) lines.push(`设计推断依据与限制：${JSON.stringify(data.designInference)}`)
     if (data.preview) lines.push(`模板真实渲染（仍须看图）：${JSON.stringify(data.preview)}`)
     if (data.study) lines.push(`模板研究（统计与候选，未复制原文）：${JSON.stringify(data.study)}`)
@@ -177,13 +177,13 @@ export function formatToolResult(name, result) {
     }
     if (data.template) {
       const t = data.template
-      lines.push(`选用 ${clip(t.id, 80)}：${clip(t.name, 100)}；layout=${clip(t.layout, 40)}`)
+      lines.push(`参考候选 ${clip(t.id, 80)}：${clip(t.name, 100)}；layout=${clip(t.layout, 40)}`)
       lines.push(clip(t.description, 800))
       lines.push(`内容要求：${clip(JSON.stringify(t.requirements), 1500)}`)
       lines.push(`原生区域（1280×720 px）：${clip(JSON.stringify(t.slots), 6000)}`)
       lines.push(`小卡片样式：${(t.cardStyles ?? []).map(x => clip(x, 80)).join('、')}`)
       if (data.skeleton) lines.push(`待填写字段骨架（空值必须补全）：${JSON.stringify(data.skeleton)}`)
-      lines.push(`写入 slide.referenceTemplateId="${clip(t.id, 80)}"；完整字段规则见academic_ppt_contract(topic=slide)。`)
+      lines.push(`只有当前证据适合该固定结构时才写入slide.referenceTemplateId="${clip(t.id, 80)}"；否则用composition自主构图，二者不混用。完整字段见academic_ppt_contract(topic=slide)。`)
     }
   }
   if (name === 'academic_ppt_contract') {
@@ -196,6 +196,7 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_context') {
     if (typeof data.context === 'string') lines.push(clip(data.context, 16000))
     if (typeof data.stage === 'string') lines.push(`当前阶段：${clip(data.stage, 80)}`)
+    if (typeof data.designMode === 'string') lines.push(`设计模式：${clip(data.designMode, 80)}`)
     if (typeof data.nextAction === 'string') lines.push(`下一步：${clip(data.nextAction, 1200)}`)
     if (data.brief) lines.push(`研究问题：${clip(data.brief.centralQuestion, 1200)}；听众：${clip(data.brief.audience, 200)}；时长：${data.brief.talkMinutes} 分钟。`)
     if (data.capabilities) lines.push(`图像输入能力：${clip(data.capabilities.imageInput, 40)}；依据：${clip(data.capabilities.source, 350)}`)
@@ -206,6 +207,8 @@ export function formatToolResult(name, result) {
         for (const key of ['methodSummary', 'context', 'locator', 'version', 'figure', 'panel', 'cropNote']) if (record[key]) lines.push(`${key}：${clip(record[key], 1400)}`)
         if (record.reading?.status) lines.push(`阅读状态：${clip(record.reading.status, 40)}；来源：${clip(record.reading.source, 500)}；阅读笔记：${clip(record.reading.notes, 1400)}`)
         if (record.reading?.purpose) lines.push(`图片阅读：${clip(JSON.stringify(record.reading),2200)}`)
+        if (record.argument) lines.push(`页面论证：${clip(JSON.stringify(record.argument),2400)}`)
+        if (record.visualPlan) lines.push(`构图决策：${clip(JSON.stringify(record.visualPlan),2800)}`)
         if (Array.isArray(record.limitations)) lines.push(...record.limitations.slice(0, 4).map(x => `局限：${clip(x, 600)}`))
         if (Array.isArray(record.metrics)) lines.push(...record.metrics.slice(0, 5).map(m => `${clip(m.label, 100)}：${clip(m.value, 100)} ${clip(m.unit, 100)}；比较对象 ${clip(m.baseline, 400)}；分母 ${clip(m.denominator, 400)}；汇总口径 ${clip(m.aggregation, 400)}`))
         if (Array.isArray(record.cards)) lines.push(...record.cards.slice(0, 8).map(c => `卡片 ${clip(c.id, 80)}（${clip(c.style ?? c.kind, 40)}）：${clip(c.title, 150)}；${clip(c.body, 450)}`))

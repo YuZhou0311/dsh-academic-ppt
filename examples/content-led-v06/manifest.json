@@ -1,0 +1,68 @@
+{
+  "example": "content-led-v06",
+  "identity": "synthetic teaching data; one host-agent authoring trial, not a DSH end-to-end test",
+  "sourceRevision": 9,
+  "rendererVersion": 6,
+  "files": {
+    "README.md": {
+      "bytes": 3983,
+      "sha256": "3cd05ebbb8bb49a7a4ab2905eb00b885d9ae7e512026d3728dfd1f3c214279a1"
+    },
+    "analysis/calculations.json": {
+      "bytes": 1327,
+      "sha256": "fef361176d86884866db23e617ecc94f24ef66ce903f75d677942f71355808f0"
+    },
+    "deck.json": {
+      "bytes": 45118,
+      "sha256": "30ae6c5f36ef41417d7b27a704d3fcea5a4846d49543b3ee1c706ab0dfd93a96"
+    },
+    "overview.png": {
+      "bytes": 171728,
+      "sha256": "eede47017aa5e190680f30de9fea8338a8902138df63d7a48684aa9ca7c8e3c3"
+    },
+    "previews/page-0001.png": {
+      "bytes": 72167,
+      "sha256": "8ef4bfd910c107b6d156f8b37807a1816e08af82d4a2870329b5ba7f7fc0f34b"
+    },
+    "previews/page-0002.png": {
+      "bytes": 166587,
+      "sha256": "f85c91c2ab0a72529c54f5dbfff46004178a22da55acb85f3f73fe0f73ddcedc"
+    },
+    "previews/page-0003.png": {
+      "bytes": 148286,
+      "sha256": "64d7644c09b2a733a8be8f87745b4a14e68888bbe250f0ae42a4313c47fcc471"
+    },
+    "previews/page-0004.png": {
+      "bytes": 187545,
+      "sha256": "7eb7c619c4f8ac48d74e24fbc94045b2af90437598724d44cfaf2ebc1117f150"
+    },
+    "previews/page-0005.png": {
+      "bytes": 211065,
+      "sha256": "14f3414460f4720d1d3ac84fc6c7b4791391eabd6d5755b1bfe944b73d58322f"
+    },
+    "previews/page-0006.png": {
+      "bytes": 209449,
+      "sha256": "96f34c4d81cbedeed09d0c41dfb2e37e20ef60a58d2f38fb19534fb578c61c1f"
+    },
+    "previews/page-0007.png": {
+      "bytes": 91275,
+      "sha256": "d5ad2777a8b5ddb9f7d6292a6c914855a24fb21255f0d4f78fe8916cd45cd03c"
+    },
+    "report.pptx": {
+      "bytes": 54861,
+      "sha256": "aad6a1ddb7ad527145fe65e6d3da571bc4077e13ced260e1e7a58f4c165736b7"
+    },
+    "sources/observations.csv": {
+      "bytes": 147,
+      "sha256": "b062590fc2187b54aca4d7a0d3bd8d5883aa8ecccf092b63e3c9c2fa1c37f01e"
+    },
+    "sources/protocol.md": {
+      "bytes": 2291,
+      "sha256": "5d9c0cd512881ed642e1e0c49100ed924ef59e5dce39ba88e6d63cd849a408ea"
+    },
+    "speaker-notes.md": {
+      "bytes": 5697,
+      "sha256": "28a237ed15e600daba1e5db75531d5aebdb0dcfa3af0f005d24ac24029c3c802"
+    }
+  }
+}
