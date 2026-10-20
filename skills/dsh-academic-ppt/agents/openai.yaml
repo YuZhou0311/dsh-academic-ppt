@@ -1,0 +1,4 @@
+interface:
+  display_name: "学术汇报 PPT"
+  short_description: "围绕论文证据、真实模板组件与可编辑图文设计制作学术汇报演示文稿"
+  default_prompt: "使用 $dsh-academic-ppt，阅读论文并遵循我给的模板，制作证据可靠、可编辑的学术汇报。"

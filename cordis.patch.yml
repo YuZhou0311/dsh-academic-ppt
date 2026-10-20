@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-academic-ppt
+      name: dsh-academic-ppt
+      config: {}

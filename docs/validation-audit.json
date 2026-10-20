@@ -1,0 +1,211 @@
+{
+  "format": "dsh-academic-ppt-validation-audit",
+  "version": 1,
+  "createdAt": "2026-10-20T02:51:58.789Z",
+  "scope": "Final recheck of the four previously reproduced defects, plus read-only DSH schema and package protocol verification.",
+  "environment": {
+    "node": "v24.19.0",
+    "networkUse": "Official public GitHub source reads only; no model calls.",
+    "syntheticResearchFixtures": true
+  },
+  "result": "all_requested_defect_rechecks_passed",
+  "findings": [
+    {
+      "id": "F1",
+      "status": "fixed-and-retested",
+      "checks": {
+        "buildStatus": "ready-for-review",
+        "imageIds": [
+          "A1",
+          "A2"
+        ],
+        "captionCount": 2,
+        "bothCaptionTextsPresent": true,
+        "pptxNativeImageObjectCount": 2,
+        "issueCount": 0
+      }
+    },
+    {
+      "id": "F2",
+      "status": "fixed-and-retested",
+      "checks": {
+        "hiddenSourceBuildStatus": "blocked",
+        "hiddenSourceErrorCodes": [
+          "full-text-required",
+          "full-title-on-slide",
+          "reference-entry",
+          "claim-source-not-visible"
+        ],
+        "afterAddingVisibleSource": {
+          "sourceNowVisible": true,
+          "status": "blocked",
+          "remainingErrorCodes": [
+            "full-text-required",
+            "full-title-on-slide",
+            "reference-entry"
+          ]
+        }
+      }
+    },
+    {
+      "id": "F4",
+      "status": "fixed-and-retested",
+      "checks": {
+        "headerOnlyPngBytes": 24,
+        "headerOnlyPngRejected": true,
+        "imageSuite": {
+          "passed": 8,
+          "failed": 0,
+          "skipped": 0
+        },
+        "strictPngCrc": true,
+        "actualPngAndJpegDecode": true
+      }
+    },
+    {
+      "id": "F5",
+      "status": "fixed-and-retested",
+      "checks": {
+        "legacyMalformedProfileRejected": true,
+        "entryPointMatrix": [
+          {
+            "case": "script-node",
+            "entry": "templateProfilePaths",
+            "rejected": true,
+            "errorCode": "INVALID_TEMPLATE_PROFILE",
+            "projectUnchanged": true
+          },
+          {
+            "case": "script-node",
+            "entry": "design.templateProfile",
+            "rejected": true,
+            "errorCode": "INVALID_INPUT",
+            "projectUnchanged": true
+          },
+          {
+            "case": "text-node",
+            "entry": "templateProfilePaths",
+            "rejected": true,
+            "errorCode": "INVALID_TEMPLATE_PROFILE",
+            "projectUnchanged": true
+          },
+          {
+            "case": "text-node",
+            "entry": "design.templateProfile",
+            "rejected": true,
+            "errorCode": "INVALID_INPUT",
+            "projectUnchanged": true
+          },
+          {
+            "case": "color-attribute",
+            "entry": "templateProfilePaths",
+            "rejected": true,
+            "errorCode": "INVALID_TEMPLATE_PROFILE",
+            "projectUnchanged": true
+          },
+          {
+            "case": "color-attribute",
+            "entry": "design.templateProfile",
+            "rejected": true,
+            "errorCode": "INVALID_INPUT",
+            "projectUnchanged": true
+          },
+          {
+            "case": "nonfinite-geometry",
+            "entry": "templateProfilePaths",
+            "rejected": true,
+            "errorCode": "INVALID_TEMPLATE_PROFILE",
+            "projectUnchanged": true
+          },
+          {
+            "case": "nonfinite-geometry",
+            "entry": "design.templateProfile",
+            "rejected": true,
+            "errorCode": "INVALID_INPUT",
+            "projectUnchanged": true
+          }
+        ],
+        "validInspectorProfileAccepted": true,
+        "svgEscapingRegression": {
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        },
+        "htmlPayloadExecuted": false
+      }
+    }
+  ],
+  "regressions": {
+    "coreSuite": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "twoTemplateMerge": "passed-again; distinct source hashes and component IDs preserved"
+  },
+  "compatibility": {
+    "dshWireSchema": {
+      "status": "source-based-static-check-passed",
+      "toolCount": 10,
+      "literalNodeCount": 24,
+      "violations": [],
+      "correctedDuringFinalReview": "oldTextExcluded now declares boolean type; schemaVersion also declares integer type",
+      "officialRule": "Literal enum and const constraints require an explicit matching scalar type; only annotation-only nodes can omit both type and oneOf."
+    },
+    "packageProtocol": {
+      "status": "source-and-manifest-check-passed",
+      "packageName": "dsh-academic-ppt",
+      "main": "src/index.mjs",
+      "bundlePatch": "./cordis.patch.yml",
+      "localInstallForm": "dsh plugin --profile PROFILE add file:ABSOLUTE_LOCAL_PACKAGE_PATH",
+      "requiresPnpmForPluginManagement": true,
+      "restartProfileAfterBundleChange": true,
+      "npmPublished": false,
+      "actualDshGuiInstallTested": false
+    }
+  },
+  "sources": [
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/core/tools/src/json-schema.ts",
+      "blobSha": "c064fb294c7bb6349befc825699e3dc841766d30"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.md",
+      "blobSha": "c15f1a6e5c20ae42d63ba258b8452cca068a4174"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/apps/cli/reference/README.zh.md",
+      "blobSha": "7359f94a97480da9b35589f0a5b186c064c942cd"
+    },
+    {
+      "url": "https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk/README.zh.md",
+      "blobSha": "7adf0decbd3b17d31534f5400c1ad11fb9fb4d4c"
+    }
+  ],
+  "sourceFileSha256": {
+    "src/core.mjs": "c722d234228943c8212059c5f438cdb8686307f64c3f51ef8b17405f3daf582b",
+    "src/schema.mjs": "cba24bca6df92d09b51cc9972654e671164a2686ee2fdee625c1a36162fcfc97",
+    "src/io.mjs": "c2c3e8c708fe21d821cbad5bacb771f50cfab36050a748944f65670fa9b451f3",
+    "src/render.mjs": "3cea4c326dbb956a950ebcbf86dcf12e3249adc7adc735148afd4b2338ace0e7",
+    "src/scene.mjs": "42064b1540683029582e63e23dd21ab73ac43f72c9d166317ef853c5fef9d6c7",
+    "src/template-profile.mjs": "711de1520b49bac1ec9c28febf910da2340de50e3cac091e9956ac060ee2a3a1",
+    "src/tools.mjs": "225aef6d24f1b61177bc6870bf3d445efee7d19c3891b6b4bba5cc6975861106",
+    "src/index.mjs": "0d1f1434f8ec835b4ae0411af6da7bbc5d7a4af6b01e2e4ce438a44198a6ad75",
+    "package.json": "31446251b8c3e4161faea367522339bedb68655954d653171407cf0a24d91101",
+    "cordis.patch.yml": "0d9bcd16dc1a2814f62173f35cce0bdad618fa88eca60e4863263ced6eef5ff8",
+    "docs/INSTALL.md": "b0b3241b03633a298170bdc49e3d5c80ac9ae56a618cb07f9c08ba74a9d97bdc"
+  },
+  "releaseHygiene": {
+    "absoluteSessionPathsIncluded": false,
+    "executableProbePayloadIncluded": false,
+    "probeDirectoriesInPackageAllowlist": [],
+    "temporaryMatrixInputsRemoved": true,
+    "finalArchiveContentsAudited": false
+  },
+  "boundaries": [
+    "This audit does not independently verify scientific claims, full-text reading or journal impact-factor facts.",
+    "Visual pass remains an attributed report tied to artifact hashes; this audit does not grant visual approval.",
+    "Paper figures remain embedded image assets; editable native text, shapes and charts are separate objects.",
+    "A true DSH GUI install, a paid-model end-to-end run and final Office GUI visual review are outside this audit."
+  ]
+}
