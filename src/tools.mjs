@@ -31,7 +31,7 @@ const descriptions = {
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
   academic_ppt_check: '只读检查论文证据、版式与产物摘要，列出可定位的问题。静态检查不能代替逐页看最终 PPTX。Inspect evidence, geometry and output integrity.',
-  academic_ppt_template: '盘点本地 PPTX 的字体、颜色与支持的原生组件，将 profile JSON 保存到工作区供 record 导入；不覆盖不同内容的文件，不承诺复杂模板无损导入。Inspect and persist a reusable template profile.',
+  academic_ppt_template: '研究本地PPTX并返回可记录的suggestedDesign，另存profile。render:true可一次生成实际模板页面和编号概览，用fontDirectories提供本地字体。先看图选主模板再应用，不复制旧研究正文。Study an applicable academic design system.',
   academic_ppt_reference: '按学术任务查询48种布局的紧凑索引；templateId返回中性槽位、单位、数量限制与空字段骨架。figure可取得最多3个适配候选，不自动识别科学图。教学示例资源仅includeExamples=true返回，示例正文不得复制进汇报。Inspect neutral reference geometries.',
   academic_ppt_contract: '按brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
   academic_ppt_render: '通过可选渲染引擎读取当前交付 PPTX，生成实际页面画面并记录摘要；引擎缺失时如实返回未验证。Render the current PPTX without changing the editable source.',
@@ -96,10 +96,10 @@ function templateSummary(profile, profilePath) {
   return {
     ok: true, profilePath, sourceSha256: profile.sha256,
     summary: { slides: profile.slideCount, width: profile.width, height: profile.height, coordinateUnit: 'px', nativeShapes: profile.shapes?.length ?? 0, components: profile.components?.length ?? 0, unsupported: profile.unsupported?.length ?? 0 },
-    study: profile.study, components,
+    study: profile.study, suggestedDesign:profile.suggestedDesign, designInference:profile.designInference, components,
     componentIndex: { total: profile.components?.length ?? 0, returned: components.length, truncated: (profile.components?.length ?? 0) > components.length },
     scope: profile.scope, visualReview: profile.visualReview,
-    instructions: ['结构研究不等于视觉审阅；实际渲染模板后再判断标题层级、图文比例与可读性。', '通过recordsPath批次中的templateProfilePaths导入保存的profile，再按组件ID选择；工具输出不包含旧正文或完整原生节点。'],
+    instructions: ['结构推断尚未视觉确认；实际看封面、证据和机制页后选定一个主模板，避免混合两个模板的身份体系。', '将选定模板的suggestedDesign作为recordsPath批次的design保存。其system控制真实封面、章节页眉、面板和字体；必要时只调整已验证的token。', '正文优先layout=academic、composition.rows按研究关系组合原图/科学图/表格/机制图/解释；完整字段见contract(topic=slide)。', '仅需复用局部原生背景时才另用templateProfilePaths；组件不包含旧正文，不能借用模板机构、数据和图像。'],
   }
 }
 
@@ -149,10 +149,15 @@ export function formatToolResult(name, result) {
   for (const key of ['pptxPath', 'htmlPath', 'outputDir', 'reportPath', 'receiptPath']) {
     if (typeof data[key] === 'string') lines.push(`${key}：${clip(data[key])}`)
   }
+  const contactSheetPaths = data.contactSheetPaths ?? data.render?.contactSheetPaths
+  if (Array.isArray(contactSheetPaths)) lines.push(...contactSheetPaths.filter(path => typeof path === 'string').slice(0, 16).map(path => `PPTX 联系表：${clip(path, 3000)}`))
   if (name === 'academic_ppt_template') {
     lines.push(`支持的组件：${data.componentIndex?.total ?? data.components?.length ?? 0}`)
     if (typeof data.profilePath === 'string') lines.push(`模板 profile：${clip(data.profilePath)}`)
     if (data.summary) lines.push(`结构统计：${JSON.stringify(data.summary)}`)
+    if (data.suggestedDesign) lines.push(`可应用设计（作为record批次的design保存）：${JSON.stringify(data.suggestedDesign)}`)
+    if (data.designInference) lines.push(`设计推断依据与限制：${JSON.stringify(data.designInference)}`)
+    if (data.preview) lines.push(`模板真实渲染（仍须看图）：${JSON.stringify(data.preview)}`)
     if (data.study) lines.push(`模板研究（统计与候选，未复制原文）：${JSON.stringify(data.study)}`)
     if (Array.isArray(data.components)) lines.push(...data.components.slice(0, 16).map(c => `组件 ${clip(c.id, 120)}：源第 ${c.sourceSlide ?? '?'} 页；${c.width}×${c.height}px；${c.nodeCount ?? 0} 个基础形状。`))
     if ((data.componentIndex?.total ?? data.components?.length ?? 0) > 16) lines.push('其余组件索引见结构化结果；超出返回索引上限时按需读保存的profile，避免复制全部节点。')
@@ -186,6 +191,7 @@ export function formatToolResult(name, result) {
     if (data.submission) lines.push(`提交方式：${JSON.stringify(data.submission)}`)
     if (Array.isArray(data.notes)) lines.push(...data.notes)
     if (data.schema) lines.push(`完整JSON Schema：${JSON.stringify(data.schema)}`)
+    if (data.capabilityRecord) lines.push(`图像输入能力记录：${JSON.stringify(data.capabilityRecord)}`)
   }
   if (name === 'academic_ppt_context') {
     if (typeof data.context === 'string') lines.push(clip(data.context, 16000))
@@ -248,6 +254,14 @@ export function buildAcademicTools(overrides = {}) {
         const profile = jsonSafeResult(await inspectTemplate(path, { signal: exec?.signal }))
         const profilePath = await saveTemplateProfile(profile, options)
         value = templateSummary(profile, profilePath)
+        if(rawArgs.render){
+          const {renderDeck}=await import('./vendor/dsh-ppt-render.mjs')
+          const fontDirectories=rawArgs.fontDirectories?await Promise.all(rawArgs.fontDirectories.map(dir=>safePath(cwd,dir,{mustExist:true}))):undefined
+          const outputDir=await safePath(cwd,profilePath+'-preview')
+          const preview=await renderDeck({pptxPath:path,outputDir,format:'png',fontDirectories,signal:exec?.signal})
+          if(preview.ok){const {createContactSheets}=await import('./montage.mjs');preview.contactSheetPaths=await createContactSheets(preview.pngPaths,dirname(preview.receiptPath),{signal:exec?.signal})}
+          value.preview=preview
+        }
       } else value = await coreExecutors[name](options)
       exec?.signal?.throwIfAborted()
       return jsonSafeResult(value)

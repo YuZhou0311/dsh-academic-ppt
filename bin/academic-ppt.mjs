@@ -2,11 +2,18 @@
 import { readFile } from 'node:fs/promises'
 import { stat } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import { buildAcademicTools, TOOL_COMMANDS, formatToolResult } from '../src/tools.mjs'
+import { toolSchemas } from '../src/schema.mjs'
+
+const CONTRACT_TOPICS = toolSchemas.academic_ppt_contract.properties.topic.enum.join(' / ')
+const CLI_NAME = 'dsh-academic-ppt'
 
 const HELP = `DSH Academic PPT — 学术汇报工程工具
 
 用法：
-  academic-ppt <命令> --args <JSON 文件> [--json]
+  ${CLI_NAME} <命令> --args <JSON 文件> [--json]
+  ${CLI_NAME} <命令> --help
+  ${CLI_NAME} <命令> --schema
   node bin/academic-ppt.mjs <命令> --args <JSON 文件>
 
 命令：
@@ -25,24 +32,63 @@ const HELP = `DSH Academic PPT — 学术汇报工程工具
 
 --args 必须指向 UTF-8 JSON 对象文件，路径相对当前目录解析。
 --json 输出结构化结果，供程序使用；默认输出精简摘要。
+<命令> --help 查看该命令的必填与可选参数；--schema 输出该命令的完整 JSON Schema。
+这两个查询不需要 --args，也不能与 --args 或 --json 混用。
+contract 的 topic 仅支持：${CONTRACT_TOPICS}。
+init、build、render 等命令参数请用该命令的 --help 或 --schema 查询。
 不会读取 API 密钥或主动调用模型，不替代论文阅读与视觉验收。
 `
+
+function fieldSummary(field) {
+  const type = field.type === 'array' ? `array<${field.items?.type || 'value'}>` : field.type || 'value'
+  const details = [type]
+  if (field.enum) details.push(`可选值 ${JSON.stringify(field.enum)}`)
+  for (const key of ['minimum', 'maximum', 'minLength', 'maxLength', 'minItems', 'maxItems']) {
+    if (field[key] !== undefined) details.push(`${key}=${field[key]}`)
+  }
+  return details.join('；')
+}
+
+function commandHelp(command, tool, schema) {
+  const required = new Set(schema.required || [])
+  const lines = [
+    `${CLI_NAME} ${command} — ${tool.name}`, '', tool.description, '',
+    '用法：', `  ${CLI_NAME} ${command} --args <JSON 文件> [--json]`,
+    `  ${CLI_NAME} ${command} --schema`, '',
+    '参数（写入 --args 指定的 JSON 对象）：',
+  ]
+  for (const [key, field] of Object.entries(schema.properties || {})) {
+    const requirement = command === 'review' && key === 'observations' ? '当前 academic 工程必填' : required.has(key) ? '必填' : '可选'
+    lines.push(`  ${key} [${requirement}] ${fieldSummary(field)}`)
+    const description = (tool.parameters.properties?.[key]?.description || field.description || '').split('Runtime validation:')[0].trim()
+    if (description) lines.push(`    ${description}`)
+  }
+  if (command === 'record') lines.push('', '推荐通过 recordsPath 提交内容批次；保留内联 CLI 参数兼容。recordsPath 与内联内容不能同时提交。')
+  lines.push('', `完整参数与嵌套字段：${CLI_NAME} ${command} --schema`, `contract 只查询记录字段，其 topic 仅支持：${CONTRACT_TOPICS}。`)
+  return lines.join('\n') + '\n'
+}
 
 async function main() {
   const args = process.argv.slice(2)
   if (!args.length || args.length === 1 && ['--help', '-h', 'help'].includes(args[0])) { process.stdout.write(HELP); return }
   const command = args.shift()
-  let input, asJson = false
+  const toolName = Object.hasOwn(TOOL_COMMANDS, command) ? TOOL_COMMANDS[command] : undefined
+  if (!toolName) throw new Error(`未知命令：${command}。用 --help 查看用法。`)
+  let input, asJson = false, discovery
   while (args.length) {
     const flag = args.shift()
     if (flag === '--args' && input === undefined && args.length && !args[0].startsWith('--')) input = args.shift()
     else if (flag === '--json' && !asJson) asJson = true
+    else if (['--help', '-h', '--schema'].includes(flag) && discovery === undefined) discovery = flag === '--schema' ? 'schema' : 'help'
     else throw new Error(`未知或重复参数：${flag}。用 --help 查看用法。`)
   }
-  if (!input) throw new Error('请提供 --args JSON_FILE。')
-  const { buildAcademicTools, TOOL_COMMANDS, formatToolResult } = await import('../src/tools.mjs')
-  const toolName = TOOL_COMMANDS[command]
-  if (!toolName) throw new Error(`未知命令：${command}。用 --help 查看用法。`)
+  const tool = buildAcademicTools().find(item => item.name === toolName)
+  if (discovery) {
+    if (input !== undefined || asJson) throw new Error('--help / --schema 是参数查询，不能与 --args 或 --json 混用。')
+    process.stdout.write(discovery === 'schema' ? JSON.stringify(toolSchemas[toolName], null, 2) + '\n' : commandHelp(command, tool, toolSchemas[toolName]))
+    return
+  }
+  if (!input) throw new Error(`请提供 --args JSON_FILE；用 ${command} --help 或 ${command} --schema 查看该命令参数。`)
   const controller = new AbortController()
   const cancel = () => controller.abort(new Error('操作已取消。'))
   process.once('SIGINT', cancel)
@@ -55,7 +101,6 @@ async function main() {
     let payload
     try { payload = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes).replace(/^\uFEFF/, '')) }
     catch { throw new Error('--args 文件不是有效的 UTF-8 JSON。') }
-    const tool = buildAcademicTools().find(item => item.name === toolName)
     const value = await tool.execute(payload, { signal: controller.signal, agent: { session: { header: { cwd: process.cwd() } } } })
     process.stdout.write(asJson ? JSON.stringify(value, null, 2) + '\n' : formatToolResult(toolName, value) + '\n')
     if (value?.ok === false) process.exitCode = 2
@@ -66,6 +111,6 @@ async function main() {
 }
 
 main().catch(error => {
-  process.stderr.write(`academic-ppt：${String(error?.message || error).slice(0, 1200)}\n`)
+  process.stderr.write(`${CLI_NAME}：${String(error?.message || error).slice(0, 1200)}\n`)
   process.exitCode = 1
 })

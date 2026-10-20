@@ -109,6 +109,39 @@ function resolveThemeFont(face, theme, script, language) {
   return script === 'ea' && tag ? A((font?.children || []).find(c => c.name === 'font' && A(c, 'script') === tag), 'typeface') || null : null;
 }
 
+/** A resolved solid paint only; unsupported transforms remain unknown rather than falling through to a parent. */
+function solidColor(node, theme, colorMap) {
+  if (!node) return undefined;
+  if (first(node, 'noFill')) return null;
+  const fill = first(node, 'solidFill'); if (!fill) return undefined;
+  const color = first(fill, 'srgbClr') || first(fill, 'sysClr') || first(fill, 'schemeClr');
+  if (!color || (color.children || []).some(n => n.name !== 'alpha' || number(A(n, 'val')) !== 100000)) return null;
+  if (color.name === 'schemeClr') {
+    const role = A(color, 'val'), mapped = A(colorMap, role, { bg1: 'lt1', tx1: 'dk1', bg2: 'lt2', tx2: 'dk2' }[role] || role);
+    const entry = first(all(theme, 'clrScheme')[0], mapped);
+    const resolved = first(entry, 'srgbClr') || first(entry, 'sysClr');
+    const value = A(resolved, resolved?.name === 'sysClr' ? 'lastClr' : 'val', '');
+    return /^[\dA-F]{6}$/i.test(value) ? '#' + value.toUpperCase() : null;
+  }
+  const value = A(color, color.name === 'sysClr' ? 'lastClr' : 'val', '');
+  return /^[\dA-F]{6}$/i.test(value) ? '#' + value.toUpperCase() : null;
+}
+
+function summarizeDesignEvidence(samples) {
+  const result = {};
+  for (const role of ['coverTitle', 'title', 'body', 'panelTitle', 'caption', 'background', 'headerBand', 'panelBand', 'coverFrame', 'coverBand']) {
+    const groups = new Map();
+    for (const sample of samples.filter(s => s.role === role)) {
+      const key = JSON.stringify(sample.style);
+      if (!groups.has(key)) groups.set(key, { style: sample.style, score: 0, pages: new Set(), sources: [] });
+      const group = groups.get(key); group.score += sample.weight; group.pages.add(sample.source.slide); group.sources.push(sample.source);
+    }
+    const winner = [...groups.values()].sort((a, b) => b.pages.size - a.pages.size || b.score - a.score)[0];
+    if (winner) result[role] = { ...winner.style, repeatedOnSlides: winner.pages.size, sources: winner.sources.slice(0, 3) };
+  }
+  return result;
+}
+
 /** Only bounded XML parts selected by inspectTemplate are accepted; no media is decoded. */
 export function studyTemplateParts(parts, { parseXml, signal } = {}) {
   if (typeof parseXml !== 'function') throw new TypeError('studyTemplateParts requires the validated XML parser');
@@ -125,7 +158,7 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
   const { slideParts, order } = templateSlideOrder(parts, presentation, get(relPath('ppt/presentation.xml')));
   const themeParts = Object.keys(parts).filter(p => /^ppt\/theme\/theme\d+\.xml$/.test(p));
   const fontExplicit = new Map(), fontEffective = new Map(), allSizes = new Map(), titleSizes = new Map(), bodySizes = new Map(), origins = new Map();
-  const colors = new Map(), schemes = new Map(), titleBoxes = [], margins = [], rows = [], meta = [];
+  const colors = new Map(), schemes = new Map(), titleBoxes = [], margins = [], rows = [], meta = [], designSamples = [];
   const layoutParts = new Set(), masterParts = new Set();
   let textRuns = 0, unresolvedSizeRuns = 0, unresolvedFontRuns = 0, inheritedGeometry = 0, unresolvedGeometry = 0, modifiedColors = 0, hiddenCount = 0;
   let totalPictures = 0, totalCharts = 0, totalTables = 0, totalConnectors = 0, totalArrowedObjects = 0;
@@ -137,6 +170,15 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
     if (layout) layoutParts.add(layoutPart); if (master) masterParts.add(masterPart);
     const themePart = masterPart && linked(masterPart, 'theme');
     const theme = get(themePart || (themeParts.length === 1 ? themeParts[0] : null));
+    const colorMap = first(all(root, 'clrMapOvr')[0], 'overrideClrMapping') || first(all(layout, 'clrMapOvr')[0], 'overrideClrMapping') || all(master, 'clrMap')[0];
+    for (const [document, documentPart] of [[root, part], [layout, layoutPart], [master, masterPart]]) {
+      const background = first(first(all(document, 'cSld')[0], 'bg'), 'bgPr');
+      const color = solidColor(background, theme, colorMap);
+      if (color !== undefined) {
+        if (color) designSamples.push({ role: 'background', style: { color }, weight: 1, source: { slide: index + 1, part: documentPart, shapeId: '' } });
+        break;
+      }
+    }
     if (['0', 'false'].includes(A(first(root, 'sld'), 'show'))) hiddenCount++;
     const obs = objects(root), textShapes = [];
     const pictures = obs.filter(o => o.node.name === 'pic').length;
@@ -162,9 +204,11 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
       if (!box) unresolvedGeometry++;
       const type = A(ph, 'type', A(placeholder(layoutShape), 'type', 'body'));
       const masterStyle = first(all(master, 'txStyles')[0], ['title', 'ctrTitle'].includes(type) ? 'titleStyle' : ph ? 'bodyStyle' : 'otherStyle');
-      const sizes = [];
+      const sizes = [], sizeWeights = new Map(), fontWeights = new Map(), colorWeights = new Map(), boldWeights = new Map(), alignWeights = new Map();
       for (const p of all(n, 'p')) {
         const pp = first(p, 'pPr'), level = Math.max(0, Math.min(8, number(A(pp, 'lvl'))));
+        const align = A(pp, 'algn', A(first(first(first(layoutShape, 'txBody'), 'p'), 'pPr'), 'algn', A(first(first(first(masterShape, 'txBody'), 'p'), 'pPr'), 'algn')));
+        if (['l', 'ctr', 'r'].includes(align)) add(alignWeights, { l: 'left', ctr: 'center', r: 'right' }[align], Math.max(1, chars(textOf(p))));
         const inherited = [[first(pp, 'defRPr'), 'paragraph'], [bodyStyle(n, level), 'shape-list'], [defaultRun(layoutShape), 'layout'], [bodyStyle(layoutShape, level), 'layout'], [defaultRun(masterShape), 'master'], [bodyStyle(masterShape, level), 'master'], [first(levelStyle(masterStyle, level), 'defRPr'), 'master-text-style'], [first(levelStyle(defaultText, level), 'defRPr'), 'presentation-default']];
         for (const run of (p.children || []).filter(c => ['r', 'fld'].includes(c.name))) {
           const runText = textOf(run); if (!chars(runText)) continue;
@@ -172,23 +216,72 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
           const rp = first(run, 'rPr'), cascade = [[rp, 'explicit-run'], ...inherited];
           const resolvedSize = resolveValue(cascade, r => A(r, 'sz'));
           const pt = resolvedSize.value !== null && number(resolvedSize.value) > 0 ? number(resolvedSize.value) / 100 : null;
-          if (pt) { sizes.push(pt); add(allSizes, pt); add(origins, resolvedSize.origin); } else unresolvedSizeRuns++;
+          if (pt) { sizes.push(pt); add(allSizes, pt); add(origins, resolvedSize.origin); add(sizeWeights, pt, chars(runText)); } else unresolvedSizeRuns++;
           const script = /[\u2e80-\u9fff\uac00-\ud7af\uf900-\ufaff]/u.test(runText) ? 'ea' : 'latin';
           const faceOf = r => A(first(r, script), 'typeface') || A(first(r, 'latin'), 'typeface');
           const face = resolveValue(cascade, faceOf);
           const explicit = faceOf(rp); if (explicit) add(fontExplicit, String(explicit).slice(0, 64));
           const lang = resolveValue(cascade, r => A(r, 'lang')).value;
           const family = resolveThemeFont(face.value, theme, script, lang);
-          if (family) add(fontEffective, String(family).slice(0, 64)); else unresolvedFontRuns++;
+          if (family) { add(fontEffective, String(family).slice(0, 64)); add(fontWeights, String(family).slice(0, 120), chars(runText)); } else unresolvedFontRuns++;
+          const resolvedColor = resolveValue(cascade, style => solidColor(style, theme, colorMap));
+          if (resolvedColor.value) add(colorWeights, resolvedColor.value, chars(runText));
+          const bold = resolveValue(cascade, style => A(style, 'b'));
+          if (bold.value !== null) add(boldWeights, ['1', 'true'].includes(bold.value), chars(runText));
         }
       }
-      textShapes.push({ box, text, count: chars(text), sizes, type, placeholder: Boolean(ph), maxSize: Math.max(0, ...sizes) });
+      const dominant = map => histogram(map, 'value', 1)[0]?.value;
+      textShapes.push({ box, text, count: chars(text), sizes, type, placeholder: Boolean(ph), maxSize: Math.max(0, ...sizes),
+        sourceShapeId: String(A(all(n, 'cNvPr')[0], 'id', '')).slice(0, 200),
+        style: { ...(dominant(sizeWeights) ? { fontSizePt: dominant(sizeWeights) } : {}), ...(dominant(fontWeights) ? { fontFamily: dominant(fontWeights) } : {}),
+          ...(dominant(colorWeights) ? { color: dominant(colorWeights) } : {}), ...(dominant(alignWeights) ? { align: dominant(alignWeights) } : {}),
+          ...(dominant(boldWeights) !== undefined ? { bold: dominant(boldWeights) } : {}) } });
     }
     const slideChars = chars(textOf(root));
     const maximum = Math.max(0, ...textShapes.map(s => s.maxSize));
     const title = textShapes.filter(s => ['title', 'ctrTitle'].includes(s.type) && s.placeholder).sort((a, b) => b.maxSize - a.maxSize)[0]
       || textShapes.filter(s => s.box && s.box.y <= height * .24 && s.count <= 220 && s.maxSize >= Math.max(20, maximum * .75)).sort((a, b) => b.maxSize - a.maxSize || a.box.y - b.box.y)[0]
       || (index === 0 ? textShapes.filter(s => s.maxSize === maximum && maximum >= 28).sort((a, b) => b.count - a.count)[0] : null);
+    const capture = (role, shape) => {
+      if (!shape || !Object.keys(shape.style).length) return;
+      const source = { slide: index + 1, part, shapeId: shape.sourceShapeId,
+        ...(shape.box && width && height ? { box: Object.fromEntries(Object.entries(shape.box).map(([key, value]) => [key, round(value / (['x', 'w'].includes(key) ? width : height))])) } : {}) };
+      designSamples.push({ role, style: { ...shape.style }, source, weight: Math.min(shape.count, 1000) });
+    };
+    const isCover = index === 0 && title?.maxSize >= 28 && !tables;
+    capture(isCover ? 'coverTitle' : 'title', title);
+    const masterShapesShown = !['0', 'false'].includes(A(first(root, 'sld'), 'showMasterSp'));
+    const layers = [[root, part], ...(masterShapesShown ? [[layout, layoutPart], [master, masterPart]] : [])];
+    for (const [document, documentPart] of layers) for (const object of objects(document)) {
+      const props = first(object.node, 'spPr'), geometry = first(props, 'prstGeom');
+      if (!object.box || !['rect', 'roundRect'].includes(A(geometry, 'prst')) || first(props, 'custGeom')) continue;
+      const box = Object.fromEntries(Object.entries(object.box).map(([key, value]) => [key, round(value / (['x', 'w'].includes(key) ? width : height))]));
+      if (!Object.values(box).every(Number.isFinite) || box.w <= 0 || box.h <= 0) continue;
+      const fill = solidColor(props, theme, colorMap), stroke = solidColor(first(props, 'ln'), theme, colorMap);
+      const source = { slide: index + 1, part: documentPart, shapeId: String(A(all(object.node, 'cNvPr')[0], 'id', '')).slice(0, 200), box };
+      if (!isCover && fill && box.w >= .65 && box.h >= .018 && box.h <= .19 && box.y >= -.005 && box.y + box.h <= .27) {
+        designSamples.push({ role: 'headerBand', style: { color: fill }, source, weight: box.w * box.h });
+      }
+      if (isCover && fill && box.w >= .8 && box.h >= .05 && box.h <= .25 && box.y >= -.01 && box.y + box.h <= .28) {
+        designSamples.push({ role: 'coverBand', style: { color: fill }, source, weight: box.w * box.h });
+      }
+      if (!isCover && fill && box.w >= .14 && box.w <= .7 && box.h >= .02 && box.h <= .14 && box.y >= .15 && box.y + box.h <= .85) {
+        designSamples.push({ role: 'panelBand', style: { color: fill }, source, weight: box.w * box.h });
+      }
+      if (isCover && stroke && number(A(first(props, 'ln'), 'w'), 12700) > 0 && box.w >= .55 && box.h >= .19 && box.w * box.h < .93) {
+        designSamples.push({ role: 'coverFrame', style: { color: stroke, ...(fill ? { fill } : {}) }, source, weight: box.w * box.h });
+      }
+    }
+    // Roles use geometry, actual style and text length, never the source wording or subject.
+    const contents = textShapes.filter(s => s !== title && s.style.fontSizePt && (!s.box || s.box.y < height * .9) && !['ftr', 'dt', 'sldNum'].includes(s.type));
+    if (!isCover || slideParts.length === 1) {
+      const body = contents.filter(s => s.count >= 20).sort((a, b) => b.count - a.count || b.style.fontSizePt - a.style.fontSizePt)[0];
+      capture('body', body);
+      const panel = contents.filter(s => s !== body && s.count <= 90 && s.style.fontSizePt >= (body?.style.fontSizePt || 14) && (s.style.bold || s.style.fontSizePt > (body?.style.fontSizePt || 14) * 1.08)).sort((a, b) => b.style.fontSizePt - a.style.fontSizePt || b.count - a.count)[0];
+      capture('panelTitle', panel);
+      const caption = contents.filter(s => s !== body && s.count >= 8 && s.style.fontSizePt < (body?.style.fontSizePt || 18) * .91 && (!s.box || s.box.y > height * .3)).sort((a, b) => b.count - a.count)[0];
+      capture('caption', caption);
+    }
     for (const s of textShapes) for (const sz of s.sizes) add(s === title ? titleSizes : bodySizes, sz);
     if (title?.box && width && height) titleBoxes.push([title.box.x / width, title.box.y / height, title.box.w / width, title.box.h / height]);
     const textBounds = textShapes.map(s => s.box).filter(Boolean);
@@ -211,6 +304,7 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
     slides: { count: slideParts.length, order, hidden: hiddenCount, linkedLayouts: layoutParts.size, linkedMasters: masterParts.size },
     fonts: { explicitRunFamilies: histogram(fontExplicit, 'family'), resolvedRunFamilies: histogram(fontEffective, 'family'), embeddedFontRecords: all(presentation, 'embeddedFont').length, unresolvedRuns: unresolvedFontRuns, note: '字体名称来自实际文本样式；主题字体仅在关联和语言可解析时展开，不验证字体安装或字形覆盖。' },
     typography: { unit: 'pt', frequencyUnit: 'nonempty text runs', histogramLimit: 12, allSizes: histogram(allSizes, 'pt'), titleCandidateSizes: histogram(titleSizes, 'pt'), otherTextSizes: histogram(bodySizes, 'pt'), sizeOrigins: histogram(origins, 'origin'), measuredRuns: textRuns, unresolvedSizeRuns, titleRule: '标题占位符优先，否则取页上部较大短文本；首页可取最大字号。该分类需渲染核对。' },
+    designEvidence: summarizeDesignEvidence(designSamples),
     colors: { explicitRGB: histogram(colors, 'rgb'), schemeReferences: histogram(schemes, 'role', 8), colorNodesWithModifiers: modifiedColors, note: '显式 RGB 是基础值，未将透明度、渐变、颜色映射及 tint/shade 等变换合成为最终像素色。' },
     geometry: { unit: 'fraction of slide size', titleCandidateCount: titleBoxes.length, titleBox: { x: columnRange(titleBoxes, 0), y: columnRange(titleBoxes, 1), w: columnRange(titleBoxes, 2), h: columnRange(titleBoxes, 3) }, textEnvelopeMargins: { left: columnRange(margins, 0), top: columnRange(margins, 1), right: columnRange(margins, 2), bottom: columnRange(margins, 3) }, placeholderBoxesResolved: inheritedGeometry, unresolvedTextBoxes: unresolvedGeometry, note: '页边距来自可解析文本框包络，包含页脚，不代表推荐安全边距；负数仅表示结构边界越界候选。旋转/翻转组合未展开。' },
     pageRoleCandidates: { cover: cap(coverCandidates), section: cap(sectionCandidates), evidence: cap(evidenceCandidates), table: cap(meta.filter(m => m.tables).map(m => m.page)), diagram: cap(meta.filter(m => m.connectors >= 2 || m.arrowedObjects >= 2).map(m => m.page)), note: '页号顺序详见 slides.order；每类最多列16页。图片可能是装饰，连接线可能仅为分隔线，候选页型均需视觉确认。' },
@@ -223,6 +317,12 @@ export function studyTemplateParts(parts, { parseXml, signal } = {}) {
   // Keep the tool-facing study bounded even for the supported 200-slide maximum.
   if (Buffer.byteLength(JSON.stringify(study)) > 9800) {
     study.textDensity.perSlide = rows.filter((_, i) => i < 20 || i >= rows.length - 5);
+    study.textDensity.omittedRows = rows.length - study.textDensity.perSlide.length;
+  }
+  if (Buffer.byteLength(JSON.stringify(study)) > 9800) {
+    for (const record of Object.values(study.designEvidence)) record.sources = record.sources.slice(0, 1);
+    for (const group of [study.typography.allSizes, study.typography.titleCandidateSizes, study.typography.otherTextSizes, study.colors.explicitRGB]) group.splice(6);
+    while (Buffer.byteLength(JSON.stringify(study)) > 9800 && study.textDensity.perSlide.length) study.textDensity.perSlide.pop();
     study.textDensity.omittedRows = rows.length - study.textDensity.perSlide.length;
   }
   if (Buffer.byteLength(JSON.stringify(study)) > 9800) {

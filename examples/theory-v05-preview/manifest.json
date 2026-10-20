@@ -1,0 +1,171 @@
+{
+  "format": "dsh-academic-ppt-partial-preview",
+  "version": 1,
+  "packageVersion": "0.5.0",
+  "name": "theory-v05-preview",
+  "candidate": "C1",
+  "status": "partial previews of an independently accepted theory answer",
+  "purpose": "Inspectable accepted-theory evidence from its final-code compatibility rebuild; not a new blind production.",
+  "originalAcceptance": {
+    "result": "independently accepted",
+    "scope": "Original C1 theory answer; acceptance supplied by upstream audit, not newly awarded by this staging task."
+  },
+  "acceptedPptxSha256": "4f90f3871d8a7588af24ddc1a64ed0c0671fb52deef1c3aed31e7caa59ab6625",
+  "rebuiltPptxSha256": "88f4e5a61225ea237d447a7c698803c9253b3a023764cf8b351b2510121a1e83",
+  "rendering": {
+    "backend": "wasm",
+    "rendererVersion": "0.1.5",
+    "sourcePptxSha256": "88f4e5a61225ea237d447a7c698803c9253b3a023764cf8b351b2510121a1e83"
+  },
+  "wholeDeckCompatibility": {
+    "comparedPages": 12,
+    "allPngBytesIdentical": true,
+    "allDecodedPixelsIdentical": true,
+    "changedPixelsEveryPage": 0,
+    "sourceComparisonSha256": "4dd48e7d66c7140ad63f0d9369dd4acb93c180a7c4d3081ca00b9c5ea8b8f700",
+    "selectedPagesCopiedAfterRecheckingAllPageHashes": true
+  },
+  "sourcePaper": {
+    "title": "A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification",
+    "authors": [
+      "Anastasios N. Angelopoulos",
+      "Stephen Bates"
+    ],
+    "version": "arXiv:2107.07511v6",
+    "url": "https://arxiv.org/abs/2107.07511v6",
+    "pdfIncluded": false
+  },
+  "selectedPages": [
+    {
+      "file": "page-0001-cover.png",
+      "originalDeckPage": 1,
+      "slideId": "s01-cover",
+      "title": "保形预测：有限样本保证从何而来",
+      "bytes": 67691,
+      "sha256": "2acbd74d8894083c74c5c601b288eaaf6ca096f485db6e7a46e2007986e6cb2d",
+      "width": 1441,
+      "height": 811,
+      "acceptedPageSha256": "2acbd74d8894083c74c5c601b288eaaf6ca096f485db6e7a46e2007986e6cb2d",
+      "rebuiltPageSha256": "2acbd74d8894083c74c5c601b288eaaf6ca096f485db6e7a46e2007986e6cb2d",
+      "byteIdenticalToBoth": true,
+      "renderSourceRelative": "project/exports/r6-b91d6014/render-00af968c/artifacts/pages/page-0001.png",
+      "acceptedSourceRelative": "project/exports/r16-eda08e09/render-2bb19e44/artifacts/pages/page-0001.png",
+      "assetProvenance": [],
+      "pptxImagePayloads": []
+    },
+    {
+      "file": "page-0004-rank-proof.png",
+      "originalDeckPage": 4,
+      "slideId": "s04-proof",
+      "title": "保证来自秩对称性，而非模型正确性",
+      "bytes": 183700,
+      "sha256": "a38d250540f898157d5b50ec5f6f3dc8d0fd188752b284aca1feb9716819a1bd",
+      "width": 1441,
+      "height": 811,
+      "acceptedPageSha256": "a38d250540f898157d5b50ec5f6f3dc8d0fd188752b284aca1feb9716819a1bd",
+      "rebuiltPageSha256": "a38d250540f898157d5b50ec5f6f3dc8d0fd188752b284aca1feb9716819a1bd",
+      "byteIdenticalToBoth": true,
+      "renderSourceRelative": "project/exports/r6-b91d6014/render-00af968c/artifacts/pages/page-0004.png",
+      "acceptedSourceRelative": "project/exports/r16-eda08e09/render-2bb19e44/artifacts/pages/page-0004.png",
+      "assetProvenance": [
+        {
+          "id": "f-rank",
+          "provenance": "author-created",
+          "figure": "rank-proof",
+          "caption": "据附录D重绘：n=9，α=0.2；显示可能的秩，非实验样本。",
+          "sourceFile": "author_figures.py",
+          "sourceAssetSha256": "ba8d607babcc0a40dcfdbae66d3b0ef4793410b588ed6b25d2444381a0391c81",
+          "license": "本次汇报作者自制图；源码及参数随工程提供"
+        }
+      ],
+      "pptxImagePayloads": [
+        {
+          "part": "ppt/media/image-4-1.png",
+          "sha256": "ba8d607babcc0a40dcfdbae66d3b0ef4793410b588ed6b25d2444381a0391c81"
+        }
+      ]
+    },
+    {
+      "file": "page-0008-beta-calibration.png",
+      "originalDeckPage": 8,
+      "slideId": "s08-calibration",
+      "title": "校准集越大越稳定，但一次校准仍会偏离目标",
+      "bytes": 217156,
+      "sha256": "c2da3c3b7abf67cfc8004126942676655d762c04d7e791443378e1deaaba66d6",
+      "width": 1441,
+      "height": 811,
+      "acceptedPageSha256": "c2da3c3b7abf67cfc8004126942676655d762c04d7e791443378e1deaaba66d6",
+      "rebuiltPageSha256": "c2da3c3b7abf67cfc8004126942676655d762c04d7e791443378e1deaaba66d6",
+      "byteIdenticalToBoth": true,
+      "renderSourceRelative": "project/exports/r6-b91d6014/render-00af968c/artifacts/pages/page-0008.png",
+      "acceptedSourceRelative": "project/exports/r16-eda08e09/render-2bb19e44/artifacts/pages/page-0008.png",
+      "assetProvenance": [
+        {
+          "id": "f-beta-v2",
+          "provenance": "author-created",
+          "figure": "calibration-beta",
+          "caption": "据§3.2解析计算的Beta密度；i.i.d.连续分数，α=0.1。",
+          "sourceFile": "author_figures.py",
+          "sourceAssetSha256": "4ac497a18da5f95420b5deb5e2de4c9ca7bfa15d43d47cf6088e9ba3a18ccabe",
+          "license": "本次汇报作者自制图；源码及参数随工程提供"
+        }
+      ],
+      "pptxImagePayloads": [
+        {
+          "part": "ppt/media/image-8-1.png",
+          "sha256": "4ac497a18da5f95420b5deb5e2de4c9ca7bfa15d43d47cf6088e9ba3a18ccabe"
+        }
+      ]
+    }
+  ],
+  "sourceCode": {
+    "file": "author_figures.py",
+    "sha256": "1ed212ecd4e8896d1981c9e9f7b39e187820ff1e9f1f7c6485efc187649a0e3f",
+    "bytes": 8360,
+    "copiedByteIdentically": true,
+    "containsEmbeddedOriginalFigurePayload": false,
+    "inspection": "Full source read plus AST/string and binary-signature inspection; no bytes constants, base64 data, serialized SVG/image payload or hardcoded host path.",
+    "largestStringConstantCharacters": 187,
+    "originalFigureCropCode": "The unchanged script includes instructions to crop source PDF Figure 15; it contains no Figure 15 pixel payload. Required source PDF is intentionally absent.",
+    "unshippedRequirements": [
+      "inputs/paper.pdf",
+      "inputs/fonts/NotoSansCJKsc-Regular.otf",
+      "inputs/fonts/NotoSansCJKsc-Bold.otf",
+      "Python analysis/plotting dependencies"
+    ],
+    "executedDuringPreviewStaging": false
+  },
+  "notIncluded": [
+    "full PPTX",
+    "full PDF",
+    "whole-deck overview",
+    "original weather figure and its page",
+    "source paper PDF",
+    "font files",
+    "raw reference PPTXs",
+    "dependency directories"
+  ],
+  "fileOrigins": "Exact absolute routing retained only in external staging audit; public manifest records source-relative paths.",
+  "files": {
+    "README.md": {
+      "bytes": 3781,
+      "sha256": "0b0fbecec5946cfe32ed648f49fba15a956f5343e60ae9536315e572d749c008"
+    },
+    "author_figures.py": {
+      "bytes": 8360,
+      "sha256": "1ed212ecd4e8896d1981c9e9f7b39e187820ff1e9f1f7c6485efc187649a0e3f"
+    },
+    "page-0001-cover.png": {
+      "bytes": 67691,
+      "sha256": "2acbd74d8894083c74c5c601b288eaaf6ca096f485db6e7a46e2007986e6cb2d"
+    },
+    "page-0004-rank-proof.png": {
+      "bytes": 183700,
+      "sha256": "a38d250540f898157d5b50ec5f6f3dc8d0fd188752b284aca1feb9716819a1bd"
+    },
+    "page-0008-beta-calibration.png": {
+      "bytes": 217156,
+      "sha256": "c2da3c3b7abf67cfc8004126942676655d762c04d7e791443378e1deaaba66d6"
+    }
+  }
+}

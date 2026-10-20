@@ -37,8 +37,12 @@ test('native PPTX retains independent objects, exact text, figure, chart workboo
 test('all academic layouts and eight native card structures compile with stable IDs', async () => {
   const p = base();
   p.slides = LAYOUTS.map((layout, i) => ({ id: `s${i}`, layout, title: '一个明确的学术问题', paperIds: ['P1'], claimIds: [], notes: '示例讲稿。', seconds: 45, figureIds: ['paper', 'figure-focus'].includes(layout) ? ['fig1'] : ['figure-split', 'results', 'comparison'].includes(layout) ? ['fig1', 'fig1'] : [], cards: ['cover', 'references'].includes(layout) ? [] : [card(`c${i}`, CARD_STYLES[i % CARD_STYLES.length])], nodes: layout === 'method' ? [{ id: 'a', label: '状态', detail: '输入观测' }, { id: 'b', label: '决策', detail: '输入规则' }] : [], edges: layout === 'method' ? [{ from: 'a', to: 'b', label: '调用' }] : [] }));
+  for(const slide of p.slides){
+    if(slide.layout==='section'){slide.cards=[];slide.agenda={items:[{title:'研究问题'},{title:'支持证据'}],active:1};}
+    if(slide.layout==='academic')slide.composition={rows:[{panels:[{id:'panel',title:'本页证据',cardIds:slide.cards.map(c=>c.id)}]}]};
+  }
   const result = await renderProject(p);
-  assert.equal(result.scenes.pages.length, 12);
+  assert.equal(result.scenes.pages.length, LAYOUTS.length);
   assert.equal(result.issues.filter(i => i.code === 'out-of-bounds' || i.code === 'invalid-geometry' || i.code.startsWith('unrendered-')).length, 0);
   for (const page of result.scenes.pages) assert.equal(new Set(page.nodes.map(n => n.id)).size, page.nodes.length);
 });
@@ -87,6 +91,68 @@ test('native count charts preserve exact values and use the same rounded axes as
   assert.match(chart,/<c:max val="20"/);assert.match(chart,/<c:majorUnit val="5"/);
   assert.match(chart,/<c:showVal val="1"/);assert.match(chart,/<c:v>17<\/c:v>/);assert.match(chart,/<c:v>3<\/c:v>/);
   assert.match(out.svgPages[0].svg,/>17<\/text>/);assert.match(out.svgPages[0].svg,/>20<\/text>/);
+});
+
+test('chart display precision formats labels while preserving full native and workbook data', async () => {
+  const values=[26.9974375,38.2064708333333],p=base();
+  p.slides=[{id:'precision',layout:'results',title:'Display precision fixture',figureIds:[],cards:[],notes:'Synthetic rendering fixture',chart:{kind:'column',categories:['A','B'],series:[{name:'Observed means',values}],unit:'test units',sourceClaimId:'fixture',valueDecimals:2}}];
+  const before=structuredClone(p),out=await renderProject(p),zip=unzipSync(out.pptx);
+  const chart=strFromU8(zip[Object.keys(zip).find(path=>/^ppt\/charts\/chart\d+\.xml$/.test(path))]);
+  const workbook=unzipSync(zip[Object.keys(zip).find(path=>/^ppt\/embeddings\/.*\.xlsx$/.test(path))]);
+  const cells=strFromU8(workbook['xl/worksheets/sheet1.xml']);
+  assert.deepEqual(p,before,'display formatting must not round stored observations');
+  assert.match(chart,/<c:numFmt formatCode="0\.00"/);
+  for(const value of values){
+    assert.ok(chart.includes(`<c:v>${value}</c:v>`),'native chart cache retains the original number');
+    assert.ok(cells.includes(`<v>${value}</v>`),'editable workbook retains the original number');
+  }
+  assert.match(out.svgPages[0].svg,/>27\.00<\/text>/);
+  assert.match(out.svgPages[0].svg,/>38\.21<\/text>/);
+  assert.doesNotMatch(out.svgPages[0].svg,/>38\.2064708333333<\/text>/);
+});
+
+test('native charts preserve supplied categories and request every category tick', async () => {
+  const categories=['Batch A / control','Batch B / control','Batch B / treatment','Batch C / treatment'];
+  for(const kind of ['bar','column','line']){
+    const p=base();
+    p.slides=[{id:'categories',layout:'results',title:'Group label integrity',figureIds:[],cards:[],notes:'Synthetic rendering fixture',chart:{kind,categories,series:[{name:'Observations',values:[23,30,33,43]}],unit:'test units',sourceClaimId:'fixture'}}];
+    const out=await renderProject(p),zip=unzipSync(out.pptx);
+    const chart=strFromU8(zip[Object.keys(zip).find(path=>/^ppt\/charts\/chart\d+\.xml$/.test(path))]);
+    assert.match(chart,/<c:tickLblSkip val="1"\s*\/>/,`${kind}: request a tick label for each category`);
+    const axis=new XMLParser({ignoreAttributes:false}).parse(chart)['c:chartSpace']['c:chart']['c:plotArea']['c:catAx'];
+    assert.equal(axis['c:txPr']['a:bodyPr']['@_rot'],'0',`${kind}: preserve upright labels consistently with the SVG scene`);
+    for(const label of categories){
+      assert.ok(chart.includes(`<c:v>${label}</c:v>`),`${kind}: category cache must retain ${label}`);
+      assert.ok(out.svgPages[0].svg.includes(label),`${kind}: SVG must retain ${label}`);
+    }
+  }
+});
+
+test('upright horizontal category labels retain native charts, exact workbook values and full label fonts', async () => {
+  const categories=['North / baseline','South / baseline','South / intervention','West / intervention'];
+  const series=[{name:'Observed',values:[17.123456,-3.75,0,19.6]},{name:'Comparison',values:[12.125,4,8.5,16]}],p=base();
+  p.slides=[{id:'native-bar',layout:'results',title:'Horizontal category integrity',figureIds:[],cards:[],notes:'Synthetic compatibility fixture.',chart:{kind:'bar',categories,series,unit:'test units',sourceClaimId:'fixture'}}];
+  const before=structuredClone(p),out=await renderProject(p),zip=unzipSync(out.pptx),slideXml=strFromU8(zip['ppt/slides/slide1.xml']);
+  const chartPaths=Object.keys(zip).filter(path=>/^ppt\/charts\/chart\d+\.xml$/.test(path));
+  assert.equal(chartPaths.length,1,'the result remains one editable native chart');
+  const chart=strFromU8(zip[chartPaths[0]]),tree=new XMLParser({ignoreAttributes:false}).parse(chart),axis=tree['c:chartSpace']['c:chart']['c:plotArea']['c:catAx'];
+  assert.deepEqual(p,before,'axis compatibility must not alter the supplied project');
+  assert.equal(XMLValidator.validate(chart),true);
+  assert.equal(axis['c:txPr']['a:bodyPr']['@_rot'],'0','explicit zero rotation prevents LibreOffice overlap suppression');
+  assert.equal(axis['c:txPr']['a:p']['a:pPr']['a:defRPr']['@_sz'],'1575','category labels retain the authored 15.75 pt font');
+  assert.equal(axis['c:delete']['@_val'],'0','the native category axis remains visible');
+  assert.equal(axis['c:tickLblPos']['@_val'],'low');
+  assert.match(chart,/<c:barDir val="bar"/);
+  assert.match(slideXml,/<c:chart /);
+  const workbook=unzipSync(zip[Object.keys(zip).find(path=>/^ppt\/embeddings\/.*\.xlsx$/.test(path))]),cells=strFromU8(workbook['xl/worksheets/sheet1.xml']);
+  for(const category of categories){
+    assert.ok(chart.includes(`<c:v>${category}</c:v>`),'every original category remains in the chart');
+    assert.ok(!slideXml.includes(category),'category labels use the native axis rather than replacement text shapes');
+  }
+  for(const value of series.flatMap(s=>s.values)){
+    assert.ok(chart.includes(`<c:v>${value}</c:v>`),'native data cache retains the exact original value');
+    assert.ok(cells.includes(`<v>${value}</v>`),'editable workbook retains the exact original value');
+  }
 });
 
 test('figure-split displays two source figures and their own captions in SVG and native PPTX', async () => {

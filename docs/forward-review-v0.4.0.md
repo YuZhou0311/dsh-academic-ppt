@@ -67,4 +67,4 @@ arXiv 条目使用 [非独占分发许可](https://arxiv.org/licenses/nonexclusi
 
 没有运行用户的 DSH Desktop/Web + DeepSeek 付费会话，没有测量可比 token 或账单，没有在 Microsoft PowerPoint/WPS GUI、目标投影设备或多平台编辑环境验收。十分钟是预算，未真人排练。综述、开题、答辩、定性研究等已有通用支持，但不能描述成全部场景实测通过。
 
-原会话审计、确定性测试和本次制作是不同证据层，见 [问题审计](AUDIT_V04.md) 与 [验证总览](VALIDATION.md)。
+原会话审计、确定性测试和本次制作是不同证据层，见 [问题审计](AUDIT_V04.md) 与 [当时的验证总览](VALIDATION_V04.md)。

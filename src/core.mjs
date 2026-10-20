@@ -3,12 +3,13 @@ import {dirname,join,relative} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {assertToolArgs,assertProject,contentOf} from './schema.mjs';
 import {normalizeTemplateProfiles} from './template-profile.mjs';
+import {DEFAULT_ACADEMIC_SYSTEM} from './design-system.mjs';
 import {getReferenceTemplate} from './reference-catalog.mjs';
 import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-quality.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
-export const DEFAULT_DESIGN = {fontFamily:'Noto Sans CJK SC',palette:{ink:'#202632',paper:'#FFFFFF',background:'#FFFFFF',accent:'#173F75',secondary:'#9B303A',muted:'#536070',line:'#CCD2DA',soft:'#F1F4F8',gold:'#9B303A',tint:'#F1F4F8'}};
-const RENDERER_VERSION=4;
+export const DEFAULT_DESIGN = {fontFamily:'Noto Sans CJK SC',palette:{ink:'#161D27',paper:'#FFFFFF',background:'#FFFFFF',accent:'#0B4D89',secondary:'#B13E36',muted:'#536070',line:'#C8D4DF',soft:'#EFF4F8',gold:'#B13E36',tint:'#EFF4F8'},system:{...DEFAULT_ACADEMIC_SYSTEM}};
+const RENDERER_VERSION=5;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -42,7 +43,7 @@ export async function updateRecords(options={}){
   a={projectPath:a.projectPath,expectedRevision:a.expectedRevision,...payload};assertToolArgs('academic_ppt_record',a);
  }
  const state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p);
- if(![...fields,'brief','design','capabilities','templateProfilePaths'].some(k=>a[k]!==undefined))throw new Error('EMPTY_UPDATE');
+ if(![...fields,'brief','design','capabilities','templateProfilePaths','slideOrder'].some(k=>a[k]!==undefined))throw new Error('EMPTY_UPDATE');
  for(const key of fields){if(!a[key])continue;const seen=new Set();let incoming=a[key];
   if(key==='assets')incoming=await embedAssets(incoming,options.cwd,options.signal);
   for(const item of incoming){if(seen.has(item.id))throw new Error('DUPLICATE_ID: '+item.id);seen.add(item.id);const index=next[key].findIndex(x=>x.id===item.id);
@@ -55,6 +56,7 @@ export async function updateRecords(options={}){
  for(const key of ['brief','design','capabilities'])if(a[key])next[key]=a[key];
  if(state.p.brief.qualityProfile==='academic')next.brief.qualityProfile='academic';
  if(a.templateProfilePaths){const profiles=[];for(const path of a.templateProfilePaths){const file=await safePath(options.cwd,path,{mustExist:true});const bytes=await readBounded(file,4*1024*1024);profiles.push(JSON.parse(bytes));}next.design.templateProfile=normalizeTemplateProfiles(profiles);}
+ if(a.slideOrder){const byId=new Map(next.slides.map(slide=>[slide.id,slide]));if(a.slideOrder.length!==byId.size||new Set(a.slideOrder).size!==byId.size||a.slideOrder.some(id=>!byId.has(id)))throw new Error('INVALID_SLIDE_ORDER: slideOrder 必须恰好包含当前所有页面ID一次。');next.slides=a.slideOrder.map(id=>byId.get(id));}
  next.assets=await embedAssets(next.assets,options.cwd,options.signal);
  return saveMutation(state,next,options.signal);
 }
@@ -92,14 +94,30 @@ export function evidenceIssues(p){
   if(s.layout==='paper'&&s.paperIds.length!==1)add('error','paper-page-count',path,'导读页一次展示一篇论文完整标题。');
   if(s.layout==='references'&&s.paperIds.length>4)add('error','dense-references',path,'每页最多四条完整书目，请显式拆页。');
   if(!s.notes.trim()&&s.layout!=='references')add('warning','missing-notes',path,'补充与本页一致的演讲备注。');
-  if(s.cards.length>4&&!s.referenceTemplateId)add('warning','dense-cards',path,'同页解释区较多，请确认每个区域都承担独立研究任务，并给主证据保留足够空间；数量本身不是密度评分。');
+  if(s.cards.length>4&&!s.referenceTemplateId&&!s.composition)add('warning','dense-cards',path,'同页解释区较多，请确认每个区域都承担独立研究任务，并给主证据保留足够空间；数量本身不是密度评分。');
   for(const card of s.cards){if(card.kind==='hypothesis'&&!card.claimIds.some(id=>claims.get(id)?.kind==='proposal'))add('warning','proposal-label',path+'/card/'+card.id,'假说卡请关联 proposal 证据，避免与已验证结果混淆。');
    if(card.templateComponentId&&!p.design.templateProfile?.components?.some(c=>c.id===card.templateComponentId))add('error','missing-template-component',path,'模板组件不存在：'+card.templateComponentId);
    if(card.box&&(card.box.x+card.box.w>1280||card.box.y+card.box.h>720))add('error','card-outside-slide',path,'卡片边界超出页面。');
   }
   const nodeIds=new Set((s.nodes??[]).map(n=>n.id));for(const e of s.edges??[])if(!nodeIds.has(e.from)||!nodeIds.has(e.to))add('error','dangling-edge',path,'流程连线指向不存在的节点。');
   if(s.chart){if(s.chart.series.some(x=>x.values.length!==s.chart.categories.length))add('error','chart-dimensions',path,'图表系列与类别长度不一致。');const source=claims.get(s.chart.sourceClaimId);if(!source||!source.metrics?.length)add('error','chart-data-source',path,'可编辑图表必须关联记录了原始数据口径的证据。');}
+  for(const plot of [...(s.plot?[s.plot]:[]),...(s.plots??[])]){
+   if(!plot.sourceClaimIds.length)add('error','plot-data-source',path,'科学图必须用 sourceClaimIds 关联数据、估计方法和单位口径；不会自动计算区间。');
+   for(const id of plot.sourceClaimIds){const c=claims.get(id);if(!c||!c.metrics?.length)add('error','plot-data-source',path,'科学图来源需存在并记录数值口径：'+id);}
+   for(const g of plot.groups){
+    if(plot.kind==='distribution'&&(!g.values?.length||['estimate','lower','upper'].some(k=>g[k]!==undefined)))add('error','plot-distribution-data',path,'distribution 每组提供原始 values；不能混入区间字段或用连线暗示独立点配对。');
+    if(plot.kind==='interval'&&(g.values||!['estimate','lower','upper'].every(k=>Number.isFinite(g[k]))||g.lower>g.estimate||g.estimate>g.upper))add('error','plot-interval-data',path,'interval 每组提供 lower ≤ estimate ≤ upper；区间必须来自实际计算或来源记录。');
+   }
+  }
   if(s.table){if(s.table.rows.some(row=>row.length!==s.table.columns.length))add('error','table-dimensions',path,'原生表格每一行必须与列标题等长。');if(!s.table.sourceClaimIds?.length)add('error','table-data-source',path,'table.sourceClaimIds 必须明确关联表格的原文或研究方案证据；页面其他 claim 不能代替表格来源。');if(s.table.rows.length>8||s.table.columns.length>6)add('warning','dense-table',path,'表格行列较多，建议拆为正文与备份页并检查实际字号。');}
+  if(s.plots&&new Set(s.plots.map(plot=>plot.id)).size!==s.plots.length)add('error','duplicate-plot-id',path,'同页科学图ID必须唯一。');
+  if(s.table?.columnWeights&&s.table.columnWeights.length!==s.table.columns.length)add('error','table-column-weights',path,'columnWeights 必须与列数一致。');
+  if(s.table?.highlightRows?.some(i=>i>=s.table.rows.length))add('error','table-highlight-row',path,'highlightRows 使用数据行从0开始的索引，不能指向不存在的行。');
+  if(s.composition&&(s.referenceTemplateId||s.figureBoxes||['cover','section','references'].includes(s.layout)))add('error','composition-layout-conflict',path,'composition 用于正文组合页，不能与固定 referenceTemplateId、figureBoxes 或封面/章节/书目页混用。');
+  if(s.layout==='academic'&&!s.composition)add('error','academic-composition-missing',path,'academic 页必须提供 composition.rows；先定义主证据、解释和收束关系。');
+  if(s.layout==='cover'&&s.section)add('error','cover-section-unused',path,'封面用cover.occasion描述场合；section用于正文或章节页，不能在封面静默丢掉。');
+  if(s.diagram){const flat=s.diagram.rows.flat();if(new Set(flat).size!==flat.length||flat.length!==nodeIds.size||flat.some(id=>!nodeIds.has(id)))add('error','diagram-row-membership',path,'diagram.rows 需将所有 nodes 的ID恰好列出一次。');}
+  if(s.agenda&&s.layout!=='section')add('error','agenda-layout',path,'agenda 用于 section 章节导航页。短报告可只使用每页 section 抬头。');
   if(s.figureBoxes){
    if(s.referenceTemplateId)add('error','custom-reference-conflict',path,'figureBoxes 用于无 referenceTemplateId 的自定义图文页；固定模板面板不能和自由图框混用。');
    if(!['figure-focus','figure-split'].includes(s.layout))add('error','custom-figure-layout',path,'figureBoxes 仅用于 figure-focus 或 figure-split 的图文构图。');
@@ -117,7 +135,7 @@ export function evidenceIssues(p){
    for(const [key,count] of [['cards',s.cards.length],['figures',s.figureIds.length],['nodes',(s.nodes??[]).length]]){const range=template.requirements?.[key];if(range&&(count<range.min||count>range.max))add('error','reference-content-count',path,`${template.name} 的 ${key} 需要 ${range.min}–${range.max} 个，当前 ${count} 个；选择匹配证据的页型。`);}
    for(const key of ['chart','table']){const required=template.requirements?.[key];if(required===true&&!s[key])add('error','reference-content-missing',path,`${template.name} 需要 ${key}，不能以空白占位代替证据。`);if(s[key]&&!template.slots?.[key])add('error','reference-content-unused',path,`${template.name} 没有 ${key} 区域，请选择支持此内容的页型。`);}
   }}
-  const structureOf=slide=>slide.referenceTemplateId??(slide.figureBoxes?JSON.stringify({layout:slide.layout,figures:slide.figureBoxes.map(box=>['x','y','w','h'].map(k=>Math.round(box[k]/32))),cards:slide.cards.map(card=>card.box?['x','y','w','h'].map(k=>Math.round(card.box[k]/32)):null)}):slide.layout);
+  const structureOf=slide=>slide.composition?JSON.stringify(slide.composition.rows.map(row=>row.panels.map(panel=>[panel.weight??1,panel.figureIds?.length||0,Boolean(panel.chart),Boolean(panel.plot||panel.plotId),Boolean(panel.table),Boolean(panel.diagram),panel.cardIds?.length||0]))):slide.referenceTemplateId??(slide.figureBoxes?JSON.stringify({layout:slide.layout,figures:slide.figureBoxes.map(box=>['x','y','w','h'].map(k=>Math.round(box[k]/32))),cards:slide.cards.map(card=>card.box?['x','y','w','h'].map(k=>Math.round(card.box[k]/32)):null)}):slide.layout);
   const structure=structureOf(s);
   if(index>=2&&structureOf(p.slides[index-1])===structure&&structureOf(p.slides[index-2])===structure&&!['paper','references'].includes(s.layout))add('warning','layout-repetition',path,'连续三页同构。检查证据是否适合换用不同图文结构。');
  }
@@ -127,7 +145,7 @@ export function evidenceIssues(p){
  return [...issues,...academicIssues(p)];
 }
 function statusSummary(issues){return {errors:issues.filter(x=>x.severity==='error').length,warnings:issues.filter(x=>x.severity==='warning').length};}
-export function slideClaimIds(s){return [...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.table?.sourceClaimIds??[])])];}
+export function slideClaimIds(s){return [...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[])])];}
 async function scenesAndIssues(p){const {buildScenes}=await import('./scene.mjs');const scenes=buildScenes(p);return {scenes,issues:[...evidenceIssues(p),...(scenes.issues??[])]};}
 async function artifactCheck(p,cwd){
  if(!p.artifact)return {current:false,reason:'not-built'};
@@ -182,8 +200,8 @@ function preservedScene(before,after,prefixes){
 export async function editProject(options={}){
  const a=argsFor('academic_ppt_edit',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p),seen=new Set(),prefixes=[];
  for(const change of a.changes){const slide=next.slides.find(s=>s.id===change.slideId);if(!slide)throw new Error('UNKNOWN_SLIDE: '+change.slideId);const key=change.slideId+'/'+(change.cardId??'');if(seen.has(key))throw new Error('DUPLICATE_TARGET');seen.add(key);
-  if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');const allowed=new Set(['style','accent','templateComponentId']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId may change; words, values, box and slide remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
-  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','argument']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
+  if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');if(slide.composition&&(change.patch.templateComponentId||change.patch.style&&!['plain','compact'].includes(change.patch.style)))throw new Error('COMPOSITION_CARD_STYLE: 组合页解释卡支持plain/compact；外层学术分组框由design.system.panel控制。');const allowed=new Set(['style','accent','templateComponentId']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId may change; words, values, box and slide remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
+  else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','argument','composition','section','agenda','diagram','plot','plots']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
  }
  assertProject(next);let preservation;
  if(a.scope==='card-style'){const {buildScenes}=await import('./scene.mjs');const before=buildScenes(state.p),after=buildScenes(next);const protectedCount=preservedScene(before,after,prefixes);preservation={scope:'card-style',targetCards:a.changes.map(c=>({slideId:c.slideId,cardId:c.cardId})),protectedSceneObjects:protectedCount,notes:'preserved',content:'preserved',targetCardFrames:'preserved',targetCardInternalTextGeometry:'may-change-with-style',basis:'semantic scene comparison; not pixel or Office GUI proof'};}
@@ -217,7 +235,10 @@ export async function renderProjectArtifact(options={}){
  const fontDirectories=a.fontDirectories?await Promise.all(a.fontDirectories.map(path=>safePath(options.cwd,path,{mustExist:true}))):undefined;
  const rendered=await renderDeck({pptxPath:pptx,outputDir:output,format:'both',signal:options.signal,fontDirectories});
  if(!rendered.ok)return {...rendered,projectPath:state.path,revision:state.p.revision};
+ const {createContactSheets}=await import('./montage.mjs');rendered.contactSheetPaths=await createContactSheets(rendered.pngPaths,dirname(rendered.receiptPath),{signal:options.signal});
  const next=clone(state.p);next.artifact.render=rendered;
+ // The same PPTX may render differently after a font or engine change.
+ next.visualReviews=(next.visualReviews??[]).filter(review=>review.basis!=='pptx-render');
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
  return {...rendered,projectPath:state.path,revision:state.p.revision,note:'这是真实 PPTX 的静态渲染，尚未判断画面质量；字体及布局仍需查看图片。'};
 }

@@ -4,35 +4,50 @@
 
 适用于论文精读、文献综述、研究进展、开题、学位答辩和项目汇报。研究问题、原始证据、解释边界和验证方案保存在可恢复工程中；文字、机制图、表格与支持的图表使用原生对象，论文原图独立保留。
 
-当前版本 **[v0.4.0](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.4.0)** 已发布，固定代码提交为 `8f18a5b`。安装包与示例附件摘要、双版本 CI 和发布凭证见 [publication-v0.4.0.json](docs/publication-v0.4.0.json)。尚未发布 npm。插件使用当前 DSH 会话的模型和工具，不另行调用付费模型，也不管理 DeepSeek 密钥。可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
+当前源码版本 **0.5.0**。安装包发布入口见 [Releases](https://github.com/YuZhou0311/dsh-academic-ppt/releases)。尚未发布 npm。插件使用当前 DSH 会话的模型和工具，不另行调用付费模型，也不管理 DeepSeek 密钥。可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
 
-[安装与升级](docs/INSTALL.md) · [本轮问题审计](docs/AUDIT_V04.md) · [验证范围](docs/VALIDATION.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [设计与边界](docs/DESIGN.md)
+[安装与升级](docs/INSTALL.md) · [为什么重做 v0.5](docs/AUDIT_V05.md) · [验证范围](docs/VALIDATION.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [设计与边界](docs/DESIGN.md)
 
-## 当前版本的实际成品
+## 查看实际成稿
 
-[8 页可编辑 PPTX](examples/materials-v04/report.pptx) · [同版 PDF](examples/materials-v04/report.pdf) · [讲稿、输入与可复算分析](examples/materials-v04/README.md) · [两个学科的独立试用记录](docs/forward-review-v0.4.0.md)
+### 材料研究进展：C4 已获独立接受
 
-![v0.4 材料研究进展示例的实际 PPTX 渲染](examples/materials-v04/overview.png)
+这份10页报告由一个未继承本次聊天、旧产物或诊断的制作者，从原始教学协议、48件CSV数据、两份原始模板及封存插件独立完成。独立审稿者先重算原始数据，再查看全部10页实际画面，并核对完整讲稿、PPTX备注和分析说明，结论为**接受：0项阻断、0项必改、3项可优化**。600秒是讲稿预算，未做真人排练。[详细审稿记录](docs/MATERIALS_C4_REVIEW_V05.md)
 
-这个例子使用本轮新建的教学模拟数据，展示如何处理批次/应力混杂、右删失、比较区间与下一步验证；不对应真实实验或用户研究。成品经过真实 PPTX 渲染与逐页检查，文字、图表和表格为原生对象。另一项理论论文试用检验了证明条件、方法机制与外推边界，原图许可未确认公开再分发，因此只公开验证报告和来源链接。
+[下载PPTX](examples/materials-v05/report.pptx) · [下载PDF](examples/materials-v05/report.pdf) · [完整讲稿](examples/materials-v05/speaker-notes.md) · [分析说明](examples/materials-v05/analysis-explanation.md) · [源记录](examples/materials-v05/deck.json) · [原始协议](examples/materials-v05/inputs/protocol.md) · [48件CSV](examples/materials-v05/inputs/fatigue.csv) · [分析与绘图源码](examples/materials-v05/analysis/)
 
-## v0.4 改变了什么
+**正式封面：研究主题、汇报场合与教学模拟身份直接呈现。**
 
-这次更新依据实际失败会话、19 页产物与两份共 39 页参考稿定位问题。没有针对农业关键词硬编码结论。
+![材料C4封存PPTX的实际封面](examples/materials-v05/previews/page-0001.png)
 
-| 发现的问题 | 本版的具体改变 |
+**第4页证据：独立观测、均值差与不确定性在同页说明。**
+
+![材料C4封存PPTX第4页B批比较](examples/materials-v05/previews/page-0004.png)
+
+还可查看 [第7页新试验方案](examples/materials-v05/previews/page-0007.png)、[全部10页概览](examples/materials-v05/overview.png)和[样例说明与文件清单](examples/materials-v05/README.md)。PPTX、PDF、讲稿、分析说明和页面保留封存字节，3项可优化建议未改入成品。第4页的点与区间可原生编辑；第3、5页科学图以PNG嵌入，另附SVG和源码。[前3轮材料失败与协议记录](docs/INDEPENDENT_REVIEW_V05.md)仍然保留，C4的接受不代表一次完成或所有学术任务的稳定成功率。
+
+### 理论论文精读：12页已获独立接受
+
+[理论精读实际预览](examples/theory-v05-preview/README.md)同样来自未继承旧产物或诊断的制作者，只收到原论文、两份原始模板、插件和普通制作任务。独立审稿者核对关键原文并实际查看全部12页后接受，保留5项可优化建议。最终代码重建的12张实际页面与原稿逐字节一致；预览没有经过主线程重排或修图。
+
+可查看 [正式封面](examples/theory-v05-preview/page-0001-cover.png)、[秩对称性证明页](examples/theory-v05-preview/page-0004-rank-proof.png)、[Beta校准分析页](examples/theory-v05-preview/page-0008-beta-calibration.png)、[独立审查记录](docs/INDEPENDENT_REVIEW_V05.md)和[最终代码重建记录](docs/REBUILD_V05.md)。完整理论稿包含一张再分发许可未核实的作者原图，公开包只提供不含该图的指定页面。两类试用均不代表DeepSeek收费端点或真实DSH GUI的端到端验收。
+
+## v0.5 改变了什么
+
+用户否定了 v0.4 与理想模板的视觉差距。这一版继续重做模板应用与全页构图，保留原始证据、学术分析和交付约束。没有为某个学科写固定结论，也没有把主线程手工修好的样例当成独立制作成功。
+
+| 实际问题 | 当前实现 |
 | --- | --- |
-| 有阅读标记，却缺少可追问的分析 | 来源记录增加问题、缺口、机制、验证设计、独立单位、对照与效度；claim 必须写支持理由与边界，推断关联原始证据并讨论替代解释 |
-| 正文只是介绍卡片的集合 | 每页先登记论证问题与贡献；按精读、综述、进展、开题、答辩区分叙事，不强制五篇文献或每篇一页导读 |
-| 直接套模板的内容和标题 | 默认参考工具只返回中性槽位与空字段骨架；模板研究返回设计统计，不返回旧正文；有题签的参考布局必须由当前研究重新命名 |
-| 封面像普通正文页 | 新增独立 formal / minimal 封面：45 pt 原生主标题、明确层级与真实身份信息；未知单位、作者与日期不自动补造 |
-| 溢出和碰撞留到交付 | 在导出前阻断已发现的文字、指标、表格越界与语义区域碰撞；保留完整内容和字号，要求重排或拆页 |
-| 书目挤满页脚、参考页重新编号 | 正文使用简短来源标签；完整题名、作者、版本与 DOI/URL 留在参考页和备注；跨参考页连续编号 |
-| 修改已保存，却被宿主报成失败 | 修复 slide-content 返回 undefined 导致的 lossless JSON 错误；统一返回值边界，工程目录误传时给出准确提示 |
-| 长会话与反复重试成本高 | 12 个工具的注册定义由约 42.3 KB 降到 12.9 KB；详细契约按主题读取，记录经工作区 JSON 批次提交；先验约三页，再完成全稿 |
-| 旧页检查被当成最终版本验收 | 最终 PPTX 哈希绑定逐页观察；存在未解决 issue 不能登记 passed；原始全文/篇数/期刊要求不能靠改 brief 消除 |
+| 看过模板却没有应用其设计 | template 返回可 record 的 suggestedDesign；封面、页眉、分区、配色与字号进入真实渲染 |
+| 封面仍像普通介绍页 | framed / project 正式封面家族；场合、完整研究题名、责任主体和日期形成层级，身份缺失时不补造 |
+| 正文反复使用等权文字卡 | academic 组合页按研究关系安排不等宽、不等高证据面板；支持条件条、章节和结论带 |
+| 科学图不能直接表现不确定性 | 原生独立观测分布与显式区间图；支持同页多图，不连接独立排序值，不自动编造置信区间 |
+| 方法与下一步只有备忘段落 | 显式阶段、分支、汇合、反馈和无向关联；边的科学含义由作者声明，排版不自动创造关系 |
+| 图注、表格、流程挤出画面 | 面板按文字和载体最小需求分配空间；完整内容与字号保留，具体冲突在正式构建前报告 |
+| 反复探索接口与打开模板增加开销 | 按主题读取契约，JSON 批次登记；模板可一次研究并真实渲染，返回编号概览；CLI 可查询单命令参数 |
+| 自动检查被当成成品质量证明 | 当前PPTX实际渲染、逐页观察与源模板对照分开执行；完整回归不替代独立科学和视觉审查 |
 
-上述检查证明的是结构完整性、来源关联、已知布局条件与执行记录。它们不独立证明论文事实、原创性或审美，模型仍须真实阅读和看图。
+旧 48 页参考库保留作补充。新组合页由内容组织，使用者不必先选模板编号再把材料挤进固定槽。历史 v0.4 示例保存在 [materials-v04](examples/materials-v04/README.md)，它是被继续改进的历史基线。
 
 ## 内容先于版式
 
@@ -44,9 +59,11 @@
 
 ## 学习模板，保留学术表达
 
-`academic_ppt_template` 保存原始 profile，并返回紧凑 `study`：画幅、实际放映顺序、可解析的字体继承、字号和颜色分布、标题位置、图表与箭头数量、候选页型及解析边界。该摘要不含模板旧正文、机构名称或研究数字。
+`academic_ppt_template` 保存 profile，返回 `suggestedDesign`、结构推断依据与不含旧正文的 `study`。启用 `render:true` 后同时取得源模板的实际页面和编号概览。执行者看封面、代表证据页和机制/密集页，再选择一个主模板。
 
-执行者实际查看封面、章节页、证据页和密集页，再决定迁移哪些标题层级、图文比例、对齐与题签结构。参考稿中的占位文字、示例数字、模糊原图和已有碰撞不能继承。[模板学习方法](skills/dsh-academic-ppt/references/template-learning.md)
+将审定后的 suggestedDesign 写入 record 批次的 design，才能改变实际封面、页眉、分区与字号。仅调用模板工具或导入 components 不会建立完整报告设计。另一份模板可以提供研究关系的组织思路，全稿仍保持统一体系。推断报告说明来源页与适配边界，不声称无损克隆任意母版。[模板学习方法](skills/dsh-academic-ppt/references/template-learning.md)
+
+正文用 `layout:academic` 与 `composition.rows` 分配证据面板；图、表、分布、区间和机制图各有明确归属，紧邻解释和最终判断形成推导。复杂统计图可由有来源的计算脚本绘制，再登记为作者自制资产。[组合页与科学图](skills/dsh-academic-ppt/references/composition.md)
 
 保留的 [48 页教学参考库](skills/dsh-academic-ppt/references/templates/README.md) 覆盖论文、机制、实验、结果、原图、综合、局限与方案。默认查询提供中性结构，只有显式 `includeExamples: true` 才返回教学文件。教学 PPTX 是版本化布局示例，不是新项目已经通过质量验收的证明。
 
@@ -73,13 +90,15 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt"
 
 普通 PPTX/HTML 生成不需要 Office。实际 PPTX 图片/PDF 渲染使用可选官方 `@deepseek-ai/libreoffice-kit`；缺引擎或字体时如实返回未验证状态。可通过 `fontDirectories` 提供工作区内有许可的中文字体。
 
-离线重建随包模拟示例：
+离线重建随包的[已接受材料C4示例](examples/materials-v05/README.md)：
 
 ```sh
 npm run demo -- --output ./my-materials-demo
 ```
 
 这会按当前学术规则创建新工程，不请求网络或模型，也不继承示例的视觉审查；用于核对安装和可编辑导出。新材料的内容分析仍由当前会话执行者完成。
+
+本版已实际验证该入口：材料C4重建后的10张实际PPTX页面及讲稿均与封存原件逐字节相同，并对新产物重新完成逐页查看。[材料与理论的重建记录](docs/REBUILD_V05.md)
 
 ### 可直接使用的任务指令
 
@@ -95,12 +114,12 @@ npm run demo -- --output ./my-materials-demo
 | `academic_ppt_contract` | 按 brief / paper / claim / asset / slide / design / assessment 获取精确契约 |
 | `academic_ppt_record` | 从工作区 `recordsPath` 读取有类型的研究与页面批次 |
 | `academic_ppt_context` | 读取阶段、待解决问题和聚焦记录 |
-| `academic_ppt_template` | 研究用户模板设计语法，保存受支持的原生组件 |
+| `academic_ppt_template` | 返回可应用设计、结构依据与可选的实际模板页面/概览 |
 | `academic_ppt_reference` | 查询 48 个中性布局，或取得最多三个图片适配候选 |
 | `academic_ppt_build` | 预检后生成原生 PPTX、HTML、讲稿与来源材料 |
 | `academic_ppt_edit` | 明确限定页面内容或小卡片样式的修改范围 |
 | `academic_ppt_undo` | 以新修订恢复上一内容状态 |
-| `academic_ppt_render` | 渲染当前实际 PPTX 并保存回执 |
+| `academic_ppt_render` | 渲染当前实际 PPTX、生成编号概览并保存回执 |
 | `academic_ppt_check` | 核对证据结构、几何、成品与审查范围 |
 | `academic_ppt_review` | 为当前哈希登记实际完成的逐页观察 |
 
@@ -114,7 +133,7 @@ npm run demo -- --output ./my-materials-demo
 
 ## 验证范围
 
-本轮包括原会话审计、确定性回归、三份实际 PPTX 的 58 页对照，以及不同学科的独立制作试用；已完成项、具体缺陷与产物见 [VALIDATION.md](docs/VALIDATION.md)。历史 v0.3 示例与审查记录保留为历史材料，不冒充 v0.4 的成品。
+当前确定性回归、封存候选、无上下文独立制作、实际页面及科学复核分别记录于 [VALIDATION.md](docs/VALIDATION.md)。旧版本的审查与成品保留历史身份，不继承为 v0.5 验收。
 
 **尚未在用户的 DeepSeek 账户和真实 DSH Desktop/Web 中完成收费端到端对照试验，也未完成 PowerPoint/WPS 全平台显示验收。** 工具定义字节减少不等于同比账单下降；本版不报告没有测量过的人民币节省或稳定成功率。
 

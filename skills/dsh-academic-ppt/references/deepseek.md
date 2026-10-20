@@ -6,6 +6,8 @@
 
 需要实际看模板、论文图与当前PPTX时，必须有真实图像输入路径。文本提取/OCR可辅助核对，不能声称完成遮挡、配色和图例视觉审查。图像输入也不是生图权限。
 
+尽早核实并登记本次实际输入能力。`capabilities`可随init提供，也可通过recordsPath批次的根级字段登记；精确schema与记录规则见`contract(topic:assessment)`返回的`capabilityRecord`，CLI也可用`init --schema`或`record --schema`查询。`imageInput`只接受supported / unsupported / unknown，`source`写实际provider或图像输入入口及核实依据。确实收到并看过图像时，可以记录具体入口与观察；“生成了PNG”“模型名称带视觉”或“为了让review通过”都不是依据。能力更新产生新修订，应在首次构建前完成；构建后才更新需重新构建、渲染和审查当前版本。
+
 ## 小而稳定的上下文
 
 常驻只需主SKILL、中心问题、硬要求、当前阶段、稳定ID和待解决项。按需contract读取一次某类schema；数据写本地JSON通过recordsPath提交。不要每轮重复论文全文、模板示例集、原始profile、整个project或图片base64。

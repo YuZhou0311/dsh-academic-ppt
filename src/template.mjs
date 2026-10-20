@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { unzipSync, strFromU8 } from 'fflate';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { studyTemplateParts, templateSlideOrder } from './template-study.mjs';
+import { inferTemplateDesign } from './design-system.mjs';
 
 const EMU_PER_PX = 9525;
 const SUPPORTED = new Set(['rect', 'roundRect', 'ellipse', 'line']);
@@ -208,8 +209,9 @@ export async function inspectTemplate(filePath, { signal } = {}) {
     if (component) components.push(component);
   }
   const study = studyTemplateParts(zip, { parseXml: xmlTree, signal });
+  const designSuggestion = inferTemplateDesign({ study, shapes, width, height, sha256, slideCount: slidePaths.length });
   return { format: 'academic-template-profile', version: 1, sourcePath: filePath, sha256, source: { path: filePath, sha256, width, height }, width, height, slideCount: slidePaths.length,
-    palette: theme.palette, fonts: theme.fonts, shapes, components, unsupported, study,
+    palette: theme.palette, fonts: theme.fonts, shapes, components, unsupported, study, ...designSuggestion,
     scope: '提取显式位置的原生矩形、圆角、椭圆和线条背景、显式 RGB/唯一可解主题色、单一 alpha 与简单外阴影；保留来源 ID 与几何；旧文字不复制。母版/主题样式继承、旋转/翻转、SmartArt、图表、图片、颜色变换、复杂填充效果与动画不作无损导入，详见 unsupported。',
     visualReview: 'not-performed',
   };

@@ -3,8 +3,13 @@
  */
 import { getReferenceTemplate } from './reference-catalog.mjs';
 import { assessFigurePlacement } from './figure-planning.mjs';
+import { resolveAcademicSystem } from './design-system.mjs';
+import { academicHeader, academicCover, academicSection } from './academic-chrome.mjs';
+import { renderAcademicComposition } from './academic-composition.mjs';
+import { renderScientificPlot } from './scientific-plot.mjs';
+import { renderAcademicDiagram } from './academic-diagram.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
-export const LAYOUTS = Object.freeze(['cover', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
+export const LAYOUTS = Object.freeze(['cover', 'section', 'academic', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
 export const CARD_STYLES = Object.freeze(['plain', 'ruled', 'compact', 'academic-panel', 'academic-tab', 'academic-side', 'open-frame', 'floating-tab', 'split-label', 'paper-shadow', 'title-band', 'stacked-corner', 'ledger', 'dashed-note']);
 export const DEFAULT_DESIGN = Object.freeze({
   fontFamily: 'Noto Sans CJK SC',
@@ -22,14 +27,18 @@ const arr = value => Array.isArray(value) ? value : [];
 /** A small semantic vocabulary, shared by text, cards and diagram nodes.
  * These hues identify roles, never imply that a scientific result is positive.
  */
-export function semanticStyle(kind, palette = DEFAULT_DESIGN.palette) {
-  const styles = {
-    question: { accent: palette.accent, tint: '#EDF2F7' },
-    method: { accent: '#235E96', tint: '#EAF2FA' },
-    setting: { accent: '#536A7A', tint: '#F0F3F6' },
-    result: { accent: '#146C63', tint: '#E9F4F0' },
-    boundary: { accent: '#A24736', tint: '#FAEEE8' },
-    hypothesis: { accent: '#6C528E', tint: '#F2EDF7' },
+export function semanticStyle(kind, palette = DEFAULT_DESIGN.palette, {academic=false}={}) {
+  const styles = academic ? {
+    question: { accent: palette.accent, tint: palette.tint },
+    method: { accent: palette.accent, tint: palette.tint },
+    setting: { accent: palette.muted, tint: palette.tint },
+    result: { accent: palette.accent, tint: palette.tint },
+    boundary: { accent: palette.secondary, tint: palette.tint },
+    hypothesis: { accent: palette.accent, tint: palette.tint },
+  } : {
+    question:{accent:palette.accent,tint:'#EDF2F7'},method:{accent:'#235E96',tint:'#EAF2FA'},
+    setting:{accent:'#536A7A',tint:'#F0F3F6'},result:{accent:'#146C63',tint:'#E9F4F0'},
+    boundary:{accent:'#A24736',tint:'#FAEEE8'},hypothesis:{accent:'#6C528E',tint:'#F2EDF7'},
   };
   return styles[kind] || { accent: palette.accent, tint: palette.tint };
 }
@@ -56,7 +65,7 @@ function emphasizedLines(content, lines, phrases, color) {
 
 export function resolveDesign(input = {}) {
   const palette = Object.fromEntries(Object.entries(DEFAULT_DESIGN.palette).map(([key, value]) => [key, safeColor(input.palette?.[key] || (key === 'tint' ? input.palette?.soft : undefined), value)]));
-  return { ...DEFAULT_DESIGN, ...input, palette, fontFamily: asText(input.fontFamily).trim() || DEFAULT_DESIGN.fontFamily };
+  return { ...DEFAULT_DESIGN, ...input, palette, system:resolveAcademicSystem(input.system), hasAcademicSystem:Boolean(input.system), fontFamily: asText(input.fontFamily).trim() || DEFAULT_DESIGN.fontFamily };
 }
 
 const graphemeSegmenter = new Intl.Segmenter('zh-CN', { granularity: 'grapheme' });
@@ -159,13 +168,13 @@ function pageBuilder(slide, index, total, design) {
     for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
     return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, estimatedTextHeight:needed, estimatedLineWidths:lineWidths, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
   };
-  if (slide.layout !== 'cover') {
+  if (!['cover','section'].includes(slide.layout)) {
     rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
     if(design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
     text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
   }
   const customFigures=!slide.referenceTemplateId&&['figure-focus','figure-split'].includes(slide.layout)?slide.figureBoxes:undefined;
-  return { page, p, add, rect, line, text, region, regions, customFigures };
+  return { page, p, add, rect, line, text, region, regions, customFigures, design, system:design.system };
 }
 
 function header(b, slide) {
@@ -232,7 +241,8 @@ function metricString(metric) {
 /** Draw a native card; text and frame remain independent editable objects. */
 function card(b, data, box, index, project, defaultStyle) {
   const c = data || {}, id = asText(c.id || `card-${index + 1}`);
-  const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p);
+  const titleSize=b.system?.panelTitleSize??26,bodySize=b.system?.bodySize??24;
+  const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p,{academic:b.design?.hasAcademicSystem});
   b.region(key,box,'card');
   const accent=safeColor(c.accent,semantic.accent),tint=semantic.tint;
   const shadow={color:'#20334A',opacity:.1,blur:3,offset:2,angle:90};
@@ -261,7 +271,7 @@ function card(b, data, box, index, project, defaultStyle) {
     tx=x+13;ty=y+5;tw=w-26;th=31;bx=x+14;by=y+51;bw=w-28;
   } else if(style==='academic-tab'){
     R('frame',{x,y:y+12,w,h:h-12},p.paper,p.line,{strokeWidth:1.1});
-    const tabW=Math.min(w-28,Math.max(100,measureTextWidth(c.title,26,{bold:true})+28)),tabH=Math.min(h,Math.max(36,wrapText(c.title,tabW-22,26,{bold:true}).length*29.9+6));
+    const tabW=Math.min(w-28,Math.max(100,measureTextWidth(c.title,titleSize,{bold:true})+28)),tabH=Math.min(h,Math.max(36,wrapText(c.title,tabW-22,26,{bold:true}).length*29.9+6));
     R('tab',{x:x+12,y,w:tabW,h:tabH},accent,'none');
     tx=x+23;ty=y+3;tw=tabW-22;th=tabH-6;bx=x+14;by=y+tabH+15;bw=w-28;
   } else if(style==='academic-side'){
@@ -277,13 +287,13 @@ function card(b, data, box, index, project, defaultStyle) {
     }
   } else if (style === 'open-frame') {
     R('frame', { x, y: y + 17, w, h: h - 17 }, p.paper, accent, { strokeWidth: 1.5 });
-    const labelW = Math.min(w - 36, Math.max(112,measureTextWidth(wrapText(c.title,w-72,26,{bold:true})[0],26,{bold:true})+22));
+    const labelW = Math.min(w - 36, Math.max(112,measureTextWidth(wrapText(c.title,w-72,titleSize,{bold:true})[0],titleSize,{bold:true})+22));
     R('title-cutout', { x: x + 14, y: y + 1, w: labelW, h: 34 }, p.background, 'none');
     ty = y + 2; by = y + 58;
     L('base-rule', x + 20, y + h - 16, x + 55, y + h - 16, accent, { strokeWidth: 3 });
   } else if (style === 'floating-tab') {
     R('frame', { x, y: y + 19, w, h: h - 19 }, p.paper, p.line,{shadow});
-    R('tab', { x: x + 16, y, w: Math.min(w - 42, Math.max(138, measureTextWidth(c.title,26,{bold:true}) + 30)), h: 42 }, accent, 'none');
+    R('tab', { x: x + 16, y, w: Math.min(w - 42, Math.max(138, measureTextWidth(c.title,titleSize,{bold:true}) + 30)), h: 42 }, accent, 'none');
     tx = x + 28; ty = y + 6; tw = w - 54; by = y + 68;
   } else if (style === 'split-label') {
     const labelW = Math.min(132, w * .29);
@@ -322,7 +332,7 @@ function card(b, data, box, index, project, defaultStyle) {
   const darkTitle = !component && ['floating-tab', 'title-band','academic-tab'].includes(style);
   const flat=!component&&['plain','ruled','compact'].includes(style);
   const academic=!component&&['academic-panel','academic-tab','academic-side'].includes(style),compact=flat||academic;
-  const titleNeed=wrapText(c.title,tw,26,{bold:true}).length*26*1.15;
+  const titleNeed=wrapText(c.title,tw,titleSize,{bold:true}).length*titleSize*1.15;
   // Default text regions reflow within their authored frame; they never borrow
   // space from the next card. Explicit imported text zones stay authoritative.
   if(!component&&style!=='split-label'){
@@ -336,17 +346,17 @@ function card(b, data, box, index, project, defaultStyle) {
       }
     }
   }
-  T('title', c.title, { x: tx, y: ty, w: tw, h: Math.max(th,30) },26,{bold:true,color:darkTitle?'#FFFFFF':accent,lineHeight:1.15,role:'card-title'});
+  T('title', c.title, { x: tx, y: ty, w: tw, h: Math.max(th,30) },titleSize,{bold:true,color:darkTitle?'#FFFFFF':accent,lineHeight:1.15,role:'card-title'});
   const metric = metricString(c.metric);
   if (metric) {
     const metricSize=compact?38:40,metricH=metricSize*1.16;
     T('metric',metric,{x:bx,y:by,w:bw,h:metricH},metricSize,{bold:true,color:accent,lineHeight:1.1,role:'metric'});by+=metricH+4;
-    if(c.metric?.label){const size=24,mh=wrapText(c.metric.label,bw,size).length*size*1.18;T('metric-label',c.metric.label,{x:bx,y:by,w:bw,h:mh},size,{color:p.ink,lineHeight:1.18,role:'metric-label'});by+=mh+4;}
-    if(c.metric?.context){const size=24,mh=wrapText(c.metric.context,bw,size).length*size*1.2;T('metric-context',c.metric.context,{x:bx,y:by,w:bw,h:mh},size,{color:p.muted,role:'metric-context',lineHeight:1.2});by+=mh+8;}
+    if(c.metric?.label){const size=bodySize,mh=wrapText(c.metric.label,bw,size).length*size*1.18;T('metric-label',c.metric.label,{x:bx,y:by,w:bw,h:mh},size,{color:p.ink,lineHeight:1.18,role:'metric-label'});by+=mh+4;}
+    if(c.metric?.context){const size=bodySize,mh=wrapText(c.metric.context,bw,size).length*size*1.2;T('metric-context',c.metric.context,{x:bx,y:by,w:bw,h:mh},size,{color:p.muted,role:'metric-context',lineHeight:1.2});by+=mh+8;}
   }
   if(metric && by-8 > y+h-(flat?4:academic?10:20)+2)b.page.issues.push({severity:'error',code:'card-metric-overflow',slideId:b.page.id,objectId:`${b.page.id}/${key}`,message:'指标、变量和口径的总高度超出卡片区域；扩大卡片或重排相关说明，不能让指标文字延伸到页脚。'});
   const body = Array.isArray(c.body) ? c.body.join('\n') : c.body;
-  T('body',body,{x:bx,y:by,w:bw,h:Math.max(14,y+h-(flat?4:academic?10:20)-by)},24,{lineHeight:1.24,role:'body',emphasis:c.emphasis,emphasisColor:accent});
+  T('body',body,{x:bx,y:by,w:bw,h:Math.max(14,y+h-(flat?4:academic?10:20)-by)},bodySize,{lineHeight:1.24,role:'body',emphasis:c.emphasis,emphasisColor:accent});
   return { id, box, style };
 }
 
@@ -388,8 +398,9 @@ function figure(b, project, id, box, key) {
   if(viewport&&(!['x','y','w','h'].every(k=>Number.isFinite(viewport[k]))||viewport.x<0||viewport.y<0||viewport.w<=0||viewport.h<=0||viewport.x+viewport.w>1.00000001||viewport.y+viewport.h>1.00000001)){
     b.page.issues.push({severity:'error',code:'invalid-viewport',slideId:b.page.id,assetId:id,message:'原图视窗必须是0–1范围内、正尺寸的归一化矩形。'});return;
   }
+  const captionSize=b.system?.captionSize??18;
   const caption=asset.displayCaption||[referenceLabel(project,asset.paperId),asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
-  const captionLines=wrapText(caption,box.w,18),captionH=caption?Math.min(108,Math.max(26,captionLines.length*23+4)):0;
+  const captionLines=wrapText(caption,box.w,captionSize),captionH=caption?Math.max(captionSize*1.45,captionLines.length*captionSize*1.24+4):0;
   const legend=displayLegendLayout(asset.displayLegend,box.w),legendH=legend.height?legend.height+8:0;
   if(legend.rows>2||legend.height>68)b.page.issues.push({severity:'error',code:'figure-legend-overflow',slideId:b.page.id,assetId:id,message:'辅助图例超过两行。保留原始身份，缩短转录标签或扩大区域，不能降低图例字号。'});
   const matte=asset.treatment!=='plain',pad=matte?5:0;
@@ -411,7 +422,7 @@ function figure(b, project, id, box, key) {
     b.line(`${stem}:line`,x,y+15,x+legend.lineW,y+15,safeColor(item.color,b.p.ink),{strokeWidth:3});
     b.text(`${stem}:label`,item.label,{x:x+legend.lineW+legend.lineGap,y:y+1,w:item.labelW,h:item.h-2},legend.size,{color:b.p.ink,lineHeight:1.2,role:'figure-legend'});
   }
-  if(caption)b.text(`${key}:caption`,caption,{x:box.x,y:box.y+box.h-captionH,w:box.w,h:captionH},18,{color:b.p.muted,role:'caption',lineHeight:1.24});
+  if(caption)b.text(`${key}:caption`,caption,{x:box.x,y:box.y+box.h-captionH,w:box.w,h:captionH},captionSize,{color:b.p.muted,role:'caption',lineHeight:1.24});
   b.page.notes+='\n\n原图来源：'+[asset.paperId,asset.figure,asset.panel,asset.caption,asset.sourceUrl,asset.sourceVersion,asset.license,asset.cropNote].filter(Boolean).join('\n');
   if(legend.items.length)b.page.notes+='\n辅助图例（据原图转录，标签与颜色须核对）：\n'+legend.items.map(item=>`${item.label}: ${item.color}`).join('\n');
 }
@@ -449,7 +460,7 @@ function referenceLabel(project,id) {
 }
 
 function footerSources(b, project, slide) {
-  if (slide.layout === 'references' || slide.layout === 'cover') return;
+  if (['references','cover','section'].includes(slide.layout)) return;
   const ids = new Set(arr(slide.paperIds));
   for (const claim of arr(project.claims)) if (arr(slide.claimIds).includes(claim.id) && claim.paperId) ids.add(claim.paperId);
   const sources = arr(project.papers).filter(p => ids.has(p.id)).map(p => [referenceLabel(project,p.id),arr(p.authors).length?`${p.authors[0]}${p.authors.length>1?' 等':''}`:'',p.year].filter(Boolean).join(' '));
@@ -457,6 +468,7 @@ function footerSources(b, project, slide) {
 }
 
 function diagram(b, project, slide, area, nodeBoxes) {
+  if(slide.diagram?.rows)return renderAcademicDiagram(b,project,slide,area,{wrapText,measureTextWidth,semanticStyle:(kind,p)=>semanticStyle(kind,p,{academic:true})});
   const nodes = arr(slide.nodes), edges = arr(slide.edges);
   const count = nodes.length;
   if (!count) return;
@@ -467,7 +479,7 @@ function diagram(b, project, slide, area, nodeBoxes) {
   const route=(index,points,edge)=>{
     for(let k=0;k<points.length-1;k++){
       const a=points[k],z=points[k+1];
-      b.line(points.length===2?`edge:${index}`:`edge:${index}:segment:${k}`,a.x,a.y,z.x,z.y,b.p.secondary,{strokeWidth:1.6,...(k===points.length-2?{endArrow:true}:{})});
+      b.line(points.length===2?`edge:${index}`:`edge:${index}:segment:${k}`,a.x,a.y,z.x,z.y,edge.kind==='feedback'?b.p.secondary:b.p.accent,{strokeWidth:1.6,...(edge.kind==='feedback'?{dash:'dash'}:{}),...(k===points.length-2&&edge.kind!=='association'?{endArrow:true}:{})});
     }
     if(edge.label){
       const k=Math.floor((points.length-1)/2),a=points[k],z=points[k+1],mid={x:(a.x+z.x)/2,y:(a.y+z.y)/2};
@@ -500,7 +512,7 @@ function diagram(b, project, slide, area, nodeBoxes) {
   for (const [i, n] of nodes.entries()) {
     const box = boxes.get(n.id);
     b.region(`node:${n.id}`,box,'diagram-node');
-    const semantic=semanticStyle(n.kind||'method',b.p);
+    const semantic=semanticStyle(n.kind||'method',b.p,{academic:b.design?.hasAcademicSystem});
     const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,24,{bold:true}).length*28),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?1:5,labelY=hasDetail?box.y+(small?4:10):box.y+Math.max(8,(box.h-labelH)/2);
     b.rect(`node:${n.id}:frame`,box,n.kind?semantic.tint:b.p.paper,b.p.line,{strokeWidth:1.2,...(n.kind==='hypothesis'?{dash:'dash'}:{})});
     b.line(`node:${n.id}:heading-rule`,box.x,box.y,box.x+box.w,box.y,semantic.accent,{strokeWidth:2});
@@ -509,23 +521,37 @@ function diagram(b, project, slide, area, nodeBoxes) {
   }
 }
 
+function scientificPlot(b,data,box,options) {
+  if(!data?.id)return renderScientificPlot(b,data,box,options);
+  const prefix=`plots/${data.id}/`,scoped={...b};
+  const fullPrefix=`${b.page.id}/${prefix}`;
+  scoped.regions=b.regions.filter(r=>r.id.startsWith(fullPrefix)).map(r=>({...r,id:`${b.page.id}/${r.id.slice(fullPrefix.length)}`}));
+  for(const name of ['rect','line','text','region'])scoped[name]=(key,...args)=>b[name](prefix+key,...args);
+  scoped.add=(kind,key,...args)=>b.add(kind,prefix+key,...args);
+  const start=b.page.issues.length,result=renderScientificPlot(scoped,data,box,options);
+  for(const issue of b.page.issues.slice(start))if(issue.objectId?.startsWith(`${b.page.id}/data-plot`))issue.objectId=issue.objectId.replace(`${b.page.id}/`,fullPrefix);
+  return result;
+}
+
 /** Content-based academic tables: real cells in PPTX and the same wrapping in SVG. */
 function table(b, data, box, fontFamily) {
-  const columns=arr(data.columns),rows=arr(data.rows),all=[columns,...rows],fontSize=23,lineHeight=1.22,padX=10,padY=7;
+  const columns=arr(data.columns),rows=arr(data.rows),all=[columns,...rows],fontSize=b.design?.hasAcademicSystem?(b.system?.bodySize??24):23,captionSize=b.system?.captionSize??18,lineHeight=1.22,padX=10,padY=7;
   if(!columns.length||rows.some(row=>!Array.isArray(row)||row.length!==columns.length)){
     b.page.issues.push({severity:'error',code:'invalid-table-shape',slideId:b.page.id,message:'表格必须包含列名，且每行单元格数量必须与列数相同。'});return;
   }
-  const colWidths=columns.map(()=>box.w/columns.length),wrapReserve=fontSize*.55;
+  const weights=data.columnWeights||columns.map(()=>1);
+  if(weights.length!==columns.length||weights.some(w=>!Number.isFinite(w)||w<=0)){b.page.issues.push({severity:'error',code:'invalid-table-widths',slideId:b.page.id,message:'columnWeights 必须与表格列数一致，并使用正数比例。'});return;}
+  const sum=weights.reduce((a,z)=>a+z,0),colWidths=weights.map(w=>box.w*w/sum),wrapReserve=fontSize*.55;
   // Native PowerPoint tables may grow rows when glyph widths trigger an
   // additional wrap. Keep a small conservative reserve inside the real cell
   // margins so caption placement does not depend on a near-boundary estimate.
   const cellLines=all.map((row,ri)=>row.map((value,i)=>wrapText(value,Math.max(1,colWidths[i]-padX*2-wrapReserve),fontSize,{bold:ri===0})));
   const rowHeights=cellLines.map(row=>Math.max(...row.map(lines=>lines.length))*fontSize*lineHeight+padY*2);
-  const h=rowHeights.reduce((sum,value)=>sum+value,0),captionH=data.caption?wrapText(data.caption,box.w,18).length*22+7:0;
+  const h=rowHeights.reduce((sum,value)=>sum+value,0),captionH=data.caption?wrapText(data.caption,box.w,captionSize).length*captionSize*1.24+7:0;
   b.region('data-table-region',{x:box.x,y:box.y,w:box.w,h:h+captionH},'table');
-  if(h+captionH>box.h+2)b.page.issues.push({severity:'error',code:'table-overflow-estimate',slideId:b.page.id,objectId:`${b.page.id}/data-table`,message:`表格按17.25pt正文需要 ${Math.ceil(h+captionH)} px，区域只有 ${box.h} px；减少行列或拆页，不能缩小正文隐藏内容。`});
-  b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p)});
-  if(data.caption)b.text('table-caption',data.caption,{x:box.x,y:box.y+h+7,w:box.w,h:Math.max(22,captionH-7)},18,{color:b.p.muted,lineHeight:1.22,role:'caption'});
+  if(h+captionH>box.h+2)b.page.issues.push({severity:'error',code:'table-overflow-estimate',slideId:b.page.id,objectId:`${b.page.id}/data-table`,message:`表格按${fontSize*.75}pt正文需要 ${Math.ceil(h+captionH)} px，区域只有 ${box.h} px；减少行列或拆页，不能缩小正文隐藏内容。`});
+  b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p),academicStyle:b.design?.hasAcademicSystem?b.system.panel:'line'});
+  if(data.caption)b.text('table-caption',data.caption,{x:box.x,y:box.y+h+7,w:box.w,h:Math.max(22,captionH-7)},captionSize,{color:b.p.muted,lineHeight:1.24,role:'caption'});
   return {bottom:box.y+h+captionH,height:h+captionH};
 }
 
@@ -556,7 +582,7 @@ function referenceLayout(b,project,slide,ref) {
   const s=ref.slots,figures=arr(slide.figureIds),cards=arr(slide.cards);
   const flow=ref.tableFlow,flowIndexes=new Set(arr(flow?.cardIndexes));
   for(const [i,panel] of arr(s.panels).entries()){
-    const {x,y,w,h}=panel,key=`panel:${i}`,style=panel.style||'academic-panel',semantic=semanticStyle(panel.kind,b.p),accent=semantic.accent,tint=semantic.tint;
+    const {x,y,w,h}=panel,key=`panel:${i}`,style=panel.style||'academic-panel',semantic=semanticStyle(panel.kind,b.p,{academic:b.design?.hasAcademicSystem}),accent=semantic.accent,tint=semantic.tint;
     if(style==='academic-side'){
       b.rect(`${key}:frame`,{x,y,w,h},b.p.paper,b.p.line,{strokeWidth:1.1});
       b.rect(`${key}:side-mark`,{x:x+1,y:y+8,w:5,h:29},accent,'none');
@@ -653,10 +679,19 @@ export function buildScenes(project) {
   const pages = slides.map((slide, index) => {
     const b = pageBuilder(slide, index, slides.length, design), cards = arr(slide.cards), figures = arr(slide.figureIds);
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
-    if(slide.layout!=='cover')header(b, slide);
+    let contentBox=CONTENT;
+    if(!['cover','section'].includes(slide.layout)){
+      if(design.hasAcademicSystem||slide.composition||slide.layout==='academic'||slide.section)contentBox=academicHeader(b,project,slide,{wrapText,measureTextWidth});
+      else header(b,slide);
+    }
     const ref=slide.referenceTemplateId?getReferenceTemplate(slide.referenceTemplateId):undefined;
     if(slide.referenceTemplateId&&!ref)b.page.issues.push({severity:'error',code:'unknown-reference-template',slideId:b.page.id,message:`未找到参考页型 ${slide.referenceTemplateId}；不能静默替换成其他版式。`});
-    else if(slide.layout==='cover')cover(b,slide);
+    else if(slide.layout==='cover'){
+      if(design.hasAcademicSystem)academicCover(b,project,slide,{wrapText,measureTextWidth});else cover(b,slide);
+    }
+    else if(slide.layout==='section')academicSection(b,project,slide,{wrapText,measureTextWidth});
+    else if(slide.composition)renderAcademicComposition(b,project,slide,{card,figure,table,diagram,plot:scientificPlot,wrapText,measureTextWidth,clone,design,contentBox});
+    else if(slide.layout==='academic')b.page.issues.push({severity:'error',code:'academic-composition-missing',slideId:b.page.id,message:'academic 页需 composition.rows 指定各证据面板；不能退化为默认介绍卡。'});
     else if(ref)referenceLayout(b,project,slide,ref);
     else if(slide.layout==='paper'){
       paperTitle(b,project,slide,{x:48,y:128,w:1184,h:120});
@@ -673,6 +708,7 @@ export function buildScenes(project) {
       const area={x:48,y:136,w:cards.length?790:1184,h:509};
       if(figures.length>=2){const boxes=pairedFigureBoxes(project,figures,area,24);figures.slice(0,2).forEach((id,i)=>figure(b,project,id,boxes[i],`figure:${i}`));}
       else if(figures[0])figure(b,project,figures[0],area,'figure:0');
+      else if(slide.plot)renderScientificPlot(b,slide.plot,area,{fontFamily:design.fontFamily,wrapText,measureTextWidth});
       else if(slide.chart)b.add('chart','data-chart',{...area,chart:clone(slide.chart),palette:clone(b.p),fontFamily:design.fontFamily});
       else if(slide.table)table(b,slide.table,area,design.fontFamily);
       if(cards.length)cardsGrid(b,cards,{x:868,y:136,w:364,h:509},1,project,24);
@@ -713,6 +749,8 @@ export function buildScenes(project) {
     }
     for (const c of cards) if (!b.page.nodes.some(n => n.cardId === c.id)) b.page.issues.push({ severity: 'error', code: 'unrendered-card', slideId: b.page.id, cardId: c.id, message: `页型 ${slide.layout} 未显示输入卡片 ${c.id}；调整页型。` });
     if (slide.chart && !b.page.nodes.some(n => n.kind === 'chart')) b.page.issues.push({ severity: 'error', code: 'unrendered-chart', slideId: b.page.id, message: '输入图表未显示；选择有 chart 区域的参考页型，或单独使用 results 页。' });
+    if (slide.plot && !b.page.nodes.some(n => n.id.startsWith(`${b.page.id}/data-plot`))) b.page.issues.push({ severity: 'error', code: 'unrendered-plot', slideId: b.page.id, message: '输入科学图未显示；在 composition 面板声明 plot:true，或使用没有其他主载体的 results 页。' });
+    for(const plot of slide.plots??[])if(!b.page.nodes.some(n=>n.id.startsWith(`${b.page.id}/plots/${plot.id}/data-plot`)))b.page.issues.push({severity:'error',code:'unrendered-plot',slideId:b.page.id,plotId:plot.id,message:'plots 中的每幅科学图必须在 composition 中恰好由一个 panel.plotId 引用。'});
     if (slide.table && !b.page.nodes.some(n => n.kind === 'table')) b.page.issues.push({ severity: 'error', code: 'unrendered-table', slideId: b.page.id, message: '输入表格未显示；选择有 table 区域的参考页型，或单独使用 comparison / results 页。' });
     for (const n of arr(slide.nodes)) if (!b.page.nodes.some(shape => shape.id === `${b.page.id}/node:${n.id}:frame`)) b.page.issues.push({ severity: 'error', code: 'unrendered-diagram-node', slideId: b.page.id, nodeId: n.id, message: '输入流程节点未显示；使用有 diagram 区域的参考页型或 method 页。' });
     arr(slide.edges).forEach((edge, i) => { if (!b.page.nodes.some(shape => shape.id === `${b.page.id}/edge:${i}` || shape.id.startsWith(`${b.page.id}/edge:${i}:`))) b.page.issues.push({ severity: 'error', code: 'unrendered-diagram-edge', slideId: b.page.id, edge, message: '输入流程连线未显示；选择支持 diagram 的页型并检查节点。' }); });

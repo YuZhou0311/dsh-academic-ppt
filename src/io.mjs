@@ -136,13 +136,14 @@ export function imageDimensions(bytes) {
 export async function embedAssets(assets,cwd,signal) {
  let total=0;const result=[];
  for(const asset of assets){abort(signal);let bytes;
+  const sourcePath=asset.path?await safePath(cwd,asset.path,{mustExist:!asset.data}):asset.sourcePath;
   if(asset.data){const m=/^data:image\/(png|jpeg);base64,([A-Za-z0-9+/]*={0,2})$/.exec(asset.data);if(!m||m[2].length%4)throw new Error('INVALID_IMAGE_DATA: '+asset.id);bytes=Buffer.from(m[2],'base64');}
-  else if(asset.path){const path=await safePath(cwd,asset.path,{mustExist:true});bytes=await readBounded(path,8*1024*1024);}
+  else if(asset.path){bytes=await readBounded(sourcePath,8*1024*1024);}
   else throw new Error('MISSING_IMAGE: '+asset.id);
   if(bytes.length>8*1024*1024)throw new Error('IMAGE_LIMIT: 8 MiB per image');total+=bytes.length;if(total>32*1024*1024)throw new Error('ASSET_LIMIT: 32 MiB per project');
   const digest=hash(bytes);if(asset.sha256&&asset.sha256!==digest)throw new Error('ASSET_HASH_MISMATCH: '+asset.id);
   const info=validatedDimensions(bytes,digest);abort(signal);
-  const embedded={...asset,data:`data:${info.mime};base64,${bytes.toString('base64')}`,width:info.width,height:info.height,sha256:digest};delete embedded.path;result.push(embedded);
+  const embedded={...asset,...(sourcePath?{sourcePath}:{}),data:`data:${info.mime};base64,${bytes.toString('base64')}`,width:info.width,height:info.height,sha256:digest};delete embedded.path;result.push(embedded);
  }
  return result;
 }

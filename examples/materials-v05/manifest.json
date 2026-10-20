@@ -1,0 +1,467 @@
+{
+  "example": "materials-v05",
+  "candidate": "C4",
+  "status": "accepted public example",
+  "identity": "Byte-preserving portable authored-record migration, not new model production.",
+  "sourceRevision": 13,
+  "sealedProjectSha256": "a2ad88754f0715dc4340db853e11bd46b0eb3ade61bc187d8e087b70dac0f2d8",
+  "sealedPptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+  "sealedPdfSha256": "f9d4ba280b23cc6ae4741ee4c38fe7e2574e3eb989a0e1613bda6b646344ae96",
+  "sealedSpeakerNotesSha256": "e8d2d09f1226ca6cb5f35ac6237fe71ab40b6c201318e786c8ae4a9253e635c2",
+  "files": {
+    "LICENSE": {
+      "bytes": 1063,
+      "sha256": "b12d15143ff6a0a2bac4d3b06dde4b2295762805eaa5b9605093ec8d711a5ccb"
+    },
+    "README.md": {
+      "bytes": 5805,
+      "sha256": "47564a887b7378b82ea1b01dbeb414ad2028a59a56b2a03e5057da0abf451d11"
+    },
+    "analysis/analysis-run.json": {
+      "bytes": 1849,
+      "sha256": "787f2ca5e0bc109fa0237e3738af69a5ac04705611e3f5694c237ffe77fb820d"
+    },
+    "analysis/analyze.py": {
+      "bytes": 10069,
+      "sha256": "238e070223e1c2f7ecca5fd2ddad3c5fe1f508e3a1092ab8ea362e56ef6c41a1"
+    },
+    "analysis/group-summary.csv": {
+      "bytes": 385,
+      "sha256": "2d1c596b4c55e72c90016f23b6f7926420ddca9381c08b7b7365fd8afeb4de25"
+    },
+    "analysis/plot_revisions.py": {
+      "bytes": 3027,
+      "sha256": "cd20d929ea5a0ce04bbf83b6fcd98f9ce492464aa05eb0b7873b85f101185b40"
+    },
+    "analysis/statistics.json": {
+      "bytes": 9300,
+      "sha256": "9be45ce889899b8f309bba5b5905f1957531b1308c12789eced9788feedb5aa8"
+    },
+    "analysis-explanation.md": {
+      "bytes": 16254,
+      "sha256": "0ec1ebeb7ad72e1729633cf5d0ae9f692273d7d3fa4ebb517d35ad29ea10045b"
+    },
+    "assets/C-km-rmst-v2.png": {
+      "bytes": 117747,
+      "sha256": "40112107f9f0966fc1036b5c66bcfdef35192cbfca38575bf13e58e8211f9093"
+    },
+    "assets/C-km-rmst-v2.svg": {
+      "bytes": 11618,
+      "sha256": "bb8158bcc6c4d26c755257d6de0e21a81c36137ad97de9abc377e8f06e31b3ed"
+    },
+    "assets/C-km-rmst.png": {
+      "bytes": 111968,
+      "sha256": "0146487038743e6a43a3b496fc76a197fa49faec69fbc98425a83b0c7e5f8f3a"
+    },
+    "assets/all-observations-v1.png": {
+      "bytes": 67993,
+      "sha256": "76262cc1120354ce56d4fa2872b9137f71c7b92764a06a67010a1be99f8136b3"
+    },
+    "assets/all-observations-v1.svg": {
+      "bytes": 17222,
+      "sha256": "a8d41a6b93d20eb1232ec28bd658904a816d2896f678a0c06fc4f6c86e0c9b5e"
+    },
+    "deck.json": {
+      "bytes": 58434,
+      "sha256": "c27e4e1020335badbc4b09942431f76727dc9cc987ac19294b4325dc727c625b"
+    },
+    "inputs/fatigue.csv": {
+      "bytes": 2031,
+      "sha256": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+    },
+    "inputs/protocol.md": {
+      "bytes": 1410,
+      "sha256": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9"
+    },
+    "overview.png": {
+      "bytes": 267378,
+      "sha256": "29fef5d19a11fa8fecb101f31ec3d7e9c10d6a3e76bb9be4e389e076279b39d0"
+    },
+    "previews/page-0001.png": {
+      "bytes": 77737,
+      "sha256": "126c49c89f50b6ff06772fca8ac91feadde370726f3f2eba88637d35f0fa1bad"
+    },
+    "previews/page-0002.png": {
+      "bytes": 188570,
+      "sha256": "c117ae535ab1aa5e793107c9a360e83f18fd227833f1f0731436255afda83302"
+    },
+    "previews/page-0003.png": {
+      "bytes": 177625,
+      "sha256": "81ef11282a758f852dd42b40daecc85cb7a3d5b498e5567f2f7686ef93a13490"
+    },
+    "previews/page-0004.png": {
+      "bytes": 172381,
+      "sha256": "6fdd0dde9f50eb6118d9ab56b7f29c5d19f592b26be447a4ae483767bce23c19"
+    },
+    "previews/page-0005.png": {
+      "bytes": 187013,
+      "sha256": "8096d10f56faeece9c883599523bfe801c8197a8f8d09f876bb2baf4a6e2eab7"
+    },
+    "previews/page-0006.png": {
+      "bytes": 206749,
+      "sha256": "8344144e9402a8e52746a9809fa228b91400e5e1cd3092ff9ef314dc15b1c11c"
+    },
+    "previews/page-0007.png": {
+      "bytes": 202924,
+      "sha256": "206b4ab7b04bac7098212262f7a18144d1fdf9290e5d27c64928f830cc9c08fa"
+    },
+    "previews/page-0008.png": {
+      "bytes": 196744,
+      "sha256": "f4e4d84b72ef2cadb1ecc028a713388f2278488a210027bbfda3ecff64032dd5"
+    },
+    "previews/page-0009.png": {
+      "bytes": 170437,
+      "sha256": "fdb244056689b19b847b5a91404cbdeaa6eab04b4e2425d27759367d3ff85961"
+    },
+    "previews/page-0010.png": {
+      "bytes": 104196,
+      "sha256": "d2dcfeba2b8c6f43892cf717ee8b5d096c7bc3c03e9769a5550164447476b846"
+    },
+    "report.pdf": {
+      "bytes": 458469,
+      "sha256": "f9d4ba280b23cc6ae4741ee4c38fe7e2574e3eb989a0e1613bda6b646344ae96"
+    },
+    "report.pptx": {
+      "bytes": 595436,
+      "sha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990"
+    },
+    "requirements.txt": {
+      "bytes": 46,
+      "sha256": "815360a00e0e1d7a128cade3de11b66d3fe997cbd6e2c69f8081eb9bc8b88197"
+    },
+    "speaker-notes.md": {
+      "bytes": 7819,
+      "sha256": "e8d2d09f1226ca6cb5f35ac6237fe71ab40b6c201318e786c8ae4a9253e635c2"
+    }
+  },
+  "rebuildFiles": [
+    "LICENSE",
+    "analysis/analysis-run.json",
+    "analysis/analyze.py",
+    "analysis/group-summary.csv",
+    "analysis/plot_revisions.py",
+    "analysis/statistics.json",
+    "assets/C-km-rmst-v2.png",
+    "assets/C-km-rmst-v2.svg",
+    "assets/C-km-rmst.png",
+    "assets/all-observations-v1.png",
+    "assets/all-observations-v1.svg",
+    "inputs/fatigue.csv",
+    "inputs/protocol.md",
+    "requirements.txt"
+  ],
+  "authoredKeys": [
+    "title",
+    "brief",
+    "design",
+    "papers",
+    "claims",
+    "assets",
+    "slides"
+  ],
+  "recordCounts": {
+    "papers": 2,
+    "claims": 12,
+    "assets": 3,
+    "slides": 10
+  },
+  "metadataRelocations": [
+    {
+      "path": [
+        "papers",
+        0,
+        "reading",
+        "source"
+      ],
+      "portable": "inputs/protocol.md",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "inputs/protocol.md"
+    },
+    {
+      "path": [
+        "papers",
+        1,
+        "reading",
+        "source"
+      ],
+      "portable": "inputs/fatigue.csv",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "inputs/fatigue.csv"
+    },
+    {
+      "path": [
+        "assets",
+        0,
+        "sourcePath"
+      ],
+      "portable": "assets/C-km-rmst.png",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "figures/C-km-rmst.png"
+    },
+    {
+      "path": [
+        "assets",
+        0,
+        "sourceUrl"
+      ],
+      "portable": "inputs/fatigue.csv",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "inputs/fatigue.csv"
+    },
+    {
+      "path": [
+        "assets",
+        1,
+        "sourcePath"
+      ],
+      "portable": "assets/C-km-rmst-v2.png",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "figures/C-km-rmst-v2.png"
+    },
+    {
+      "path": [
+        "assets",
+        1,
+        "sourceUrl"
+      ],
+      "portable": "inputs/fatigue.csv",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "inputs/fatigue.csv"
+    },
+    {
+      "path": [
+        "assets",
+        2,
+        "sourcePath"
+      ],
+      "portable": "assets/all-observations-v1.png",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "figures/all-observations-v1.png"
+    },
+    {
+      "path": [
+        "assets",
+        2,
+        "sourceUrl"
+      ],
+      "portable": "inputs/fatigue.csv",
+      "kind": "local-path-metadata",
+      "originalRelativeToProductionRoot": "inputs/fatigue.csv"
+    }
+  ],
+  "assets": [
+    {
+      "id": "C-km",
+      "path": "assets/C-km-rmst.png",
+      "dataUriPrefix": "data:image/png;base64",
+      "bytes": 111968,
+      "sha256": "0146487038743e6a43a3b496fc76a197fa49faec69fbc98425a83b0c7e5f8f3a",
+      "width": 1890,
+      "height": 1044,
+      "usedOnPages": [],
+      "registeredButUnused": true,
+      "sourceFigureFileExactlyMatchesEmbeddedBytes": true,
+      "provenance": "author-created",
+      "sourceVersion": "资料版本1，2026-10-20；分析脚本与输入哈希已保存"
+    },
+    {
+      "id": "C-km-v2",
+      "path": "assets/C-km-rmst-v2.png",
+      "dataUriPrefix": "data:image/png;base64",
+      "bytes": 117747,
+      "sha256": "40112107f9f0966fc1036b5c66bcfdef35192cbfca38575bf13e58e8211f9093",
+      "width": 1584,
+      "height": 990,
+      "usedOnPages": [
+        5
+      ],
+      "registeredButUnused": false,
+      "sourceFigureFileExactlyMatchesEmbeddedBytes": true,
+      "provenance": "author-created",
+      "sourceVersion": "资料版本1，2026-10-20；分析脚本与输入哈希已保存"
+    },
+    {
+      "id": "all-observations",
+      "path": "assets/all-observations-v1.png",
+      "dataUriPrefix": "data:image/png;base64",
+      "bytes": 67993,
+      "sha256": "76262cc1120354ce56d4fa2872b9137f71c7b92764a06a67010a1be99f8136b3",
+      "width": 1620,
+      "height": 827,
+      "usedOnPages": [
+        3
+      ],
+      "registeredButUnused": false,
+      "sourceFigureFileExactlyMatchesEmbeddedBytes": true,
+      "provenance": "author-created",
+      "sourceVersion": "资料版本1，2026-10-20；scripts/plot_revisions.py复算绘制"
+    }
+  ],
+  "previews": [
+    {
+      "page": 1,
+      "slideId": "s01-cover",
+      "title": "金属构件改性工艺的疲劳寿命比较",
+      "path": "previews/page-0001.png",
+      "sha256": "126c49c89f50b6ff06772fca8ac91feadde370726f3f2eba88637d35f0fa1bad",
+      "bytes": 77737,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 2,
+      "slideId": "s02-design",
+      "title": "现有48件中，只有B批可作同条件对比",
+      "path": "previews/page-0002.png",
+      "sha256": "c117ae535ab1aa5e793107c9a360e83f18fd227833f1f0731436255afda83302",
+      "bytes": 188570,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 3,
+      "slideId": "s03-mixture",
+      "title": "混合对比的41.5%，包含条件构成差",
+      "path": "previews/page-0003.png",
+      "sha256": "81ef11282a758f852dd42b40daecc85cb7a3d5b498e5567f2f7686ef93a13490",
+      "bytes": 177625,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 4,
+      "slideId": "s04-B-effect",
+      "title": "B批：点估计为正，区间仍含负差",
+      "path": "previews/page-0004.png",
+      "sha256": "6fdd0dde9f50eb6118d9ab56b7f29c5d19f592b26be447a4ae483767bce23c19",
+      "bytes": 172381,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 5,
+      "slideId": "s05-runout",
+      "title": "两件runout改变的是寿命解释",
+      "path": "previews/page-0005.png",
+      "sha256": "8096d10f56faeece9c883599523bfe801c8197a8f8d09f876bb2baf4a6e2eab7",
+      "bytes": 187013,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 6,
+      "slideId": "s06-explanations",
+      "title": "替代解释要对应具体缺口与验证",
+      "path": "previews/page-0006.png",
+      "sha256": "8344144e9402a8e52746a9809fa228b91400e5e1cd3092ff9ef314dc15b1c11c",
+      "bytes": 206749,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 7,
+      "slideId": "s07-next-trial",
+      "title": "新批试件：把工艺比较放进共同条件",
+      "path": "previews/page-0007.png",
+      "sha256": "206b4ab7b04bac7098212262f7a18144d1fdf9290e5d27c64928f830cc9c08fa",
+      "bytes": 202924,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 8,
+      "slideId": "s08-decision",
+      "title": "预先分开收益、反向、近似与未定",
+      "path": "previews/page-0008.png",
+      "sha256": "f4e4d84b72ef2cadb1ecc028a713388f2278488a210027bbfda3ecff64032dd5",
+      "bytes": 196744,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 9,
+      "slideId": "s09-synthesis",
+      "title": "阶段判断：推进验证，暂不确认工艺收益",
+      "path": "previews/page-0009.png",
+      "sha256": "fdb244056689b19b847b5a91404cbdeaa6eab04b4e2425d27759367d3ff85961",
+      "bytes": 170437,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    },
+    {
+      "page": 10,
+      "slideId": "s10-sources",
+      "title": "原始资料与来源身份",
+      "path": "previews/page-0010.png",
+      "sha256": "d2dcfeba2b8c6f43892cf717ee8b5d096c7bc3c03e9769a5550164447476b846",
+      "bytes": 104196,
+      "width": 1441,
+      "height": 811,
+      "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+      "byteIdentical": true
+    }
+  ],
+  "overview": {
+    "path": "overview.png",
+    "sameBytesAsFinalContactSheet": true,
+    "sourcePptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990"
+  },
+  "nativeObjects": {
+    "totals": {
+      "shapes": 322,
+      "connectors": 0,
+      "pictures": 2,
+      "tables": 4,
+      "chartReferences": 0,
+      "textRuns": 227
+    },
+    "notesSlides": 10,
+    "nativeChartParts": 0,
+    "embeddedWorkbookCount": 0,
+    "embeddedFontCount": 0
+  },
+  "portability": {
+    "allSevenAuthoredFieldsInverseEqual": true,
+    "analysisScriptsByteIdentical": true,
+    "analysisRootStillSampleRoot": true,
+    "unshippedFonts": [
+      "fonts/NotoSansCJKsc-Regular.otf",
+      "fonts/NotoSansCJKsc-Bold.otf"
+    ],
+    "originalPptxRetainsNonSensitiveAbsoluteSourceNotesOnPages": [
+      3,
+      5
+    ]
+  },
+  "reviewScope": "Independent scientific and all-10-page visual acceptance of the sealed PPTX; this directory additionally underwent file, provenance, portability and native-object auditing.",
+  "independentAcceptance": {
+    "status": "accepted",
+    "scope": [
+      "scientific content",
+      "all 10 actual final-PPTX rendered pages"
+    ],
+    "blocking": 0,
+    "mustFix": 0,
+    "optional": 3,
+    "pptxSha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+    "optionalSuggestionsApplied": false
+  }
+}

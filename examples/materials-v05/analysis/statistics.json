@@ -1,0 +1,397 @@
+{
+  "identity": "教学模拟数据，不对应真实实验、机构、项目或论文",
+  "version": "资料版本1，2026-10-20",
+  "input_sha256": {
+    "inputs/protocol.md": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9",
+    "inputs/fatigue.csv": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+  },
+  "data_checks": {
+    "records": 48,
+    "unique_specimens": 48,
+    "failed": 46,
+    "runout": 2,
+    "no_other_censoring_recorded": true,
+    "all_runouts_at_tau": true,
+    "independent_unit": "specimen, as stipulated in protocol"
+  },
+  "tau": 500000,
+  "groups": {
+    "A_conventional": {
+      "batch": "A",
+      "process": "conventional",
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "mean": 236265.91666666666,
+      "sd": 91667.12726387037,
+      "median": 221791.0,
+      "minimum": 125176.0,
+      "maximum": 429340.0,
+      "values": [
+        128759.0,
+        429340.0,
+        300441.0,
+        209956.0,
+        176853.0,
+        317160.0,
+        140323.0,
+        125176.0,
+        278981.0,
+        233626.0,
+        196834.0,
+        297742.0
+      ],
+      "specimen_ids": [
+        "A-con-01",
+        "A-con-02",
+        "A-con-03",
+        "A-con-04",
+        "A-con-05",
+        "A-con-06",
+        "A-con-07",
+        "A-con-08",
+        "A-con-09",
+        "A-con-10",
+        "A-con-11",
+        "A-con-12"
+      ]
+    },
+    "B_conventional": {
+      "batch": "B",
+      "process": "conventional",
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "mean": 303682.8333333333,
+      "sd": 30977.28122301402,
+      "median": 309945.0,
+      "minimum": 233869.0,
+      "maximum": 349955.0,
+      "values": [
+        301508.0,
+        308647.0,
+        311243.0,
+        288464.0,
+        349955.0,
+        233869.0,
+        297200.0,
+        319524.0,
+        327379.0,
+        264025.0,
+        311649.0,
+        330731.0
+      ],
+      "specimen_ids": [
+        "B-con-01",
+        "B-con-02",
+        "B-con-03",
+        "B-con-04",
+        "B-con-05",
+        "B-con-06",
+        "B-con-07",
+        "B-con-08",
+        "B-con-09",
+        "B-con-10",
+        "B-con-11",
+        "B-con-12"
+      ]
+    },
+    "B_modified": {
+      "batch": "B",
+      "process": "modified",
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "mean": 329305.0833333333,
+      "sd": 56622.7126216043,
+      "median": 317262.0,
+      "minimum": 243382.0,
+      "maximum": 451032.0,
+      "values": [
+        243382.0,
+        312279.0,
+        315384.0,
+        451032.0,
+        337178.0,
+        365648.0,
+        378531.0,
+        305223.0,
+        319140.0,
+        374917.0,
+        275120.0,
+        273827.0
+      ],
+      "specimen_ids": [
+        "B-mod-01",
+        "B-mod-02",
+        "B-mod-03",
+        "B-mod-04",
+        "B-mod-05",
+        "B-mod-06",
+        "B-mod-07",
+        "B-mod-08",
+        "B-mod-09",
+        "B-mod-10",
+        "B-mod-11",
+        "B-mod-12"
+      ]
+    },
+    "C_modified": {
+      "batch": "C",
+      "process": "modified",
+      "n": 12,
+      "failed": 10,
+      "runout": 2,
+      "stress_MPa": 180,
+      "mean": 434824.3333333333,
+      "sd": 43686.73798832554,
+      "median": 428180.5,
+      "minimum": 384329.0,
+      "maximum": 500000.0,
+      "values": [
+        384329.0,
+        500000.0,
+        435960.0,
+        388885.0,
+        386565.0,
+        410184.0,
+        428320.0,
+        500000.0,
+        472147.0,
+        428041.0,
+        400964.0,
+        482497.0
+      ],
+      "specimen_ids": [
+        "C-mod-01",
+        "C-mod-02",
+        "C-mod-03",
+        "C-mod-04",
+        "C-mod-05",
+        "C-mod-06",
+        "C-mod-07",
+        "C-mod-08",
+        "C-mod-09",
+        "C-mod-10",
+        "C-mod-11",
+        "C-mod-12"
+      ]
+    }
+  },
+  "within_B": {
+    "estimate": 25622.25,
+    "se": 18631.790790202474,
+    "degrees_of_freedom": 17.04322629997631,
+    "lower": -13679.799052276387,
+    "upper": 64924.29905227639,
+    "p_two_sided": 0.1868813618349431,
+    "method": "Welch t, two-sided 95%; exploratory model-based interval, not causal",
+    "relative_point_difference": 0.08437174310698059,
+    "bootstrap_percentile_95": [
+      -8154.16249999998,
+      61679.789583333324
+    ],
+    "bootstrap_seed": 20261020,
+    "bootstrap_resamples": 100000,
+    "geometric_mean_ratio_sensitivity": {
+      "estimate": 1.075661690446989,
+      "lower": 0.952878311607796,
+      "upper": 1.214266353006798
+    },
+    "median_difference_descriptive": 7317.0,
+    "leave_one_out_sensitivity": {
+      "modified_max_id": "B-mod-04",
+      "modified_max_value": 451032.0,
+      "difference_if_only_max_omitted": 14556.166666666686,
+      "note": "Sensitivity only; all 24 B specimens are retained in primary analysis. No source supports excluding the maximum."
+    }
+  },
+  "pooled": {
+    "conventional": {
+      "n": 24,
+      "restricted_mean": 269974.375
+    },
+    "modified": {
+      "n": 24,
+      "restricted_mean": 382064.7083333333
+    },
+    "difference": 112090.33333333331,
+    "relative_point_difference": 0.4151887872074278
+  },
+  "descriptive_decomposition": {
+    "within_B": 25622.25,
+    "half_conventional_B_minus_A": 33708.45833333333,
+    "half_modified_C_minus_B": 52759.625
+  },
+  "C": {
+    "km_rmst_to_tau": 434824.3333333333,
+    "survival_just_before_tau": 0.16666666666666663,
+    "runout_ids": [
+      "C-mod-02",
+      "C-mod-08"
+    ],
+    "km_event_table": [
+      {
+        "cycles": 384329,
+        "event": 1,
+        "remaining": 11,
+        "survival": 0.9166666666666666
+      },
+      {
+        "cycles": 386565,
+        "event": 1,
+        "remaining": 10,
+        "survival": 0.8333333333333333
+      },
+      {
+        "cycles": 388885,
+        "event": 1,
+        "remaining": 9,
+        "survival": 0.75
+      },
+      {
+        "cycles": 400964,
+        "event": 1,
+        "remaining": 8,
+        "survival": 0.6666666666666666
+      },
+      {
+        "cycles": 410184,
+        "event": 1,
+        "remaining": 7,
+        "survival": 0.5833333333333333
+      },
+      {
+        "cycles": 428041,
+        "event": 1,
+        "remaining": 6,
+        "survival": 0.4999999999999999
+      },
+      {
+        "cycles": 428320,
+        "event": 1,
+        "remaining": 5,
+        "survival": 0.4166666666666666
+      },
+      {
+        "cycles": 435960,
+        "event": 1,
+        "remaining": 4,
+        "survival": 0.33333333333333326
+      },
+      {
+        "cycles": 472147,
+        "event": 1,
+        "remaining": 3,
+        "survival": 0.24999999999999994
+      },
+      {
+        "cycles": 482497,
+        "event": 1,
+        "remaining": 2,
+        "survival": 0.16666666666666663
+      }
+    ]
+  },
+  "planning": {
+    "delta_discussion_value": 30000,
+    "delta_justification": "Unvalidated discussion value; protocol provides no engineering relevance threshold.",
+    "alpha_two_sided": 0.05,
+    "target_power": 0.8,
+    "baseline_pooled_sd": 45638.38043028305,
+    "scenarios": [
+      {
+        "sd_multiplier": 1.0,
+        "assumed_sd": 45638.38043028305,
+        "n_per_arm_normal_approx": 37
+      },
+      {
+        "sd_multiplier": 1.25,
+        "assumed_sd": 57047.97553785381,
+        "n_per_arm_normal_approx": 57
+      },
+      {
+        "sd_multiplier": 1.5,
+        "assumed_sd": 68457.57064542457,
+        "n_per_arm_normal_approx": 82
+      }
+    ],
+    "caveat": "Normal approximation for a simple independent equal-size two-arm comparison; ignores small-sample t correction, future censoring/loss, and batch variability; final design must be recalculated."
+  },
+  "decision_examples": [
+    {
+      "interval_in_10k": [
+        4,
+        7
+      ],
+      "judgement": "支持超过实际阈值的正向收益",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        -7,
+        -4
+      ],
+      "judgement": "支持超过实际阈值的反向损害",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        -2,
+        2
+      ],
+      "judgement": "区间位于实际近似带内（以预先同意的阈值为前提）",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        1,
+        5
+      ],
+      "judgement": "方向为正，是否超过实际阈值仍未定",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        -5,
+        -1
+      ],
+      "judgement": "方向为负，是否超过反向实际阈值仍未定",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        -5,
+        4
+      ],
+      "judgement": "包含零且越过实际阈值：方向及实际幅度未定",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        3,
+        4
+      ],
+      "judgement": "方向为正，是否超过实际阈值仍未定",
+      "hypothetical": true
+    },
+    {
+      "interval_in_10k": [
+        -4,
+        -3
+      ],
+      "judgement": "方向为负，是否超过反向实际阈值仍未定",
+      "hypothetical": true
+    }
+  ],
+  "current_B_under_proposed_rule": "包含零且越过实际阈值：方向及实际幅度未定",
+  "runtime": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8"
+  }
+}

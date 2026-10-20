@@ -1,5 +1,6 @@
 /** Native PPTX export and a self-contained SVG/HTML presentation from one scene graph. */
 import PptxGenJS from 'pptxgenjs';
+import { unzipSync, zipSync, strFromU8, strToU8 } from 'fflate';
 import { buildScenes } from './scene.mjs';
 
 const esc = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
@@ -8,6 +9,8 @@ const abort = signal => { if (signal?.aborted) throw signal.reason || new Error(
 const inch = px => px / 96;
 const pos = n => ({ x: inch(n.x), y: inch(n.y), w: inch(n.w), h: inch(n.h) });
 const drawColors = p => [p.accent, p.secondary, p.gold, '#70859A', '#385866', '#929EAB'];
+const chartDisplayValue = (value, chart) => chart.valueDecimals === undefined ? String(value) : value.toFixed(chart.valueDecimals);
+const chartValueFormat = chart => chart.valueDecimals === undefined ? '0.############' : chart.valueDecimals ? '0.' + '0'.repeat(chart.valueDecimals) : '0';
 const chartScale = values => {
   const lo = Math.min(0, ...values), hi = Math.max(0, ...values), span = hi - lo || 1;
   const rawStep = span / 4, base = 10 ** Math.floor(Math.log10(rawStep));
@@ -15,6 +18,21 @@ const chartScale = values => {
   const min = Math.floor(lo / step) * step, max = Math.ceil(hi / step) * step;
   return { min, max: max === min ? min + step * 4 : max, step };
 };
+
+// LibreOffice imports an omitted category-label rotation as permission to thin
+// labels, even with tickLblSkip=1. Explicit rot="0" keeps the scene's category
+// labels upright and disables that suppression (oox/source/drawingml/chart/axisconverter.cxx).
+// PptxGenJS 4.0.1 tests catAxisLabelRotate for truthiness, so its public option
+// cannot serialize zero. Preserve any rotation already explicitly serialized.
+function explicitCategoryLabelRotation(bytes) {
+  const parts=unzipSync(bytes);let changed=false;
+  for(const path of Object.keys(parts).filter(path=>/^ppt\/charts\/chart\d+\.xml$/.test(path))){
+    const xml=strFromU8(parts[path]);
+    const updated=xml.replace(/<c:catAx\b[^>]*>[\s\S]*?<\/c:catAx>/g,axis=>axis.replace(/(<c:txPr>\s*<a:bodyPr)\b(?![^>]*\brot=)/,'$1 rot="0"'));
+    if(updated!==xml){parts[path]=strToU8(updated);changed=true;}
+  }
+  return changed?Buffer.from(zipSync(parts,{level:6})):Buffer.from(bytes);
+}
 
 // Every dynamic SVG attribute goes through the same XML attribute encoder.
 // Paint values are additionally restricted: template fields cannot request external SVG resources.
@@ -54,8 +72,8 @@ function chartSvg(node) {
       const color=colors[(series.length===1?i:s)%colors.length];
       out += horizontal ? svgEl('rect', { x: Math.min(vx(0), vx(value)), y: y0 + band, width: Math.abs(vx(value) - vx(0)), height: Math.max(1, thickness - 2), fill: color })
         : svgEl('rect', { x: x0 + band, y: Math.min(vy(0), vy(value)), width: Math.max(1, thickness - 3), height: Math.abs(vy(value) - vy(0)), fill: color });
-      out += horizontal ? text(vx(value) + (value < 0 ? -8 : 8), y0 + band + thickness / 2 + 5, value, value < 0 ? 'end' : 'start', 22, p.ink)
-        : text(x0 + band + thickness / 2, vy(value) + (value < 0 ? 24 : -10), value, 'middle', 22, p.ink);
+      out += horizontal ? text(vx(value) + (value < 0 ? -8 : 8), y0 + band + thickness / 2 + 5, chartDisplayValue(value, c), value < 0 ? 'end' : 'start', 22, p.ink)
+        : text(x0 + band + thickness / 2, vy(value) + (value < 0 ? 24 : -10), chartDisplayValue(value, c), 'middle', 22, p.ink);
     }
   }
   out += horizontal ? line(vx(0), y0, vx(0), y0 + height, p.ink, 1.5) : line(x0, vy(0), x0 + width, vy(0), p.ink, 1.5);
@@ -66,13 +84,15 @@ function chartSvg(node) {
 
 function tableSvg(n) {
   const p=n.palette,rows=[n.table.columns,...n.table.rows];let y=n.y,out='';
+  const rowFill=ri=>ri===0?(n.academicStyle==='band'?p.accent:p.tint):(n.table.highlightRows?.includes(ri-1)?p.tint:p.paper);
+  const rowInk=ri=>ri===0?(n.academicStyle==='band'?'#FFFFFF':p.accent):p.ink;
   for(let ri=0;ri<rows.length;ri++){
     let x=n.x;
-    out+=svgEl('rect',{x:n.x,y,width:n.w,height:n.rowHeights[ri],fill:paint(ri===0?p.tint:p.paper,'#FFFFFF')});
+    out+=svgEl('rect',{x:n.x,y,width:n.w,height:n.rowHeights[ri],fill:paint(rowFill(ri),'#FFFFFF')});
     for(let ci=0;ci<rows[ri].length;ci++){
       const lines=n.cellLines[ri][ci],tx=x+n.padX;
       const content=lines.map((line,li)=>svgEl('tspan',{x:tx,y:y+n.padY+n.fontSize*.96+li*n.fontSize*n.lineHeight},esc(line))).join('');
-      out+=svgEl('text',{'data-cell':`${ri}:${ci}`,'font-family':n.fontFamily,'font-size':n.fontSize,'font-weight':ri===0?700:400,fill:paint(ri===0?p.accent:p.ink,'#171C22')},content);
+      out+=svgEl('text',{'data-cell':`${ri}:${ci}`,'font-family':n.fontFamily,'font-size':n.fontSize,'font-weight':ri===0?700:400,fill:paint(rowInk(ri),'#171C22')},content);
       x+=n.colWidths[ci];
     }
     y+=n.rowHeights[ri];
@@ -168,18 +188,23 @@ async function nativePptx(project, scenes, signal) {
       }
       else if(n.kind==='table'){
         const p=n.palette,none={type:'none',pt:0,color:hex(p.paper)},all=[n.table.columns,...n.table.rows];
-        const rows=all.map((row,ri)=>row.map((cell,ci)=>({text:n.cellLines[ri][ci].join('\n'),options:{bold:ri===0,color:hex(ri===0?p.accent:p.ink),fill:{color:hex(ri===0?p.tint:p.paper)},lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceBefore:0,paraSpaceAfter:0,lang:'zh-CN',border:[ri===0?{type:'solid',pt:1.125,color:hex(p.accent)}:none,none,{type:'solid',pt:(ri===0||ri===all.length-1)?.975:.525,color:hex(ri===0||ri===all.length-1?p.accent:p.line)},none]}})));
+        const rowFill=ri=>ri===0?(n.academicStyle==='band'?p.accent:p.tint):(n.table.highlightRows?.includes(ri-1)?p.tint:p.paper);
+        const rowInk=ri=>ri===0?(n.academicStyle==='band'?'#FFFFFF':p.accent):p.ink;
+        const rows=all.map((row,ri)=>row.map((cell,ci)=>({text:n.cellLines[ri][ci].join('\n'),options:{bold:ri===0,color:hex(rowInk(ri)),fill:{color:hex(rowFill(ri))},lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceBefore:0,paraSpaceAfter:0,lang:'zh-CN',border:[ri===0?{type:'solid',pt:1.125,color:hex(p.accent)}:none,none,{type:'solid',pt:(ri===0||ri===all.length-1)?.975:.525,color:hex(ri===0||ri===all.length-1?p.accent:p.line)},none]}})));
         slide.addTable(rows,{...base,colW:n.colWidths.map(inch),rowH:n.rowHeights.map(inch),autoPage:false,fontFace:n.fontFamily,fontSize:n.fontSize*.75,color:hex(p.ink),align:'left',valign:'top',margin:[n.padY*.75,n.padX*.75,n.padY*.75,n.padX*.75],border:none,lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceAfter:0,paraSpaceBefore:0,verbose:false});
       }
       else if (n.kind === 'chart') {
         const c = n.chart, p = n.palette;
         const values = c.series.flatMap(s => s.values), { min, max, step } = chartScale(values);
-        slide.addChart(c.kind === 'line' ? pptx.ChartType.line : pptx.ChartType.bar, c.series.map(s => ({ name: s.name, labels: c.categories, values: s.values })), { ...base, catAxisLabelFontFace: n.fontFamily, valAxisLabelFontFace: n.fontFamily, legendFontFace: n.fontFamily, catAxisLabelFontSize: 15.75, valAxisLabelFontSize: 15, legendFontSize: 14.25, catAxisLabelColor: hex(p.ink), valAxisLabelColor: hex(p.muted), chartColors: drawColors(p).map(hex), showLegend: c.series.length > 1, legendPos: 'b', showTitle: false, showValue: c.kind !== 'line', dataLabelPosition: 'outEnd', dataLabelColor: hex(p.ink), dataLabelFontFace: n.fontFamily, dataLabelFontSize: 16.5, dataLabelFormatCode: '0.############', showBorder: false, lineDataSymbol: c.kind === 'line' ? 'circle' : 'none', lineDataSymbolSize: 4, lineSize: 2, showValAxisTitle: Boolean(c.unit), valAxisTitle: c.unit || '', valAxisTitleFontSize: 14.25, valAxisTitleFontFace: n.fontFamily, valAxisTitleColor: hex(p.muted), valAxisMinVal: min, valAxisMaxVal: max, valAxisMajorUnit: step, showCatName: false, catAxisLineColor: hex(p.line), valAxisLineColor: hex(p.line), valGridLine: { color: hex(p.line), width: .6 }, chartArea: { fill: { color: hex(p.paper) }, border: { color: hex(p.paper), pt: 0 } }, plotArea: { fill: { color: hex(p.paper) } }, ...(c.kind === 'line' ? {} : { barDir: c.kind === 'bar' ? 'bar' : 'col', catAxisLabelPos: 'low', barGrouping: 'clustered', barGapWidthPct: 60 }) });
+        // Request every category tick. Upright labels also require explicit zero
+        // rotation below: LibreOffice's overlap suppression ignores tickLblSkip alone.
+        slide.addChart(c.kind === 'line' ? pptx.ChartType.line : pptx.ChartType.bar, c.series.map(s => ({ name: s.name, labels: c.categories, values: s.values })), { ...base, catAxisLabelFrequency: '1', catAxisLabelFontFace: n.fontFamily, valAxisLabelFontFace: n.fontFamily, legendFontFace: n.fontFamily, catAxisLabelFontSize: 15.75, valAxisLabelFontSize: 15, legendFontSize: 14.25, catAxisLabelColor: hex(p.ink), valAxisLabelColor: hex(p.muted), chartColors: drawColors(p).map(hex), showLegend: c.series.length > 1, legendPos: 'b', showTitle: false, showValue: c.kind !== 'line', dataLabelPosition: 'outEnd', dataLabelColor: hex(p.ink), dataLabelFontFace: n.fontFamily, dataLabelFontSize: 16.5, dataLabelFormatCode: chartValueFormat(c), showBorder: false, lineDataSymbol: c.kind === 'line' ? 'circle' : 'none', lineDataSymbolSize: 4, lineSize: 2, showValAxisTitle: Boolean(c.unit), valAxisTitle: c.unit || '', valAxisTitleFontSize: 14.25, valAxisTitleFontFace: n.fontFamily, valAxisTitleColor: hex(p.muted), valAxisMinVal: min, valAxisMaxVal: max, valAxisMajorUnit: step, showCatName: false, catAxisLineColor: hex(p.line), valAxisLineColor: hex(p.line), valGridLine: { color: hex(p.line), width: .6 }, chartArea: { fill: { color: hex(p.paper) }, border: { color: hex(p.paper), pt: 0 } }, plotArea: { fill: { color: hex(p.paper) } }, ...(c.kind === 'line' ? {} : { barDir: c.kind === 'bar' ? 'bar' : 'col', catAxisLabelPos: 'low', barGrouping: 'clustered', barGapWidthPct: 60 }) });
       } else throw new Error(`不支持的场景对象：${n.kind}`);
     }
     slide.addNotes(page.notes || '');
   }
-  abort(signal); const bytes = await pptx.write({ outputType: 'nodebuffer', compression: true }); abort(signal); return Buffer.from(bytes);
+  abort(signal); const bytes = await pptx.write({ outputType: 'nodebuffer', compression: true }); abort(signal);
+  return scenes.pages.some(page=>page.nodes.some(n=>n.kind==='chart'))?explicitCategoryLabelRotation(bytes):Buffer.from(bytes);
 }
 
 export async function renderProject(project, { signal } = {}) {

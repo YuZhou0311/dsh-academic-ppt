@@ -1,0 +1,65 @@
+{
+  "within_B": {
+    "estimate": 25622.25,
+    "se": 18631.790790202474,
+    "degrees_of_freedom": 17.04322629997631,
+    "lower": -13679.799052276387,
+    "upper": 64924.29905227639,
+    "p_two_sided": 0.1868813618349431,
+    "method": "Welch t, two-sided 95%; exploratory model-based interval, not causal",
+    "relative_point_difference": 0.08437174310698059,
+    "bootstrap_percentile_95": [
+      -8154.16249999998,
+      61679.789583333324
+    ],
+    "bootstrap_seed": 20261020,
+    "bootstrap_resamples": 100000,
+    "geometric_mean_ratio_sensitivity": {
+      "estimate": 1.075661690446989,
+      "lower": 0.952878311607796,
+      "upper": 1.214266353006798
+    },
+    "median_difference_descriptive": 7317.0,
+    "leave_one_out_sensitivity": {
+      "modified_max_id": "B-mod-04",
+      "modified_max_value": 451032.0,
+      "difference_if_only_max_omitted": 14556.166666666686,
+      "note": "Sensitivity only; all 24 B specimens are retained in primary analysis. No source supports excluding the maximum."
+    }
+  },
+  "pooled": {
+    "conventional": {
+      "n": 24,
+      "restricted_mean": 269974.375
+    },
+    "modified": {
+      "n": 24,
+      "restricted_mean": 382064.7083333333
+    },
+    "difference": 112090.33333333331,
+    "relative_point_difference": 0.4151887872074278
+  },
+  "decomposition": {
+    "within_B": 25622.25,
+    "half_conventional_B_minus_A": 33708.45833333333,
+    "half_modified_C_minus_B": 52759.625
+  },
+  "C_RMST": 434824.3333333333,
+  "planning": [
+    {
+      "sd_multiplier": 1.0,
+      "assumed_sd": 45638.38043028305,
+      "n_per_arm_normal_approx": 37
+    },
+    {
+      "sd_multiplier": 1.25,
+      "assumed_sd": 57047.97553785381,
+      "n_per_arm_normal_approx": 57
+    },
+    {
+      "sd_multiplier": 1.5,
+      "assumed_sd": 68457.57064542457,
+      "n_per_arm_normal_approx": 82
+    }
+  ]
+}

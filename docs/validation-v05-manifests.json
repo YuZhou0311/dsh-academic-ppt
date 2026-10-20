@@ -1,0 +1,45 @@
+{
+  "version": "0.5.0",
+  "date": "2026-10-20",
+  "disclosure_scope": "Public summary of source-integrity checks and explicitly authorized teaching-sample identities. This file omits all template-asset paths/fingerprints, all historical per-file fingerprints and aggregate source-snapshot fingerprints. Exact full manifests remain in the audit records; omission does not change their historical identities or acceptance outcomes.",
+  "source_check_method": "After each production, compare every sealed plugin file byte-for-byte by SHA-256, check for additional files, and compare final C4 runtime with release source. Integrity checks do not prove scientific correctness, visual quality, OS-level isolation, or all model actions.",
+  "candidates": [
+    {
+      "candidate": "C1",
+      "sealed_plugin_file_count": 120,
+      "integrity_check": "Full original per-file digests verified in the audit; no plugin files changed by the producer.",
+      "purpose": "First materials trial and independently accepted theory reading"
+    },
+    {
+      "candidate": "C2",
+      "sealed_plugin_file_count": 120,
+      "integrity_check": "Full original per-file digests verified in the audit; no plugin files changed by the producer.",
+      "purpose": "Second materials trial"
+    },
+    {
+      "candidate": "C3",
+      "sealed_plugin_file_count": 120,
+      "integrity_check": "Full original per-file digests verified in the audit; no plugin files changed by the producer.",
+      "purpose": "Third materials trial; rejected and with a single-producer protocol deviation"
+    },
+    {
+      "candidate": "C4",
+      "sealed_plugin_file_count": 120,
+      "integrity_check": "Full original per-file digests verified in the audit; no plugin files changed by the producer.",
+      "purpose": "Final strict single-producer materials trial; independently accepted"
+    }
+  ],
+  "final_materials_protocol": {
+    "context": "fork_turns=none; original study inputs and references, sealed plugin, no old outputs or supplied answers",
+    "producer_attestation": "No delegation or reading out-of-scope answers, reviews or prior results; a producer-visible attestation, not an OS access audit.",
+    "root_coordination": "Two operational messages only, with no scientific answers, page criticism or repair instructions.",
+    "sealed_revision": 13,
+    "plugin_files_unchanged_after_production": 120
+  },
+  "authorized_materials_artifacts": {
+    "pptx_sha256": "2e83d70d3fc676d36c000312c6187f44b5392b5a514367c36ba1f6efcb2fe990",
+    "pdf_sha256": "f9d4ba280b23cc6ae4741ee4c38fe7e2574e3eb989a0e1613bda6b646344ae96",
+    "speaker_notes_sha256": "e8d2d09f1226ca6cb5f35ac6237fe71ab40b6c201318e786c8ae4a9253e635c2"
+  },
+  "publication_note": "Automatic publication review required reducing public metadata. This public summary intentionally does not contain the full 120-file maps; complete local audit records and all failed trial judgments were retained."
+}

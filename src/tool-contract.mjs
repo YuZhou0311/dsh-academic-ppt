@@ -1,6 +1,6 @@
 import {
   briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designSchema,
-  assessmentSchema, assertToolArgs,
+  assessmentSchema, capabilitiesSchema, assertToolArgs,
 } from './schema.mjs'
 
 const contracts = {
@@ -22,15 +22,20 @@ const contracts = {
   },
   slide: {
     schema: slideSchema, recordKey: 'slides', maxItems: 8,
-    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改。'],
+    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿优先layout=academic + composition.rows。panel引用本页cards/figureIds/chart/table/nodes/plots；每项恰好显示一次，plotId支持同页多个科学图。机制图用diagram.rows指定节点行、edges明确关系。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
   },
   design: {
     schema: designSchema, recordKey: 'design',
-    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', '用户PPTX先由academic_ppt_template生成profile；以templateProfilePaths导入已保存profile，避免复制大量原生节点。模板旧文字不作为新报告内容。'],
+    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', '用户PPTX先由academic_ppt_template取得suggestedDesign与真实预览；看图选定主模板后把suggestedDesign作为design记录。system控制实际封面、章节页眉、面板与字号；templateProfilePaths仅导入局部背景组件。模板旧文字和机构不作为当前内容。'],
   },
   assessment: {
     schema: assessmentSchema, recordKey: 'observations',
     notes: ['每条对应实际查看的最终PPTX页面，记录内容核查、可读性核查及仍存问题；无问题时issue填写空字符串。', '通过academic_ppt_review提交observations及同一产物pptxSha256、reviewedSlides、basis、reviewer、result。跨版本已看页面不能冒充对最终同一hash的逐页检查。'],
+    capabilityRecord: {
+      schema: capabilitiesSchema, recordKey: 'capabilities',
+      submission: '可在init时提供，或以recordsPath批次的根级capabilities登记；这是有修订的内容更新。',
+      notes: ['只记录本次宿主已核实的图像输入路径和依据；真实收到并看过图像可在source中记载具体入口和观察，模型名、OCR或成功生成PNG都不能单独证明图像输入。', 'unknown/unsupported时不能冒充human或只为通过检查填supported。尽早核实并登记；构建后更新能力也须重新构建、渲染和审查当前版本。'],
+    },
   },
 }
 

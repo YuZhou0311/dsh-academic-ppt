@@ -80,3 +80,19 @@ test('file-backed records and a real slide-content edit return a committed JSON-
   assert.equal(saved.revision, 2)
   assert.equal(saved.slides[0].title, 'After')
 })
+
+test('assessment exposes the public capability record without automatically upgrading an unknown host', async t => {
+  const base=resolve('.test-output');await mkdir(base,{recursive:true})
+  const cwd=await mkdtemp(join(base,'capability-contract-'));t.after(()=>rm(cwd,{recursive:true,force:true}))
+  const exec={agent:{session:{header:{cwd}}}},tools=new Map(buildAcademicTools().map(tool=>[tool.name,tool]))
+  const contract=await tools.get('academic_ppt_contract').execute({topic:'assessment'},exec)
+  assert.deepEqual(contract.capabilityRecord.schema.properties.imageInput.enum,['supported','unsupported','unknown'])
+  assert.ok(formatToolResult('academic_ppt_contract',contract).includes(JSON.stringify(contract.capabilityRecord.schema)))
+  const created=await tools.get('academic_ppt_init').execute({projectDir:'report',title:'Capability contract fixture'},exec)
+  assert.equal(JSON.parse(await readFile(created.projectPath,'utf8')).capabilities.imageInput,'unknown')
+  const capabilities={imageInput:'supported',source:'Synthetic test fixture: the test explicitly supplies the declared host capability; no real visual review is claimed.'}
+  await writeFile(join(cwd,'capability.json'),JSON.stringify({[contract.capabilityRecord.recordKey]:capabilities}))
+  const recorded=await tools.get('academic_ppt_record').execute({projectPath:created.projectPath,expectedRevision:0,recordsPath:'capability.json'},exec)
+  assert.equal(recorded.revision,1)
+  assert.deepEqual(JSON.parse(await readFile(created.projectPath,'utf8')).capabilities,capabilities)
+})
