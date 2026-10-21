@@ -1,0 +1,1430 @@
+{
+  "title": "改性工艺是否改善疲劳寿命？当前证据与验证路径",
+  "brief": {
+    "centralQuestion": "根据协议v1和48件教学模拟试件，在同批、同应力可比条件下，改性工艺的疲劳寿命证据支持什么，如何用下一批试验检验？用户要求7–9页、8–10分钟、可编辑PPTX、逐页讲稿、可恢复工程和真实渲染逐页审查。",
+    "audience": "材料工程课题组；研究进展教学模拟汇报",
+    "talkMinutes": 9.25,
+    "targetPaperCount": 0,
+    "requireFullText": false,
+    "genre": "research-progress",
+    "qualityProfile": "academic",
+    "requirePaperIntro": false
+  },
+  "design": {
+    "mode": "content-led",
+    "density": "compact",
+    "cardDefaults": {
+      "surface": "tint",
+      "radius": 10,
+      "padding": 18,
+      "accent": "none",
+      "elevation": false
+    },
+    "chrome": {
+      "header": "plain",
+      "showBrand": true,
+      "brandLabel": "教学模拟数据",
+      "showSection": false,
+      "showTopRule": false,
+      "showPageNumber": true,
+      "showFooter": true,
+      "showSources": true
+    },
+    "fontFamily": "Noto Sans CJK SC",
+    "palette": {
+      "ink": "#15334A",
+      "paper": "#FFFFFF",
+      "background": "#F5F8FA",
+      "accent": "#176D7A",
+      "secondary": "#B15B42",
+      "muted": "#526777",
+      "line": "#B7C8CF",
+      "soft": "#EDF3F5",
+      "gold": "#BC8B3D",
+      "tint": "#E7F1F3"
+    },
+    "system": {
+      "preset": "academic-report",
+      "header": "plain",
+      "cover": "editorial",
+      "panel": "line",
+      "titleSize": 38,
+      "coverTitleSize": 72,
+      "bodySize": 24,
+      "panelTitleSize": 27,
+      "captionSize": 18,
+      "sectionSize": 26
+    }
+  },
+  "capabilities": {
+    "imageInput": "supported",
+    "source": "可通过view_image实际查看PPTX渲染PNG并逐页登记视觉审查。"
+  },
+  "papers": [
+    {
+      "id": "protocol",
+      "title": "金属构件疲劳试验记录（教学模拟材料）",
+      "authors": [
+        "教学模拟资料包（编制者未署名）"
+      ],
+      "year": 2026,
+      "journal": "原始试验协议；非期刊材料",
+      "doi": "",
+      "url": "inputs/protocol.md",
+      "version": "资料版本1，2026-10-20",
+      "sourceType": "protocol",
+      "studyType": "simulation",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "来源与目的",
+          "试件与条件",
+          "终点与数据字典",
+          "研究进度"
+        ],
+        "source": "inputs/protocol.md",
+        "notes": "完整读取本任务原始协议；材料为合成教学数据。没有外部文献或真实试验结论。"
+      },
+      "methodSummary": "48件独立试件；A常规200 MPa、B两工艺200 MPa、C改性180 MPa；按可用加工顺序取样；失效或500000次行政停止。",
+      "limitations": [
+        "没有随机跨批次分配，也未报告B批内随机分配。",
+        "批次、工艺、应力的分配不平衡；无断口、组织和残余应力测量。"
+      ],
+      "analysis": {
+        "question": "相较常规工艺，改性是否增加同条件下的疲劳寿命？",
+        "gap": "原协议仅完成48件记录，未给出有效性结论；批次与工艺、应力配置使总体对比难以归因。",
+        "mechanism": "未提供材料改性操作细节及微观表征，不能构建已证实机制；工艺改变寿命仅是待检验路径。",
+        "design": "按可用加工顺序取样，各批次条件不完全重叠；终点为疲劳失效或达到500000循环停止；下一批仅可提出方案。",
+        "unitOfAnalysis": "一件试件；每行独立，不存在重复试验。",
+        "comparators": [
+          "B批常规对改性，均为200 MPa，是唯一同批同应力对照。",
+          "A与B的常规工艺可描述跨批差异；C无同批常规对照。"
+        ],
+        "validity": "可界定观察比较及右删失；不能提供随机化因果证据、机制验证或跨应力推广。",
+        "locators": [
+          "试件与条件：A/B/C工艺与应力配置及顺序取样",
+          "终点与数据字典：runout为500000循环停止而非失效",
+          "研究进度：48件完成，下一批尚未开展"
+        ]
+      }
+    },
+    {
+      "id": "dataset",
+      "title": "金属构件疲劳记录：48件试件CSV（教学模拟数据）",
+      "authors": [
+        "教学模拟资料包（编制者未署名）"
+      ],
+      "year": 2026,
+      "journal": "原始数据文件 fatigue.csv；非期刊材料",
+      "doi": "",
+      "url": "inputs/fatigue.csv",
+      "version": "随协议v1提供，2026-10-20",
+      "sourceType": "dataset",
+      "studyType": "simulation",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "表头与数据字典核对",
+          "48行逐条读取",
+          "试件唯一性、分组、终点与应力核对"
+        ],
+        "source": "inputs/fatigue.csv",
+        "notes": "全48行已读；48个唯一ID。Python独立复算，保留脚本与精确结果。"
+      },
+      "methodSummary": "分组描述τ=500000循环内限制平均寿命；B批无删失，给出原始分布、均值差和探索性Welch 95%区间。",
+      "limitations": [
+        "每个工艺×批次单元仅12件；没有随机分配证据。",
+        "C批有2件行政右删失，不能把观察时间当作真实失效寿命。"
+      ],
+      "analysis": {
+        "question": "记录的分组差异与不确定性究竟有多大？",
+        "gap": "直接合并两工艺会同时混合批次、应力与删失状态，可能误读因果效果。",
+        "mechanism": "CSV只有试件、批次、工艺、时间、终点与应力，无材料机制变量；统计差异不能定位机制。",
+        "design": "检查48个唯一ID与合法终点；按A常规、B常规、B改性、C改性四单元分组。只有τ时行政停止，故平均min(T,τ)可直接计算。B批用独立组Welch区间作探索性均值推断。",
+        "unitOfAnalysis": "48件独立试件；每单元12件，B主要比较12对12；C的2个runout保留终点标记。",
+        "comparators": [
+          "主要：B改性减B常规（200 MPa，同批）。",
+          "描述：四单元同τ的限制均值；不赋予混合总体差异因果含义。"
+        ],
+        "validity": "B批点估计正向但区间跨0；小样本Welch近似与非随机顺序取样限制推断；未确认效益、等效、机制或真实工程推广。",
+        "locators": [
+          "CSV数据行1–12：A-con-01至12",
+          "CSV数据行13–36：B-con-01至12及B-mod-01至12",
+          "CSV数据行37–48：C-mod-01至12，C-mod-02与08为runout",
+          "delivery/author_materials.py；delivery/analysis/summary.json"
+        ]
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "identity",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "本资料为教学模拟合成数据，不对应真实实验、机构、项目或论文；48件记录完成，下一批尚未实施。",
+      "locator": "来源与目的；研究进度",
+      "context": "协议版本1，2026-10-20。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "协议明确说明数据为学术沟通练习构造的合成记录，并在研究进度中区分已完成的48件记录与未实施的新批次。",
+        "boundary": "当前数值与区间只能用于本教学模拟报告，不能转换为真实材料或某家机构已验证有效的实验结论。"
+      }
+    },
+    {
+      "id": "design",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "A仅常规200 MPa，B两工艺200 MPa，C仅改性180 MPa；按可用加工顺序取样，没有随机跨批分配。",
+      "locator": "试件与条件",
+      "context": "每行独立试件，无重复试验；设备与环境未另作差异记录。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "配置直接界定了可比较的工艺、批次与应力。",
+        "boundary": "未记录设备环境差异并非证明完全相同；B批内随机分配未报告。"
+      }
+    },
+    {
+      "id": "endpoint",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "runout指在500000循环停止时尚未失效，该观察时间不是已测得的失效寿命。",
+      "locator": "终点与数据字典",
+      "context": "endpoint=failed为事件时间；runout为行政右删失。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "终点定义明确分离失效和停止观察。",
+        "boundary": "不能推断停止点之后的真实寿命或疲劳极限。"
+      }
+    },
+    {
+      "id": "counts",
+      "paperId": "dataset",
+      "kind": "reported",
+      "text": "48件分为四个单元，每单元12件；46件失效、2件runout，后者均在C批180 MPa的500000循环。",
+      "locator": "CSV数据行1–48；C-mod-02与C-mod-08",
+      "context": "无缺失、48唯一ID；由author_materials.py复算。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "直接计数并核对唯一试件和终点。",
+        "boundary": "数据为合成教学记录，不构成真实试验样本。"
+      },
+      "metrics": [
+        {
+          "label": "失效/行政右删失",
+          "value": "46/2",
+          "unit": "件",
+          "baseline": "48件完整记录",
+          "denominator": "48件独立试件",
+          "aggregation": "逐行计数"
+        }
+      ]
+    },
+    {
+      "id": "rmst",
+      "paperId": "dataset",
+      "kind": "inference",
+      "text": "共同50万次停止点且无提前删失时，可用观测时间均值估计50万次内限制平均寿命；四单元依次为23.63、30.37、32.93、43.48万次。",
+      "locator": "fatigue.csv全48行；按工艺×批次分组计算；共同50万次窗口。",
+      "context": "Y=min(T,500000)；每单元12件，C有2件行政删失。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "每件Y完整可观测，经验生存曲线0至τ积分等于Y的样本平均。",
+        "boundary": "估计目标只到50万次，不是无限时域均值；提前删失时不能沿用简单均值。",
+        "alternatives": "四组差异可能同时包含工艺、批次、应力与顺序取样差异，不用于分离其因果贡献。"
+      },
+      "dependsOn": [
+        "endpoint",
+        "counts"
+      ],
+      "metrics": [
+        {
+          "label": "τ内限制均值（A常规/B常规/B改性/C改性）",
+          "value": "23.6265917 / 30.3682833 / 32.9305083 / 43.4824333",
+          "unit": "万次",
+          "baseline": "共同τ=50万次；A/B=200 MPa，C=180 MPa",
+          "denominator": "每单元12件独立试件",
+          "aggregation": "各组mean(min(T,τ))"
+        }
+      ]
+    },
+    {
+      "id": "pooled",
+      "paperId": "dataset",
+      "kind": "reported",
+      "text": "合并批次后，常规与改性的50万次内限制均值分别26.99744与38.20647万次，相差11.20903万次。",
+      "locator": "CSV全48行；analysis/summary.json pooled_restricted_means",
+      "context": "两工艺各24件；常规来自A/B均200 MPa，改性来自B200与C180 MPa。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "在共同τ下对已观测Y进行算术平均。",
+        "boundary": "不同总体混合差异不代表工艺因果增益。"
+      },
+      "metrics": [
+        {
+          "label": "合并限制均值差（改性−常规）",
+          "value": "11.2090333",
+          "unit": "万次",
+          "baseline": "常规26.9974375万次",
+          "denominator": "24对24件独立试件",
+          "aggregation": "meanY_modified−meanY_conventional，τ=50万次"
+        }
+      ]
+    },
+    {
+      "id": "bmeans",
+      "paperId": "dataset",
+      "kind": "reported",
+      "text": "B批200 MPa下两工艺各12件、全部在50万次前失效；常规均值30.36828万次、改性32.93051万次，差2.562225万次（+8.44%）。",
+      "locator": "CSV数据行13–36；analysis/summary.json B_modified_minus_conventional_Welch_95CI",
+      "context": "改性减常规，独立试件，无删失；SD分别5.66227与3.09773万次。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "所有B批终点是失效，均值与同τ限制均值在本样本相同。",
+        "boundary": "描述当前样本，不自动对应总体因果效应。"
+      },
+      "metrics": [
+        {
+          "label": "B批均值差",
+          "value": "2.562225",
+          "unit": "万次",
+          "baseline": "B常规30.3682833万次",
+          "denominator": "B改性12件与B常规12件",
+          "aggregation": "独立组算术均值差"
+        },
+        {
+          "label": "相对常规均值",
+          "value": "8.4371743",
+          "unit": "%",
+          "baseline": "B常规均值",
+          "denominator": "B改性12件与B常规12件",
+          "aggregation": "差值/常规均值×100"
+        }
+      ]
+    },
+    {
+      "id": "buncertainty",
+      "paperId": "dataset",
+      "kind": "inference",
+      "text": "B批均值差的探索性Welch 95%区间为−1.36798至+6.49243万次，方向证据不足，不能确认增益或等效。",
+      "locator": "analysis/summary.json；calculation-notes.md B批主要比较",
+      "context": "两独立组各12件，允许方差不同，df=17.04323；估计量为改性减常规。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "区间跨0并容许正负效应，点估计正向不足以排除反向差异。",
+        "boundary": "依赖独立性与Welch小样本近似；非随机取样下不能作因果证明。",
+        "alternatives": "正向真实差异、无差异或反向差异均与当前不确定性相容；顺序取样等未控因素也可影响比较。"
+      },
+      "dependsOn": [
+        "bmeans",
+        "design"
+      ],
+      "metrics": [
+        {
+          "label": "Welch 95%区间",
+          "value": "[-1.3679799, 6.4924299]",
+          "unit": "万次",
+          "baseline": "差值0为零参考",
+          "denominator": "12对12件独立试件",
+          "aggregation": "Δ±t0.975,df×sqrt(s_m²/12+s_c²/12)"
+        }
+      ]
+    },
+    {
+      "id": "batchcontrast",
+      "paperId": "dataset",
+      "kind": "reported",
+      "text": "同为常规工艺、200 MPa，B批均值比A批高6.74169万次。",
+      "locator": "CSV数据行1–24；analysis/summary.json B_minus_A_conventional_mean_difference",
+      "context": "A与B各12件常规试件，均为失效记录。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "直接按批分组计算均值，显示记录中的跨批差异。",
+        "boundary": "不能证明某一批次因素的因果作用，不能用该差值校正其它工艺比较。"
+      },
+      "metrics": [
+        {
+          "label": "常规跨批均值差B−A",
+          "value": "6.7416917",
+          "unit": "万次",
+          "baseline": "A常规23.6265917万次",
+          "denominator": "12对12件独立试件",
+          "aggregation": "同为200 MPa下的描述性算术均值差"
+        }
+      ]
+    },
+    {
+      "id": "mechanismgap",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "未提供断口显微图、微观组织与残余应力测量，无法由本资料验证改性作用机制。",
+      "locator": "终点与数据字典",
+      "context": "本次仅有试件层面的时间、事件与条件记录。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "原协议明确列出三类机制测量均未提供；仅有寿命终点不能区分裂纹路径、组织改变或残余应力的贡献。",
+        "boundary": "不能排除机制存在，只能说明当前未验证。"
+      }
+    },
+    {
+      "id": "synthesis",
+      "paperId": "dataset",
+      "kind": "inference",
+      "text": "当前最可比的B批观察有正向点估计但不确定性跨0；全样本混合差异与未测机制不能升级为改性有效的结论。",
+      "locator": "B批复算；协议试件与条件及终点定义",
+      "context": "仅B批同批同应力，仍无随机化；C为低应力且含行政删失。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "限定比较范围与不确定性后，支持下一步验证而非确定效益。",
+        "boundary": "结论只针对教学模拟材料；不对真实工艺有效性作判断。",
+        "alternatives": "真实改善、未控顺序因素或抽样波动等仍未区分。"
+      },
+      "dependsOn": [
+        "buncertainty",
+        "pooled",
+        "design",
+        "endpoint",
+        "mechanismgap"
+      ]
+    },
+    {
+      "id": "nextdesign",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "下一批在200 MPa同批试件内按加工时段区组随机1:1分配两工艺，共同观察至失效或50万次，主要比较50万次限制平均寿命。",
+      "locator": "针对协议研究进度与现有设计缺口提出；analysis/calculation-notes.md",
+      "context": "尚未实施。记录试验顺序、设备与环境；尽量盲法判定。样本量在确定有意义差值与精度目标后规划，不直接照搬12/组。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "随机化和共同条件可减少当前批次/应力/顺序混杂；统一τ可正确纳入runout。",
+        "boundary": "单批结果不自动推广到其它应力或批次；机制表征为另行子研究。"
+      },
+      "dependsOn": [
+        "design",
+        "endpoint",
+        "buncertainty",
+        "mechanismgap"
+      ]
+    },
+    {
+      "id": "decision",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "预先判定：前提成立后，区间全正支持正向，全负支持反向，含0为方向证据不足；随机化、共同终点或删失前提不成立时先核查设计与分析。",
+      "locator": "analysis/calculation-notes.md判定分支与反例",
+      "context": "Δ=RMST改性−RMST常规，τ=50万次；95%区间[L,U]。工程意义需另定阈值；未显著不等于等效。",
+      "verified": true,
+      "reasoning": {
+        "warrant": "区间与零的关系区分互斥方向；先审查可识别前提以防错误推断。",
+        "boundary": "规则为未实施方案；区间方向不验证材料机制，等效需独立预设设计。"
+      },
+      "dependsOn": [
+        "nextdesign",
+        "buncertainty"
+      ]
+    }
+  ],
+  "assets": [],
+  "slides": [
+    {
+      "id": "s01",
+      "layout": "cover",
+      "title": "改性工艺是否改善疲劳寿命？当前证据与验证路径",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "identity",
+        "design",
+        "synthesis"
+      ],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 40,
+      "notes": "这是一份材料疲劳研究进展的教学模拟汇报。资料包明确说明，48件试件的记录是合成数据，不对应真实机构、项目或实验。今天的目标是判断已有证据究竟能支持到哪一步，而不是预设改性工艺必须有效。我们先识别哪些试件可以在相同条件下比较，再处理达到停止点而未失效的记录，最后讨论如何用下一批试件进行可证伪验证。当前最可比的B批有正向均值差，但不确定区间跨零，因而报告的主张是“需要规范验证”，而非“已经证实改善”。",
+      "argument": {
+        "role": "question",
+        "question": "如何在已有48件记录中区分寿命差异与工艺效益？",
+        "contribution": "确立同条件比较、删失处理和下一步可证伪验证三项任务。",
+        "boundary": "所有材料为教学模拟；未对应真实试验。"
+      },
+      "subtitle": "48件独立试件 · 3个批次 · 50万次停止点\n先识别可比范围，再判断增益证据",
+      "cover": {
+        "variant": "custom",
+        "titleLines": [
+          "改性工艺是否改善疲劳寿命？",
+          "当前证据与验证路径"
+        ],
+        "occasion": "材料工程课题组｜研究进展汇报（教学模拟）",
+        "date": "2026年10月21日",
+        "align": "left",
+        "boxes": {
+          "occasion": {
+            "x": 66,
+            "y": 56,
+            "w": 1140,
+            "h": 54
+          },
+          "title": {
+            "x": 66,
+            "y": 190,
+            "w": 1148,
+            "h": 210
+          },
+          "subtitle": {
+            "x": 70,
+            "y": 453,
+            "w": 1120,
+            "h": 113
+          },
+          "metadata": {
+            "x": 70,
+            "y": 625,
+            "w": 1100,
+            "h": 40
+          }
+        }
+      }
+    },
+    {
+      "id": "s02",
+      "layout": "academic",
+      "title": "只有B批具备同批、同应力的工艺对照",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "design",
+        "counts"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "overlap",
+          "kind": "method",
+          "title": "可比性先于汇总",
+          "body": "主比较限定在B批：两工艺、同批次、200 MPa。",
+          "claimIds": [
+            "design"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "icon": "comparison"
+        },
+        {
+          "id": "allocation",
+          "kind": "boundary",
+          "title": "同条件仍不等于随机化",
+          "body": "按可用加工顺序取样；B批内随机分配未报告。",
+          "claimIds": [
+            "design"
+          ],
+          "appearance": {
+            "surface": "outline",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "icon": "boundary"
+        }
+      ],
+      "seconds": 65,
+      "notes": "首先看设计，而不是先看均值。四个单元各有12件独立试件。A批只有常规工艺，应力200兆帕；B批同时有常规和改性，也都是200兆帕；C批只有改性，应力降为180兆帕。表中空缺是本次没有试件，不是零寿命。由此，B批是唯一不同时改变批次和应力的工艺比较。把所有常规与所有改性直接混合，会把A和C的构成差异一起带进来。但同批同应力还不等于随机对照：原协议按可用加工顺序取样，没有报告B批内随机分配，试验顺序或未记录因素仍可能与工艺相关。后面因此把B批作为主要观察比较，把其它组用于描述边界。",
+      "argument": {
+        "role": "design",
+        "question": "哪些比较可以回答工艺差异？",
+        "contribution": "通过设计矩阵显式定位重叠条件与缺失对照。",
+        "boundary": "B批仍按可用顺序取样，不能自动取得因果解释。"
+      },
+      "table": {
+        "columns": [
+          "批次",
+          "应力 / MPa",
+          "常规工艺",
+          "改性工艺",
+          "可比范围"
+        ],
+        "rows": [
+          [
+            "A",
+            "200",
+            "12件",
+            "未配置",
+            "跨批背景"
+          ],
+          [
+            "B",
+            "200",
+            "12件",
+            "12件",
+            "主要工艺对照"
+          ],
+          [
+            "C",
+            "180",
+            "未配置",
+            "12件",
+            "低应力描述"
+          ]
+        ],
+        "columnWeights": [
+          0.55,
+          0.85,
+          1.05,
+          1.05,
+          1.7
+        ],
+        "highlightRows": [
+          1
+        ],
+        "caption": "每行记录是一件独立试件；“未配置”表示该单元无试件。来源：协议“试件与条件”；CSV全48行。",
+        "sourceClaimIds": [
+          "design",
+          "counts"
+        ]
+      },
+      "composition": {
+        "rows": [
+          {
+            "weight": 1.6,
+            "panels": [
+              {
+                "id": "matrix",
+                "title": "试件配置与缺失对照",
+                "table": true,
+                "surface": "plain"
+              }
+            ]
+          },
+          {
+            "weight": 0.85,
+            "panels": [
+              {
+                "id": "overlap-panel",
+                "title": "主要分析范围",
+                "cardIds": [
+                  "overlap"
+                ],
+                "surface": "plain"
+              },
+              {
+                "id": "allocation-panel",
+                "title": "归因限制",
+                "cardIds": [
+                  "allocation"
+                ],
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "matrix",
+        "primaryPanelId": "matrix",
+        "readingOrder": [
+          "matrix",
+          "overlap-panel",
+          "allocation-panel"
+        ],
+        "rationale": "让配置矩阵占据上半主区，B行高亮定位真实重叠；下方将主要范围与随机化限制并排对应。"
+      }
+    },
+    {
+      "id": "s03",
+      "layout": "academic",
+      "title": "观察到50万次，不等于在50万次失效",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "endpoint",
+        "counts",
+        "rmst",
+        "pooled"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "censor",
+          "kind": "setting",
+          "title": "C批：10失效 + 2右删失",
+          "body": "两件runout均完整观察至50万次；其真实失效寿命未知。",
+          "claimIds": [
+            "counts",
+            "endpoint"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "icon": "evidence"
+        },
+        {
+          "id": "window",
+          "kind": "method",
+          "title": "共同窗口：50万次",
+          "body": "Y=min(T,50万)。无提前删失时，平均Y即限制均值；不外推停止点后的寿命。",
+          "claimIds": [
+            "rmst"
+          ],
+          "appearance": {
+            "surface": "outline",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          }
+        }
+      ],
+      "seconds": 70,
+      "notes": "C批有两件试件达到预定50万次停止点时尚未失效。这意味着真实失效寿命在停止点之后，但我们不知道具体是多少，不能把50万写成已测得的失效寿命。为了在共同观察窗内描述全部48件，定义Y为真实寿命和50万中的较小值。由于本数据没有提前删失，每件Y都完整可知，所以Y的平均就是50万次内限制平均寿命的经验估计。图中四组分别约23.63、30.37、32.93和43.48万次。C批的43.48并非无限观察下的平均失效寿命。若把两工艺各24件混合，差为11.21万次；但混合过程也同时改变批次和应力。这个差值只能描述当前混合样本，不代表改性工艺的独立增益。",
+      "argument": {
+        "role": "evidence",
+        "question": "如何保留两件runout并公平描述四组？",
+        "contribution": "用共同观察窗的限制平均寿命避免把停止时间当事件时间。",
+        "boundary": "组间应力与批次仍不相同；描述差异不可归因。"
+      },
+      "chart": {
+        "kind": "bar",
+        "categories": [
+          "A 常规 · 200",
+          "B 常规 · 200",
+          "B 改性 · 200",
+          "C 改性 · 180"
+        ],
+        "series": [
+          {
+            "name": "50万次内限制平均寿命",
+            "values": [
+              23.626591666666666,
+              30.36828333333333,
+              32.93050833333333,
+              43.48243333333333
+            ]
+          }
+        ],
+        "unit": "万次；标签末尾为应力MPa",
+        "sourceClaimId": "rmst",
+        "valueDecimals": 2
+      },
+      "composition": {
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "means",
+                "title": "限制平均寿命（各组12件）",
+                "chart": true,
+                "weight": 1.8,
+                "surface": "plain"
+              },
+              {
+                "id": "endpoint-panel",
+                "title": "事件与停止点必须分开",
+                "cardIds": [
+                  "censor",
+                  "window"
+                ],
+                "weight": 1,
+                "surface": "plain"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "label": "边界",
+          "text": "合并两工艺的限制均值差为11.21万次，但批次与应力同时改变，不能归因于工艺。"
+        }
+      },
+      "visualPlan": {
+        "relationship": "evidence-explanation",
+        "primaryPanelId": "means",
+        "readingOrder": [
+          "means",
+          "endpoint-panel"
+        ],
+        "rationale": "用可编辑条形图展示共同τ的描述统计，将删失定义与均值目标紧邻图形，避免C组高值被误读为已测真实寿命。"
+      }
+    },
+    {
+      "id": "s04",
+      "layout": "academic",
+      "title": "B批均值差为+2.56万次，区间跨越零",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "bmeans",
+        "buncertainty",
+        "design"
+      ],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 95,
+      "notes": "这页是当前证据的核心。只看B批，200兆帕，两工艺各12件，24件全部在50万次前失效，所以这里不需要猜测删失后的寿命。左图保留每一件试件，不把独立试件连成趋势线。常规均值30.37万次，改性32.93万次，改性减常规为2.56万次，相对常规均值约8.44%。但右图比这个百分比更重要。采用允许两组方差不同的探索性Welch方法，95%区间从负1.37到正6.49万次。它既容许正向差异，也容许负向差异，因此目前不能确认增益。这里也不能说两工艺等效：区间仍然很宽，未显著不等于相同。Welch区间依赖独立样本和小样本均值近似，而原始取样并非已报告的随机分配。因此，即使后续区间收窄，归因仍需要更强的试验设计。",
+      "argument": {
+        "role": "evidence",
+        "question": "同批同应力比较是否已确认改性增益？",
+        "contribution": "同时显示原始独立点、均值差与不确定性。",
+        "boundary": "探索性Welch近似与非随机取样限制因果推断。"
+      },
+      "plots": [
+        {
+          "id": "B-points",
+          "kind": "distribution",
+          "unit": "失效寿命 / 万次",
+          "groups": [
+            {
+              "label": "常规",
+              "values": [
+                30.1508,
+                30.8647,
+                31.1243,
+                28.8464,
+                34.9955,
+                23.3869,
+                29.72,
+                31.9524,
+                32.7379,
+                26.4025,
+                31.1649,
+                33.0731
+              ]
+            },
+            {
+              "label": "改性",
+              "values": [
+                24.3382,
+                31.2279,
+                31.5384,
+                45.1032,
+                33.7178,
+                36.5648,
+                37.8531,
+                30.5223,
+                31.914,
+                37.4917,
+                27.512,
+                27.3827
+              ]
+            }
+          ],
+          "sourceClaimIds": [
+            "bmeans"
+          ],
+          "caption": "一圆点=一件试件；无连线。常规均值30.37，改性32.93万次。"
+        },
+        {
+          "id": "B-CI",
+          "kind": "interval",
+          "unit": "均值差 / 万次",
+          "groups": [
+            {
+              "label": "Δ",
+              "estimate": 2.56,
+              "lower": -1.37,
+              "upper": 6.49
+            }
+          ],
+          "reference": 0,
+          "sourceClaimIds": [
+            "buncertainty"
+          ],
+          "caption": "Δ=改性−常规；Welch 95%区间[−1.37, +6.49]。0为无差异参考。"
+        }
+      ],
+      "composition": {
+        "lead": "B批 · 200 MPa · 常规12件 / 改性12件 · 全部失效 · 探索性观察比较",
+        "rows": [
+          {
+            "weight": 1.75,
+            "panels": [
+              {
+                "id": "raw",
+                "title": "每件试件的分布",
+                "plotId": "B-points",
+                "weight": 1.1,
+                "surface": "plain"
+              },
+              {
+                "id": "effect",
+                "title": "差值与不确定性",
+                "plotId": "B-CI",
+                "weight": 1,
+                "surface": "plain"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "label": "判断",
+          "text": "区间同时容许负向与正向差异；尚未确认增益，也不能宣布等效或已验证材料机制。"
+        }
+      },
+      "visualPlan": {
+        "relationship": "comparison",
+        "primaryPanelId": "effect",
+        "readingOrder": [
+          "raw",
+          "effect"
+        ],
+        "rationale": "原始分布与区间共享横向阅读任务；差值区间同等可见，底部给出不可删的证据边界。",
+        "alternatives": [
+          {
+            "structure": "将两组均值做大数字，区间缩为角注",
+            "tradeoff": "容易过度强调+8.44%并隐藏跨零不确定性，故不采用。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "layout": "academic",
+      "title": "寿命差异尚不能定位改性作用机制",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "batchcontrast",
+        "design",
+        "mechanismgap",
+        "synthesis"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "batch-fact",
+          "kind": "result",
+          "title": "同工艺也存在跨批差异",
+          "body": "A与B常规均为200 MPa；B−A均值为+6.74万次，仅作描述。",
+          "claimIds": [
+            "batchcontrast"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          }
+        },
+        {
+          "id": "mechanism-missing",
+          "kind": "boundary",
+          "title": "机制测量尚缺",
+          "body": "未提供断口、组织和残余应力；无法验证具体材料机制。",
+          "claimIds": [
+            "mechanismgap"
+          ],
+          "appearance": {
+            "surface": "outline",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "icon": "boundary"
+        }
+      ],
+      "seconds": 65,
+      "notes": "为什么总体改性组更高，仍不能定位工艺机制？图中两条无箭头关联线表示待区分的解释。一种可能是工艺本身改变了寿命；另一种可能是批次、应力和加工顺序共同影响了观察差异。现有配置不能把这些贡献分离。一个直接提醒是：即使只看常规工艺、同为200兆帕，B批均值仍比A批高6.74万次。这显示当前记录具有跨批差异，却不能证明某个批次因素的因果作用，更不能拿这个值直接校正工艺效果。另一方面，资料没有断口、微观组织或残余应力测量。因此寿命数据即便出现稳定差异，也尚不足以确认材料机制。下一步寿命主试验首先解决效应识别，机制表征可以作为并行子研究。",
+      "argument": {
+        "role": "limitation",
+        "question": "还有哪些解释与机制缺口没有被排除？",
+        "contribution": "把观测差异同时连接到工艺假说与批次/应力构成，避免因果过推。",
+        "boundary": "关联图只列待区分解释，不表示已证实因果路径。"
+      },
+      "nodes": [
+        {
+          "id": "process-path",
+          "label": "工艺本身",
+          "detail": "待检验的寿命作用",
+          "kind": "hypothesis"
+        },
+        {
+          "id": "conditions-path",
+          "label": "批次 / 应力 / 顺序",
+          "detail": "尚未排除的替代解释",
+          "kind": "boundary"
+        },
+        {
+          "id": "difference",
+          "label": "观察到的组间差异",
+          "detail": "关联并非机制证据",
+          "kind": "result"
+        }
+      ],
+      "edges": [
+        {
+          "from": "process-path",
+          "to": "difference",
+          "kind": "association",
+          "label": "可能解释"
+        },
+        {
+          "from": "conditions-path",
+          "to": "difference",
+          "kind": "association",
+          "label": "可能解释"
+        }
+      ],
+      "diagram": {
+        "rows": [
+          [
+            "process-path",
+            "conditions-path"
+          ],
+          [
+            "difference"
+          ]
+        ]
+      },
+      "composition": {
+        "rows": [
+          {
+            "weight": 1.4,
+            "panels": [
+              {
+                "id": "explanations",
+                "title": "需要区分的两类解释（无箭头表示关联）",
+                "diagram": true,
+                "surface": "plain"
+              }
+            ]
+          },
+          {
+            "weight": 1,
+            "panels": [
+              {
+                "id": "batch-context",
+                "title": "现有数据的提醒",
+                "cardIds": [
+                  "batch-fact"
+                ],
+                "surface": "plain"
+              },
+              {
+                "id": "mechanism-context",
+                "title": "当前未取得的证据",
+                "cardIds": [
+                  "mechanism-missing"
+                ],
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "synthesis",
+        "primaryPanelId": "explanations",
+        "readingOrder": [
+          "explanations",
+          "batch-context",
+          "mechanism-context"
+        ],
+        "rationale": "先用汇合关系表达竞争解释，随后以跨批描述与缺失测量两项证据分别限定归因和机制。"
+      }
+    },
+    {
+      "id": "s06",
+      "layout": "academic",
+      "title": "下一批：同批同应力随机验证（待实施）",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "nextdesign",
+        "decision"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "size",
+          "kind": "method",
+          "title": "样本量先于招募确定",
+          "body": "先定有意义差值和精度目标，再对方差与删失比例作敏感性规划。",
+          "claimIds": [
+            "nextdesign"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "icon": "method"
+        },
+        {
+          "id": "execution",
+          "kind": "boundary",
+          "title": "执行与外推边界",
+          "body": "记录顺序、设备、环境；尽量盲法判定。单批结果仍需跨批复核。",
+          "claimIds": [
+            "nextdesign"
+          ],
+          "appearance": {
+            "surface": "outline",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          }
+        }
+      ],
+      "seconds": 80,
+      "notes": "下一批方案尚未实施。建议把主要目标限定为：在同一新批次、200兆帕下，改性是否增加50万次范围内的限制平均寿命。先固定材料与几何条件，按加工时段区组，再在区组内随机一比一分配工艺；同时记录加工和试验顺序、设备与环境，尽可能对失效判定盲法。两组采用相同的失效或50万次停止规则，保留终点标识，不删除runout。主要估计量是改性减常规的限制平均寿命差。样本量不能直接沿用每组12件，更不能把本次8.44%当成真实效应。应先商定工程上有意义的差值和精度目标，再用B批方差的多个情景及不同删失比例进行规划。若出现提前删失，简单均值将不再适用，必须按事先约定的生存分析处理并检查删失假设。单批阳性结果也仍需在其它批次复核。",
+      "argument": {
+        "role": "proposal",
+        "question": "如何让下一批增加识别工艺效应的能力？",
+        "contribution": "用随机分流与共同终点连接设计缺口和主要估计量。",
+        "boundary": "尚未实施；样本量与工程阈值需要试验前确定。"
+      },
+      "nodes": [
+        {
+          "id": "new-batch",
+          "label": "同一新批次 · 200 MPa",
+          "detail": "统一材料与几何；加工时段区组",
+          "kind": "setting"
+        },
+        {
+          "id": "conventional",
+          "label": "常规工艺",
+          "detail": "区组内随机分配1/2",
+          "kind": "method"
+        },
+        {
+          "id": "modified",
+          "label": "改性工艺",
+          "detail": "区组内随机分配1/2",
+          "kind": "method"
+        },
+        {
+          "id": "followup",
+          "label": "共同终点与完整事件记录",
+          "detail": "失效，或50万次行政停止",
+          "kind": "method"
+        },
+        {
+          "id": "primary",
+          "label": "主要比较：50万次内限制均值差",
+          "detail": "改性 − 常规；预定95%区间",
+          "kind": "result"
+        }
+      ],
+      "edges": [
+        {
+          "from": "new-batch",
+          "to": "conventional",
+          "kind": "flow"
+        },
+        {
+          "from": "new-batch",
+          "to": "modified",
+          "kind": "flow"
+        },
+        {
+          "from": "conventional",
+          "to": "followup",
+          "kind": "flow"
+        },
+        {
+          "from": "modified",
+          "to": "followup",
+          "kind": "flow"
+        },
+        {
+          "from": "followup",
+          "to": "primary",
+          "kind": "flow"
+        }
+      ],
+      "diagram": {
+        "rows": [
+          [
+            "new-batch"
+          ],
+          [
+            "conventional",
+            "modified"
+          ],
+          [
+            "followup"
+          ],
+          [
+            "primary"
+          ]
+        ]
+      },
+      "composition": {
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "trial",
+                "title": "从随机分流到共同测量",
+                "diagram": true,
+                "weight": 1.75,
+                "surface": "plain"
+              },
+              {
+                "id": "planning",
+                "title": "试验前需要锁定",
+                "cardIds": [
+                  "size",
+                  "execution"
+                ],
+                "weight": 1,
+                "surface": "plain"
+              }
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "sequence",
+        "primaryPanelId": "trial",
+        "readingOrder": [
+          "trial",
+          "planning"
+        ],
+        "rationale": "分流与汇合把相同信息和共同终点落实为流程；样本量和执行边界放在邻近卡片。",
+        "alternatives": [
+          {
+            "structure": "将随机化、终点、样本量、判定做四张等宽卡",
+            "tradeoff": "会丢失两工艺并行且汇入共同测量的关系，不采用。"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "layout": "academic",
+      "title": "判定规则要覆盖正向、反向与证据不足",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "decision",
+        "nextdesign",
+        "buncertainty"
+      ],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 70,
+      "notes": "为了避免结果出来以后改变解释，判定规则要现在写清楚。令差值是改性减常规的50万次限制平均寿命，95%区间为L到U。首先审查随机化、共同应力和终点、事件标记及删失假设。只有前提成立才看方向。如果L大于零，支持该批和该应力下的正向差异；工程上是否足够大，还要对照事前约定的意义阈值。如果U小于零，则支持反向差异，应复核工艺并讨论停止推广，不能把它含糊地归入“没有显著收益”。若区间包含零，包括端点恰好为零，方向证据不足，不能宣布等效。如果分配或删失前提失效，应先核查设计与分析，必要时重做试验。当前B批的区间属于含零这一行，但这只是观察数据判断，不是新试验的验证结果。",
+      "argument": {
+        "role": "proposal",
+        "question": "什么结果支持或反驳下一批的正向假说？",
+        "contribution": "按区间方向与前提成立性形成完整、可证伪的结果分支。",
+        "boundary": "工程意义与等效需要各自的事前阈值；规则不是已得结果。"
+      },
+      "table": {
+        "columns": [
+          "先后条件",
+          "结果分支",
+          "允许的判断与动作"
+        ],
+        "rows": [
+          [
+            "前提成立",
+            "L > 0",
+            "支持正向差异；再判断工程意义"
+          ],
+          [
+            "前提成立",
+            "U < 0",
+            "支持反向差异；复核工艺与推广计划"
+          ],
+          [
+            "前提成立",
+            "L ≤ 0 ≤ U",
+            "方向证据不足；不能宣布等效"
+          ],
+          [
+            "前提不成立",
+            "分配 / 终点 / 删失失效",
+            "先核查与敏感性分析；暂停目标效应判定"
+          ]
+        ],
+        "columnWeights": [
+          0.9,
+          1.3,
+          2.35
+        ],
+        "highlightRows": [
+          2
+        ],
+        "caption": "Δ=RMST改性(50万)−RMST常规(50万)，95%区间为[L,U]。本页为预定方案；当前B批区间属于“含0”。",
+        "sourceClaimIds": [
+          "decision",
+          "buncertainty"
+        ]
+      },
+      "composition": {
+        "lead": "先检查随机化、共同应力与终点、事件标记及删失前提，再判断区间方向。",
+        "rows": [
+          {
+            "panels": [
+              {
+                "id": "rule",
+                "title": "事前约定的结果解释",
+                "table": true,
+                "surface": "plain"
+              }
+            ]
+          }
+        ],
+        "conclusion": {
+          "label": "保留",
+          "text": "未显著不等于等效；支持正向差异也不自动证明材料机制或跨条件推广。"
+        }
+      },
+      "visualPlan": {
+        "relationship": "matrix",
+        "primaryPanelId": "rule",
+        "readingOrder": [
+          "rule"
+        ],
+        "rationale": "单张决策表保持所有互斥分支同屏，避免只突出成功条件；将前提失效独立成行。"
+      }
+    },
+    {
+      "id": "s08",
+      "layout": "closing",
+      "title": "当前结论与下一步决策",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "synthesis",
+        "buncertainty",
+        "nextdesign",
+        "mechanismgap"
+      ],
+      "figureIds": [],
+      "cards": [
+        {
+          "id": "take-evidence",
+          "kind": "result",
+          "title": "最可比证据：B批",
+          "body": "+2.56万次；95%区间−1.37至+6.49万次。仍为观察比较。",
+          "claimIds": [
+            "buncertainty"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "box": {
+            "x": 66,
+            "y": 300,
+            "w": 557,
+            "h": 180
+          }
+        },
+        {
+          "id": "take-action",
+          "kind": "hypothesis",
+          "title": "下一步：同条件随机验证",
+          "body": "共同50万次终点；完整记录事件；按事前规则判断正、反与不确定。",
+          "claimIds": [
+            "nextdesign"
+          ],
+          "appearance": {
+            "surface": "outline",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "box": {
+            "x": 655,
+            "y": 300,
+            "w": 557,
+            "h": 180
+          }
+        },
+        {
+          "id": "take-question",
+          "kind": "question",
+          "title": "试验前需要课题组确定",
+          "body": "工程上有意义的寿命增益与精度目标，如何确定？",
+          "claimIds": [
+            "nextdesign"
+          ],
+          "appearance": {
+            "surface": "tint",
+            "radius": 10,
+            "padding": 18,
+            "accent": "none",
+            "elevation": false
+          },
+          "box": {
+            "x": 66,
+            "y": 520,
+            "w": 1146,
+            "h": 118
+          }
+        }
+      ],
+      "seconds": 50,
+      "notes": "汇总本次进展，已经完成的工作是48件记录的分组、终点核查和可比范围分析。当前最可比的B批观察差为正2.56万次，但95%区间为负1.37到正6.49万次，尚不能确认增益。总体混合差异和C批低应力记录不能补足这项证据，缺少微观表征也不允许直接提出机制结论。因此下一步优先级是建立同批、同应力、随机分配、共同停止规则的验证，而不是进一步放大当前百分比。希望课题组讨论并在试验前确定两个设计输入：工程上值得追求的寿命增益，以及可以接受的不确定范围。它们将决定样本量和后续判断。",
+      "argument": {
+        "role": "synthesis",
+        "question": "完成了什么，下一步最值得做什么？",
+        "contribution": "收束为观察证据、不确定性和可执行验证之间的对应关系。",
+        "boundary": "全部为教学模拟；未确认真实工艺有效性。"
+      },
+      "closing": {
+        "variant": "statement",
+        "statement": "当前证据支持开展规范验证，尚未确认改性带来寿命增益。"
+      }
+    },
+    {
+      "id": "s09",
+      "layout": "references",
+      "title": "原始资料（教学模拟）",
+      "paperIds": [
+        "protocol",
+        "dataset"
+      ],
+      "claimIds": [
+        "identity",
+        "rmst",
+        "buncertainty"
+      ],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 20,
+      "notes": "最后列出完整资料来源。报告仅使用2026年10月20日版本1的教学模拟协议及配套48行CSV，没有补充外部论文或未提供的显微图。计算脚本、输入校验值、精确统计量和判定反例随工程保留。50万次限制均值与B批Welch区间采用不同层次的口径：前者是共同窗口的描述统计，后者是探索性不确定性表达。谢谢。",
+      "argument": {
+        "role": "synthesis",
+        "question": "如何追溯本报告的材料与计算？",
+        "contribution": "提供原始两项资料、版本和计算目标。",
+        "boundary": "无外部论文；全部证据为教学模拟数据。"
+      }
+    }
+  ]
+}

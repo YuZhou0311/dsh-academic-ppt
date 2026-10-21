@@ -1,0 +1,74 @@
+{
+  "identity": "synthetic-v1 teaching simulation; not a real agricultural experiment",
+  "unit": "体积含水率百分点",
+  "aggregation": "每站4块RMSE等权算术平均；非日序列合并RMSE",
+  "uncertainty": "未计算区间、显著性或等效检验",
+  "A": {
+    "blocks": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "B": [
+      "3.2",
+      "3.5",
+      "2.9",
+      "3.4"
+    ],
+    "H": [
+      "2.5",
+      "2.8",
+      "2.4",
+      "2.7"
+    ],
+    "H_minus_B": [
+      "-0.7",
+      "-0.7",
+      "-0.5",
+      "-0.7"
+    ],
+    "mean_B": "3.25",
+    "mean_H": "2.60",
+    "mean_difference": "-0.65",
+    "H_lower": 4,
+    "H_higher": 0,
+    "ties": 0
+  },
+  "B": {
+    "blocks": [
+      "B1",
+      "B2",
+      "B3",
+      "B4"
+    ],
+    "B": [
+      "4.1",
+      "3.8",
+      "4.3",
+      "4.0"
+    ],
+    "H": [
+      "4.4",
+      "3.9",
+      "4.2",
+      "4.3"
+    ],
+    "H_minus_B": [
+      "0.3",
+      "0.1",
+      "-0.1",
+      "0.3"
+    ],
+    "mean_B": "4.05",
+    "mean_H": "4.20",
+    "mean_difference": "0.15",
+    "H_lower": 1,
+    "H_higher": 3,
+    "ties": 0
+  },
+  "source_sha256": {
+    "protocol.md": "5d9c0cd512881ed642e1e0c49100ed924ef59e5dce39ba88e6d63cd849a408ea",
+    "observations.csv": "b062590fc2187b54aca4d7a0d3bd8d5883aa8ecccf092b63e3c9c2fa1c37f01e"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "identity": "教学模拟数据；不对应真实实验、机构、项目或论文",
+  "source_version": "资料版本1，2026-10-20",
+  "input_sha256": {
+    "protocol.md": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9",
+    "fatigue.csv": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+  },
+  "n": 48,
+  "independent_unit": "一件试件；无重复试验",
+  "administrative_stop_cycles": 500000,
+  "failed": 46,
+  "runout": 2,
+  "groups": {
+    "A-conventional": {
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "restricted_mean_cycles": 236265.91666666666,
+      "sd_of_truncated_cycles": 91667.12726387037,
+      "median_observed_cycles": 221791.0,
+      "values": [
+        128759,
+        429340,
+        300441,
+        209956,
+        176853,
+        317160,
+        140323,
+        125176,
+        278981,
+        233626,
+        196834,
+        297742
+      ]
+    },
+    "B-conventional": {
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "restricted_mean_cycles": 303682.8333333333,
+      "sd_of_truncated_cycles": 30977.28122301402,
+      "median_observed_cycles": 309945.0,
+      "values": [
+        301508,
+        308647,
+        311243,
+        288464,
+        349955,
+        233869,
+        297200,
+        319524,
+        327379,
+        264025,
+        311649,
+        330731
+      ]
+    },
+    "B-modified": {
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "stress_MPa": 200,
+      "restricted_mean_cycles": 329305.0833333333,
+      "sd_of_truncated_cycles": 56622.71262160431,
+      "median_observed_cycles": 317262.0,
+      "values": [
+        243382,
+        312279,
+        315384,
+        451032,
+        337178,
+        365648,
+        378531,
+        305223,
+        319140,
+        374917,
+        275120,
+        273827
+      ]
+    },
+    "C-modified": {
+      "n": 12,
+      "failed": 10,
+      "runout": 2,
+      "stress_MPa": 180,
+      "restricted_mean_cycles": 434824.3333333333,
+      "sd_of_truncated_cycles": 43686.73798832554,
+      "median_observed_cycles": 428180.5,
+      "values": [
+        384329,
+        500000,
+        435960,
+        388885,
+        386565,
+        410184,
+        428320,
+        500000,
+        472147,
+        428041,
+        400964,
+        482497
+      ]
+    }
+  },
+  "B_modified_minus_conventional_Welch_95CI": {
+    "difference": 25622.25,
+    "standard_error": 18631.790790202474,
+    "degrees_of_freedom": 17.043226299976308,
+    "lower": -13679.799052276394,
+    "upper": 64924.299052276394,
+    "two_sided_p": 0.18688136183494325,
+    "relative_to_B_conventional": 0.08437174310698059
+  },
+  "pooled_restricted_means": {
+    "conventional": 269974.375,
+    "modified": 382064.7083333333
+  },
+  "pooled_restricted_mean_difference": 112090.33333333331,
+  "B_minus_A_conventional_mean_difference": 67416.91666666666
+}

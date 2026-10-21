@@ -4,13 +4,13 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { createProject, updateRecords, buildProject, checkProject, evidenceIssues, DEFAULT_DESIGN } from '../src/core.mjs';
 import { academicIssues } from '../src/academic-quality.mjs';
-import { brief, paper, claim, asset, slides } from './fixtures.mjs';
+import {fixtureDesign, brief, paper, claim, asset, slides } from './fixtures.mjs';
 
 async function project(t) {
   const root = resolve('.test-output'); await mkdir(root, { recursive: true });
   const cwd = await mkdtemp(join(root, 'academic-workflow-'));
   t.after(() => rm(cwd, { recursive: true, force: true }));
-  const created = await createProject({ cwd, projectDir: 'p', title: 'Synthetic ordering fixture', brief });
+  const created = await createProject({ cwd, projectDir: 'p', title: 'Synthetic ordering fixture', brief, design: fixtureDesign });
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, papers: [paper], claims: [claim], assets: [asset], slides });
   return { cwd, projectPath: created.projectPath };
 }

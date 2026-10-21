@@ -22,11 +22,11 @@ const contracts = {
   },
   slide: {
     schema: slideSchema, recordKey: 'slides', maxItems: 8,
-    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿优先layout=academic + composition.rows。panel引用本页cards/figureIds/chart/table/nodes/plots；每项恰好显示一次，plotId支持同页多个科学图。机制图用diagram.rows指定节点行、edges明确关系。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
+    notes: ['argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', '组合正文页先用visualPlan简短记录信息关系、primaryPanelId、readingOrder和rationale，再决定composition；固定页型不要填写visualPlan。计划中的面板必须实际存在且readingOrder覆盖每个面板一次。它记录可审阅的设计选择，不是长思维链，也不会自动重排页面。关键页可记最多两个alternatives及取舍。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿优先layout=academic + composition.rows，不必先选referenceTemplateId。panel引用本页cards/figureIds/chart/table/nodes/plots；每项恰好显示一次。surface可选inherit/plain/rule/tint/band。card.appearance 控制独立卡片的outline/tint/solid/plain表面、radius、padding、accent与elevation，icon使用内建语义图标；组外层已有明显容器时避免重复套框。', 'align=start按内容收紧，但不得留下大片无用空区；不与该面板card.box或所消费节点node.box混用。chrome可逐页覆盖标题线、角标、品牌、页脚和页码；来源记录始终保留。cover支持split/editorial等起点，也可variant:custom，用boxes.title/subtitle/occasion/metadata/visual和align自行分配角色区域；按实际内容提供对应box，插件检查边界、相撞与高度。closing对象支持statement/evidence收束，只用于layout:closing且不与composition混用。', 'plotId支持同页多个科学图。机制图用diagram.rows指定节点行、edges明确关系；主图通常stretch，不为外观制造数据或因果箭头。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
   },
   design: {
     schema: designSchema, recordKey: 'design',
-    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', '用户PPTX先由academic_ppt_template取得suggestedDesign与真实预览；看图选定主模板后把suggestedDesign作为design记录。system控制实际封面、章节页眉、面板与字号；templateProfilePaths仅导入局部背景组件。模板旧文字和机构不作为当前内容。'],
+    notes: ['颜色使用#RRGGBB，fontFamily为实际字体名称。', 'mode=content-led 为新工程默认；有参考时通常用reference-guided，只迁移字体、配色和层级；用户明确要求沿用版式时才用template-faithful。mode不自动生成布局，也不代表任意模板无损复刻。', '新工程默认density=compact，严重结构性大空区会阻断review；balanced用于明确允许疏朗设计的初始化，旧项目缺省仅提醒。不能把compact降为balanced来消除失败。诊断忽略背景和装饰，依旧需要看最终渲染。', 'cardDefaults是新稿的默认卡片表面，逐卡appearance可覆盖。chrome给页眉/角标/页脚的共同规则，slide.chrome可按页面任务改变。风格一致不要求所有页面重复同一标题线、页角小字、卡数和比例。', 'record替换design时省略mode/density/cardDefaults/chrome会保留原设置。旧文件未登记模式时context.designMode显示legacy，但legacy不是可提交的mode值。', 'academic_ppt_template 的suggestedDesign是候选设计变量，须查看真实代表页并按当前内容适配后记录。system提供共同字号与可覆盖的构图默认；composition独立决定正文拓扑和局部分组。templateProfilePaths仅按需导入局部背景组件，模板旧文字和机构不作为当前内容。'],
   },
   assessment: {
     schema: assessmentSchema, recordKey: 'observations',

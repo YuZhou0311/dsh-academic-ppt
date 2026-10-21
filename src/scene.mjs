@@ -4,10 +4,11 @@
 import { getReferenceTemplate } from './reference-catalog.mjs';
 import { assessFigurePlacement } from './figure-planning.mjs';
 import { resolveAcademicSystem } from './design-system.mjs';
-import { academicHeader, academicCover, academicSection } from './academic-chrome.mjs';
+import { academicHeader, academicCover, academicSection, academicClosing, resolveChrome } from './academic-chrome.mjs';
 import { renderAcademicComposition } from './academic-composition.mjs';
 import { renderScientificPlot } from './scientific-plot.mjs';
 import { renderAcademicDiagram } from './academic-diagram.mjs';
+import { renderCardSurface } from './card-surface.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
 export const LAYOUTS = Object.freeze(['cover', 'section', 'academic', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
 export const CARD_STYLES = Object.freeze(['plain', 'ruled', 'compact', 'academic-panel', 'academic-tab', 'academic-side', 'open-frame', 'floating-tab', 'split-label', 'paper-shadow', 'title-band', 'stacked-corner', 'ledger', 'dashed-note']);
@@ -168,13 +169,14 @@ function pageBuilder(slide, index, total, design) {
     for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
     return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, estimatedTextHeight:needed, estimatedLineWidths:lineWidths, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
   };
+  const chrome=resolveChrome(design,slide);
   if (!['cover','section'].includes(slide.layout)) {
-    rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
-    if(design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
-    text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
+    if(chrome.showTopRule!==false)rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
+    if(chrome.showFooter!==false&&design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
+    if(chrome.showPageNumber!==false)text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
   }
   const customFigures=!slide.referenceTemplateId&&['figure-focus','figure-split'].includes(slide.layout)?slide.figureBoxes:undefined;
-  return { page, p, add, rect, line, text, region, regions, customFigures, design, system:design.system };
+  return { page, p, add, rect, line, text, region, regions, customFigures, design, chrome, system:design.system };
 }
 
 function header(b, slide) {
@@ -240,6 +242,7 @@ function metricString(metric) {
 
 /** Draw a native card; text and frame remain independent editable objects. */
 function card(b, data, box, index, project, defaultStyle) {
+  if (renderCardSurface(b,data,box,index,project,{wrapText,measureTextWidth})) return {id:data.id,box,style:'surface'};
   const c = data || {}, id = asText(c.id || `card-${index + 1}`);
   const titleSize=b.system?.panelTitleSize??26,bodySize=b.system?.bodySize??24;
   const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p,{academic:b.design?.hasAcademicSystem});
@@ -460,7 +463,7 @@ function referenceLabel(project,id) {
 }
 
 function footerSources(b, project, slide) {
-  if (['references','cover','section'].includes(slide.layout)) return;
+  if (['references','cover','section'].includes(slide.layout)||resolveChrome(project.design,slide).showSources===false) return;
   const ids = new Set(arr(slide.paperIds));
   for (const claim of arr(project.claims)) if (arr(slide.claimIds).includes(claim.id) && claim.paperId) ids.add(claim.paperId);
   const sources = arr(project.papers).filter(p => ids.has(p.id)).map(p => [referenceLabel(project,p.id),arr(p.authors).length?`${p.authors[0]}${p.authors.length>1?' 等':''}`:'',p.year].filter(Boolean).join(' '));
@@ -681,64 +684,82 @@ export function buildScenes(project) {
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
     let contentBox=CONTENT;
     if(!['cover','section'].includes(slide.layout)){
-      if(design.hasAcademicSystem||slide.composition||slide.layout==='academic'||slide.section)contentBox=academicHeader(b,project,slide,{wrapText,measureTextWidth});
+      if(design.hasAcademicSystem||slide.composition||slide.layout==='academic'||slide.section||slide.chrome||design.chrome)contentBox=academicHeader(b,project,slide,{wrapText,measureTextWidth});
       else header(b,slide);
     }
+    b.page.contentBox={...contentBox};
+    // Explicit chrome opts legacy automatic layouts into the same recovered
+    // body area as composition. Authored boxes and untouched old projects keep
+    // their coordinates; media aspect ratios and text sizes are not stretched.
+    const bodyBox=slide.chrome||design.chrome?contentBox:CONTENT;
+    const layoutBox=box=>({...box,y:bodyBox.y+Math.max(0,box.y-CONTENT.y)*bodyBox.h/CONTENT.h,h:box.h*bodyBox.h/CONTENT.h});
+    // Authored figure boxes use the same recovered body area as their header.
+    // Untouched legacy projects retain their previously accepted safe bounds.
+    if(slide.figureBoxes?.length){
+      const area=slide.chrome||design.chrome?contentBox:{x:36,y:132,w:1208,h:526};
+      for(const box of slide.figureBoxes)if(box.x<area.x||box.y<area.y||box.x+box.w>area.x+area.w||box.y+box.h>area.y+area.h)b.page.issues.push({severity:'error',code:'custom-figure-outside-content',slideId:b.page.id,path:'slides.'+slide.id,message:`自定义证据图框需位于本页实际正文区域 x=${area.x}–${area.x+area.w}、y=${area.y}–${area.y+area.h} 内；调整图框，不能覆盖标题或来源。`});
+    }
+    if(slide.closing&&slide.layout!=='closing')b.page.issues.push({severity:'error',code:'closing-layout',slideId:b.page.id,message:'closing设计只用于layout:closing页面。'});
+    if(slide.closing&&slide.composition)b.page.issues.push({severity:'error',code:'closing-composition-conflict',slideId:b.page.id,message:'closing设计与composition是两种独立构图方式，不能同时指定。'});
     const ref=slide.referenceTemplateId?getReferenceTemplate(slide.referenceTemplateId):undefined;
     if(slide.referenceTemplateId&&!ref)b.page.issues.push({severity:'error',code:'unknown-reference-template',slideId:b.page.id,message:`未找到参考页型 ${slide.referenceTemplateId}；不能静默替换成其他版式。`});
     else if(slide.layout==='cover'){
-      if(design.hasAcademicSystem)academicCover(b,project,slide,{wrapText,measureTextWidth});else cover(b,slide);
+      if(design.hasAcademicSystem||['split','editorial','custom'].includes(slide.cover?.variant)||slide.cover?.boxes||slide.cover?.align||slide.cover?.assetId||slide.cover?.icon||slide.cover?.visualCaption)academicCover(b,project,slide,{wrapText,measureTextWidth});else cover(b,slide);
     }
     else if(slide.layout==='section')academicSection(b,project,slide,{wrapText,measureTextWidth});
+    else if(slide.layout==='closing'&&slide.closing)academicClosing(b,project,slide,{wrapText,measureTextWidth,card,contentBox});
     else if(slide.composition)renderAcademicComposition(b,project,slide,{card,figure,table,diagram,plot:scientificPlot,wrapText,measureTextWidth,clone,design,contentBox});
     else if(slide.layout==='academic')b.page.issues.push({severity:'error',code:'academic-composition-missing',slideId:b.page.id,message:'academic 页需 composition.rows 指定各证据面板；不能退化为默认介绍卡。'});
     else if(ref)referenceLayout(b,project,slide,ref);
     else if(slide.layout==='paper'){
-      paperTitle(b,project,slide,{x:48,y:128,w:1184,h:120});
+      paperTitle(b,project,slide,bodyBox===CONTENT?{x:48,y:128,w:1184,h:120}:layoutBox({x:48,y:132,w:1184,h:120}));
       if(figures.length){
-        figure(b,project,figures[0],{x:48,y:268,w:cards.length?716:1184,h:377},'figure:0');
-        cardsGrid(b,cards,{x:796,y:268,w:436,h:377},1,project,24);
-      }else cardsGrid(b,cards,{x:48,y:270,w:1184,h:375},Math.min(Math.max(cards.length,1),2),project);
+        figure(b,project,figures[0],layoutBox({x:48,y:268,w:cards.length?716:1184,h:377}),'figure:0');
+        cardsGrid(b,cards,layoutBox({x:796,y:268,w:436,h:377}),1,project,24);
+      }else cardsGrid(b,cards,layoutBox({x:48,y:270,w:1184,h:375}),Math.min(Math.max(cards.length,1),2),project);
     }else if(slide.layout==='figure-focus'){
       const main=arr(project.assets).find(a=>a.id===figures[0]),ratio=main?(main.width*(main.viewport?.w??1))/(main.height*(main.viewport?.h??1)):1;
       const portrait=cards.length&&ratio<.9,fw=cards.length?(portrait?426:792):1184;
-      if(figures[0])figure(b,project,figures[0],{x:48,y:132,w:fw,h:513},'figure:0');
-      if(cards.length)cardsGrid(b,cards,{x:48+fw+28,y:132,w:1184-fw-28,h:513},1,project,24);
+      if(figures[0])figure(b,project,figures[0],layoutBox({x:48,y:132,w:fw,h:513}),'figure:0');
+      if(cards.length)cardsGrid(b,cards,layoutBox({x:48+fw+28,y:132,w:1184-fw-28,h:513}),1,project,24);
     }else if(['figure-split','results'].includes(slide.layout)){
-      const area={x:48,y:136,w:cards.length?790:1184,h:509};
+      const area=layoutBox({x:48,y:136,w:cards.length?790:1184,h:509});
       if(figures.length>=2){const boxes=pairedFigureBoxes(project,figures,area,24);figures.slice(0,2).forEach((id,i)=>figure(b,project,id,boxes[i],`figure:${i}`));}
       else if(figures[0])figure(b,project,figures[0],area,'figure:0');
       else if(slide.plot)renderScientificPlot(b,slide.plot,area,{fontFamily:design.fontFamily,wrapText,measureTextWidth});
       else if(slide.chart)b.add('chart','data-chart',{...area,chart:clone(slide.chart),palette:clone(b.p),fontFamily:design.fontFamily});
       else if(slide.table)table(b,slide.table,area,design.fontFamily);
-      if(cards.length)cardsGrid(b,cards,{x:868,y:136,w:364,h:509},1,project,24);
+      if(cards.length)cardsGrid(b,cards,layoutBox({x:868,y:136,w:364,h:509}),1,project,24);
     }else if(slide.layout==='comparison'){
       if(figures.length>=2){
-        figures.slice(0,2).forEach((id,i)=>figure(b,project,id,{x:48+i*606,y:132,w:578,h:cards.length?337:513},`figure:${i}`));
-        if(cards.length)cardsGrid(b,cards,{x:48,y:497,w:1184,h:148},Math.min(cards.length,2),project);
+        figures.slice(0,2).forEach((id,i)=>figure(b,project,id,layoutBox({x:48+i*606,y:132,w:578,h:cards.length?337:513}),`figure:${i}`));
+        if(cards.length)cardsGrid(b,cards,layoutBox({x:48,y:497,w:1184,h:148}),Math.min(cards.length,2),project);
       }else if(slide.table){
-        table(b,slide.table,{x:48,y:138,w:cards.length?808:1184,h:507},design.fontFamily);
-        if(cards.length)cardsGrid(b,cards,{x:890,y:138,w:342,h:507},1,project);
-      }else cardsGrid(b,cards,CONTENT,Math.min(Math.max(cards.length,1),2),project);
+        table(b,slide.table,layoutBox({x:48,y:138,w:cards.length?808:1184,h:507}),design.fontFamily);
+        if(cards.length)cardsGrid(b,cards,layoutBox({x:890,y:138,w:342,h:507}),1,project);
+      }else cardsGrid(b,cards,bodyBox,Math.min(Math.max(cards.length,1),2),project);
     }else if(slide.layout==='method'){
-      diagram(b,project,slide,{x:60,y:132,w:1160,h:cards.length?286:499});
-      if(cards.length)cardsGrid(b,cards,{x:48,y:450,w:1184,h:195},Math.min(cards.length,3),project);
+      diagram(b,project,slide,layoutBox({x:60,y:132,w:1160,h:cards.length?286:499}));
+      if(cards.length)cardsGrid(b,cards,layoutBox({x:48,y:450,w:1184,h:195}),Math.min(cards.length,3),project);
     }else if(slide.layout==='roadmap'){
-      const gap=24,count=Math.max(cards.length,1),h=(513-gap*(count-1))/count;
-      cards.forEach((c,i)=>{const y=132+i*(h+gap);b.text(`roadmap:${i}:number`,String(i+1).padStart(2,'0'),{x:48,y:y+2,w:63,h:42},29,{color:b.p.accent,bold:true,role:'index'});card(b,c,c.box||{x:128,y,w:1104,h},i,project);});
-    }else if(slide.layout==='references')references(b,project,slide,CONTENT);
+      const gap=24,count=Math.max(cards.length,1),h=(bodyBox.h-gap*(count-1))/count;
+      cards.forEach((c,i)=>{const y=bodyBox.y+i*(h+gap);b.text(`roadmap:${i}:number`,String(i+1).padStart(2,'0'),{x:48,y:y+2,w:63,h:42},29,{color:b.p.accent,bold:true,role:'index'});card(b,c,c.box||{x:128,y,w:1104,h},i,project);});
+    }else if(slide.layout==='references')references(b,project,slide,bodyBox);
     else{
-      let y=132;
+      let y=bodyBox.y;
       for(const field of ['subtitle','takeaway']){
         if(!slide[field]||(field==='takeaway'&&slide.takeaway===slide.subtitle))continue;
         const h=Math.max(34,wrapText(slide[field],1184,26,{bold:field==='takeaway'}).length*31.2);
         b.text(field,slide[field],{x:48,y,w:1184,h},26,{bold:field==='takeaway',color:field==='takeaway'?b.p.accent:b.p.ink,lineHeight:1.2,role:field});
         y+=h+25;
       }
-      cardsGrid(b,cards,{x:48,y,w:1184,h:Math.max(40,645-y)},Math.min(Math.max(cards.length,1),2),project);
+      cardsGrid(b,cards,{x:48,y,w:1184,h:Math.max(40,bodyBox.y+bodyBox.h-y)},Math.min(Math.max(cards.length,1),2),project);
     }
     footerSources(b,project,slide);
-    const notePapers = arr(project.papers).filter(p => arr(slide.paperIds).includes(p.id));
+    const noteIds=new Set(arr(slide.paperIds)),noteClaims=new Set([...arr(slide.claimIds),...cards.flatMap(c=>arr(c.claimIds))]);
+    for(const claim of arr(project.claims))if(noteClaims.has(claim.id)&&claim.paperId)noteIds.add(claim.paperId);
+    for(const asset of arr(project.assets))if(figures.includes(asset.id)&&asset.paperId)noteIds.add(asset.paperId);
+    const notePapers = arr(project.papers).filter(p => noteIds.has(p.id));
     if (notePapers.length) b.page.notes += '\n\n参考文献（完整题名）\n' + notePapers.map(p => [p.id, p.title, p.journal, p.year, p.doi, p.version].filter(Boolean).join(' · ')).join('\n');
     // Explicit coverage guards: an unsupported combination must not quietly lose authored evidence.
     const imageCounts = new Map();

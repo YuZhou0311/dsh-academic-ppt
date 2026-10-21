@@ -5,7 +5,7 @@ const freeze = value => {
 };
 export const ACADEMIC_SYSTEM_ENUMS = freeze({
   preset: ['academic-defense', 'academic-report', 'plain'],
-  header: ['band', 'rule'], cover: ['framed', 'project', 'minimal'], panel: ['band', 'tint', 'line'],
+  header: ['band', 'rule', 'plain'], cover: ['framed', 'project', 'minimal', 'split', 'editorial'], panel: ['band', 'tint', 'line'],
 });
 export const ACADEMIC_SYSTEM_RANGES = freeze({
   titleSize: [32, 44], coverTitleSize: [60, 100], bodySize: [22, 28],
@@ -154,7 +154,7 @@ export function inferTemplateDesign({ study = {}, shapes = [], width = 1280, hei
   ];
   if (Math.abs(sourceWidth / sourceHeight - 16 / 9) > .01) limits.push('源画幅不是 16:9；几何与字号建议适配至 1280×720，不保留源画幅。');
   return {
-    suggestedDesign: { fontFamily, palette, system },
+    suggestedDesign: { mode: 'reference-guided', fontFamily, palette, system },
     designInference: { basis: 'pptx-xml-structural', visualReview: 'not-performed', ...(sha256 ? { sourceSha256: sha256 } : {}), targetCanvas: { width: 1280, height: 720, unit: 'px' }, decisions, limitations: limits },
   };
 }

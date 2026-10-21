@@ -1,4 +1,7 @@
 // Synthetic test fixtures, not real articles or scientific findings.
+import { DEFAULT_DESIGN } from '../src/core.mjs';
+// Tiny protocol fixtures deliberately leave space; density enforcement has its own integration tests.
+export const fixtureDesign = { ...structuredClone(DEFAULT_DESIGN), density: 'balanced' };
 // Encoded by pngjs and decoded with strict CRC checks; the previous fixture had a bad IDAT CRC.
 export const PNG='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4AWPQCEj5DwADXAHcD/+zFwAAAABJRU5ErkJggg==';
 export const brief={centralQuestion:'软件能否保留测试证据与原生对象？',audience:'软件测试',talkMinutes:2,targetPaperCount:1,requireFullText:true,qualityProfile:'academic',requirePaperIntro:true};

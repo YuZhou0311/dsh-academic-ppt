@@ -1,0 +1,73 @@
+{
+  "identity": "Rebuild of authored records; not a new independent model generation.",
+  "authorPptxSha256": "9ab556280b94b29549dc9fbf93b2ec1948e27664fc4fefa2739a8f2498c889e7",
+  "rebuildPptxSha256": "c1ca4876ab45353c6446c10cc87cc3e372193e47917b4ab8b2171a26400621a5",
+  "pages": [
+    {
+      "page": 1,
+      "sha256": "7b99a62a5e6a2ddce4276252761ef617d4ac86e51c6c8aafe329182befb4426a",
+      "authorSha256": "7b99a62a5e6a2ddce4276252761ef617d4ac86e51c6c8aafe329182befb4426a",
+      "identical": true
+    },
+    {
+      "page": 2,
+      "sha256": "40aeaf6abb361499e74d542d0da960ba6f26d04159bd50e1791b97dbae0d97e9",
+      "authorSha256": "40aeaf6abb361499e74d542d0da960ba6f26d04159bd50e1791b97dbae0d97e9",
+      "identical": true
+    },
+    {
+      "page": 3,
+      "sha256": "fdcbf6aef94a02f02cdac68b9f67071624de71a3d40c9048c09ddef9ade4d649",
+      "authorSha256": "fdcbf6aef94a02f02cdac68b9f67071624de71a3d40c9048c09ddef9ade4d649",
+      "identical": true
+    },
+    {
+      "page": 4,
+      "sha256": "db1220532c9b6f66d78da3a970c9c724d55953870991239ffa988b4bb3e40097",
+      "authorSha256": "db1220532c9b6f66d78da3a970c9c724d55953870991239ffa988b4bb3e40097",
+      "identical": true
+    },
+    {
+      "page": 5,
+      "sha256": "1afc7124d327e4f77d3be3c718440a8942c73152b9b191f53d53123771e05a10",
+      "authorSha256": "1afc7124d327e4f77d3be3c718440a8942c73152b9b191f53d53123771e05a10",
+      "identical": true
+    },
+    {
+      "page": 6,
+      "sha256": "1d588148a07b5fe4f1bcc8c9467e27225a8f056ffa25a6319653db774482be9c",
+      "authorSha256": "1d588148a07b5fe4f1bcc8c9467e27225a8f056ffa25a6319653db774482be9c",
+      "identical": true
+    },
+    {
+      "page": 7,
+      "sha256": "822bf963693cee2814f611c3391caf4cebee512317109c064b550e35d3fa153f",
+      "authorSha256": "822bf963693cee2814f611c3391caf4cebee512317109c064b550e35d3fa153f",
+      "identical": true
+    },
+    {
+      "page": 8,
+      "sha256": "09d6e7bfa97bcf4df2b323b04b72e080f938de61a3b35811de9acee92a3fa47f",
+      "authorSha256": "09d6e7bfa97bcf4df2b323b04b72e080f938de61a3b35811de9acee92a3fa47f",
+      "identical": true
+    },
+    {
+      "page": 9,
+      "sha256": "24709399051eb79f3c41b79ba0054590f8852c5ecafe28df9cae1c78b42fdbfc",
+      "authorSha256": "24709399051eb79f3c41b79ba0054590f8852c5ecafe28df9cae1c78b42fdbfc",
+      "identical": true
+    }
+  ],
+  "speakerNotes": {
+    "rebuild": "924fa2c5b65e9978806184713b8fa415712c47d694e7d0b57bcb34aeae6a7814",
+    "author": "924fa2c5b65e9978806184713b8fa415712c47d694e7d0b57bcb34aeae6a7814",
+    "identical": true
+  },
+  "missingFonts": [],
+  "buildSummary": {
+    "errors": 0,
+    "warnings": 2
+  },
+  "visualReviewInherited": false,
+  "note": "Exact PNG equality establishes identical rendered pages with the same renderer and fonts. The rebuilt PPTX is a new artifact and retains its own unreviewed status until separately reviewed."
+}

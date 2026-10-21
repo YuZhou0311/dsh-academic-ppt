@@ -10,6 +10,7 @@
  * their enclosed native objects register their own regions with pageBuilder.
  */
 
+import { measureCardSurface } from './card-surface.mjs';
 import { measureScientificPlotMinimum } from './scientific-plot.mjs';
 import { measureAcademicDiagramMinimum } from './academic-diagram.mjs';
 
@@ -21,6 +22,8 @@ const validBox = box => box && ['x', 'y', 'w', 'h'].every(key => Number.isFinite
 const inside = (inner, outer, tolerance = 1) => validBox(inner) && inner.x >= outer.x - tolerance && inner.y >= outer.y - tolerance && inner.x + inner.w <= outer.x + outer.w + tolerance && inner.y + inner.h <= outer.y + outer.h + tolerance;
 const intersects = (a, z) => Math.min(a.x + a.w, z.x + z.w) - Math.max(a.x, z.x) > 2 && Math.min(a.y + a.h, z.y + z.h) - Math.max(a.y, z.y) > 2;
 const roles = new Set(['question', 'method', 'setting', 'result', 'boundary', 'hypothesis']);
+const surfaces = new Set(['inherit', 'plain', 'rule', 'tint', 'band']);
+const alignments = new Set(['stretch', 'start']);
 const primaryKinds = ['chart', 'plot', 'table', 'diagram'];
 const DEFAULT_CONTENT = Object.freeze({ x: 48, y: 136, w: 1184, h: 509 });
 const GAPS = Object.freeze({ row: 18, column: 20, strip: 14, inner: 12, figure: 14, card: 14, padX: 14, padBottom: 12 });
@@ -121,6 +124,11 @@ function figureAreaScore(candidate, area) {
 
 /** Exact compact/plain native-card flow, including authored metric qualifiers. */
 function cardPlan(data, width, ctx) {
+  const surface = measureCardSurface(data,width,{design:ctx.design,system:ctx.system,wrapText:ctx.wrapText,measureTextWidth:ctx.measureTextWidth});
+  if(surface) {
+    if(surface.metricWidth>surface.innerW+1)ctx.error('card-metric-width','卡片指标的数值与单位在内边距区域不能保持一行；扩大面板或重排指标。',{cardId:data.id,requiredWidth:Math.ceil(surface.metricWidth),availableWidth:surface.innerW});
+    return {data,style:data.style||'compact',minimumH:surface.minimumH,surface:true};
+  }
   const style = data.style === 'plain' ? 'plain' : 'compact';
   const titleH = ctx.lines(data.title, width, ctx.titleSize, true) * ctx.titleSize * 1.15;
   const bodyStart = (style === 'compact' ? 42 : 49) + Math.max(0, titleH - 34);
@@ -225,21 +233,23 @@ function freeFlowArea(body, explicit, gap) {
 }
 
 function renderPanelFrame(b, panel, box, ctx) {
-  const key = panel.key, heading = { x: box.x + GAPS.padX, y: box.y + 8, w: box.w - GAPS.padX * 2, h: panel.headingH - 16 };
-  if (ctx.panelStyle === 'band') {
+  const key = panel.key, surface = panel.surface, heading = { x: box.x + GAPS.padX, y: box.y + 8, w: box.w - GAPS.padX * 2, h: panel.headingH - 16 };
+  if (surface === 'band') {
     b.rect(`${key}/frame`, box, b.p.paper, b.p.line, { strokeWidth: 1.05, role: 'panel-frame', panelId: panel.id, semanticKind: panel.kind });
     b.rect(`${key}/band`, { x: box.x, y: box.y, w: box.w, h: panel.headingH }, b.p.accent, 'none', { role: 'panel-band' });
-  } else if (ctx.panelStyle === 'tint') {
+  } else if (surface === 'tint') {
     b.rect(`${key}/frame`, box, b.p.paper, b.p.line, { strokeWidth: 1.05, role: 'panel-frame', panelId: panel.id, semanticKind: panel.kind });
     b.rect(`${key}/heading-fill`, { x: box.x + 1, y: box.y + 1, w: box.w - 2, h: panel.headingH - 1 }, b.p.tint, 'none');
     b.line(`${key}/top-rule`, box.x, box.y, box.x + box.w, box.y, b.p.accent, { strokeWidth: 2.6 });
     b.line(`${key}/heading-rule`, box.x, box.y + panel.headingH, box.x + box.w, box.y + panel.headingH, b.p.line, { strokeWidth: 1 });
-  } else {
+  } else if (surface === 'rule') {
     b.line(`${key}/top-rule`, box.x, box.y, box.x + box.w, box.y, b.p.accent, { strokeWidth: 2.6 });
     b.line(`${key}/heading-rule`, box.x, box.y + panel.headingH, box.x + box.w, box.y + panel.headingH, b.p.line, { strokeWidth: 1 });
     b.line(`${key}/bottom-rule`, box.x, box.y + box.h, box.x + box.w, box.y + box.h, b.p.line, { strokeWidth: 1 });
   }
-  b.text(`${key}/title`, panel.title, heading, ctx.titleSize, { bold: true, color: ctx.panelStyle === 'band' ? '#FFFFFF' : b.p.accent, lineHeight: 1.15, role: 'panel-title', panelId: panel.id, semanticKind: panel.kind });
+  // A plain panel is still a named semantic group. It loses only decorative
+  // furniture, never its heading, evidence, source text or measured padding.
+  b.text(`${key}/title`, panel.title, heading, ctx.titleSize, { bold: true, color: surface === 'band' ? '#FFFFFF' : surface === 'plain' ? b.p.ink : b.p.accent, lineHeight: 1.15, role: 'panel-title', panelId: panel.id, semanticKind: panel.kind });
   b.region(`${key}/heading`, heading, 'panel-heading');
 }
 
@@ -359,7 +369,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
   const panelStyle = system.panel || 'band';
   if (!['band', 'tint', 'line'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint 或 line。'); return; }
   const academicTables = b.design?.hasAcademicSystem ?? Boolean(project.design?.system || design.system);
-  const ctx = { card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: academicTables ? bodySize : 23, fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
+  const ctx = { design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: academicTables ? bodySize : 23, fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
   const unknown = (value, allowed, name) => { for (const key of Object.keys(value || {})) if (!allowed.includes(key)) error('unsupported-field', `${name}.${key} 没有可见排版规则；移除此字段或使用明确支持的内容字段。`, { field: `${name}.${key}` }); };
   unknown(composition, ['lead', 'rows', 'conclusion'], 'composition');
   if (composition.conclusion) unknown(composition.conclusion, ['label', 'text'], 'composition.conclusion');
@@ -380,7 +390,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
     const panels = row.panels.map((rawPanel, columnIndex) => {
       const panel = rawPanel && typeof rawPanel === 'object' && !Array.isArray(rawPanel) ? rawPanel : {};
       if (panel !== rawPanel) error('panel-structure', '每个面板必须是包含 id、title 和内容引用的对象。', { rowIndex, columnIndex });
-      unknown(panel, ['id', 'title', 'kind', 'weight', 'figureIds', 'cardIds', 'plotId', ...primaryKinds], `composition.rows[${rowIndex}].panels[${columnIndex}]`);
+      unknown(panel, ['id', 'title', 'kind', 'weight', 'surface', 'align', 'figureIds', 'cardIds', 'plotId', ...primaryKinds], `composition.rows[${rowIndex}].panels[${columnIndex}]`);
       const id = textOf(panel.id || `row-${rowIndex + 1}-panel-${columnIndex + 1}`), duplicate = panelIds.has(id);
       if (!hasText(panel.id)) error('panel-id', '每个学术面板必须具有稳定且非空的 id。', { rowIndex, columnIndex });
       if (duplicate) error('duplicate-panel-id', '面板 id 在同一页中必须唯一。', { panelId: id });
@@ -388,6 +398,10 @@ export function renderAcademicComposition(b, project, slide, helpers) {
       if (!hasText(panel.title)) error('panel-title', '每个面板必须保留非空的语义标题。', { panelId: id });
       if (panel.kind !== undefined && !roles.has(panel.kind)) error('panel-kind', '面板 kind 必须是已有的学术语义角色。', { panelId: id });
       if (panel.weight !== undefined && !positive(panel.weight)) error('panel-weight', '面板权重必须是有限正数。', { panelId: id });
+      if (panel.surface !== undefined && !surfaces.has(panel.surface)) error('panel-surface', '面板 surface 必须是 inherit、plain、rule、tint 或 band；未指定时继承全稿分组样式。', { panelId: id });
+      if (panel.align !== undefined && !alignments.has(panel.align)) error('panel-align', '面板 align 必须是 stretch 或 start；start 依据完整内容的测量高度顶对齐。', { panelId: id });
+      const surface = surfaces.has(panel.surface) && panel.surface !== 'inherit' ? panel.surface : panelStyle === 'line' ? 'rule' : panelStyle;
+      const align = panel.align === 'start' ? 'start' : 'stretch';
       for (const field of ['cardIds', 'figureIds']) if (panel[field] !== undefined && !Array.isArray(panel[field])) error('reference-list', '面板的 cardIds 与 figureIds 必须是已有内容身份的数组。', { panelId: id, field });
       for (const field of primaryKinds) if (panel[field] !== undefined && typeof panel[field] !== 'boolean') error('primary-flag', '面板 chart、plot、table、diagram 字段必须是布尔值。', { panelId: id, field });
       if (panel.plotId !== undefined && (typeof panel.plotId !== 'string' || !hasText(panel.plotId))) error('plot-reference', 'panel.plotId 必须是 slide.plots 中某个统计图的非空 id。', { panelId: id, plotId: panel.plotId });
@@ -400,7 +414,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
         if (usedCards.has(cardId)) { error('duplicate-card-reference', '同一卡片不能分配给多个面板或在面板中重复出现。', { panelId: id, cardId }); continue; }
         usedCards.add(cardId);
         const record = cardMap.get(cardId), item = cardPlan(record.data, record.data.box?.w || Math.max(1, innerW), ctx);
-        if (record.data.style !== undefined && !['plain', 'compact'].includes(record.data.style)) error('card-style', 'composition 面板的解释文字仅支持 plain 或 compact；其他 card.style 具有独立装饰与文字区，不能静默替换。面板边框统一由 design.system.panel 控制。', { panelId: id, cardId, requestedStyle: record.data.style });
+        if (!item.surface && record.data.style !== undefined && !['plain', 'compact'].includes(record.data.style)) error('card-style', 'composition 面板的解释文字仅支持 plain 或 compact；其他 card.style 具有独立装饰与文字区，不能静默替换。分组样式由 panel.surface 或 design.system.panel 控制。', { panelId: id, cardId, requestedStyle: record.data.style });
         selectedCards.push({ ...item, index: record.index });
       }
       const selectedFigures = [];
@@ -439,11 +453,17 @@ export function renderAcademicComposition(b, project, slide, helpers) {
         }
       }
       if (!selectedCards.length && !artifact) error('empty-panel', '面板必须引用现有文字、原图或可编辑科学对象，不能用空框代替论证。', { panelId: id });
+      // Absolute card/node geometry is a separate authoring contract: do not
+      // quietly move or clip it when a panel asks for content-sized height.
+      const hasExplicitCards = selectedCards.some(item => item.data.box !== undefined);
+      const hasExplicitNodes = artifact?.kind === 'diagram' && list(slide.nodes).some(node => node.box !== undefined);
+      const hasExplicitGeometry = hasExplicitCards || hasExplicitNodes;
+      if (align === 'start' && hasExplicitGeometry) error('panel-align-box-conflict', 'align:start 使用内容自动测量，不能同时固定 card.box 或 node.box；移除显式 box 或使用 align:stretch，保留原有坐标。', { panelId: id });
       const explicitCards = selectedCards.filter(item => validBox(item.data.box)), flowCards = selectedCards.filter(item => !validBox(item.data.box));
       const explicitSpan = explicitCards.length ? Math.max(...explicitCards.map(item => item.data.box.y + item.data.box.h)) - Math.min(...explicitCards.map(item => item.data.box.y)) : 0;
       const cardsH = flowCards.reduce((sum, item) => sum + item.minimumH, 0) + Math.max(0, flowCards.length - 1) * GAPS.card + explicitSpan + (explicitSpan && flowCards.length ? GAPS.inner : 0);
       const minimumH = headingH + GAPS.inner + GAPS.padBottom + (artifact?.minimumH || 0) + (artifact && selectedCards.length ? GAPS.inner : 0) + cardsH;
-      const result = { id, key, title, kind: panel.kind, x, w, headingH, cards: selectedCards, artifact, minimumH };
+      const result = { id, key, title, kind: panel.kind, surface, align: hasExplicitGeometry ? 'stretch' : align, x, w, headingH, cards: selectedCards, artifact, minimumH };
       x += w + GAPS.column;
       return result;
     });
@@ -464,7 +484,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
   let y = contentBox.y;
   if (bands.leadH) { renderLead(b, bands.lead, { x: contentBox.x, y, w: contentBox.w, h: bands.leadH }, ctx); y += bands.leadH + GAPS.strip; }
   prepared.forEach((row, rowIndex) => {
-    for (const panel of row.panels) renderPanel(b, project, slide, panel, { x: panel.x, y, w: panel.w, h: rowHeights[rowIndex] }, ctx);
+    for (const panel of row.panels) renderPanel(b, project, slide, panel, { x: panel.x, y, w: panel.w, h: panel.align === 'start' ? panel.minimumH : rowHeights[rowIndex] }, ctx);
     y += rowHeights[rowIndex] + (rowIndex < prepared.length - 1 ? GAPS.row : 0);
   });
   if (bands.conclusion.height) { y += GAPS.strip; renderConclusion(b, bands.conclusion, { x: contentBox.x, y, w: contentBox.w, h: bands.conclusion.height }, ctx); }

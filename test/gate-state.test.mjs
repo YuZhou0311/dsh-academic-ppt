@@ -7,7 +7,7 @@ import {createProject,updateRecords,buildProject,checkProject,recordReview,rende
 import {embedAssets,hash} from '../src/io.mjs';
 import {renderProject} from '../src/render.mjs';
 import {buildAcademicTools} from '../src/tools.mjs';
-import {brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
 
 async function workspace(t){
  const root=resolve('.test-output');await mkdir(root,{recursive:true});
@@ -25,7 +25,7 @@ test('public record keeps teaching source paths through embedding, loading and d
  for(const provenance of [undefined,'source'])await t.test(provenance??'omitted provenance',async t=>{
   const cwd=await workspace(t),path=join(cwd,'references/templates/assets/distribution.png');
   await mkdir(dirname(path),{recursive:true});await writeFile(path,bytes);
-  const created=await createProject({cwd,projectDir:'project',title:'Synthetic provenance protocol fixture',brief});
+  const created=await createProject({cwd,projectDir:'project',title:'Synthetic provenance protocol fixture',brief,design:fixtureDesign});
   const {data,...metadata}=asset;
   const incoming={...metadata,path:'references/templates/assets/../assets/distribution.png',...(provenance?{provenance}:{})};
   const recorded=await recordBatch(cwd,created.projectPath,0,{papers:[paper],claims:[claim],assets:[incoming],slides});
@@ -57,7 +57,7 @@ test('resolved import path cannot be masked by caller sourcePath or a benign sym
  const cwd=await workspace(t),path=join(cwd,'references/templates/assets/teaching.png');
  await mkdir(dirname(path),{recursive:true});await writeFile(path,Buffer.from(asset.data.split(',')[1],'base64'));
  const alias=join(cwd,'apparently-research.png');await symlink(path,alias);
- const created=await createProject({cwd,projectDir:'project',title:'Synthetic source-path override fixture',brief});
+ const created=await createProject({cwd,projectDir:'project',title:'Synthetic source-path override fixture',brief,design:fixtureDesign});
  const {data,...metadata}=asset;
  await recordBatch(cwd,created.projectPath,0,{papers:[paper],claims:[claim],slides,assets:[{...metadata,path:alias,sourcePath:'research/ordinary.png',provenance:'source'}]});
  const saved=await readState(created.projectPath);
@@ -66,7 +66,7 @@ test('resolved import path cannot be masked by caller sourcePath or a benign sym
 });
 
 test('data supplied with a teaching path retains that path instead of erasing the teaching restriction',async t=>{
- const cwd=await workspace(t),created=await createProject({cwd,projectDir:'project',title:'Synthetic data-plus-path fixture',brief});
+ const cwd=await workspace(t),created=await createProject({cwd,projectDir:'project',title:'Synthetic data-plus-path fixture',brief,design:fixtureDesign});
  const path='references/templates/assets/already-embedded.png';
  await recordBatch(cwd,created.projectPath,0,{papers:[paper],claims:[claim],slides,assets:[{...asset,path,sourcePath:'research/ordinary.png',provenance:'source'}]});
  const saved=await readState(created.projectPath);
@@ -82,7 +82,7 @@ test('ordinary path imports preserve image bytes, explicit provenance and render
  const [dataOnly]=await embedAssets([{...asset,provenance:'source'}],cwd);
  assert.equal(embedded.sourcePath,await realpath(path));assert.equal(embedded.provenance,'source');
  const {sourcePath,...withoutPath}=embedded;assert.deepEqual(withoutPath,dataOnly);
- const created=await createProject({cwd,projectDir:'project',title:'Synthetic normal-source fixture',brief});
+ const created=await createProject({cwd,projectDir:'project',title:'Synthetic normal-source fixture',brief,design:fixtureDesign});
  await recordBatch(cwd,created.projectPath,0,{papers:[paper],claims:[claim],slides,assets:[embedded]});
  const saved=await readState(created.projectPath),checked=await checkProject({cwd,projectPath:created.projectPath});
  assert.equal(checked.summary.errors,0);assert.ok(!checked.issues.some(i=>i.code==='template-as-evidence'));
@@ -95,7 +95,7 @@ test('ordinary path imports preserve image bytes, explicit provenance and render
 });
 
 test('successful actual PPTX rerender invalidates earlier PPTX reviews while retaining unchanged HTML reviews',async t=>{
- const cwd=await workspace(t),created=await createProject({cwd,projectDir:'project',title:'Synthetic render lifecycle fixture',brief:{...brief,targetPaperCount:0,requirePaperIntro:false},design:{...DEFAULT_DESIGN,fontFamily:'DejaVu Sans'}});
+ const cwd=await workspace(t),created=await createProject({cwd,projectDir:'project',title:'Synthetic render lifecycle fixture',brief:{...brief,targetPaperCount:0,requirePaperIntro:false},design:{...fixtureDesign,fontFamily:'DejaVu Sans'}});
  const options={cwd,projectPath:created.projectPath};
  await updateRecords({...options,expectedRevision:0,slides:[{id:'render-fixture',layout:'cover',title:'Render lifecycle fixture',paperIds:[],claimIds:[],figureIds:[],cards:[],notes:'Synthetic protocol fixture. This does not certify a user presentation.',seconds:120}]});
  const built=await buildProject({...options,expectedRevision:1});assert.equal(built.ok,true);
