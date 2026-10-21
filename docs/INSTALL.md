@@ -2,28 +2,18 @@
 
 本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十二个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-已发布稳定版为 **v0.5.0**，可从 [GitHub 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases)下载。本次重构源码为 **0.6.0-dev.0，尚未发布**，支持从开发分支试用；实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+当前版本为 **v0.6.0**，从 [GitHub v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)下载安装包，或克隆对应标签；实际本地版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
-稳定版与开发版选择其一。安装稳定版 v0.5.0，可克隆对应标签，或下载该发布版本的 Source code 归档后解压：
+安装 v0.6.0，可克隆对应标签，或下载该发布版本的 Source code 归档后解压：
 
 ```sh
-git clone --branch v0.5.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.6.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
-### 可选：试用按内容设计页面的开发版
-
-需要本次重构的设计模式、构图记录与面板样式时，从专用分支建立单独目录：
-
-```sh
-git clone --branch feat/content-led-academic-design --single-branch https://github.com/YuZhou0311/dsh-academic-ppt.git dsh-academic-ppt-dev
-cd dsh-academic-ppt-dev
-node -p "require('./package.json').version"
-```
-
-该分支为开发源码，不是 v0.5.0 发布包。新流程用法见 [CONTENT_LED_DESIGN.md](CONTENT_LED_DESIGN.md)，设计依据见 [DESIGN_REFERENCES.md](DESIGN_REFERENCES.md)。仓库中的 v0.5 示例与接受记录保留历史身份，不能作为新提示效果已通过的证明。
+v0.6.0 包含原生卡片、compact 空间诊断、自主封面/结尾与逐页 chrome。新流程用法见 [CONTENT_LED_DESIGN.md](CONTENT_LED_DESIGN.md)，设计依据见 [DESIGN_REFERENCES.md](DESIGN_REFERENCES.md)，实际独立制作和返工见 [VALIDATION_V06.md](VALIDATION_V06.md)。仓库中的 v0.5 与 renderer 6 示例保留历史身份，不能作为本轮新增能力的验收证明。
 
 插件位于本仓库根目录。完整文件夹应包含 `package.json`、`package-lock.json`、`cordis.patch.yml`、`src/`、`skills/` 和 `bin/`。
 
@@ -45,10 +35,10 @@ v0.5 封存示例的实际渲染使用 **Noto Sans CJK SC Regular/Bold**。可�
 
 ### 直接使用安装包
 
-只需安装稳定版时，可下载发布页中的 v0.5.0 `.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理。也可在选定源码根目录运行 `npm pack --ignore-scripts` 得到该源码版本的包；自行打包开发版不会将它变为正式发布版。v0.5.0 包的安装命令为：
+只需安装插件时，可下载发布页中的 `dsh-academic-ppt-0.6.0.tgz`，直接把压缩包的完整本地路径交给 DSH 插件管理。也可在选定源码根目录运行 `npm pack --ignore-scripts` 得到该源码版本的包；自行打包开发版不会将它变为正式发布版。v0.6.0 包的安装命令为：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.5.0.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.6.0.tgz"
 ```
 
 DSH 的包管理器负责解析依赖。安装包包含运行代码、技能、文档和示例；开发测试及根 `package-lock.json` 由源码归档提供。不要把本节的安装包解压后直接套用源码流程中的 `npm ci` 或 `npm test`。
@@ -82,7 +72,7 @@ dsh web
 
 ### 更新已安装的 file: 包
 
-退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。开发版目录若为 `dsh-academic-ppt-dev`，安装路径也应指向该目录。随后在新会话中确认技能与工具可见。
+退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:design) 与 contract(topic:slide)，检查是否含 cardDefaults、density、chrome、card.appearance、cover.boxes 与 closing，避免把旧安装副本当作本轮版本。
 
 仅修改仓库、运行测试或生成安装包，不会替你更新正在运行的 DSH。本文提供安装步骤，不表示已在你的电脑上完成安装或验收。
 
@@ -111,9 +101,9 @@ dsh web
 
 首次提示词可以直接复制：
 
-> 使用 dsh-academic-ppt，依据我提供的论文和数据，制作一场 12 分钟的正式学术汇报。先明确中心问题，核对方法、证据与解释边界，再组织页序。请根据每页的信息关系自主设计布局，突出主证据，保持充实的信息量与清楚的学术层级。若有参考模板，只借鉴字体、配色、层级和对齐，卡片数量与页面结构由当前内容决定。关键页比较两种构图并记录简短取舍，先完成封面、最难证据页和机制或综合页，再完成全稿。区分已有发现、归纳与待验证设想，保留关键条件、完整书目和讲稿；实际渲染最终 PPTX 并逐页检查，交付可编辑文件及工程。
+> 使用 dsh-academic-ppt，依据我提供的论文和数据，制作一场 12 分钟的正式学术汇报。讲清中心问题、方法、核心证据、局限与启示，区分已有发现、归纳和待验证设想。优先论文原图，按每页的信息关系自主设计布局；为独立解读、条件与边界设计清楚的小卡片，保持图文紧凑、层次丰富、字号可读，避免大面积无用留白。封面与结尾独立设计，标题线、角标和小字按用途保留，主题图片与语义图标按需使用。参考模板只借鉴适用的字体、配色和层级。先完成代表页并查看真实渲染，再完成全稿；保留来源、关键限定与逐页讲稿，实际检查当前 PPTX 的每一页后交付可编辑文件及工程。
 
-上述自主构图流程针对 0.6 开发版。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。
+上述流程针对 v0.6.0 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，严重空洞需修复，不能切换 balanced 或增加装饰来绕过。确实需要疏朗风格时在初始化中明确选择 balanced。
 
 ## 4. 命令行使用
 
@@ -136,9 +126,13 @@ node bin/academic-ppt.mjs check --args check.json
 
 模板研究会保存 profile，并返回可应用的 `suggestedDesign`、结构推断依据与紧凑 study。可以传 `outputPath` 指定工作区内位置；同名文件内容相同则复用，内容不同则拒绝覆盖。`render:true` 可同时返回实际源PPTX页面和编号概览；必要时提供 `fontDirectories`。
 
-模板研究是按需步骤。看过代表页后，将 suggestedDesign 作为候选，在 `reference-guided` 模式下按当前内容调整，再写入 record 批次的 design；字体替代或结构推断修正应有实际看图依据。design.system 控制封面、页眉、默认面板及字号，不规定每页卡片数量与正文结构。templateProfilePaths 只用于局部组件导入。完整流程见 [模板学习](../skills/dsh-academic-ppt/references/template-learning.md)。
+模板研究是按需步骤。看过代表页后，将 suggestedDesign 作为候选，在 `reference-guided` 模式下按当前内容调整，再写入 record 批次的 design；字体替代或结构推断修正应有实际看图依据。design.system 提供共同字号与可覆盖的构图起点，不规定每页卡片数量、正文结构或固定chrome。templateProfilePaths 只用于局部组件导入。完整流程见 [模板学习](../skills/dsh-academic-ppt/references/template-learning.md)。
 
-正文可用 `layout:academic` 与 composition 组织不同权重的证据面板，不用先选择参考编号。0.6 开发版可用 `visualPlan` 保存信息关系、主面板、完整阅读顺序和简短选择理由；它不会自动重排页面。`panel.surface` 支持 `inherit/plain/rule/tint/band`，`align` 支持 `stretch/start`；短旁注使用 `start` 时，同一面板内的卡片不能再指定 `card.box`，所消费的机制节点也不能指定 `node.box`。完整字段与原生分布图、区间图、表格、流程关系见 `contract(topic:slide)` 和 [组合页参考](../skills/dsh-academic-ppt/references/composition.md)。
+正文可用 `layout:academic` 与 composition 组织不同权重的证据面板，不用先选择参考编号。`visualPlan` 保存信息关系、主面板、完整阅读顺序和简短理由，不会自动重排页面。`panel.surface` 支持 `inherit/plain/rule/tint/band`，`align` 支持 `stretch/start`；start收紧后仍须处理剩余空间，不与同面板的显式card.box或所消费机制节点的node.box共用。完整字段见 `contract(topic:slide)` 和 [组合页参考](../skills/dsh-academic-ppt/references/composition.md)。
+
+`design.cardDefaults` 与逐卡 `appearance` 可选outline/tint/solid/plain、圆角、真实内边距、强调边和轻微层次；card.icon提供十种原生线图标。panel.surface控制外层，外层plain可以配内部有边界的解释卡。`design.chrome/slide.chrome`独立控制品牌字、章节、页码、页脚、可见引用与顶部横线。新能力的具体枚举与片段见 [CONTENT_LED_DESIGN.md](CONTENT_LED_DESIGN.md)，首次使用仍以contract为准。
+
+封面可选split/editorial等变体，或用cover.variant:custom与cover.boxes自主分配title、subtitle、occasion、metadata、visual区域，坐标为1280×720中的{x,y,w,h}。只建立有实际内容的区域，保留完整题名和真实身份。原生结束页可用closing.variant:statement/evidence，复杂综合则用composition，不同时使用closing对象。cover/closing的主题图片通过assetId引用已登记usage:decorative资产，不进入slide.figureIds或科学证据记录。
 
 参考页型查询不需要工程路径。把 `{}`、`{"category":"figure"}` 或 `{"templateId":"figure-detail-window"}` 写入参数文件，然后运行 `node bin/academic-ppt.mjs reference --args reference.json`。默认返回中性槽位和空字段骨架；只有 `includeExamples: true` 才返回教学文件入口。`referenceTemplateId` 与 `layout` 写入页面后，生成器实际使用对应几何；含题签的页型还需逐项填写 `panelTitles`，避免沿用示例判断。教学数据不能作为当前研究结论。
 
@@ -148,7 +142,9 @@ node bin/academic-ppt.mjs check --args check.json
 
 新工程默认采用 academic 质量记录：来源 `analysis`、claim 的 `reasoning`，推断/方案的 `dependsOn`，正文页的 `argument`。这不是字段填得长就通过学术评审，内容仍需对应真实材料。没有明确篇数要求时 targetPaperCount 为 0；逐篇导读仅由 requirePaperIntro 明确开启。
 
-旧工程与旧成品保留。旧质量 profile 可以继续读取、编辑与构建，但不会报告已达到新学术交付条件；补充真实分析后通过 record 更新 brief 的 qualityProfile，并重建、实际渲染和登记 observations。0.6 开发版的渲染器版本为 6，旧成品与视觉验收不能自动继承为当前结果。迁移不能凭空补造阅读或审查，v0.5 历史接受记录也不能替代新流程验收。
+旧工程与旧成品保留。旧质量 profile 可以继续读取、编辑与构建，但不会报告已达到新学术交付条件；补充真实分析后通过 record 更新 brief 的 qualityProfile，并重建、实际渲染和登记 observations。本轮渲染器版本为7，旧成品与视觉验收不能自动继承为当前结果。旧文件未设新卡片/chrome字段时保留兼容分支；record更新design时省略mode、density、cardDefaults、chrome会保留已有值。迁移不能凭空补造阅读或审查。
+
+随包历史materials-v05离线demo显式使用balanced与开放内层卡片的兼容配置，保留原有外层分组；它用于核对安装、证据记录和可编辑导出，不作为新compact自主设计的效果验收。历史像素一致记录只描述当时的v0.5重建，不承诺renderer 7重建与封存截图相同。
 
 从三页小样补全全稿时，可在记录批次提交 `slideOrder:[全部当前页面ID]`。工具要求每页恰好出现一次，重排与同批新增页面原子保存；不用直接改 project.json。重排后的版本需要重新构建并审查。
 
@@ -171,7 +167,7 @@ node bin/academic-ppt.mjs check --args check.json
 - 模板导入保留受支持的原生基础形状信息，复杂图片纹理、特殊效果、图表或母版关系可能无法复用；检查工具会列出边界。不能把“盘点成功”当作任意模板无损克隆。
 - 原始论文图可以作为独立图片嵌入；页标题、分析、图注、标注和卡片保持原生编辑。整页截图不作为可编辑性解决方案。
 - 版本、摘要和静态几何检查负责发现可计算的问题；它们不证明科学结论真实，也不等于看过最终 PPTX 的每一页。
-- 设计模式、visualPlan 与软性设计提醒支持模型作出和复核构图决策，不构成自动布局引擎或审美评分。缺少实际运行与独立审查时，不报告新提示的稳定创作效果。
+- 设计模式、visualPlan与设计提醒支持模型作出和复核构图决策；compact的严重连续空洞有明确阻断门槛。工程诊断不构成自动审美评分，背景、卡框和图标不计有效内容。缺少实际运行与独立审查时，不报告新提示的稳定创作效果。
 - 注册/API 测试与本地生成测试证明工具协议和代码行为；真实 DSH 界面、付费模型端到端运行、PowerPoint/WPS 实际显示属于各自独立的验证层，只有实际完成才可以报告通过。
 
 ## 6. 卸载

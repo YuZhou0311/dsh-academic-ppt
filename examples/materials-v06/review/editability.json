@@ -1,0 +1,64 @@
+{
+  "slides": 9,
+  "total_native_shapes": 265,
+  "picture_objects": 0,
+  "native_chart_references": 1,
+  "notes_parts": 9,
+  "per_slide": [
+    {
+      "part": "ppt/slides/slide1.xml",
+      "shape_count": 4,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide2.xml",
+      "shape_count": 24,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide3.xml",
+      "shape_count": 22,
+      "picture_count": 0,
+      "chart_refs": 1
+    },
+    {
+      "part": "ppt/slides/slide4.xml",
+      "shape_count": 86,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide5.xml",
+      "shape_count": 40,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide6.xml",
+      "shape_count": 52,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide7.xml",
+      "shape_count": 13,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide8.xml",
+      "shape_count": 14,
+      "picture_count": 0,
+      "chart_refs": 0
+    },
+    {
+      "part": "ppt/slides/slide9.xml",
+      "shape_count": 10,
+      "picture_count": 0,
+      "chart_refs": 0
+    }
+  ],
+  "scope": "只读检查OOXML结构；不是PowerPoint/WPS手工编辑测试。"
+}

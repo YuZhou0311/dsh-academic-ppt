@@ -1,0 +1,393 @@
+{
+  "reviewer": "root-independent-review",
+  "date": "2026-10-21",
+  "accepted": true,
+  "blocking": 0,
+  "mustFix": 0,
+  "optional": [
+    "第2页卡片中的200 MPa可改为同一行；当前完整可读。",
+    "第6页右上卡片末尾孤字可进一步优化措辞或区域比例；无缺字或遮挡。",
+    "书目页仅两个真实来源，保留大空区提醒；不作为正文紧凑设计通过的证据。"
+  ],
+  "inspectedPages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "pptxSha256": "9ab556280b94b29549dc9fbf93b2ec1948e27664fc4fefa2739a8f2498c889e7",
+  "independentRecalculation": {
+    "rows": 48,
+    "B_counts": [
+      12,
+      12
+    ],
+    "differenceCycles": 25622.25,
+    "Welch95CICycles": [
+      -13679.799052276394,
+      64924.299052276394
+    ]
+  },
+  "editableObjects": {
+    "slides": 9,
+    "shapes": 265,
+    "tables": 2,
+    "charts": 1,
+    "pictures": 0,
+    "notes": 9
+  },
+  "finalToolSummary": {
+    "errors": 0,
+    "warnings": 2
+  },
+  "geometry": [
+    {
+      "slideId": "s01",
+      "layout": "cover",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 48,
+        "w": 1184,
+        "h": 624
+      },
+      "contentCoverage": 0.2754,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 720,
+        "y": 272,
+        "w": 512,
+        "h": 400
+      },
+      "largestEmptyContentFraction": 0.2772,
+      "largestUnallocatedBox": {
+        "x": 720,
+        "y": 272,
+        "w": 512,
+        "h": 400
+      },
+      "largestUnallocatedFraction": 0.2772,
+      "grid": {
+        "columns": 148,
+        "rows": 78,
+        "cellWidth": 8,
+        "cellHeight": 8,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.28,
+      "blockingThreshold": 0.5,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s02",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.5327,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 168,
+        "y": 589.4,
+        "w": 1064,
+        "h": 55.6
+      },
+      "largestEmptyContentFraction": 0.0953,
+      "largestUnallocatedBox": {
+        "x": 168,
+        "y": 589.4,
+        "w": 1064,
+        "h": 55.6
+      },
+      "largestUnallocatedFraction": 0.0953,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s03",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.7,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 792,
+        "y": 303.6,
+        "w": 440,
+        "h": 87.3
+      },
+      "largestEmptyContentFraction": 0.0619,
+      "largestUnallocatedBox": {
+        "x": 792,
+        "y": 303.6,
+        "w": 440,
+        "h": 87.3
+      },
+      "largestUnallocatedFraction": 0.0619,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s04",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.689,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 888,
+        "y": 120.9,
+        "w": 344,
+        "h": 127
+      },
+      "largestEmptyContentFraction": 0.0704,
+      "largestUnallocatedBox": {
+        "x": 888,
+        "y": 120.9,
+        "w": 344,
+        "h": 127
+      },
+      "largestUnallocatedFraction": 0.0704,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s05",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.2858,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 1032,
+        "y": 120.9,
+        "w": 200,
+        "h": 428.8
+      },
+      "largestEmptyContentFraction": 0.1382,
+      "largestUnallocatedBox": {
+        "x": 1032,
+        "y": 120.9,
+        "w": 200,
+        "h": 428.8
+      },
+      "largestUnallocatedFraction": 0.1382,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s06",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.3321,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 696,
+        "y": 168.6,
+        "w": 136,
+        "h": 476.4
+      },
+      "largestEmptyContentFraction": 0.1044,
+      "largestUnallocatedBox": {
+        "x": 696,
+        "y": 168.6,
+        "w": 136,
+        "h": 476.4
+      },
+      "largestUnallocatedFraction": 0.1044,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s07",
+      "layout": "academic",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.6089,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 48,
+        "y": 494.1,
+        "w": 1184,
+        "h": 103.2
+      },
+      "largestEmptyContentFraction": 0.197,
+      "largestUnallocatedBox": {
+        "x": 48,
+        "y": 494.1,
+        "w": 1184,
+        "h": 103.2
+      },
+      "largestUnallocatedFraction": 0.197,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "no-large-void-detected"
+    },
+    {
+      "slideId": "s08",
+      "layout": "closing",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.2938,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 616,
+        "y": 422.7,
+        "w": 616,
+        "h": 222.3
+      },
+      "largestEmptyContentFraction": 0.2207,
+      "largestUnallocatedBox": {
+        "x": 616,
+        "y": 422.7,
+        "w": 616,
+        "h": 222.3
+      },
+      "largestUnallocatedFraction": 0.2207,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.2,
+      "blockingThreshold": 0.25,
+      "status": "needs-review"
+    },
+    {
+      "slideId": "s09",
+      "layout": "references",
+      "density": "compact",
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "contentBox": {
+        "x": 48,
+        "y": 120.9,
+        "w": 1184,
+        "h": 524.1
+      },
+      "contentCoverage": 0.1791,
+      "contextVisualCoverage": 0,
+      "largestEmptyContentBox": {
+        "x": 48,
+        "y": 287.7,
+        "w": 1184,
+        "h": 357.3
+      },
+      "largestEmptyContentFraction": 0.6818,
+      "largestUnallocatedBox": {
+        "x": 48,
+        "y": 287.7,
+        "w": 1184,
+        "h": 357.3
+      },
+      "largestUnallocatedFraction": 0.6818,
+      "grid": {
+        "columns": 148,
+        "rows": 66,
+        "cellWidth": 8,
+        "cellHeight": 7.9403,
+        "opticalHalo": 4
+      },
+      "warningThreshold": 0.28,
+      "blockingThreshold": 1,
+      "status": "needs-review"
+    }
+  ],
+  "notes": "逐页查看最终实际PNG与PDF文本位置，独立核对原始协议、48行CSV、讲稿和原生对象。没有主线程重排或修改作者PPTX。内容/科学检查不代表真实实验有效性。"
+}
