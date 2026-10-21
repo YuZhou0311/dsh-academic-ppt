@@ -161,3 +161,48 @@ test('repetition advice leads to a valid repair for each public slide contract',
   assert.doesNotThrow(() => validate(composed));
   assert.deepEqual(designIssues(p), []);
 });
+
+test('small weight nudges and additional empty cards cannot disguise a repeated structure', () => {
+  const slides = ['s1', 's2', 's3'].map(id => slide(id));
+  slides[1].composition.rows[0].panels[0].weight = 2.05;
+  slides[2].composition.rows[0].panels[0].weight = 2.12;
+  slides[2].cards.push({ id: 'filler', title: '装饰标签', body: '', claimIds: [] });
+  slides[2].composition.rows[0].panels[0].cardIds.push('filler');
+  assert.ok(codes(project(slides)).includes('layout-repetition'));
+});
+
+test('whole-deck dominance detects a repeated structure separated by other pages', () => {
+  const different = id => {
+    const s = slide(id); s.composition.rows[0].panels[0].figureIds = []; s.composition.rows[0].panels[0].table = true;
+    return s;
+  };
+  const slides = [slide('a'), different('x'), slide('b'), slide('c'), different('y'), slide('d')];
+  const found = designIssues(project(slides)).filter(issue => issue.code === 'deck-layout-dominance');
+  assert.equal(found.length, 1);
+  assert.equal(found[0].matchingSlides, 4);
+  assert.equal(found[0].bodySlides, 6);
+  assert.deepEqual(found[0].relatedSlideIds, ['a', 'b', 'c', 'd']);
+  for (const s of slides) s.visualPlan.repetitionReason = '同一组对照实验固定图轴、证据位置与条件说明，以支持直接逐页比较。';
+  assert.ok(!codes(project(slides)).includes('deck-layout-dominance'));
+});
+
+test('a generic short repetition slogan is not an inspectable justification', () => {
+  const slides = ['s1', 's2', 's3'].map(id => slide(id));
+  slides[2].visualPlan.repetitionReason = '保持统一';
+  assert.ok(codes(project(slides)).includes('repetition-reason-thin'));
+  assert.ok(codes(project(slides)).includes('layout-repetition'));
+});
+
+test('a compact report exposes unframed explanatory stacks without requiring every paragraph to be boxed', () => {
+  const s = slide('s1');
+  s.composition.rows[0].panels[1].cardIds = ['a', 'b'];
+  s.composition.rows[0].panels[1].surface = 'plain';
+  s.cards = [{ id: 'a', title: '观测', body: '表层含水量', style: 'compact' }, { id: 'b', title: '边界', body: '单站验证', style: 'compact' }];
+  const p = project([s]); p.design.density = 'compact';
+  assert.ok(codes(p).includes('unframed-card-stack'));
+  p.design.cardDefaults = { surface: 'outline', accent: 'left' };
+  assert.ok(!codes(p).includes('unframed-card-stack'), 'compact style inherits the same visible defaults as the renderer');
+  delete p.design.cardDefaults;
+  s.cards[0].appearance = { surface: 'outline', accent: 'left' };
+  assert.ok(!codes(p).includes('unframed-card-stack'));
+});

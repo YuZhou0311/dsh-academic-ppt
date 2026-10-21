@@ -4,10 +4,10 @@ import {mkdir,mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
 import {resolve,join,dirname} from 'node:path';
 import {academicIssues} from '../src/academic-quality.mjs';
 import {createProject,updateRecords,buildProject,editProject,recordReview,checkProject,contextProject,evidenceIssues,DEFAULT_DESIGN} from '../src/core.mjs';
-import {brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
 
-const fixture=()=>structuredClone({schemaVersion:1,id:'quality-fixture',revision:0,title:'Evidence integrity fixture',brief,design:DEFAULT_DESIGN,capabilities:{imageInput:'unknown',source:'Synthetic protocol test'},papers:[paper],claims:[claim],assets:[asset],slides});
-async function project(t){const root=resolve('.test-output');await mkdir(root,{recursive:true});const cwd=await mkdtemp(join(root,'quality-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const created=await createProject({cwd,projectDir:'p',title:'Evidence integrity fixture',brief});await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});return {cwd,projectPath:created.projectPath};}
+const fixture=()=>structuredClone({schemaVersion:1,id:'quality-fixture',revision:0,title:'Evidence integrity fixture',brief,design:fixtureDesign,capabilities:{imageInput:'unknown',source:'Synthetic protocol test'},papers:[paper],claims:[claim],assets:[asset],slides});
+async function project(t){const root=resolve('.test-output');await mkdir(root,{recursive:true});const cwd=await mkdtemp(join(root,'quality-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const created=await createProject({cwd,projectDir:'p',title:'Evidence integrity fixture',brief,design:fixtureDesign});await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});return {cwd,projectPath:created.projectPath};}
 const codes=p=>academicIssues(p).map(i=>i.code);
 
 test('full-text and verified flags alone cannot admit a shallow academic deck',()=>{

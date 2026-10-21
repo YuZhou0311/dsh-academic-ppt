@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 主题偏、主要围绕智能体、论文不深入 | 科学内容 | 相关性、真实材料、证据 |
 | 看不懂要讲什么、逻辑断裂 | 叙事 | 中心问题、单页任务、页序 |
-| 大图太小、整页没用模板 | 整页设计 | 认可页、模板比例与布局 |
+| 大图太小、大片空白、各页长得一样 | 整页设计 | 主证据占幅、阅读关系、行列与chrome |
 | 我说小卡片、框重复、回到此版本 | 局部组件 | 基线、具体卡片、可改属性 |
 
 “高级一些”不是重做整套汇报的自动授权。用户进一步限定“小卡片”后采用明确局部边界。已有可识别基线与对象就直接推进，不重复确认已确定条件。
@@ -23,11 +23,11 @@
 
 每项记录 slideId/cardId、原因、允许样式和基线。调用 `academic_ppt_edit` 时提供当前 `expectedRevision`、`scope: card-style` 和明确 `changes`。
 
-仅允许 `style`、`accent`、`templateComponentId`。锁定卡片标题、正文、指标、单位、证据 ID 与 `box`；同时锁定论文图、完整题名、引用、页序和备注。
+仅允许 `style`、`accent`、`templateComponentId`、`appearance`、`icon`。appearance可改变卡片表面、圆角、内边距、强调边与轻微层次，icon从受支持语义图标中选择；具体字段见component-grammar。锁定卡片标题、正文、指标、单位、证据 ID 与 `box`；同时锁定论文图、完整题名、引用、页序和备注。
 
 更换结构可以调整卡内文字坐标，但不能删字、改数、移动或扩大外框。不能借修溢出删科学限定，也不能移动主图为装饰腾位置。不适配就换更轻结构；确有内容修改需求时，采用已授权的 `slide-content` 并重新核对证据，已构建页面不能走 record 覆盖。
 
-`slide-content` 支持明确删除可选字段：在 change 中设置 `removeFields`，例如从固定模板切换到自定义图框时移除 `referenceTemplateId` 与 `panelTitles`。不使用 null、undefined 或手工删工程 JSON；同一字段不能同时放入 patch 和 removeFields。可删除范围见 edit 契约，必需证据和记录不能借此删除。
+`slide-content` 支持明确删除可选字段：在 change 中设置 `removeFields`，例如从固定模板切换到自定义图框时移除 `referenceTemplateId` 与 `panelTitles`。逐页标题线、品牌字和导航通过chrome调整；组合结束页不再使用原生closing对象时显式移除它。不使用 null、undefined 或手工删工程 JSON；同一字段不能同时放入 patch 和 removeFields。可删除范围见 edit 契约，必需证据和记录不能借此删除。
 
 改写数值、单位或图注后，对照修改前后核对条件、分母、观察量名称与关键限定是否仍完整。修一个单位不能顺手删掉删失、模拟、未随机化证据或尚未执行等边界；同步检查对应演讲备注。把同一轮已发现问题集中修正，再构建和渲染。
 

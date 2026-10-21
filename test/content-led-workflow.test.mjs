@@ -6,7 +6,7 @@ import { unzipSync, strFromU8 } from 'fflate';
 import { createProject, updateRecords, contextProject, buildProject, checkProject, editProject, DEFAULT_DESIGN } from '../src/core.mjs';
 import { inferTemplateDesign } from '../src/design-system.mjs';
 import { formatToolResult } from '../src/tools.mjs';
-import { brief, paper, claim, slides } from './fixtures.mjs';
+import {fixtureDesign, brief, paper, claim, slides } from './fixtures.mjs';
 
 const plan = () => ({ relationship: 'evidence-explanation', primaryPanelId: 'data', readingOrder: ['data', 'scope'], rationale: 'Private design decision: keep the exact fixture count readable beside its explicit test boundary.', alternatives: [{ structure: 'Stack the test table above a short explanatory area.', tradeoff: 'The compact table leaves adequate width for a separate scope note.' }] });
 function bodySlide() {
@@ -22,7 +22,7 @@ async function setup(t, { design } = {}) {
   const root = resolve('.test-output'); await mkdir(root, { recursive: true });
   const cwd = await mkdtemp(join(root, 'content-led-'));
   t.after(() => rm(cwd, { recursive: true, force: true }));
-  const created = await createProject({ cwd, projectDir: 'p', title: 'Content-led integration fixture', brief, ...(design ? { design } : {}) });
+  const created = await createProject({ cwd, projectDir: 'p', title: 'Content-led integration fixture', brief, design: { ...fixtureDesign, ...design, density: 'balanced' } });
   const recordsPath = join(cwd, 'records.json');
   await writeFile(recordsPath, JSON.stringify({ papers: [paper], claims: [claim], slides: [slides[0], bodySlide(), slides[2]] }));
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, recordsPath });
@@ -74,7 +74,7 @@ test('reference inference is an editable suggestion and older design records ret
   assert.equal(suggested.mode, 'reference-guided');
   const options = await setup(t, { design: suggested });
   assert.equal((await contextProject({ ...options, stage: 'design' })).designMode, 'reference-guided');
-  const oldDesign = structuredClone(DEFAULT_DESIGN); delete oldDesign.mode;
+  const oldDesign = structuredClone(fixtureDesign); delete oldDesign.mode;
   const oldSlide = bodySlide(); delete oldSlide.visualPlan;
   await updateRecords({ ...options, expectedRevision: 1, design: oldDesign, slides: [oldSlide] });
   assert.equal((await contextProject({ ...options, stage: 'design' })).designMode, 'reference-guided', 'replacing tokens must preserve an already selected mode');

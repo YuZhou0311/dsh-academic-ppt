@@ -4,7 +4,7 @@
 
 ## 1. 只需两层：行与研究面板
 
-使用 `layout:"academic"`、`section:{number:"02",title:"研究设计"}`。`composition.rows` 是从上到下的行，每行 `panels` 从左到右。weight是可用空间的正数比例，不是重要性评分；工具同时满足真实文字和证据的最小尺寸。默认等权；主证据通常比解释区宽。最多3行、每行4面板、全页8面板。
+使用 `layout:"academic"`；需要章节导航时才加section。`composition.rows`是从上到下的行，每行panels从左到右。weight是可用空间的正数比例，不是重要性评分；工具同时满足真实文字和证据的最小尺寸。默认等权，作者应按内容主动改变：主证据通常比解释区宽，短条件组不应占满高侧栏。最多3行、每行4面板、全页8面板。
 
 先按 [visual-decision.md](visual-decision.md) 写本页visualPlan，再分配这些行列；计划记录焦点和阅读顺序，不会自动替你布局。不同科学关系可产生不同结构，用户明确的共同尺度比较也可以保持同构。
 
@@ -38,9 +38,9 @@
 }
 ```
 
-正文解释卡默认compact，明确的plain/compact也会保留。分组框默认由design.system.panel控制，每个面板可用surface覆盖：inherit / plain / rule / tint / band。plain保留标题和全部内容，只去掉分组家具；rule对应全稿line样式；混合外观仍遵循共同配色与字体。不要给内层解释卡再套学术题签、纸张阴影或模板组件。
+正文解释卡沿用受支持的内容排法，新外观通过design.cardDefaults与card.appearance选择，详见component-grammar。面板分组由design.system.panel控制，可用surface覆盖：inherit / plain / rule / tint / band。plain保留标题与内容，只去掉外层分组框；内部卡片仍可有独立边框或浅底。外层和卡片选一层主要视觉容器，既不堆套框，也不把所有说明降为裸文字。
 
-panel.align默认为stretch；短旁注可选start，按完整测量的最小高度顶对齐，不再撑满同行。主证据通常保留stretch。start与该面板任何显式card.box或所消费机制节点的node.box冲突，会报告composition-panel-align-box-conflict。需要绝对图框时使用旧figure-focus/figure-split接口，不与composition混用；使用card.box时保留stretch且外框须在本面板正文区内。
+panel.align默认为stretch；确需收紧的局部组可用start，按完整最小高度顶对齐。用后检查剩余空间，必要时重排整行；start不是自动解决空疏的开关。主证据通常保留stretch。start与本面板显式card.box或所消费机制节点node.box冲突，返回composition-panel-align-box-conflict。绝对图框使用旧figure-focus/figure-split，不与composition混用；card.box须保留stretch并位于本面板正文区。
 
 这些是局部组件选择，使用场合见 [component-grammar.md](component-grammar.md)。不要把surface枚举当成每页依次套用的新模板。
 
@@ -57,7 +57,7 @@ panel.align默认为stretch；短旁注可选start，按完整测量的最小高
 | 人文/定性 | 可定位原文或个案并置；概念/编码/解释关系明确，反例可见 | 套用不存在的样本量、实验对照和数值提升 |
 | 综合收束 | 已知证据 → 可支持判断 → 缺少的验证/后续动作，逐项对应 | 平级列出优势、挑战、展望 |
 
-“更密”不是“更多字”。有限空间优先用于图形关系、可比较的条件与主证据；具体限定不可删，冗余同义句应删除。较复杂机制用全宽面板，文本说明移入相邻页或讲稿，但决定结论的边界必须在正文可见。
+充盈通过图形关系、可比较条件、主证据和可见分组实现，不靠增加字数。主证据留出足够占幅，解释与对应证据靠近；避免正文都挤在页面上方。具体限定不可删，冗余同义句应删除。复杂机制可用全宽面板，补充解释移入讲稿，但决定结论的边界须在正文可见。封面、结尾和chrome的独立设计见design。
 
 ## 4. 可编辑的科学图
 
@@ -92,4 +92,4 @@ design.system允许受控字号范围，默认正文24px（18pt）、面板标�
 
 check中会给出哪个面板缺少载体、遗漏哪个ID、哪段文字需要多高、哪条边穿过节点。集中修这批具体问题，再build/render。不要每改一个词就重新导出。
 
-一份好看的HTML不保证PPTX相同。实际render会提供编号概览和各页PNG。先检查全稿节奏，再看每页的图、单位、结论与源材料对应。有参考时按design.mode检查应保留的字体与层级或用户指定结构；重点看当前证据与解释是否分清主次、关系图是否完整，以及页面是否退化成重复文字区。计数和自动检查不作审美评分。
+一份好看的HTML不保证PPTX相同。render提供编号概览和各页PNG。概览检查整稿是否只换标题和颜色，原尺寸检查内容对应、卡片层次、最大空区和证据可读性。按design.mode核对参考约束；不同任务需不同构图，共同尺度比较允许相同结构。自动检查不作审美评分；但明确指出的空洞和用户禁止的设计问题必须实际修复，不能仅登记“有意保留”。

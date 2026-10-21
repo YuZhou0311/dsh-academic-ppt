@@ -6,8 +6,8 @@ import {createProject,updateRecords,buildProject,contextProject,checkProject,edi
 import {safePath,hash} from '../src/io.mjs';
 import {DEFAULT_DESIGN} from '../src/core.mjs';
 import {normalizeTemplateProfiles} from '../src/template-profile.mjs';
-import {brief,paper,claim,asset,slides} from './fixtures.mjs';
-async function init(t){const base=resolve('.test-output');await mkdir(base,{recursive:true});const cwd=await mkdtemp(join(base,'core-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const p=await createProject({cwd,projectDir:'project',title:'Synthetic academic fixture',brief});return {cwd,projectPath:p.projectPath};}
+import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
+async function init(t){const base=resolve('.test-output');await mkdir(base,{recursive:true});const cwd=await mkdtemp(join(base,'core-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const p=await createProject({cwd,projectDir:'project',title:'Synthetic academic fixture',brief,design:fixtureDesign});return {cwd,projectPath:p.projectPath};}
 async function fill(t){const o=await init(t);await updateRecords({...o,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});return o;}
 async function state(o){return JSON.parse(await readFile(o.projectPath,'utf8'));}
 

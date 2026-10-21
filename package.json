@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.6.0-dev.0",
-  "description": "DeepSeek Harness 学术汇报插件：内容驱动构图、参考风格提炼、语义面板、证据论证与可编辑 PPTX。",
+  "version": "0.6.0",
+  "description": "DeepSeek Harness 学术汇报插件：内容驱动布局、可编辑卡片层次、自主封面与结尾、证据论证和真实渲染审查。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {

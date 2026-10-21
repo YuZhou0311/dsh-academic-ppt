@@ -8,7 +8,7 @@ import PngCrc from 'pngjs/lib/crc.js';
 import jpeg from 'jpeg-js';
 import {imageDimensions,embedAssets,hash} from '../src/io.mjs';
 import {createProject,updateRecords,buildProject} from '../src/core.mjs';
-import {PNG,brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,PNG,brief,paper,claim,asset,slides} from './fixtures.mjs';
 
 const pngBytes=Buffer.from(PNG.split(',')[1],'base64');
 const pixels=Buffer.from([240,40,20,255,20,130,220,255]);
@@ -97,7 +97,7 @@ test('cached validation uses actual bytes and never trusts supplied hashes or ca
 test('invalid asset cannot save a revision; correcting it allows the same public API workflow to build',async t=>{
  const base=resolve('.test-output');await mkdir(base,{recursive:true});
  const cwd=await mkdtemp(join(base,'images-'));t.after(()=>rm(cwd,{recursive:true,force:true}));
- const created=await createProject({cwd,projectDir:'project',title:'Synthetic image validation fixture',brief});
+ const created=await createProject({cwd,projectDir:'project',title:'Synthetic image validation fixture',brief,design:fixtureDesign});
  const options={cwd,projectPath:created.projectPath},before=await readFile(created.projectPath);
  await assert.rejects(updateRecords({...options,expectedRevision:0,papers:[paper],claims:[claim],slides,assets:[{...asset,data:dataUri(pngBytes.subarray(0,24))}]}),/INVALID_IMAGE/);
  assert.deepEqual(await readFile(created.projectPath),before);

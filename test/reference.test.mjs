@@ -6,7 +6,7 @@ import { buildAcademicTools, formatToolResult } from '../src/tools.mjs'
 import { REFERENCE_TEMPLATES, REFERENCE_CATEGORIES } from '../src/reference-catalog.mjs'
 import { LAYOUTS, CARD_STYLES } from '../src/schema.mjs'
 import { createProject, updateRecords, evidenceIssues, slideClaimIds, checkProject, buildProject } from '../src/core.mjs'
-import { brief, paper, claim, asset, slides } from './fixtures.mjs'
+import {fixtureDesign, brief, paper, claim, asset, slides } from './fixtures.mjs'
 
 async function workspace(t) {
   const base = resolve('.test-output'); await mkdir(base, { recursive: true })
@@ -70,7 +70,7 @@ test('reference tool lists or selects only bundled layouts without changing the 
 })
 
 test('reference layout requirements reject missing evidence instead of silently leaving template blanks', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Reference fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Reference fixture', brief, design: fixtureDesign })
   const missing = { ...slides[1], referenceTemplateId: 'figure-two-panels', layout: 'figure-split' }
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, papers: [paper], claims: [claim], assets: [asset], slides: [slides[0], missing, slides[2]] })
   const built = await buildProject({ cwd, projectPath: created.projectPath, expectedRevision: 1 })
@@ -82,7 +82,7 @@ test('reference layout requirements reject missing evidence instead of silently 
 })
 
 test('native table sources cannot bypass full-text, full-title or visible citation checks', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Table fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Table fixture', brief, design: fixtureDesign })
   const p2 = { ...paper, id: 'P2', title: 'Second synthetic table source', reading: { ...paper.reading, status: 'abstract-only' } }
   const c2 = { ...claim, id: 'C2', paperId: 'P2' }
   const tableSlide = { ...slides[1], layout: 'comparison', figureIds: [], table: { columns: ['Input', 'Count'], rows: [['Fixture', '3/4']], sourceClaimIds: ['C2'] } }
@@ -94,7 +94,7 @@ test('native table sources cannot bypass full-text, full-title or visible citati
 })
 
 test('table source binding is explicit even when the slide already cites a claim', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Explicit table binding fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Explicit table binding fixture', brief, design: fixtureDesign })
   const tableSlide = { ...slides[1], layout: 'comparison', figureIds: [], table: { columns: ['Input', 'Count'], rows: [['Fixture', '3/4']] } }
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, papers: [paper], claims: [claim], assets: [asset], slides: [slides[0], tableSlide, slides[2]] })
   const built = await buildProject({ cwd, projectPath: created.projectPath, expectedRevision: 1 })
@@ -103,7 +103,7 @@ test('table source binding is explicit even when the slide already cites a claim
 })
 
 test('panel title overrides must correspond to actual reference panels', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Panel binding fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Panel binding fixture', brief, design: fixtureDesign })
   const slide = { ...slides[1], referenceTemplateId: 'figure-portrait-reading', panelTitles: ['Actual figure panel', 'Unconsumed second title'] }
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, papers: [paper], claims: [claim], assets: [asset], slides: [slides[0], slide, slides[2]] })
   const p = JSON.parse(await readFile(created.projectPath, 'utf8'))
@@ -113,7 +113,7 @@ test('panel title overrides must correspond to actual reference panels', async t
 })
 
 test('invalid source crop and ragged tables are rejected atomically', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Bounds fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Bounds fixture', brief, design: fixtureDesign })
   const options = { cwd, projectPath: created.projectPath, expectedRevision: 0 }
   const before = await readFile(created.projectPath)
   await assert.rejects(updateRecords({ ...options, assets: [{ ...asset, viewport: { x: 0.8, y: 0, w: 0.5, h: 1 } }] }), /INVALID_VIEWPORT/)
@@ -122,7 +122,7 @@ test('invalid source crop and ragged tables are rejected atomically', async t =>
 })
 
 test('previous renderer artifacts cannot inherit current visual approval after renderer upgrade', async t => {
-  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Renderer version fixture', brief })
+  const cwd = await workspace(t), created = await createProject({ cwd, projectDir: 'project', title: 'Renderer version fixture', brief, design: fixtureDesign })
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, papers: [paper], claims: [claim], assets: [asset], slides })
   const built = await buildProject({ cwd, projectPath: created.projectPath, expectedRevision: 1 })
   assert.equal(built.ok, true)

@@ -10,6 +10,7 @@
  * their enclosed native objects register their own regions with pageBuilder.
  */
 
+import { measureCardSurface } from './card-surface.mjs';
 import { measureScientificPlotMinimum } from './scientific-plot.mjs';
 import { measureAcademicDiagramMinimum } from './academic-diagram.mjs';
 
@@ -123,6 +124,11 @@ function figureAreaScore(candidate, area) {
 
 /** Exact compact/plain native-card flow, including authored metric qualifiers. */
 function cardPlan(data, width, ctx) {
+  const surface = measureCardSurface(data,width,{design:ctx.design,system:ctx.system,wrapText:ctx.wrapText,measureTextWidth:ctx.measureTextWidth});
+  if(surface) {
+    if(surface.metricWidth>surface.innerW+1)ctx.error('card-metric-width','卡片指标的数值与单位在内边距区域不能保持一行；扩大面板或重排指标。',{cardId:data.id,requiredWidth:Math.ceil(surface.metricWidth),availableWidth:surface.innerW});
+    return {data,style:data.style||'compact',minimumH:surface.minimumH,surface:true};
+  }
   const style = data.style === 'plain' ? 'plain' : 'compact';
   const titleH = ctx.lines(data.title, width, ctx.titleSize, true) * ctx.titleSize * 1.15;
   const bodyStart = (style === 'compact' ? 42 : 49) + Math.max(0, titleH - 34);
@@ -363,7 +369,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
   const panelStyle = system.panel || 'band';
   if (!['band', 'tint', 'line'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint 或 line。'); return; }
   const academicTables = b.design?.hasAcademicSystem ?? Boolean(project.design?.system || design.system);
-  const ctx = { card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: academicTables ? bodySize : 23, fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
+  const ctx = { design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: academicTables ? bodySize : 23, fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
   const unknown = (value, allowed, name) => { for (const key of Object.keys(value || {})) if (!allowed.includes(key)) error('unsupported-field', `${name}.${key} 没有可见排版规则；移除此字段或使用明确支持的内容字段。`, { field: `${name}.${key}` }); };
   unknown(composition, ['lead', 'rows', 'conclusion'], 'composition');
   if (composition.conclusion) unknown(composition.conclusion, ['label', 'text'], 'composition.conclusion');
@@ -408,7 +414,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
         if (usedCards.has(cardId)) { error('duplicate-card-reference', '同一卡片不能分配给多个面板或在面板中重复出现。', { panelId: id, cardId }); continue; }
         usedCards.add(cardId);
         const record = cardMap.get(cardId), item = cardPlan(record.data, record.data.box?.w || Math.max(1, innerW), ctx);
-        if (record.data.style !== undefined && !['plain', 'compact'].includes(record.data.style)) error('card-style', 'composition 面板的解释文字仅支持 plain 或 compact；其他 card.style 具有独立装饰与文字区，不能静默替换。分组样式由 panel.surface 或 design.system.panel 控制。', { panelId: id, cardId, requestedStyle: record.data.style });
+        if (!item.surface && record.data.style !== undefined && !['plain', 'compact'].includes(record.data.style)) error('card-style', 'composition 面板的解释文字仅支持 plain 或 compact；其他 card.style 具有独立装饰与文字区，不能静默替换。分组样式由 panel.surface 或 design.system.panel 控制。', { panelId: id, cardId, requestedStyle: record.data.style });
         selectedCards.push({ ...item, index: record.index });
       }
       const selectedFigures = [];
