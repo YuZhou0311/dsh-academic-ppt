@@ -9,8 +9,10 @@ import { brief, paper, claim, asset } from './fixtures.mjs';
 
 // Synthetic software fixtures. Native object checks are not visual approval.
 const copy = value => structuredClone(value);
+// These v0.6 geometry fixtures assert their authored font sizes; projection has dedicated tests.
+const legacyDesign = () => { const design = copy(DEFAULT_DESIGN); delete design.projection; return design; };
 const slide = changes => ({ id: 's', layout: 'cover', title: '机制与证据', paperIds: ['P1'], claimIds: ['C1'], notes: '合成软件回归。', seconds: 60, figureIds: [], cards: [], ...changes });
-const project = (slides, changes = {}) => ({ schemaVersion: 1, id: 'chrome-fixture', revision: 0, title: '学术页面系统回归', brief: copy(brief), capabilities: { imageInput: 'unknown', source: 'synthetic fixture' }, design: copy(DEFAULT_DESIGN), papers: [copy(paper)], claims: [copy(claim)], assets: [], slides, ...changes });
+const project = (slides, changes = {}) => ({ schemaVersion: 1, id: 'chrome-fixture', revision: 0, title: '学术页面系统回归', brief: copy(brief), capabilities: { imageInput: 'unknown', source: 'synthetic fixture' }, design: legacyDesign(), papers: [copy(paper)], claims: [copy(claim)], assets: [], slides, ...changes });
 const page = p => { assertProject(p); return buildScenes(p).pages[0]; };
 const errors = value => value.issues.filter(issue => issue.severity === 'error');
 const node = (p, suffix) => p.nodes.find(item => item.id === `${p.id}/${suffix}`);

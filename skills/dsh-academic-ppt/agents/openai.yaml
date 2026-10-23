@@ -1,4 +1,4 @@
 interface:
   display_name: "正式学术汇报 PPT"
-  short_description: "按研究证据自主设计紧凑布局与卡片层次，制作可编辑学术报告并逐页验收"
-  default_prompt: "使用 $dsh-academic-ppt，依据研究证据自主设计封面、图文布局、可见小卡片与结尾，保持学术严谨、空间紧凑和层次清楚，交付可编辑 PPTX 与逐页讲稿，并实际渲染逐页检查。"
+  short_description: "学习参考的证据组织与图文层级，独立设计可编辑学术汇报并实际逐页复核"
+  default_prompt: "使用 $dsh-academic-ppt，先盘点论文图表与关键条件，学习参考的主辅证据和局部分组，绘制真实候选后自主完成图文充实、关系准确且可读的学术汇报，并实际渲染逐页复核。"

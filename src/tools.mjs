@@ -1,6 +1,6 @@
 import {
   createProject, updateRecords, contextProject, buildProject, editProject,
-  undoProject, checkProject, recordReview, renderProjectArtifact,
+  undoProject, checkProject, recordReview, renderProjectArtifact, studyProject, portfolioProjects,
 } from './core.mjs'
 import { inspectTemplate } from './template.mjs'
 import { referenceLayouts } from './reference.mjs'
@@ -21,20 +21,24 @@ export const TOOL_COMMANDS = Object.freeze({
   contract: 'academic_ppt_contract',
   render: 'academic_ppt_render',
   review: 'academic_ppt_review',
+  study: 'academic_ppt_study',
+  portfolio: 'academic_ppt_portfolio',
 })
 
 const descriptions = {
-  academic_ppt_init: '创建学术汇报工程，记录研究问题、听众、时间与证据要求；默认可见卡片表面及紧凑内容占幅，逐页自主构图。Create a revisioned academic presentation project.',
+  academic_ppt_init: '创建学术汇报工程，记录研究问题、听众、时间与证据要求；参考证据组织、局部分组与阅读层级，逐页自主构图。Create a revisioned academic presentation project.',
   academic_ppt_record: '从工作区 recordsPath 读取≤1MiB UTF-8 JSON批次，登记论文、论点、图资产或页面；参数只放工程文件路径与修订号。字段不清楚先用academic_ppt_contract按主题查询，先登记被引用记录。Read bounded record batches from a workspace JSON file.',
   academic_ppt_context: '按阶段读取工程的精简工作上下文与待解决项；不回传整篇论文或图片数据。Get compact stage context and stable IDs.',
   academic_ppt_build: '把工程生成原生可编辑 PPTX、HTML 与检查材料；保存新版本，不覆盖 Office 手工修改。Build editable artifacts; successful export is not visual approval.',
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
   academic_ppt_check: '只读检查论文证据、内容占幅、最大空区、全稿结构重复与产物摘要，给出问题位置；背景装饰不算内容。静态检查不能代替逐页看最终 PPTX。Inspect evidence, actual content distribution and output integrity.',
-  academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，只借字体、色彩和层级，当前内容决定页面结构；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
+  academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，学习主辅证据、邻接解释、分组、密度与层级，当前内容决定实际坐标；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
   academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
   academic_ppt_contract: '按brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
   academic_ppt_render: '通过可选渲染引擎读取当前交付 PPTX，生成实际页面画面并记录摘要；引擎缺失时如实返回未验证。Render the current PPTX without changing the editable source.',
+  academic_ppt_study: '从工作区candidatesPath读取≤1MiB UTF-8候选数组[{id,label,slide}]，每个slide字段见contract(slide)。提供2–6个真实候选，导出SVG、原生PPTX和并列HTML；render:true生成实际PPTX预览，不改原工程或批准。Compare concrete authored alternatives.',
+  academic_ppt_portfolio: '只读比较明确提供的2–12份工程的主体结构和封面；换文字颜色或数据值不算结构改变，报告可并列的页对供实图复核，不提供原创性得分。Inspect supplied projects without scanning other files.',
   academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
 }
 
@@ -48,6 +52,8 @@ const coreExecutors = {
   academic_ppt_check: checkProject,
   academic_ppt_render: renderProjectArtifact,
   academic_ppt_review: recordReview,
+  academic_ppt_study: studyProject,
+  academic_ppt_portfolio: portfolioProjects,
   academic_ppt_reference: referenceLayouts,
   academic_ppt_contract: toolContract,
 }
@@ -75,11 +81,12 @@ export function dshWireSchema(schema) {
 export function registeredToolParameters(name) {
   const schema = toolSchemas[name]
   const fields = name === 'academic_ppt_init' ? ['projectDir', 'title', 'brief', 'capabilities']
-    : name === 'academic_ppt_record' ? ['projectPath', 'expectedRevision', 'recordsPath'] : undefined
+    : name === 'academic_ppt_record' ? ['projectPath', 'expectedRevision', 'recordsPath']
+    : name === 'academic_ppt_study' ? ['projectPath','expectedRevision','outputDir','candidatesPath','render','fontDirectories','externalReferencePrompts'] : undefined
   const selected = fields ? {
     ...schema,
     properties: Object.fromEntries(fields.map(key => [key, schema.properties[key]])),
-    required: name === 'academic_ppt_record' ? fields : schema.required.filter(key => fields.includes(key)),
+    required: name === 'academic_ppt_record' ? fields : name === 'academic_ppt_study' ? ['projectPath','expectedRevision','outputDir','candidatesPath'] : schema.required.filter(key => fields.includes(key)),
   } : schema
   const wire = dshWireSchema(selected)
   if (wire.properties.projectPath) wire.properties.projectPath.description = 'init返回的project.json文件路径，不是工程目录。 ' + (wire.properties.projectPath.description ?? '')
@@ -99,7 +106,7 @@ function templateSummary(profile, profilePath) {
     study: profile.study, suggestedDesign:profile.suggestedDesign, designInference:profile.designInference, components,
     componentIndex: { total: profile.components?.length ?? 0, returned: components.length, truncated: (profile.components?.length ?? 0) > components.length },
     scope: profile.scope, visualReview: profile.visualReview,
-    instructions: ['结构推断尚未视觉确认。查看实际代表页，提取适合当前报告的字体、配色、对齐与层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；外层plain可配内层outline/tint，避免裸解释文字或多重套框。短旁注仅在不造成大空区时align=start。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式会阻断严重未使用区域，须调整真实内容与构图，不能靠背景或装饰填空。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
+    instructions: ['结构推断尚未视觉确认。查看实际代表页，学习主辅证据、局部分组、图旁解释、密度与阅读层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；按研究关系选择浅底、题签、边界或开放标注，避免机械卡片阵列与无组织文字堆叠。短旁注仅在不造成大空区时align=start。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式会阻断严重未使用区域，须调整真实内容与构图，不能靠背景或装饰填空。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
   }
 }
 
@@ -146,11 +153,26 @@ export function formatToolResult(name, result) {
   for (const key of ['pptx', 'html', 'json', 'report', 'notes', 'manifest', 'speech', 'evidence', 'assets', 'quality', 'gallery', 'records', 'categoryPptx']) {
     if (typeof files[key] === 'string') lines.push(`${key}：${clip(files[key])}`)
   }
-  for (const key of ['pptxPath', 'htmlPath', 'outputDir', 'reportPath', 'receiptPath']) {
+  for (const key of ['pptxPath', 'htmlPath', 'outputDir', 'reportPath', 'receiptPath', 'externalPromptsPath']) {
     if (typeof data[key] === 'string') lines.push(`${key}：${clip(data[key])}`)
   }
-  const contactSheetPaths = data.contactSheetPaths ?? data.render?.contactSheetPaths
+  const contactSheetPaths = data.contactSheetPaths ?? data.render?.contactSheetPaths ?? data.rendering?.contactSheetPaths
   if (Array.isArray(contactSheetPaths)) lines.push(...contactSheetPaths.filter(path => typeof path === 'string').slice(0, 16).map(path => `PPTX 联系表：${clip(path, 3000)}`))
+  if (name === 'academic_ppt_study' && data.rendering) {
+    lines.push(`候选实际PPTX渲染：${clip(data.rendering.status ?? (data.rendering.ok ? 'rendered' : 'not-verified'), 100)}`)
+    if (data.rendering.message || data.rendering.reason || data.rendering.error) lines.push(`渲染说明：${clip(data.rendering.message || data.rendering.reason || data.rendering.error, 1200)}`)
+    for (const key of ['pdfPath','receiptPath']) if (typeof data.rendering[key] === 'string') lines.push(`候选 ${key}：${clip(data.rendering[key],3000)}`)
+    lines.push('候选仅用于看图选择；未修改原工程，也未登记正式视觉批准。')
+  }
+  if (name === 'academic_ppt_portfolio') {
+    lines.push(`明确提供的工程：${data.inputCount ?? 0}；依据：${clip(data.basis, 160)}`)
+    for (const comparison of (data.comparisons ?? []).slice(0, 8)) {
+      lines.push(`${clip(comparison.leftProjectId,100)} ↔ ${clip(comparison.rightProjectId,100)}：${comparison.matchingBodyPages}/${comparison.smallerBodyPageCount}页主体近似；封面${comparison.matchingCover?'相同结构':comparison.similarMainCover?'题名和主图区近似':'未识别相同结构'}。`)
+      for (const pair of (comparison.pairs ?? []).slice(0, 6)) lines.push(`并列复核：${clip(pair.leftSlideId,80)}「${clip(pair.leftTitle,120)}」 ↔ ${clip(pair.rightSlideId,80)}「${clip(pair.rightTitle,120)}」`)
+    }
+    if (data.limits) lines.push(clip(data.limits,1200))
+    if ((data.comparisons ?? []).length > 8) lines.push('其余工程比较见结构化结果或保存的报告。')
+  }
   if (name === 'academic_ppt_template') {
     lines.push(`支持的组件：${data.componentIndex?.total ?? data.components?.length ?? 0}`)
     if (typeof data.profilePath === 'string') lines.push(`模板 profile：${clip(data.profilePath)}`)
@@ -232,6 +254,9 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_build') lines.push('导出成功只表示已生成文件；请检查论文证据和最终 PPTX 逐页画面后再登记视觉验收。')
   if (data.verification) lines.push(`验收：PPTX 渲染 ${clip(data.verification.pptxRender ?? 'not-verified', 60)}；视觉 ${clip(data.verification.visual ?? 'not-verified', 60)}${data.verification.readyForDelivery !== undefined ? '；可交付 ' + String(data.verification.readyForDelivery) : ''}`)
   const text = lines.join('\n')
+  // The opt-in, static contract must be complete. It is not part of every
+  // model request, and its schema cannot contain arbitrary project content.
+  if (name === 'academic_ppt_contract') return text
   return text.length <= 28000 ? text : text.slice(0, 27700) + '\n摘要达到 28,000 字符上限；请按 recordIds 分次读取，其余信息见工程/报告文件。'
 }
 

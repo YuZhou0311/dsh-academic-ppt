@@ -12,10 +12,28 @@ export { designGeometryReport } from './design-geometry.mjs';
 import { resolveCardAppearance } from './card-surface.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
+const panelsOf = slide => [...list(slide.composition?.regions), ...list(slide.composition?.rows).flatMap(r => list(r.panels))];
+export function drawingStructure(drawing) {
+  const q=(n,d)=>Math.round((Number(n)||0)/(d||1)*16);
+  const elements=list(drawing.elements), marks=new Map();
+  for(const e of elements.filter(e=>e.role==='data'&&['rect','ellipse','line'].includes(e.kind)))marks.set(e.kind,(marks.get(e.kind)||0)+1);
+  // Numeric mark lengths and positions encode observations, not a new layout.
+  // Compare their carrier kinds plus the surrounding labels/axes/regions.
+  return [...elements.filter(e=>!['decoration','group'].includes(e.role)&&!(e.role==='data'&&['rect','ellipse','line'].includes(e.kind))).map(e=>e.kind==='line'
+    ? ['line',e.role||'relationship',Boolean(e.endArrow),list(e.points).map(p=>[q(p.x,drawing.width),q(p.y,drawing.height)])]
+    : [e.kind,e.role||'',q(e.x,drawing.width),q(e.y,drawing.height),q(e.w,drawing.width),q(e.h,drawing.height)]),
+    ...[...marks].map(([kind,count])=>['data-carrier',kind,count===1?'single':'multiple'])].sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b)));
+}
 const hasText = value => typeof value === 'string' && value.trim().length > 0;
 const weightOf = value => Number.isFinite(value) && value > 0 ? value : 1;
-const nonBodyLayouts = new Set(['cover', 'section', 'roadmap', 'paper', 'references']);
+const nonBodyLayouts = new Set(['cover', 'section', 'roadmap', 'references']);
 const authoredModes = new Set(['content-led', 'reference-guided']);
+export function isBodySlide(slide) {
+  if(nonBodyLayouts.has(slide.layout))return false;
+  // A paper-reading slide often contains the central figure and interpretation;
+  // only a genuinely metadata-only introduction is administrative.
+  return slide.layout!=='paper'||Boolean(list(slide.figureIds).length||slide.chart||slide.table||slide.plot||list(slide.plots).length||list(slide.drawings).length||list(slide.nodes).length||list(slide.cards).some(c=>hasText(c.body)||c.metric));
+}
 
 // Weights express ratios. Multiplying every weight by the same factor does not
 // change a composition, and must not make a repeated layout appear different.
@@ -45,6 +63,8 @@ function carrierOf(slide, panel) {
   if (panel.chart) parts.push(`chart:${slide.chart?.kind || 'chart'}`);
   if (panel.plot || panel.plotId) parts.push(`plot:${plotKind(slide, panel)}`);
   if (panel.table) parts.push('table');
+  if (list(panel.referenceIds).length) parts.push('bibliography');
+  for (const id of list(panel.drawingIds)) {const d=list(slide.drawings).find(d=>d.id===id); if(d)parts.push('drawing:'+JSON.stringify(drawingStructure(d)));}
   if (panel.diagram) parts.push(`diagram:${JSON.stringify(list(slide.diagram?.rows).map(nodes => list(nodes).length))}`);
   // Adding a title-only/empty card, or increasing a stack from two to three
   // small explanations, is not a new primary information structure.
@@ -52,8 +72,9 @@ function carrierOf(slide, panel) {
 }
 
 /** Compare carriers and their allocation, never colours, titles or source IDs. */
-function structureOf(slide) {
-  if (nonBodyLayouts.has(slide.layout)) return null;
+export function structureOf(slide) {
+  if (!isBodySlide(slide)) return null;
+  if (slide.composition?.regions) return {kind:'regions', value:JSON.stringify(slide.composition.regions.map(p=>({box:['x','y','w','h'].map(k=>Math.round(p.box[k]/32)),carrier:carrierOf(slide,p)})).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b))))};
   if (slide.composition) {
     const rows = list(slide.composition.rows).map(row => {
       const raw = list(row.panels), shares = ratios(raw);
@@ -65,6 +86,7 @@ function structureOf(slide) {
       return { share: rowRatios[rowIndex], panels: row.panels.map((panel, index) => ({ share: columnRatios[index], carrier: carrierOf(slide, panel) })) };
     }) };
   }
+  if (list(slide.drawings).length) return {kind:'drawings',value:JSON.stringify(slide.drawings.map(d=>({box:d.box?['x','y','w','h'].map(k=>Math.round(d.box[k]/32)):null,elements:drawingStructure(d)})))};
   if (slide.referenceTemplateId) return { kind: 'reference', value: slide.referenceTemplateId };
   if (slide.figureBoxes) {
     const box = value => value ? ['x', 'y', 'w', 'h'].map(key => Math.round(value[key] / 32)) : null;
@@ -73,7 +95,7 @@ function structureOf(slide) {
   return { kind: 'layout', value: slide.layout };
 }
 
-function similarStructure(a, b) {
+export function similarStructure(a, b) {
   if (!a || !b || a.kind !== b.kind) return false;
   if (a.kind !== 'composition') return a.value === b.value;
   if (a.rows.length !== b.rows.length) return false;
@@ -91,7 +113,7 @@ function reviewableReason(plan) {
 
 function isTextPanel(panel) {
   return list(panel.cardIds).length > 0 && !list(panel.figureIds).length &&
-    !panel.chart && !panel.plot && !panel.plotId && !panel.table && !panel.diagram;
+    !panel.chart && !panel.plot && !panel.plotId && !panel.table && !panel.diagram && !list(panel.drawingIds).length && !list(panel.referenceIds).length;
 }
 
 /** Detect only an all-text, nominally equal-area arrangement, not all cards. */
@@ -121,7 +143,7 @@ export function designIssues(project) {
       if (!slide.composition) {
         add('error', 'visual-plan-layout', slide, 'visualPlan', 'visualPlan 用于 composition 正文页；先提供实际面板结构，或移除不适用的计划。');
       } else {
-        const ids = list(slide.composition.rows).flatMap(row => list(row.panels).map(panel => panel.id));
+        const ids = panelsOf(slide).map(panel => panel.id);
         const known = new Set(ids), order = list(plan.readingOrder);
         if (!known.has(plan.primaryPanelId)) add('error', 'visual-plan-primary-panel', slide, 'visualPlan.primaryPanelId', '主证据面板必须指向本页 composition 中实际存在的面板 ID。');
         if (order.length !== ids.length || new Set(order).size !== order.length || order.some(id => !known.has(id))) {
@@ -132,7 +154,7 @@ export function designIssues(project) {
       add('warning', 'design-plan-missing', slide, 'visualPlan', '记录简短 visualPlan：本页关系、主证据面板、阅读顺序和选择理由；计划用于复核内容与构图是否对应，不是审美评分。');
     }
 
-    if (faithful || nonBodyLayouts.has(slide.layout)) return;
+    if (faithful || !isBodySlide(slide)) return;
     if (index >= 2 && similarStructure(structures[index], structures[index - 1]) && similarStructure(structures[index], structures[index - 2]) && !reviewableReason(plan)) {
       const action = slide.composition
         ? '有意保持可比性时简述 visualPlan.repetitionReason，否则按证据重排。'
@@ -144,9 +166,9 @@ export function designIssues(project) {
     }
     if (hasText(plan?.repetitionReason) && !reviewableReason(plan)) add('warning', 'repetition-reason-thin', slide, 'visualPlan.repetitionReason', '重复构图的理由过短，尚不足以审阅。说明具体比较对象、需要保持一致的尺度或阅读位置；“保持统一”等泛称不能代替适配判断。');
 
-    for (const panel of list(slide.composition?.rows).flatMap(row => list(row.panels))) {
+    for (const panel of panelsOf(slide)) {
       const ids = meaningfulCards(slide, panel);
-      if (ids.length < 2 || list(panel.figureIds).length || panel.table || panel.chart || panel.plot || panel.plotId || panel.diagram) continue;
+      if (ids.length < 2 || list(panel.figureIds).length || list(panel.drawingIds).length || list(panel.referenceIds).length || panel.table || panel.chart || panel.plot || panel.plotId || panel.diagram) continue;
       const surface = panel.surface && panel.surface !== 'inherit' ? panel.surface : project.design?.system?.panel;
       if (['tint', 'band'].includes(surface)) continue;
       const framed = ids.some(id => {

@@ -1,5 +1,7 @@
 # 学术汇报插件设计
 
+> 历史 v0.6 设计记录。文中的“本轮/当前/默认”指当时版本；rc.4 的自由构图、字号与候选流程以 [RESEARCH_NATIVE_DESIGN.md](RESEARCH_NATIVE_DESIGN.md) 为准。
+
 本轮设计更新：**2026-10-21 UTC，v0.6.0，renderer 7**；下述 DeepSeek/DSH 官方协议保留 2026-10-20 的核对身份。本文区分代码能力、模型或人负责的设计判断，以及仍需进行的效果评测。发布状态见[版本说明](RELEASE_NOTES.md)，接口以 [schema](../src/schema.mjs)、[core](../src/core.mjs) 和[安装说明](INSTALL.md) 为准；本次工作流见 [CONTENT_LED_DESIGN.md](CONTENT_LED_DESIGN.md)，外部机制参考见 [DESIGN_REFERENCES.md](DESIGN_REFERENCES.md)。原始问题定位见 [AUDIT_V04.md](AUDIT_V04.md)，后续历史改进见 [AUDIT_V05.md](AUDIT_V05.md)。
 
 目录：[需求约束](#1-从用户反馈提炼约束) · [DeepSeek 适配](#2-deepseek-特点如何影响工程设计) · [结构](#3-三层结构与职责) · [证据](#4-证据先于页面) · [设计](#5-将审美经验落实到结构) · [局部修改](#6-小卡片修改的保留契约) · [验收状态](#7-四个状态不能合并为通过) · [效果评价](#8-怎样评价是否比通用流程更有效)

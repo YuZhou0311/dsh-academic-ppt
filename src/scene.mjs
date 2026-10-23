@@ -7,8 +7,12 @@ import { resolveAcademicSystem } from './design-system.mjs';
 import { academicHeader, academicCover, academicSection, academicClosing, resolveChrome } from './academic-chrome.mjs';
 import { renderAcademicComposition } from './academic-composition.mjs';
 import { renderScientificPlot } from './scientific-plot.mjs';
-import { renderAcademicDiagram } from './academic-diagram.mjs';
+import { renderAcademicDiagram, automaticDiagramRows } from './academic-diagram.mjs';
 import { renderCardSurface } from './card-surface.mjs';
+import { renderNativeDrawing, drawingAssetIds, drawingClaimIds } from './native-drawing.mjs';
+import { renderAuthoredHeading } from './authored-heading.mjs';
+import { renderBibliography } from './free-composition.mjs';
+import { projectionIssues } from './projection-quality.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
 export const LAYOUTS = Object.freeze(['cover', 'section', 'academic', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
 export const CARD_STYLES = Object.freeze(['plain', 'ruled', 'compact', 'academic-panel', 'academic-tab', 'academic-side', 'open-frame', 'floating-tab', 'split-label', 'paper-shadow', 'title-band', 'stacked-corner', 'ledger', 'dashed-note']);
@@ -172,8 +176,8 @@ function pageBuilder(slide, index, total, design) {
   const chrome=resolveChrome(design,slide);
   if (!['cover','section'].includes(slide.layout)) {
     if(chrome.showTopRule!==false)rect('top-rule', { x: 0, y: 0, w: 1280, h: 2 }, p.accent, 'none');
-    if(chrome.showFooter!==false&&design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: 20 }, 13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
-    if(chrome.showPageNumber!==false)text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: 22 }, 14, { color: p.muted, align: 'right', role: 'footer' });
+    if(chrome.showFooter!==false&&design.footer)text('footer-label', asText(design.footer), { x: 48, y: 687, w: 1040, h: Math.max(20,(design.projection?.noteMin||13)*1.1) }, design.projection?.noteMin||13, { color: p.muted, role: 'footer', lineHeight: 1.1 });
+    if(chrome.showPageNumber!==false)text('page-number', `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`, { x: 1128, y: 686, w: 104, h: Math.max(22,(design.projection?.noteMin||14)*1.28) }, design.projection?.noteMin||14, { color: p.muted, align: 'right', role: 'footer' });
   }
   const customFigures=!slide.referenceTemplateId&&['figure-focus','figure-split'].includes(slide.layout)?slide.figureBoxes:undefined;
   return { page, p, add, rect, line, text, region, regions, customFigures, design, chrome, system:design.system };
@@ -372,8 +376,8 @@ function cardsGrid(b, cards, box, columns, project, gap = 28) {
 }
 
 /** Reproduce an explicitly transcribed source legend, never a semantic-role palette. */
-function displayLegendLayout(items,width){
-  const size=22,lineW=24,lineGap=9,itemGap=24,rows=[{items:[],width:0,height:34}];
+function displayLegendLayout(items,width,size=22){
+  const lineW=24,lineGap=9,itemGap=24,rows=[{items:[],width:0,height:34}];
   for(const [index,item] of arr(items).entries()){
     const label=asText(item.label),estimated=measureTextWidth(label,size)+4;
     const labelW=Math.max(1,Math.min(estimated,width-lineW-lineGap));
@@ -401,11 +405,11 @@ function figure(b, project, id, box, key) {
   if(viewport&&(!['x','y','w','h'].every(k=>Number.isFinite(viewport[k]))||viewport.x<0||viewport.y<0||viewport.w<=0||viewport.h<=0||viewport.x+viewport.w>1.00000001||viewport.y+viewport.h>1.00000001)){
     b.page.issues.push({severity:'error',code:'invalid-viewport',slideId:b.page.id,assetId:id,message:'原图视窗必须是0–1范围内、正尺寸的归一化矩形。'});return;
   }
-  const captionSize=b.system?.captionSize??18;
+  const captionSize=Math.max(b.system?.captionSize??18,b.design.projection?.noteMin??0);
   const caption=asset.displayCaption||[referenceLabel(project,asset.paperId),asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
   const captionLines=wrapText(caption,box.w,captionSize),captionH=caption?Math.max(captionSize*1.45,captionLines.length*captionSize*1.24+4):0;
-  const legend=displayLegendLayout(asset.displayLegend,box.w),legendH=legend.height?legend.height+8:0;
-  if(legend.rows>2||legend.height>68)b.page.issues.push({severity:'error',code:'figure-legend-overflow',slideId:b.page.id,assetId:id,message:'辅助图例超过两行。保留原始身份，缩短转录标签或扩大区域，不能降低图例字号。'});
+  const legend=displayLegendLayout(asset.displayLegend,box.w,Math.max(22,b.design.projection?.labelMin??0)),legendH=legend.height?legend.height+8:0;
+  if(legend.rows>2||legend.height>2*Math.max(34,legend.size*1.2+4))b.page.issues.push({severity:'error',code:'figure-legend-overflow',slideId:b.page.id,assetId:id,message:'辅助图例超过两行。保留原始身份，缩短转录标签或扩大区域，不能降低图例字号。'});
   const matte=asset.treatment!=='plain',pad=matte?5:0;
   const frame={x:box.x+pad,y:box.y+pad,w:Math.max(1,box.w-pad*2),h:Math.max(1,box.h-captionH-legendH-9-pad*2)};
   if(frame.h<70)b.page.issues.push({severity:'warning',code:'small-figure-region',slideId:b.page.id,assetId:id,message:'图注之后的原图空间过小；扩大图区域或单独拆页。'});
@@ -437,8 +441,9 @@ function pairedFigureBoxes(project, ids, area, gap = 18) {
   const visibleArea = boxes => boxes.reduce((sum, box, i) => {
     const asset = arr(project.assets).find(a => a.id === ids[i]) || project.assets?.[ids[i]];
     const iw=Number(asset?.width||1)*(asset?.viewport?.w??1),ih=Number(asset?.height||1)*(asset?.viewport?.h??1),caption=asset?.displayCaption||[referenceLabel(project,asset?.paperId),asset?.figure,asset?.panel,asset?.caption].filter(Boolean).join(' · ');
-    const captionH=caption?Math.min(108,Math.max(26,wrapText(caption,box.w,18).length*23+4)):0;
-    const legendHeight=displayLegendLayout(asset?.displayLegend,box.w).height;
+    const captionSize=Math.max(project.design?.system?.captionSize??18,project.design?.projection?.noteMin??0);
+    const captionH=caption?(project.design?.projection?Math.max(captionSize*1.45,wrapText(caption,box.w,captionSize).length*captionSize*1.24+4):Math.min(108,Math.max(26,wrapText(caption,box.w,18).length*23+4))):0;
+    const legendHeight=displayLegendLayout(asset?.displayLegend,box.w,Math.max(22,project.design?.projection?.labelMin??0)).height;
     const scale=Math.min(box.w/iw,Math.max(1,box.h-9-captionH-(legendHeight?legendHeight+8:0))/ih);
     return sum + iw * ih * scale * scale;
   }, 0);
@@ -448,8 +453,18 @@ function pairedFigureBoxes(project, ids, area, gap = 18) {
 function paperTitle(b, project, slide, box) {
   const papers = arr(project.papers).filter(p => arr(slide.paperIds).includes(p.id));
   if (!papers.length) return;
-  b.region('paper-heading',box,'paper-heading');
   const paper = papers[0];
+  if(b.design.projection){
+    const titleSize=b.design.projection.labelMin,metaSize=b.design.projection.noteMin;
+    const meta=[arr(paper.authors).join(', '),paper.journal,paper.year,paper.doi?`DOI: ${paper.doi}`:''].filter(Boolean).join(' · ');
+    const titleH=wrapText(paper.title,box.w,titleSize,{bold:true}).length*titleSize*1.2,metaH=wrapText(meta,box.w,metaSize).length*metaSize*1.24;
+    const height=titleH+metaH+8;
+    b.region('paper-heading',{...box,h:height},'paper-heading');
+    b.text('paper-title',paper.title,{x:box.x,y:box.y,w:box.w,h:titleH},titleSize,{bold:true,role:'reference-title',lineHeight:1.2});
+    b.text('paper-bibliography',meta,{x:box.x,y:box.y+titleH+8,w:box.w,h:metaH},metaSize,{color:b.p.muted,role:'citation',lineHeight:1.24});
+    return {height,bottom:box.y+height};
+  }
+  b.region('paper-heading',box,'paper-heading');
   const bibliography=[arr(paper.authors).join(', '),paper.journal,paper.year,paper.doi?`DOI: ${paper.doi}`:''].filter(Boolean).join(' · ');
   const bibliographyH=wrapText(bibliography,box.w,17).length*17*1.22;
   const titleH=Math.max(30,wrapText(paper.title,box.w,25,{bold:true}).length*30),allocatedTitleH=Math.min(titleH,Math.max(30,box.h-bibliographyH-6));
@@ -464,10 +479,11 @@ function referenceLabel(project,id) {
 
 function footerSources(b, project, slide) {
   if (['references','cover','section'].includes(slide.layout)||resolveChrome(project.design,slide).showSources===false) return;
-  const ids = new Set(arr(slide.paperIds));
-  for (const claim of arr(project.claims)) if (arr(slide.claimIds).includes(claim.id) && claim.paperId) ids.add(claim.paperId);
+  const ids = new Set(arr(slide.paperIds)),claims=new Set([...arr(slide.claimIds),...arr(slide.cards).flatMap(c=>arr(c.claimIds)),...drawingClaimIds(slide)]);
+  for (const claim of arr(project.claims)) if (claims.has(claim.id) && claim.paperId) ids.add(claim.paperId);
+  for(const asset of arr(project.assets))if(drawingAssetIds(slide).includes(asset.id)&&asset.paperId)ids.add(asset.paperId);
   const sources = arr(project.papers).filter(p => ids.has(p.id)).map(p => [referenceLabel(project,p.id),arr(p.authors).length?`${p.authors[0]}${p.authors.length>1?' 等':''}`:'',p.year].filter(Boolean).join(' '));
-  if(sources.length)b.text('sources',sources.join('  |  '),{x:48,y:660,w:1184,h:24},15,{color:b.p.muted,role:'citation',lineHeight:1.14});
+  if(sources.length)b.text('sources',sources.join('  |  '),{x:48,y:660,w:1184,h:24},b.design.projection?.noteMin||15,{color:b.p.muted,role:'citation',lineHeight:1.14});
 }
 
 function diagram(b, project, slide, area, nodeBoxes) {
@@ -475,7 +491,9 @@ function diagram(b, project, slide, area, nodeBoxes) {
   const nodes = arr(slide.nodes), edges = arr(slide.edges);
   const count = nodes.length;
   if (!count) return;
+  if(b.design.projection&&!nodeBoxes&&!nodes.some(n=>n.box))return renderAcademicDiagram(b,project,{...slide,diagram:{rows:automaticDiagramRows(nodes)}},area,{wrapText,measureTextWidth,semanticStyle:(kind,p)=>semanticStyle(kind,p,{academic:true})});
   const columns = Math.min(count, count === 4 ? 2 : 3), rows = Math.ceil(count / Math.max(columns, 1));
+  const labelSize=Math.max(24,b.design.projection?.labelMin??0),detailSize=Math.max(22,b.design.projection?.labelMin??0),edgeSize=Math.max(17,b.design.projection?.labelMin??0);
   const gap = 55, rowGap = 46;
   const w = (area.w - (columns - 1) * gap) / Math.max(columns, 1), h = Math.min(132,(area.h - (rows - 1) * rowGap) / Math.max(rows, 1));
   const boxes = new Map(nodes.map((n, i) => [n.id, n.box || nodeBoxes?.[i] || { x: area.x + (i % columns) * (w + gap), y: area.y + 14 + Math.floor(i / columns) * (h + rowGap), w, h }]));
@@ -486,8 +504,8 @@ function diagram(b, project, slide, area, nodeBoxes) {
     }
     if(edge.label){
       const k=Math.floor((points.length-1)/2),a=points[k],z=points[k+1],mid={x:(a.x+z.x)/2,y:(a.y+z.y)/2};
-      const lw=Math.min(190,Math.max(80,measureTextWidth(edge.label,17)+12));
-      b.text(`edge:${index}:label`,edge.label,{x:Math.max(area.x,Math.min(area.x+area.w-lw,mid.x-lw/2)),y:Math.max(area.y,mid.y-24),w:lw,h:24},17,{align:'center',color:b.p.muted,role:'diagram-label',lineHeight:1.1});
+      const lw=Math.min(190,Math.max(80,measureTextWidth(edge.label,edgeSize)+12)),lh=b.design.projection?Math.max(24,wrapText(edge.label,lw,edgeSize).length*edgeSize*1.1):24;
+      b.text(`edge:${index}:label`,edge.label,{x:Math.max(area.x,Math.min(area.x+area.w-lw,mid.x-lw/2)),y:Math.max(area.y,mid.y-lh),w:lw,h:lh},edgeSize,{align:'center',color:b.p.muted,role:'diagram-label',lineHeight:1.1});
     }
   };
   for (const [i, edge] of edges.entries()) {
@@ -516,11 +534,11 @@ function diagram(b, project, slide, area, nodeBoxes) {
     const box = boxes.get(n.id);
     b.region(`node:${n.id}`,box,'diagram-node');
     const semantic=semanticStyle(n.kind||'method',b.p,{academic:b.design?.hasAcademicSystem});
-    const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,24,{bold:true}).length*28),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?1:5,labelY=hasDetail?box.y+(small?4:10):box.y+Math.max(8,(box.h-labelH)/2);
+    const pad=12,iw=box.w-pad*2,labelH=Math.max(28,wrapText(n.label,iw,labelSize,{bold:true}).length*(b.design.projection?labelSize*1.16:28)),hasDetail=Boolean(n.detail),small=box.h<88,detailGap=small?1:5,labelY=hasDetail?box.y+(small?4:10):box.y+Math.max(8,(box.h-labelH)/2);
     b.rect(`node:${n.id}:frame`,box,n.kind?semantic.tint:b.p.paper,b.p.line,{strokeWidth:1.2,...(n.kind==='hypothesis'?{dash:'dash'}:{})});
     b.line(`node:${n.id}:heading-rule`,box.x,box.y,box.x+box.w,box.y,semantic.accent,{strokeWidth:2});
-    b.text(`node:${n.id}:label`,n.label,{x:box.x+pad,y:labelY,w:iw,h:labelH},24,{bold:true,color:semantic.accent,align:'center',lineHeight:1.16,role:'diagram-label'});
-    if(hasDetail)b.text(`node:${n.id}:detail`,n.detail,{x:box.x+pad,y:labelY+labelH+detailGap,w:iw,h:Math.max(22,box.y+box.h-(small?3:9)-(labelY+labelH+detailGap))},22,{color:b.p.ink,align:'center',lineHeight:1.18,role:'diagram-body'});
+    b.text(`node:${n.id}:label`,n.label,{x:box.x+pad,y:labelY,w:iw,h:labelH},labelSize,{bold:true,color:semantic.accent,align:'center',lineHeight:1.16,role:'diagram-label'});
+    if(hasDetail)b.text(`node:${n.id}:detail`,n.detail,{x:box.x+pad,y:labelY+labelH+detailGap,w:iw,h:Math.max(22,box.y+box.h-(small?3:9)-(labelY+labelH+detailGap))},detailSize,{color:b.p.ink,align:'center',lineHeight:1.18,role:'diagram-body'});
   }
 }
 
@@ -538,7 +556,7 @@ function scientificPlot(b,data,box,options) {
 
 /** Content-based academic tables: real cells in PPTX and the same wrapping in SVG. */
 function table(b, data, box, fontFamily) {
-  const columns=arr(data.columns),rows=arr(data.rows),all=[columns,...rows],fontSize=b.design?.hasAcademicSystem?(b.system?.bodySize??24):23,captionSize=b.system?.captionSize??18,lineHeight=1.22,padX=10,padY=7;
+  const columns=arr(data.columns),rows=arr(data.rows),all=[columns,...rows],fontSize=Math.max(b.design?.hasAcademicSystem?(b.system?.bodySize??24):23,b.design.projection?.labelMin??0),captionSize=Math.max(b.system?.captionSize??18,b.design.projection?.noteMin??0),lineHeight=1.22,padX=10,padY=7;
   if(!columns.length||rows.some(row=>!Array.isArray(row)||row.length!==columns.length)){
     b.page.issues.push({severity:'error',code:'invalid-table-shape',slideId:b.page.id,message:'表格必须包含列名，且每行单元格数量必须与列数相同。'});return;
   }
@@ -684,14 +702,15 @@ export function buildScenes(project) {
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
     let contentBox=CONTENT;
     if(!['cover','section'].includes(slide.layout)){
-      if(design.hasAcademicSystem||slide.composition||slide.layout==='academic'||slide.section||slide.chrome||design.chrome)contentBox=academicHeader(b,project,slide,{wrapText,measureTextWidth});
+      if(slide.heading)contentBox=renderAuthoredHeading(b,project,slide,{wrapText,measureTextWidth});
+      else if(design.hasAcademicSystem||slide.composition||slide.layout==='academic'||slide.section||slide.chrome||design.chrome)contentBox=academicHeader(b,project,slide,{wrapText,measureTextWidth});
       else header(b,slide);
     }
     b.page.contentBox={...contentBox};
     // Explicit chrome opts legacy automatic layouts into the same recovered
     // body area as composition. Authored boxes and untouched old projects keep
     // their coordinates; media aspect ratios and text sizes are not stretched.
-    const bodyBox=slide.chrome||design.chrome?contentBox:CONTENT;
+    const bodyBox=slide.heading||slide.chrome||design.chrome?contentBox:CONTENT;
     const layoutBox=box=>({...box,y:bodyBox.y+Math.max(0,box.y-CONTENT.y)*bodyBox.h/CONTENT.h,h:box.h*bodyBox.h/CONTENT.h});
     // Authored figure boxes use the same recovered body area as their header.
     // Untouched legacy projects retain their previously accepted safe bounds.
@@ -699,6 +718,7 @@ export function buildScenes(project) {
       const area=slide.chrome||design.chrome?contentBox:{x:36,y:132,w:1208,h:526};
       for(const box of slide.figureBoxes)if(box.x<area.x||box.y<area.y||box.x+box.w>area.x+area.w||box.y+box.h>area.y+area.h)b.page.issues.push({severity:'error',code:'custom-figure-outside-content',slideId:b.page.id,path:'slides.'+slide.id,message:`自定义证据图框需位于本页实际正文区域 x=${area.x}–${area.x+area.w}、y=${area.y}–${area.y+area.h} 内；调整图框，不能覆盖标题或来源。`});
     }
+    if(slide.composition&&['cover','section'].includes(slide.layout))b.page.issues.push({severity:'error',code:'composition-layout',slideId:slide.id,message:'cover/section不消费composition；请使用对应完整题名布局或academic自由区域。'});
     if(slide.closing&&slide.layout!=='closing')b.page.issues.push({severity:'error',code:'closing-layout',slideId:b.page.id,message:'closing设计只用于layout:closing页面。'});
     if(slide.closing&&slide.composition)b.page.issues.push({severity:'error',code:'closing-composition-conflict',slideId:b.page.id,message:'closing设计与composition是两种独立构图方式，不能同时指定。'});
     const ref=slide.referenceTemplateId?getReferenceTemplate(slide.referenceTemplateId):undefined;
@@ -709,11 +729,17 @@ export function buildScenes(project) {
     else if(slide.layout==='section')academicSection(b,project,slide,{wrapText,measureTextWidth});
     else if(slide.layout==='closing'&&slide.closing)academicClosing(b,project,slide,{wrapText,measureTextWidth,card,contentBox});
     else if(slide.composition)renderAcademicComposition(b,project,slide,{card,figure,table,diagram,plot:scientificPlot,wrapText,measureTextWidth,clone,design,contentBox});
-    else if(slide.layout==='academic')b.page.issues.push({severity:'error',code:'academic-composition-missing',slideId:b.page.id,message:'academic 页需 composition.rows 指定各证据面板；不能退化为默认介绍卡。'});
+    else if(slide.layout==='academic'&&!slide.drawings?.length)b.page.issues.push({severity:'error',code:'academic-composition-missing',slideId:b.page.id,message:'academic 页需 composition.rows、composition.regions 或明确定位的drawings；不能退化为默认介绍卡。'});
     else if(ref)referenceLayout(b,project,slide,ref);
     else if(slide.layout==='paper'){
-      paperTitle(b,project,slide,bodyBox===CONTENT?{x:48,y:128,w:1184,h:120}:layoutBox({x:48,y:132,w:1184,h:120}));
-      if(figures.length){
+      const paperBox=bodyBox===CONTENT?{x:48,y:128,w:1184,h:120}:layoutBox({x:48,y:132,w:1184,h:120});
+      const paperExtent=paperTitle(b,project,slide,paperBox);
+      if(design.projection){
+        const y=(paperExtent?.bottom??paperBox.y)+18,h=bodyBox.y+bodyBox.h-y;
+        if(h<=0)b.page.issues.push({severity:'error',code:'paper-content-space',slideId:slide.id,message:'完整论文题名与书目信息占满正文，须重排或拆页。'});
+        if(figures.length){figure(b,project,figures[0],{x:48,y,w:cards.length?716:1184,h:Math.max(1,h)},'figure:0');if(cards.length)cardsGrid(b,cards,{x:796,y,w:436,h:Math.max(1,h)},1,project);}
+        else cardsGrid(b,cards,{x:48,y,w:1184,h:Math.max(1,h)},Math.min(Math.max(cards.length,1),2),project);
+      }else if(figures.length){
         figure(b,project,figures[0],layoutBox({x:48,y:268,w:cards.length?716:1184,h:377}),'figure:0');
         cardsGrid(b,cards,layoutBox({x:796,y:268,w:436,h:377}),1,project,24);
       }else cardsGrid(b,cards,layoutBox({x:48,y:270,w:1184,h:375}),Math.min(Math.max(cards.length,1),2),project);
@@ -744,21 +770,30 @@ export function buildScenes(project) {
     }else if(slide.layout==='roadmap'){
       const gap=24,count=Math.max(cards.length,1),h=(bodyBox.h-gap*(count-1))/count;
       cards.forEach((c,i)=>{const y=bodyBox.y+i*(h+gap);b.text(`roadmap:${i}:number`,String(i+1).padStart(2,'0'),{x:48,y:y+2,w:63,h:42},29,{color:b.p.accent,bold:true,role:'index'});card(b,c,c.box||{x:128,y,w:1104,h},i,project);});
-    }else if(slide.layout==='references')references(b,project,slide,bodyBox);
+    }else if(slide.layout==='references'){if(design.projection||slide.referenceIds)renderBibliography(b,project,slide.referenceIds||slide.paperIds,bodyBox,{wrapText});else references(b,project,slide,bodyBox);}
+    else if(slide.layout==='academic'&&slide.drawings?.length){}
     else{
       let y=bodyBox.y;
       for(const field of ['subtitle','takeaway']){
         if(!slide[field]||(field==='takeaway'&&slide.takeaway===slide.subtitle))continue;
-        const h=Math.max(34,wrapText(slide[field],1184,26,{bold:field==='takeaway'}).length*31.2);
-        b.text(field,slide[field],{x:48,y,w:1184,h},26,{bold:field==='takeaway',color:field==='takeaway'?b.p.accent:b.p.ink,lineHeight:1.2,role:field});
+        const size=Math.max(26,design.projection?.bodyMin??0),h=Math.max(34,wrapText(slide[field],1184,size,{bold:field==='takeaway'}).length*size*1.2);
+        b.text(field,slide[field],{x:48,y,w:1184,h},size,{bold:field==='takeaway',color:field==='takeaway'?b.p.accent:b.p.ink,lineHeight:1.2,role:field});
         y+=h+25;
       }
       cardsGrid(b,cards,{x:48,y,w:1184,h:Math.max(40,bodyBox.y+bodyBox.h-y)},Math.min(Math.max(cards.length,1),2),project);
     }
+    if(slide.heading&&['cover','section'].includes(slide.layout))b.page.issues.push({severity:'error',code:'heading-layout',slideId:slide.id,message:'cover/section使用完整题名布局，不支持叠加heading。'});
+    if(!slide.composition)for(const drawing of arr(slide.drawings)){
+      if(!drawing.box){b.page.issues.push({severity:'error',code:'drawing-box-required',slideId:slide.id,drawingId:drawing.id,message:'没有composition时，每个drawing必须提供页面坐标box。'});continue;}
+      const area=['cover','section'].includes(slide.layout)?{x:0,y:0,w:1280,h:720}:contentBox;
+      const box=drawing.box;
+      if(box.x<area.x-.01||box.y<area.y-.01||box.x+box.w>area.x+area.w+.01||box.y+box.h>area.y+area.h+.01)b.page.issues.push({severity:'error',code:'drawing-outside-content',slideId:slide.id,drawingId:drawing.id,message:'绘图区域越过本页实际正文范围；调整标题、来源和绘图的分配。'});
+      renderNativeDrawing(b,project,drawing,box,{wrapText});
+    }
     footerSources(b,project,slide);
-    const noteIds=new Set(arr(slide.paperIds)),noteClaims=new Set([...arr(slide.claimIds),...cards.flatMap(c=>arr(c.claimIds))]);
+    const noteIds=new Set(arr(slide.paperIds)),noteClaims=new Set([...arr(slide.claimIds),...cards.flatMap(c=>arr(c.claimIds)),...drawingClaimIds(slide)]);
     for(const claim of arr(project.claims))if(noteClaims.has(claim.id)&&claim.paperId)noteIds.add(claim.paperId);
-    for(const asset of arr(project.assets))if(figures.includes(asset.id)&&asset.paperId)noteIds.add(asset.paperId);
+    for(const asset of arr(project.assets))if([...figures,...drawingAssetIds(slide)].includes(asset.id)&&asset.paperId)noteIds.add(asset.paperId);
     const notePapers = arr(project.papers).filter(p => noteIds.has(p.id));
     if (notePapers.length) b.page.notes += '\n\n参考文献（完整题名）\n' + notePapers.map(p => [p.id, p.title, p.journal, p.year, p.doi, p.version].filter(Boolean).join(' · ')).join('\n');
     // Explicit coverage guards: an unsupported combination must not quietly lose authored evidence.
@@ -776,10 +811,14 @@ export function buildScenes(project) {
     for (const n of arr(slide.nodes)) if (!b.page.nodes.some(shape => shape.id === `${b.page.id}/node:${n.id}:frame`)) b.page.issues.push({ severity: 'error', code: 'unrendered-diagram-node', slideId: b.page.id, nodeId: n.id, message: '输入流程节点未显示；使用有 diagram 区域的参考页型或 method 页。' });
     arr(slide.edges).forEach((edge, i) => { if (!b.page.nodes.some(shape => shape.id === `${b.page.id}/edge:${i}` || shape.id.startsWith(`${b.page.id}/edge:${i}:`))) b.page.issues.push({ severity: 'error', code: 'unrendered-diagram-edge', slideId: b.page.id, edge, message: '输入流程连线未显示；选择支持 diagram 的页型并检查节点。' }); });
     for (const field of ['subtitle', 'takeaway']) if (asText(slide[field]).trim() && !b.page.nodes.some(n => n.kind === 'text' && n.text === slide[field])) b.page.issues.push({ severity: 'error', code: `unrendered-${field}`, slideId: b.page.id, message: `${field} 在当前页型没有可见区域。将必要内容写入卡片，或使用支持该字段的页型；必须展示所有输入限定后才能完成审核。` });
+    for(const drawing of arr(slide.drawings))if(!b.page.drawings?.some(d=>d.id===drawing.id))b.page.issues.push({severity:'error',code:'unrendered-drawing',slideId:slide.id,drawingId:drawing.id,message:'输入自由绘图未显示，须在composition中分配drawingIds或提供独立box。'});
+    for(const referenceId of arr(slide.referenceIds))if(!b.page.nodes.some(n=>n.referenceId===referenceId&&n.role==='reference-title'))b.page.issues.push({severity:'error',code:'unrendered-reference',slideId:slide.id,paperId:referenceId,message:'输入完整书目未在画面显示，须在composition区域分配referenceIds。'});
     for (const node of b.page.nodes) {
       if (![node.x, node.y, node.w, node.h].every(Number.isFinite)) b.page.issues.push({ severity: 'error', code: 'invalid-geometry', slideId: b.page.id, objectId: node.id, message: '对象坐标必须是有限数值。' });
       if (node.kind !== 'line' && (node.w <= 0 || node.h <= 0 || node.x < -1 || node.y < -1 || node.x + node.w > 1281 || node.y + node.h > 721)) b.page.issues.push({ severity: 'error', code: 'out-of-bounds', slideId: b.page.id, objectId: node.id, message: '对象尺寸无效或超出页面。' });
     }
+    for(const node of b.page.nodes)if(node.kind==='chart'&&design.projection)node.projection={...design.projection};
+    b.page.issues.push(...projectionIssues(b.page,design.projection));
     inspectLayout(b);
     return b.page;
   });

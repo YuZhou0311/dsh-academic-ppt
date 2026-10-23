@@ -132,15 +132,16 @@ const layoutIssue = (code, message, details = {}) => ({ severity: 'error', code,
  * All positions here are local to x=0. It measures actual text and uses the
  * same numeric domain/packing as the final native shapes, without a builder.
  */
-function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextWidth, system = {} } = {}) {
+function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextWidth, system = {}, projection } = {}) {
   const invalid = validate(data, { x: 0, y: 0, w: width, h: 1 });
   if (invalid) return { issue: layoutIssue(...invalid) };
   if (typeof wrapText !== 'function' || typeof measureTextWidth !== 'function')
     return { issue: layoutIssue('plot-text-metrics-missing', '科学图需要与页面一致的文字换行和宽度测量函数。') };
 
   const face = fontFamily || system.fontFamily || 'Noto Sans CJK SC';
-  const groupFont = Math.max(MIN_FONT, finite(system.bodySize) ? system.bodySize : 22);
-  const smallFont = Math.max(MIN_FONT, finite(system.captionSize) ? system.captionSize : 18);
+  const groupFont = Math.max(MIN_FONT, finite(system.bodySize) ? system.bodySize : 22, projection?.labelMin??0);
+  const smallFont = Math.max(MIN_FONT, finite(system.captionSize) ? system.captionSize : 18, projection?.labelMin??0);
+  const captionFont = Math.max(MIN_FONT, finite(system.captionSize) ? system.captionSize : 18, projection?.noteMin??0);
   const padding = 12, columnGap = 14, innerWidth = width - 2 * padding;
   if (innerWidth < 240)
     return { issue: layoutIssue('plot-area-too-small', '科学图区域过窄；扩大区域或拆页，不能缩小轴、标签或观测点。') };
@@ -166,7 +167,7 @@ function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextW
     ? `每点为一条观测；纵向错位仅防重叠${reference !== undefined ? `；参考值 = ${numericText(reference)}` : ''}`
     : `点为估计值；线为区间；参考值 = ${numericText(reference)}`;
   const note = measure(noteText, innerWidth, smallFont);
-  const caption = data.caption ? measure(data.caption, innerWidth, smallFont) : null;
+  const caption = data.caption ? measure(data.caption, innerWidth, captionFont) : null;
   const unit = measure(data.unit, plotWidth, smallFont);
   const labels = labelTexts.map(text => measure(text, labelWidth, groupFont, true));
   const valueLabels = valueTexts.map(text => measure(text, valueWidth, smallFont));
@@ -220,7 +221,9 @@ export function measureScientificPlotMinimum(data, width, options = {}) {
  * Callbacks follow scene.mjs: wrapText(text,width,fontSize,metrics) and
  * measureTextWidth(text,fontSize,metrics). b.system.bodySize controls group
  * labels; b.system.captionSize controls axes, value labels and captions.
- * Both respect an 18 px floor. Layout is checked before adding any objects.
+ * New projection policies raise necessary labels at measurement time while
+ * captions retain their independent note size; absent policies keep v0.6 geometry.
+ * Layout is checked before adding any objects.
  * Errors enter b.page.issues and return {failed:true}; no partial plot is drawn.
  */
 export function renderScientificPlot(b, data, box, { fontFamily, wrapText, measureTextWidth } = {}) {
@@ -231,7 +234,7 @@ export function renderScientificPlot(b, data, box, { fontFamily, wrapText, measu
 
   const p = b.p || {}, system = b.system || {};
   const prepared = prepareScientificPlot(data, box.w, {
-    fontFamily: fontFamily || system.fontFamily || b.fontFamily, wrapText, measureTextWidth, system,
+    fontFamily: fontFamily || system.fontFamily || b.fontFamily, wrapText, measureTextWidth, system, projection:b.design?.projection,
   });
   if (prepared.issue) {
     const { code, message, severity, ...details } = prepared.issue;

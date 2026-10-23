@@ -3,6 +3,9 @@ import { drawSemanticIcon } from './card-surface.mjs';
 const arr = value => Array.isArray(value) ? value : [];
 const txt = value => typeof value === 'string' ? value : '';
 const fail = (b, code, message) => b.page.issues.push({severity:'error',code,slideId:b.page.id,message});
+// Derived furniture sizes follow their reading role. Authored system title and
+// section sizes remain explicit and are checked instead of silently rewritten.
+const autoSize=(b,role,size)=>Math.max(size,b.design?.projection?.[role+'Min']??0);
 
 export function resolveChrome(design = {}, slide = {}) { return { ...design.chrome, ...slide.chrome }; }
 function contentBottom(chrome) { return chrome.showSources===false ? (chrome.showPageNumber===false && chrome.showFooter===false ? 690 : 670) : 645; }
@@ -21,11 +24,11 @@ function logo(b, project, box, key) {
 export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
   const s=b.system,p=b.p,chrome=resolveChrome(project.design,slide),section=chrome.showSection===false?null:slide.section;
   const brand=chrome.showBrand===false?null:{...project.design?.branding,...(chrome.brandLabel!==undefined?{label:chrome.brandLabel}:{})};
-  const headerStyle=chrome.header||s.header,bottomLimit=contentBottom(chrome);
+  const headerStyle=chrome.header||s.header,bottomLimit=contentBottom(chrome),brandSize=autoSize(b,'label',22),kickerSize=autoSize(b,'body',s.captionSize+2);
   const label=section?[section.number,section.title].filter(Boolean).join('  '):'';
   let top=20;
   if(headerStyle==='band'){
-    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,22,{bold:true})+4):0;
+    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,brandSize,{bold:true})+4):0;
     const logoW=brand?.logoAssetId?48:0;
     const right=brandW||logoW?1232-brandW-logoW-26:1232;
     const titleInBand=!label,titleH=titleInBand?wrapText(slide.title,right-48,s.titleSize,{bold:true}).length*s.titleSize*1.13:0;
@@ -33,18 +36,18 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
     b.rect('academic-header-band',{x:0,y:0,w:1280,h:bh},p.accent,'none');
     if(label)b.text('section-label',label,{x:48,y:10,w:right-48,h:40},s.sectionSize,{bold:true,color:'#FFFFFF',lineHeight:1.1,role:'section-label'});
     if(titleInBand)b.text('title',slide.title,{x:48,y:9,w:right-48,h:titleH},s.titleSize,{bold:true,color:'#FFFFFF',lineHeight:1.13,role:'title'});
-    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:14,w:brandW,h:29},22,{color:'#FFFFFF',bold:true,lineHeight:1.1,role:'identity'});
+    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:14,w:brandW,h:Math.max(29,brandSize*1.1)},brandSize,{color:'#FFFFFF',bold:true,lineHeight:1.1,role:'identity'});
     if(brand?.logoAssetId)logo(b,project,{x:1232-brandW-logoW-8,y:7,w:40,h:40},'header-logo');
     if(titleInBand){
       let y=bh+18;
-      if(slide.kicker){const h=wrapText(slide.kicker,1184,s.captionSize+2).length*(s.captionSize+2)*1.2;b.text('kicker',slide.kicker,{x:48,y,w:1184,h},s.captionSize+2,{color:p.muted,lineHeight:1.2,role:'subtitle'});y+=h+14;}
+      if(slide.kicker){const h=wrapText(slide.kicker,1184,kickerSize).length*kickerSize*1.2;b.text('kicker',slide.kicker,{x:48,y,w:1184,h},kickerSize,{color:p.muted,lineHeight:1.2,role:'subtitle'});y+=h+14;}
       return {x:48,y,w:1184,h:bottomLimit-y};
     }
     top=70;
   } else if(label||brand?.label||brand?.logoAssetId){
-    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,22,{bold:true})+4):0,logoW=brand?.logoAssetId?48:0;
+    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,brandSize,{bold:true})+4):0,logoW=brand?.logoAssetId?48:0;
     if(label)b.text('section-label',label,{x:48,y:14,w:1184-brandW-logoW-(brandW||logoW?26:0),h:36},s.sectionSize,{bold:true,color:p.accent,lineHeight:1.1,role:'section-label'});
-    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:18,w:brandW,h:28},22,{color:p.accent,bold:true,lineHeight:1.1,role:'identity'});
+    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:18,w:brandW,h:Math.max(28,brandSize*1.1)},brandSize,{color:p.accent,bold:true,lineHeight:1.1,role:'identity'});
     if(brand?.logoAssetId)logo(b,project,{x:1232-brandW-logoW-8,y:8,w:40,h:40},'header-logo');
     top=58;
   }
@@ -52,8 +55,8 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
   b.text('title',slide.title,{x:48,y:top,w:1184,h:titleH},s.titleSize,{bold:true,color:p.ink,lineHeight:1.13,role:'title'});
   let bottom=top+titleH;
   if(slide.kicker){
-    const h=wrapText(slide.kicker,1184,s.captionSize+2).length*(s.captionSize+2)*1.2;
-    b.text('kicker',slide.kicker,{x:48,y:bottom+6,w:1184,h},s.captionSize+2,{color:p.muted,lineHeight:1.2,role:'subtitle'});
+    const h=wrapText(slide.kicker,1184,kickerSize).length*kickerSize*1.2;
+    b.text('kicker',slide.kicker,{x:48,y:bottom+6,w:1184,h},kickerSize,{color:p.muted,lineHeight:1.2,role:'subtitle'});
     bottom+=h+6;
   }
   const y=bottom+10;
@@ -97,7 +100,7 @@ export function academicCover(b, project, slide, {wrapText}) {
     if(occasion)b.text('cover-occasion',occasion,{x:64,y:52,w:1152,h:60},26,{color:p.muted,align:'center',lineHeight:1.2,role:'cover-occasion'});
   }
   const titleH=wrapText(title,w,size,{bold:true}).length*size*1.16;
-  const subSize=30,subH=slide.subtitle?wrapText(slide.subtitle,w,subSize).length*subSize*1.22:0;
+  const subSize=autoSize(b,'body',30),subH=slide.subtitle?wrapText(slide.subtitle,w,subSize).length*subSize*1.22:0;
   const groupH=titleH+(subH?subH+24:0),groupTop=style==='project'?165:154,groupLimit=style==='project'?500:504;
   const y=groupTop+Math.max(0,(groupLimit-groupTop-groupH)/2);
   b.text('title',title,{x,y,w,h:titleH},size,{bold:true,color:style==='framed'?p.ink:p.accent,align,lineHeight:1.16,role:'cover-title'});
@@ -123,7 +126,7 @@ export function academicCover(b, project, slide, {wrapText}) {
 
 function contextVisual(b, project, data, area, key, wrapText) {
   if(data.assetId&&data.icon)fail(b,'context-visual-conflict','同一语境图槽只选择assetId或icon，不能静默忽略其中一项。');
-  const captionSize=b.system.captionSize,captionH=data.visualCaption?wrapText(data.visualCaption,area.w,captionSize).length*captionSize*1.24:0;
+  const captionSize=autoSize(b,'note',b.system.captionSize),captionH=data.visualCaption?wrapText(data.visualCaption,area.w,captionSize).length*captionSize*1.24:0;
   if(captionH+(captionH?12:0)+48>area.h)fail(b,'context-visual-height','语境图片区域不足以容纳可见媒体与完整说明；扩大visual区域或精简重复图注。');
   const visual={...area,h:Math.max(1,area.h-(captionH?captionH+12:0))};
   if(data.assetId){
@@ -157,11 +160,11 @@ function customCover(b,project,slide,{wrapText}) {
     usable[role]=box;b.region(`cover/${role}`,box,'cover-role');
   }
   if(usable.title)b.text('title',title,usable.title,s.coverTitleSize,{bold:true,color:p.accent,align,lineHeight:1.12,role:'cover-title'});
-  if(usable.subtitle)b.text('subtitle',slide.subtitle,usable.subtitle,28,{color:p.ink,align,lineHeight:1.22,role:'cover-subtitle'});
+  if(usable.subtitle)b.text('subtitle',slide.subtitle,usable.subtitle,autoSize(b,'body',28),{color:p.ink,align,lineHeight:1.22,role:'cover-subtitle'});
   if(usable.occasion)b.text('cover-occasion',occasion,usable.occasion,24,{color:p.muted,align,lineHeight:1.16,role:'cover-occasion'});
   if(usable.metadata){
     const box=usable.metadata;let y=box.y;
-    for(const [key,value]of metadata){const h=wrapText(value,box.w,22).length*22*1.2;b.text(key,value,{x:box.x,y,w:box.w,h},22,{color:key==='cover-date'?p.muted:p.ink,align,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
+    for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,box.w,size).length*size*1.2;b.text(key,value,{x:box.x,y,w:box.w,h},size,{color:key==='cover-date'?p.muted:p.ink,align,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
     if(y-10>box.y+box.h+2)fail(b,'cover-metadata-overflow','custom封面的metadata区域不足以显示完整报告人、机构与日期；扩大区域，不删去真实身份。');
   }
   if(usable.visual){
@@ -180,7 +183,7 @@ function modernCover(b, project, slide, {wrapText}, style) {
   const titleH=wrapText(title,titleBox.w,s.coverTitleSize,{bold:true}).length*s.coverTitleSize*1.12;
   b.text('title',title,{...titleBox,h:titleH},s.coverTitleSize,{bold:true,color:p.accent,lineHeight:1.12,role:'cover-title'});
   let bottom=titleBox.y+titleH;
-  if(slide.subtitle){const h=wrapText(slide.subtitle,split?650:740,28).length*28*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:split?650:740,h},28,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
+  if(slide.subtitle){const size=autoSize(b,'body',28),h=wrapText(slide.subtitle,split?650:740,size).length*size*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:split?650:740,h},size,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
   if(bottom>(split?530:450))fail(b,'cover-title-metadata-overlap','当前封面的完整题名与副题超出主题区；按语义换行，调整封面变体或去掉重复副题。');
   const visual=split?{x:782,y:102,w:410,h:516}:{x:872,y:376,w:344,h:274};
   if(data.assetId||data.icon)contextVisual(b,project,data,visual,'cover-context',wrapText);
@@ -188,7 +191,7 @@ function modernCover(b, project, slide, {wrapText}, style) {
   else if(split)fail(b,'cover-visual-missing','split封面需要登记的语境图片或有语义用途的icon；无媒体时改用editorial/framed等文字主导构图。');
   const metadata=[['cover-presenter',data.presenter],['cover-affiliation',data.affiliation],['cover-date',data.date]].filter(([,value])=>value);
   let y=split?558:530;
-  for(const [key,value]of metadata){const h=wrapText(value,split?650:740,22).length*22*1.2;b.text(key,value,{x:64,y,w:split?650:740,h},22,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
+  for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,split?650:740,size).length*size*1.2;b.text(key,value,{x:64,y,w:split?650:740,h},size,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
   if(y>700)fail(b,'cover-metadata-overflow','封面责任主体超过页面；保留真实身份并精简重复表述。');
   b.rect('cover-accent',{x:64,y:(split?538:502),w:Math.min(180,titleBox.w*.3),h:4},p.accent,'none',{role:'decoration',semantic:false});
 }
@@ -201,7 +204,7 @@ export function academicClosing(b,project,slide,{wrapText,measureTextWidth,card,
   const statementSize=statementStyle?48:38,statementH=wrapText(data.statement,statementW,statementSize,{bold:true}).length*statementSize*1.16;
   b.text('closing-statement',data.statement,{x:area.x,y:area.y+12,w:statementW,h:statementH},statementSize,{bold:true,color:p.accent,lineHeight:1.16,role:'closing-statement'});
   let questionY=area.y+area.h;
-  if(data.question){const w=statementStyle?statementW:area.w,h=wrapText(data.question,w-28,26).length*26*1.24;questionY=area.y+area.h-h-28;b.rect('closing-question-surface',{x:area.x,y:questionY,w,h:h+28},p.tint,'none',{radius:12,role:'decoration',semantic:false});b.text('closing-question',data.question,{x:area.x+14,y:questionY+14,w:w-28,h},26,{color:p.ink,lineHeight:1.24,role:'closing-question'});}
+  if(data.question){const size=autoSize(b,'body',26),w=statementStyle?statementW:area.w,h=wrapText(data.question,w-28,size).length*size*1.24;questionY=area.y+area.h-h-28;b.rect('closing-question-surface',{x:area.x,y:questionY,w,h:h+28},p.tint,'none',{radius:12,role:'decoration',semantic:false});b.text('closing-question',data.question,{x:area.x+14,y:questionY+14,w:w-28,h},size,{color:p.ink,lineHeight:1.24,role:'closing-question'});}
   const cardsArea=statementStyle?{x:area.x+area.w*.61,y:area.y+12,w:area.w*.39,h:area.h-12}:{x:area.x,y:area.y+statementH+40,w:area.w,h:questionY-(area.y+statementH+40)-16};
   if(statementStyle&&area.y+12+statementH>questionY-20)fail(b,'closing-statement-overflow','结尾主结论与问题相撞；压缩重复措辞或使用evidence变体/自由composition。');
   if(hasVisual&&cards.length)fail(b,'closing-visual-card-conflict','内建结尾变体的辅助区域只选cards或assetId/icon；同时需要时使用composition自由安排。');
@@ -239,7 +242,7 @@ export function academicSection(b, project, slide, {wrapText}) {
     if(active&&active>items.length)fail(b,'agenda-active-out-of-range','agenda.active 必须对应实际章节条目。');
   }else{
     b.text('title',slide.title,{x:416,y:214,w:790,h:198},s.titleSize*1.4,{bold:true,color:p.accent,lineHeight:1.17,role:'title'});
-    if(slide.subtitle)b.text('subtitle',slide.subtitle,{x:416,y:434,w:790,h:140},28,{color:p.muted,lineHeight:1.25,role:'subtitle'});
+    if(slide.subtitle)b.text('subtitle',slide.subtitle,{x:416,y:434,w:790,h:140},autoSize(b,'body',28),{color:p.muted,lineHeight:1.25,role:'subtitle'});
   }
-  if(slide.kicker)b.text('kicker',slide.kicker,{x:52,y:620,w:238,h:65},22,{color:'#FFFFFF',lineHeight:1.2,role:'identity'});
+  if(slide.kicker)b.text('kicker',slide.kicker,{x:52,y:620,w:238,h:65},autoSize(b,'label',22),{color:'#FFFFFF',lineHeight:1.2,role:'identity'});
 }
