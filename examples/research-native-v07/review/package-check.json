@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "command": "npm run check",
+  "version": "0.7.0-rc.4",
+  "toolCount": 14,
+  "referenceTemplates": 48,
+  "referencePptxDigestsChecked": 9,
+  "markdownFiles": 72,
+  "localLinksChecked": 510,
+  "scope": "Package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval."
+}

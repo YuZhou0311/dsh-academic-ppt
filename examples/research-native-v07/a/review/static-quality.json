@@ -1,0 +1,1116 @@
+{
+  "createdAt": "2026-10-23T14:30:43.010Z",
+  "revision": 15,
+  "mode": "review",
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "figure-label-needs-review",
+      "slideId": "s05",
+      "objectId": "s05/drawing/s05-content/e90",
+      "assetId": "ch-lstm-source-v2",
+      "message": "关键标签投影高度估计 16.91 px，低于建议 18 px；实际检查轴、图例和关键注释，必要时放大或拆页。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-needs-review",
+      "slideId": "s06",
+      "objectId": "s06/drawing/s06-content/e120",
+      "assetId": "ch-sensors-source-v2",
+      "message": "关键标签投影高度估计 15.04 px，低于建议 18 px；实际检查轴、图例和关键注释，必要时放大或拆页。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-needs-review",
+      "slideId": "s08",
+      "objectId": "s08/drawing/s08-content/e155",
+      "assetId": "z-yield-trim-source-v2",
+      "message": "关键标签投影高度估计 12.7 px，低于建议 18 px；实际检查轴、图例和关键注释，必要时放大或拆页。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-needs-review",
+      "slideId": "s09",
+      "objectId": "s09/drawing/s09-content/e160",
+      "assetId": "z-trajectory-source-v2",
+      "message": "关键标签投影高度估计 12.07 px，低于建议 18 px；实际检查轴、图例和关键注释，必要时放大或拆页。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-needs-review",
+      "slideId": "s13",
+      "objectId": "s13/drawing/s13-content/e389",
+      "assetId": "s-importance-two-source-v2",
+      "message": "关键标签投影高度估计 12.15 px，低于建议 18 px；实际检查轴、图例和关键注释，必要时放大或拆页。"
+    },
+    {
+      "severity": "warning",
+      "code": "unused-region-review",
+      "slideId": "s16",
+      "path": "slides.s16",
+      "box": {
+        "x": 48,
+        "y": 480,
+        "w": 1184,
+        "h": 190
+      },
+      "emptyFraction": 0.3333,
+      "contentCoverage": 0.5234,
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "message": "下部有约 33% 的连续未使用内容区（1184×190 px）。检查能否合并参考页或重新分配书目；保留完整题名与可读字号。此值是几何诊断，不能代替真实渲染检查。"
+    },
+    {
+      "severity": "warning",
+      "code": "quantitative-evidence-text-only",
+      "slideId": "s12",
+      "path": "slides.s12",
+      "availableSourceFigureIds": [
+        "s-importance",
+        "s-importance-two",
+        "s-importance-two-source-v2"
+      ],
+      "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+    }
+  ],
+  "designDiagnostics": {
+    "basis": "scene-geometry-estimate-not-aesthetic-score",
+    "notes": "忽略背景、卡框、图标与正文装饰。文本按估计行范围计算；原图、数据图表和统计图内部留白不作空洞。封面上下文图单独计可视占幅，不作为科学证据。",
+    "slides": [
+      {
+        "slideId": "s01",
+        "layout": "cover",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 48,
+          "w": 1184,
+          "h": 624
+        },
+        "contentCoverage": 0.4679,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 552,
+          "y": 48,
+          "w": 224,
+          "h": 464
+        },
+        "largestEmptyContentFraction": 0.1407,
+        "largestUnallocatedBox": {
+          "x": 552,
+          "y": 48,
+          "w": 224,
+          "h": 464
+        },
+        "largestUnallocatedFraction": 0.1407,
+        "grid": {
+          "columns": 148,
+          "rows": 78,
+          "cellWidth": 8,
+          "cellHeight": 8,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": 0.5,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s02",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.3773,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 361.3,
+          "w": 1184,
+          "h": 55.4
+        },
+        "largestEmptyContentFraction": 0.0972,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 361.3,
+          "w": 1184,
+          "h": 55.4
+        },
+        "largestUnallocatedFraction": 0.0972,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s03",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.362,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 152,
+          "y": 495.8,
+          "w": 1080,
+          "h": 79.2
+        },
+        "largestEmptyContentFraction": 0.1267,
+        "largestUnallocatedBox": {
+          "x": 152,
+          "y": 495.8,
+          "w": 1080,
+          "h": 79.2
+        },
+        "largestUnallocatedFraction": 0.1267,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s04",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.6236,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1080,
+          "y": 202.9,
+          "w": 152,
+          "h": 467.1
+        },
+        "largestEmptyContentFraction": 0.1052,
+        "largestUnallocatedBox": {
+          "x": 1080,
+          "y": 202.9,
+          "w": 152,
+          "h": 467.1
+        },
+        "largestUnallocatedFraction": 0.1052,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s05",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.6125,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 944,
+          "y": 139.6,
+          "w": 128,
+          "h": 387.9
+        },
+        "largestEmptyContentFraction": 0.0736,
+        "largestUnallocatedBox": {
+          "x": 944,
+          "y": 139.6,
+          "w": 128,
+          "h": 387.9
+        },
+        "largestUnallocatedFraction": 0.0736,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s06",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.7617,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 480,
+          "y": 100,
+          "w": 752,
+          "h": 55.4
+        },
+        "largestEmptyContentFraction": 0.0617,
+        "largestUnallocatedBox": {
+          "x": 480,
+          "y": 100,
+          "w": 752,
+          "h": 55.4
+        },
+        "largestUnallocatedFraction": 0.0617,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s07",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.3299,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 208,
+          "y": 242.5,
+          "w": 672,
+          "h": 118.8
+        },
+        "largestEmptyContentFraction": 0.1182,
+        "largestUnallocatedBox": {
+          "x": 208,
+          "y": 242.5,
+          "w": 672,
+          "h": 118.8
+        },
+        "largestUnallocatedFraction": 0.1182,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s08",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.7504,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1088,
+          "y": 187.1,
+          "w": 144,
+          "h": 482.9
+        },
+        "largestEmptyContentFraction": 0.103,
+        "largestUnallocatedBox": {
+          "x": 1088,
+          "y": 187.1,
+          "w": 144,
+          "h": 482.9
+        },
+        "largestUnallocatedFraction": 0.103,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s09",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.7284,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1096,
+          "y": 100,
+          "w": 136,
+          "h": 570
+        },
+        "largestEmptyContentFraction": 0.1149,
+        "largestUnallocatedBox": {
+          "x": 1096,
+          "y": 100,
+          "w": 136,
+          "h": 570
+        },
+        "largestUnallocatedFraction": 0.1149,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s10",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.3207,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 216,
+          "y": 234.6,
+          "w": 816,
+          "h": 118.8
+        },
+        "largestEmptyContentFraction": 0.1436,
+        "largestUnallocatedBox": {
+          "x": 216,
+          "y": 234.6,
+          "w": 816,
+          "h": 118.8
+        },
+        "largestUnallocatedFraction": 0.1436,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s11",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.4729,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 864,
+          "y": 226.7,
+          "w": 152,
+          "h": 356.3
+        },
+        "largestEmptyContentFraction": 0.0802,
+        "largestUnallocatedBox": {
+          "x": 864,
+          "y": 226.7,
+          "w": 152,
+          "h": 356.3
+        },
+        "largestUnallocatedFraction": 0.0802,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s12",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.4282,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 624,
+          "y": 202.9,
+          "w": 192,
+          "h": 364.2
+        },
+        "largestEmptyContentFraction": 0.1036,
+        "largestUnallocatedBox": {
+          "x": 624,
+          "y": 202.9,
+          "w": 192,
+          "h": 364.2
+        },
+        "largestUnallocatedFraction": 0.1036,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s13",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.4264,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 752,
+          "y": 258.3,
+          "w": 208,
+          "h": 292.9
+        },
+        "largestEmptyContentFraction": 0.0903,
+        "largestUnallocatedBox": {
+          "x": 752,
+          "y": 258.3,
+          "w": 208,
+          "h": 292.9
+        },
+        "largestUnallocatedFraction": 0.0903,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s14",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.3548,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1024,
+          "y": 100,
+          "w": 208,
+          "h": 570
+        },
+        "largestEmptyContentFraction": 0.1757,
+        "largestUnallocatedBox": {
+          "x": 1024,
+          "y": 100,
+          "w": 208,
+          "h": 570
+        },
+        "largestUnallocatedFraction": 0.1757,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s15",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.3261,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 568,
+          "y": 202.9,
+          "w": 288,
+          "h": 261.3
+        },
+        "largestEmptyContentFraction": 0.1115,
+        "largestUnallocatedBox": {
+          "x": 568,
+          "y": 202.9,
+          "w": 288,
+          "h": 261.3
+        },
+        "largestUnallocatedFraction": 0.1115,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s16",
+        "layout": "references",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 100,
+          "w": 1184,
+          "h": 570
+        },
+        "contentCoverage": 0.5234,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 480,
+          "w": 1184,
+          "h": 190
+        },
+        "largestEmptyContentFraction": 0.3333,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 480,
+          "w": 1184,
+          "h": 190
+        },
+        "largestUnallocatedFraction": 0.3333,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9167,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": 1,
+        "status": "needs-review"
+      }
+    ],
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "unused-region-review",
+        "slideId": "s16",
+        "path": "slides.s16",
+        "box": {
+          "x": 48,
+          "y": 480,
+          "w": 1184,
+          "h": 190
+        },
+        "emptyFraction": 0.3333,
+        "contentCoverage": 0.5234,
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "message": "下部有约 33% 的连续未使用内容区（1184×190 px）。检查能否合并参考页或重新分配书目；保留完整题名与可读字号。此值是几何诊断，不能代替真实渲染检查。"
+      }
+    ],
+    "evidenceDesign": {
+      "basis": "visible-carrier-review-prompt-not-aesthetic-score",
+      "slides": [
+        {
+          "slideId": "s05",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "ch-lstm",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "ch-sensors",
+              "paperId": "cheng",
+              "figure": "Fig.6",
+              "caption": "Comparison between estimates of the winter wheat yield based on (A) 10-m Sentinel-2, (B) 30-m ZY-1 02D, and (C) 30-m Sentinel-2 data."
+            },
+            {
+              "id": "ch-lstm-source-v2",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "ch-sensors-source-v2",
+              "paperId": "cheng",
+              "figure": "Fig.6",
+              "caption": "Comparison between estimates of the winter wheat yield based on (A) 10-m Sentinel-2, (B) 30-m ZY-1 02D, and (C) 30-m Sentinel-2 data."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "s06",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "ch-lstm",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "ch-sensors",
+              "paperId": "cheng",
+              "figure": "Fig.6",
+              "caption": "Comparison between estimates of the winter wheat yield based on (A) 10-m Sentinel-2, (B) 30-m ZY-1 02D, and (C) 30-m Sentinel-2 data."
+            },
+            {
+              "id": "ch-lstm-source-v2",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "ch-sensors-source-v2",
+              "paperId": "cheng",
+              "figure": "Fig.6",
+              "caption": "Comparison between estimates of the winter wheat yield based on (A) 10-m Sentinel-2, (B) 30-m ZY-1 02D, and (C) 30-m Sentinel-2 data."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "s08",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "z-yield",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-trajectory",
+              "paperId": "zhuo",
+              "figure": "Fig.6",
+              "caption": "Figure 6. Comparison of the SM curves simulated by WOFOST model with and without the EnKF-based assimilation method (a sample point in Shenzhou county)."
+            },
+            {
+              "id": "z-yield-trim",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-yield-trim-source-v2",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-trajectory-source-v2",
+              "paperId": "zhuo",
+              "figure": "Fig.6",
+              "caption": "Figure 6. Comparison of the SM curves simulated by WOFOST model with and without the EnKF-based assimilation method (a sample point in Shenzhou county)."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "s11",
+          "visibleCarriers": [
+            "authored-data-marks"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "s-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two-source-v2",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "s12",
+          "visibleCarriers": [],
+          "availableSourceFigures": [
+            {
+              "id": "s-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two-source-v2",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "s13",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "s-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            },
+            {
+              "id": "s-importance-two-source-v2",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        }
+      ],
+      "issues": [
+        {
+          "severity": "warning",
+          "code": "quantitative-evidence-text-only",
+          "slideId": "s12",
+          "path": "slides.s12",
+          "availableSourceFigureIds": [
+            "s-importance",
+            "s-importance-two",
+            "s-importance-two-source-v2"
+          ],
+          "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+        }
+      ]
+    },
+    "contentCoverage": {
+      "basis": "author-specified-visible-text-not-fact-verification",
+      "slides": [
+        {
+          "slideId": "s02",
+          "checks": [
+            {
+              "id": "not-rs",
+              "text": "第三篇未输入遥感",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s03",
+          "checks": [
+            {
+              "id": "grid-split",
+              "text": "同区同季随机 9:1",
+              "visible": true
+            },
+            {
+              "id": "no-rank",
+              "text": "绝对 RMSE 不能跨论文排总榜",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s04",
+          "checks": [
+            {
+              "id": "split",
+              "text": "随机 9:1 训练 / 测试",
+              "visible": true
+            },
+            {
+              "id": "input",
+              "text": "4 × 9 时序输入",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s05",
+          "checks": [
+            {
+              "id": "unit",
+              "text": "RMSE单位：t/ha",
+              "visible": true
+            },
+            {
+              "id": "scope",
+              "text": "尚缺空间块与跨年独立测试",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s06",
+          "checks": [
+            {
+              "id": "separate",
+              "text": "独立的三指数 × 四期 LSTM 实验",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s07",
+          "checks": [
+            {
+              "id": "return",
+              "text": "分析SM返回WOFOST",
+              "visible": true
+            },
+            {
+              "id": "ensemble",
+              "text": "50成员",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s08",
+          "checks": [
+            {
+              "id": "yield-n",
+              "text": "110个产量样点",
+              "visible": true
+            },
+            {
+              "id": "rmse934",
+              "text": "RMSE 934 kg/ha",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s09",
+          "checks": [
+            {
+              "id": "depth",
+              "text": "0–10 cm 表层观测",
+              "visible": true
+            },
+            {
+              "id": "three",
+              "text": "仅三期更新",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s10",
+          "checks": [
+            {
+              "id": "whole-weather",
+              "text": "测试年完整天气已知",
+              "visible": true
+            },
+            {
+              "id": "no-rs",
+              "text": "遥感输入尚未在本文实施",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s11",
+          "checks": [
+            {
+              "id": "exception",
+              "text": "2017 LightGBM 为 914 → 916",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s12",
+          "checks": [
+            {
+              "id": "negative-r2",
+              "text": "全部混合模型 R² < 0",
+              "visible": true
+            },
+            {
+              "id": "year2012",
+              "text": "2012 极端干旱年",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s13",
+          "checks": [
+            {
+              "id": "not-causal",
+              "text": "不能作因果效应",
+              "visible": true
+            },
+            {
+              "id": "model-specific",
+              "text": "最优输入组依模型而变",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s14",
+          "checks": [
+            {
+              "id": "budget",
+              "text": "同信息预算的外推测试",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s15",
+          "checks": [
+            {
+              "id": "proposal",
+              "text": "待检验方案 · 尚未实施",
+              "visible": true
+            },
+            {
+              "id": "bad-result",
+              "text": "明确变差 → 反向证据",
+              "visible": true
+            },
+            {
+              "id": "invalid",
+              "text": "未来信息泄漏 → 评价前提失败",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "issues": []
+    }
+  },
+  "verification": {
+    "static": "checked",
+    "visual": "not-verified"
+  },
+  "sourceHash": "c65c0b35d26fc409c6a154392d8207ab4fedec98e1df3c63b792bc20dce21496"
+}

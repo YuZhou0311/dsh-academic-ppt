@@ -1,0 +1,42 @@
+{
+  "doi": "10.3389/fpls.2022.1090970",
+  "title": "Wheat yield estimation using remote sensing data based on machine learning approaches",
+  "authors": [
+    "Cheng, Enhui",
+    "Zhang, Bing",
+    "Peng, Dailiang",
+    "Zhong, Liheng",
+    "Yu, Le",
+    "Liu, Yao",
+    "Xiao, Chenchao",
+    "Li, Cunjun",
+    "Li, Xiaoyi",
+    "Chen, Yue",
+    "Ye, Huichun",
+    "Wang, Hongye",
+    "Yu, Ruyi",
+    "Hu, Jinkang",
+    "Yang, Songlin"
+  ],
+  "journal": "Frontiers in Plant Science",
+  "year": 2022,
+  "volume": "13",
+  "article_number": "1090970",
+  "publication_date": "2022-12-23",
+  "publisher_url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/full",
+  "pdf_url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+  "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_evidence": [
+    "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms."
+  ],
+  "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps.",
+  "pdf_pages": 16,
+  "pdf_sha256": "57a5d569fca781f5e4041aa1d69e9a5523865ea8d5262ed79019da69e96cc075",
+  "page_number_convention": "PDF physical page index, starting at 1. Main PDF printed page numbers agree with this index.",
+  "providedText": {
+    "file": "sources/cheng/article-page-text.txt",
+    "sha256": "856ad859d62c9ad5f6fbe340c7065e6be8efe0b7750022b4638d928f3c417381",
+    "modifications": "Text extracted from the official PDF with physical page markers. Original PDF is linked and hashed, not redistributed in this bundle."
+  }
+}

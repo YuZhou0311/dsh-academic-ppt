@@ -1,0 +1,43 @@
+{
+  "source": "../papers/zhuo/figures/figure-08.png",
+  "sourceSize": [
+    3525,
+    1919
+  ],
+  "scope": "Only crop/contain transform and native exterior labels; no data point resampling or rewriting",
+  "panels": [
+    {
+      "panel": "a",
+      "viewportPixels": {
+        "x": 293,
+        "y": 76,
+        "w": 1260,
+        "h": 1418
+      },
+      "axisCenters": {
+        "x6000": 294,
+        "x10000": 1551,
+        "y10000": 77,
+        "y6000": 1493
+      }
+    },
+    {
+      "panel": "b",
+      "viewportPixels": {
+        "x": 2113,
+        "y": 41,
+        "w": 1316,
+        "h": 1480
+      },
+      "axisCenters": {
+        "x6000": 2114,
+        "x10000": 3426,
+        "y10000": 42,
+        "y6000": 1519
+      }
+    }
+  ],
+  "basis": "Original full-size image opened with view_image. Dark neutral pixel column/row runs identify drawn axes; top/right tick endpoint centers checked independently. Line stroke thickness gives roughly ±1 source-pixel uncertainty.",
+  "mapping": "Image contain scale=min(slot.w/crop.w,slot.h/crop.h), centered in slot. Native x(v)=image.x+(x6000+(v−6000)/4000*(x10000−x6000)−crop.x)*scale. Native y(v)=image.y+(y6000−(v−6000)/4000*(y6000−y10000)−crop.y)*scale. Tick text centers align to mapped positions.",
+  "validation": "Top, midpoint, bottom and units compared to original image; actual final render still reviewed."
+}

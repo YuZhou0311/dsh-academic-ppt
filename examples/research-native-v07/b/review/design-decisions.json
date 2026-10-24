@@ -1,0 +1,45 @@
+{
+  "reviewer": "vision-model / independent author B",
+  "basis": "Actual candidate PPTX-render PNGs, all four opened using view_image",
+  "candidatePptxSha256": "f8caa7695d1a8ed743d2725e0459bf2280d2068c3620c3d19bc83911e651827c",
+  "viewed": [
+    "study-01/render/artifacts/pages/page-0001.png",
+    "study-01/render/artifacts/pages/page-0002.png",
+    "study-01/render/artifacts/pages/page-0003.png",
+    "study-01/render/artifacts/pages/page-0004.png"
+  ],
+  "cover": {
+    "selected": "cover-object",
+    "reason": "主标题左侧形成完整语义，真实田块让遥感产量估计有明确对象，底部三个开放分组将报告范围引出。",
+    "rejected": "cover-interface",
+    "rejection": "它将封面提前变成方法索引，主标题横向拉得很长，研究对象缺少直接视觉锚点；内容与第二页接口比较重复。",
+    "revision": "候选A副题将“边界”孤立到第二行，正式稿已按“直接学习、状态同化、机理特征融合 / 的证据和外推边界”语义断行，终稿仍须检查。"
+  },
+  "hardEvidence": {
+    "selected": "yield-reaxis",
+    "reason": "数据绘图区放大，原生24px坐标与28px统计让110样点、单位、同尺度和残余低估可以同时读出。数据点、回归线与1:1线保留原图，未生成散点。",
+    "rejected": "yield-whole",
+    "rejection": "完整双面板加侧注保留论文语境，但原图轴字明显小于native标签目标，侧边数字需要读者在图间来回搜索。"
+  },
+  "limitations": [
+    "未查看已丢失的用户参考PPT。",
+    "本记录是具图像能力模型的实际查看，不冒充人类或PowerPoint/WPS现场审查。",
+    "候选审查并非整稿批准。"
+  ],
+  "postInitialCrossDeckRevision": {
+    "trigger": "根代理在两份独立初稿实际视觉比较后，发现两稿均选择左题名+右田块地图，要求B改变封面整体组织关系。作者B没有读取另一稿。",
+    "independenceLimit": "初稿独立；终稿封面已接受跨稿验收反馈，不宣称零介入独立终稿。",
+    "study": "study-02",
+    "candidatePptxSha256": "326ba431c44026edf26da8d765086b643d36701b67212a59e378984bd5135c00",
+    "viewed": [
+      "study-02/render/artifacts/pages/page-0001.png",
+      "study-02/render/artifacts/pages/page-0002.png"
+    ],
+    "selected": "cover-state-trajectory",
+    "reason": "真实水分轨迹横跨上方，完整题名置底，改变主视觉和标题的组织关系；红圈附近状态更新直接引出可纠正误差的主题。单站水分轨迹的身份在图下注明，不把三条方法都标为已验证遥感方法。",
+    "rejected": "cover-initial",
+    "rejection": "独立初稿本身可读，但跨稿比较后其左题名右地图骨架与另一初稿同质，不能仅用原始局部可读性作为最终选择依据。",
+    "priorCoverInterfaceCandidate": "保留未选候选；其上方遥感观测总栏会使第三路径身份含混，不能作为合格最终封面。",
+    "observed": "新候选完整标题一行可读、副标题无孤字，实际图曲线与日期未裁掉；原始细图例未保证全达24px。"
+  }
+}

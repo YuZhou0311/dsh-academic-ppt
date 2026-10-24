@@ -1,0 +1,66 @@
+{
+  "scope": "Offline replay of published authored records through createProject/updateRecords/buildProject/checkProject, without a new model run, source-reading attestation, rendering or inherited review.",
+  "authors": {
+    "a": {
+      "ok": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 7
+      },
+      "verification": {
+        "evidence": "records-checked-not-independently-verified",
+        "layout": "estimated",
+        "pptxRender": "not-rendered",
+        "visual": "not-verified",
+        "htmlVisual": "not-verified",
+        "readyForDelivery": false
+      },
+      "originalPptxSha256": "0accb8fc38beb2df603c9bdb303135206ab334c9f183d88e8ad031f3e73ff7ec",
+      "replayedPptxSha256": "ce76dd83d20c0b3468630ea198805ac68b677807434f054f1157db5e27ebcd7a",
+      "slideAndMediaPartsCompared": 24,
+      "identicalParts": 24,
+      "differentParts": [],
+      "slideCount": 16,
+      "notesCount": 16,
+      "replayedAssetIds": [
+        "ch-map-source-v2",
+        "ch-lstm-source-v2",
+        "ch-sensors-source-v2",
+        "z-yield-trim-source-v2",
+        "z-trajectory-source-v2",
+        "s-importance-two-source-v2"
+      ]
+    },
+    "b": {
+      "ok": true,
+      "summary": {
+        "errors": 0,
+        "warnings": 6
+      },
+      "verification": {
+        "evidence": "records-checked-not-independently-verified",
+        "layout": "estimated",
+        "pptxRender": "not-rendered",
+        "visual": "not-verified",
+        "htmlVisual": "not-verified",
+        "readyForDelivery": false
+      },
+      "originalPptxSha256": "450d93dc502a0e69614d1760ffb836bdeb99a70bb41b6765539ca6af0153deff",
+      "replayedPptxSha256": "22ab5a92e8407303ac1a4c45c7bd3cae50316249eeb966184679a20d51b75fca",
+      "slideAndMediaPartsCompared": 24,
+      "identicalParts": 24,
+      "differentParts": [],
+      "slideCount": 15,
+      "notesCount": 15,
+      "replayedAssetIds": [
+        "c-map",
+        "c-lstm",
+        "c-resolution",
+        "z-trajectory",
+        "s-water-importance",
+        "z-yield-a-cal",
+        "z-yield-b-cal"
+      ]
+    }
+  }
+}

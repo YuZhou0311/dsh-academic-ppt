@@ -1,0 +1,1072 @@
+
+
+===== PDF PAGE 1 / 16 =====
+
+                                                                                                                   TYPE Original Research
+                                                                                                                 PUBLISHED 23 December 2022
+                                                                                                               DOI 10.3389/fpls.2022.1090970
+
+
+             Wheat yield estimation using
+OPEN ACCESS          remote sensing data based on
+
+EDITED BY
+Vanessa Martos Nu´ ñez,              machine learning approaches
+University of Granada, Spain
+
+
+REVIEWED BY
+Linsheng Huang,                    Enhui Cheng 1,2, Bing Zhang 1,2, Dailiang Peng 1,3*,
+Anhui University, China
+Karansher Singh Sandhu,               Liheng Zhong 4, Le Yu 5, Yao Liu 6, Chenchao Xiao 6, Cunjun Li 7,
+Bayer Crop Science, United States           Xiaoyi Li 8, Yue Chen 8, Huichun Ye 1,3, Hongye Wang 9, Ruyi Yu 1,
+*CORRESPONDENCE                    Jinkang Hu 1,2 and Songlin Yang 1,2
+Dailiang Peng
+   pengdl@aircas.ac.cn                           11Key Laboratory of Digital Earth Science, Aerospace Information Research Institute, Chinese
+                                       Academy of Sciences, Beijing, China, 2College of Resource and Environment, University of Chinese
+SPECIALTY SECTION                           Academy of Sciences, Beijing, China, 3International Research Center of Big Data for Sustainable
+This article was submitted to
+                                          Development Goals, Beijing, China, 4Ant Group, Beijing, China, 5Ministry of Education Key
+Technical Advances in Plant Science,
+                                                 Laboratory for Earth System Modeling, Department of Earth System Science, Institute for Global
+a section of the journal
+                                        Change Studies, Tsinghua University, Beijing, China, 6Land Satellite Remote Sensing Application
+Frontiers in Plant Science
+                                                  Center, Ministry of Natural Resources of China, Beijing, China, 7Information Technology Research
+RECEIVED 06 November 2022                       Center, Beijing Academy of Agriculture and Forestry Sciences, Beijing, China, 8Aerospace ShuWei
+ACCEPTED 05 December 2022                    High Tech. Co., Ltd. Beijing, China, 9Cultivated Land Quality Monitoring and Protection center,
+PUBLISHED 23 December 2022                        Ministry of Agriculture and Rural Affairs, Beijing, China
+
+
+CITATION
+Cheng E, Zhang B, Peng D, Zhong L,
+Yu L, Liu Y, Xiao C, Li C, Li X, Chen Y,
+Ye H, Wang H, Yu R, Hu J and Yang S          Accurate predictions of wheat yields are essential to farmers’production plans
+(2022) Wheat yield estimation using          and to the international trade in wheat. However, only poor approximations of
+remote sensing data based on
+machine learning approaches.                the productivity of wheat crops in China can be obtained using traditional linear
+Front. Plant Sci. 13:1090970.                  regression models based on vegetation indices and observations of the yield. In
+doi: 10.3389/fpls.2022.1090970
+                                              this study, Sentinel-2 (multispectral data) and ZY-1 02D (hyperspectral data)
+COPYRIGHT                          were used together with 15709 gridded yield data (with a resolution of 5 m ×
+© 2022 Cheng, Zhang, Peng, Zhong,
+Yu, Liu, Xiao, Li, Li, Chen, Ye, Wang, Yu,         5 m) to predict the winter wheat yield. These estimates were based on four
+Hu and Yang. This is an open-access           mainstream data-driven approaches: Long Short-Term Memory (LSTM),
+article distributed under the terms of
+the Creative Commons Attribution          Random Forest (RF), Gradient Boosting Decision Tree (GBDT), and Support
+License (CC BY). The use, distribution           Vector Regression (SVR). The method that gave the best estimate of the winter
+or reproduction in other forums is           wheat yield was determined, and the accuracy of the estimates based on
+permitted, provided the original
+author(s) and the copyright owner(s)            multispectral and hyperspectral data were compared. The results showed that
+are credited and that the original              the LSTM model, for which the RMSE of the estimates was 0.201 t/ha,
+publication in this journal is cited, in
+                                  performed better than the RF (RMSE = 0.260 t/ha), GBDT (RMSE = 0.306 t/accordance with accepted academic
+practice. No use, distribution or                  ha), and SVR (RMSE = 0.489 t/ha) methods. The estimates based on the ZY-1
+reproduction is permitted which does        02D hyperspectral data were more accurate than those based on the 30-m
+not comply with these terms.
+                                        Sentinel-2 data: RMSE = 0.237 t/ha for the ZY-1 02D data, which is about a 5%
+                                improvement on the RSME of 0.307 t/ha for the 30-m Sentinel-2 data.
+                                  However, the 10-m Sentinel-2 data performed even better, giving an RMSE
+                                        of 0.219 t/ha. In addition, it was found that the greenness vegetation index SR
+                                        (simple ratio index) outperformed the traditional vegetation indices. The results
+                                          highlight the potential of the shortwave infrared bands to replace the visible
+                                 and near-infrared bands for predicting crop yields Our study demonstrates the
+                                    advantages of the deep learning method LSTM over machine learning methods
+                                             in terms of its ability to make accurate estimates of the winter wheat yield.
+
+
+
+                                            KEYWORDS
+
+                                   band selection, deep learning, google earth engine (GEE), hyperspectral, winter
+                                        wheat, yield estimation
+
+
+
+
+
+Frontiers in Plant Science                                        01                                                               frontiersin.org
+
+===== PDF PAGE 2 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+1 Introduction                                           parameters. Narrow hyperspectral bands are more sensitive to
+                                                              crop growth changes than multispectral broad bands (Sellami
+   Wheat is one of the most important food crops in China and       et  al., 2022), but there have been fewer quantitative studies
+has the greatest cultivation area and total production among all      involving the former compared to the  latter. Based on
+cereal crops. It has been predicted that world’s total wheat yield     narrowband data, the hyperspectral vegetation index (HVI)
+will increase by 17% by 2030 due to global warming (Jägermeyr     can fully describe the changes in biophysical and chemical
+et al., 2021). Therefore, using scientiﬁc methods to study the      parameters that occur as crops grow, which  is important to
+various parameters of wheat growth  is very important to     improving the accuracy of yield estimates made by models (Xiao
+ensuring the stability of the country’s wheat market (Weiss       et al., 2022). Therefore, an increasing number of hyperspectral
+et  al., 2020). Accurate forecasts of wheat production are of      vegetation indices have been applied to the prediction of crop
+vital importance  to farmers’ production plans, the      parameters including the crop yield (Yang et al., 2021), leaf area
+international wheat trade, and import/export plans, and make      index (Xing et al., 2013), and nitrogen content (Ma et al., 2022).
+a direct contribution to the development of China’s wheat      Further, hyperspectral data typically require sophisticated data
+market, especially in the context of the COVID-19 pandemic     mining and ﬁltering techniques given the large number of bands
+(Mawani and Li, 2020).                                     and low signal-to-noise ratio (Marshall et al., 2022). In previous
+    Traditional agricultural yield forecasting methods mainly       studies, hyperspectral band selection methods include band-by-
+include agronomic forecasting methods (Feng and Wu, 2006),     band combination method (Xing et al., 2013), Optimum Index
+crop-growth models (Thorp et  al., 2008), and meteorological      Factor (Kong et al., 2022), the successive projection algorithm.
+statistical methods (Betbeder et al., 2016), and these are used to     For example, based on PRISMA hyperspectral images and
+establish crop yield models based on different perspectives.      Sentinel-2 multispectral images, Marshall et  al. (2022) used
+However, these methods not only consume a lot of manpower      three separate models based on Two-band Vegetation Indices
+and material resources, there are also spatial and temporal gaps     (TBVIs), Random Forest (RF), and Partial Least Squares
+in the results. Since 2000, satellite remote sensing technology has      Regression(PLSR) to estimate the yield of four different crops
+played an important role in related ﬁelds such as resource     and revealed the potential complementarity of hyperspectral
+surveys (Mitchell, 2021), urban planning (Guo et  al., 2019),     image PRISMA in predicting crop biomass and yield. However,
+agricultural development (Qiao et  al., 2021), and national     most studies use only visible wavelengths (Zhang et al., 2018),
+security (Zhang et  al., 2022). The use of  satellite remote      there are few reported attempts at directly evaluating the
+sensing has become an  effective way of making yield      potential of Shortwave infrared bands (1000-2500 nm) in crop
+predictions due to  its advantages of simple data acquisition,      yield prediction; and investigating the spectral information
+low cost, efﬁciency, wide spatial coverage, and short operating      captured within full waveband range remains unexplored for
+cycles (Peng et al., 2014; Zhang et al., 2019; Wang et al., 2020).       yield prediction.
+    Vegetation indices (VIs) have been widely used to predict        The construction of linear regression models linking
+crop yields over the past few decades (Jin et al., 2017; Kamir      vegetation indices or climatic variables that track the evolution
+et  al., 2020). In most such studies, indices such as the      of crop canopy spectral reﬂectance patterns over the growing
+Normalized Difference Vegetation Index (NDVI) and      season and yields is the traditional method of estimating yields
+Enhanced Vegetation Index (EVI) which are based on visible     (He and He, 2013). However, although the calculations may be
+and near-infrared bands (Peng et al., 2010; Cunha and Silva,      simple, the relationships involved are not simply linear, and
+2020) are used. However, these vegetation indices mainly reﬂect      these methods do not capture yield variations well. In the last
+the greenness of vegetation and cannot  fully capture     ﬁve years, with the advent of the big data era, conditions have
+environmental stresses on crops (Zhang et  al., 2021). This     been created for machine learning methods (Zhang et al., 2021),
+means that the role of other vegetation indices such as the     and more and more computer-dependent machine learning
+Normalized Difference Water Index (NDWI) (Gao, 1996),     models have been applied to crop yield estimation, usually
+which reﬂects the crop water content, and the Red Edge     outperforming traditional linear regression. Deep learning
+Position Index (REP), which  is sensitive to changes in     (DL) is an advanced Machine Learning (ML) method that uses
+chlorophyll concentration, should be also considered when      multiple, stacked nonlinear layers, at each of which the original
+making yield estimates. In our study, four different types of      input data can be transformed into a higher and more abstract
+vegetation indices reﬂecting crop growth status were used as      representation (Cai et  al., 2019), such as Long Short-Term
+described above.                                Memory (LSTM), Deep Neural Network (DNN),
+   Both broadband multispectral data and narrowband      Convolutional Neural Network (CNN), and Recurrent Neural
+hyperspectral data can be used to calculate spectral VIs, but     Network (RNN), have produced deﬁnitively higher accuracies
+the former are limited and prone to oversaturation where      across various regression and classiﬁcation tasks (LeCun et al.,
+vegetation cover is high (Jiang and Huete, 2010) and thus have      2015). The main advantage of using deep learning techniques in
+difﬁculty reﬂecting changes in biophysical and chemical       agricultural applications is that the data are hierarchically and
+
+
+
+
+
+Frontiers in Plant Science                                     02                                                               frontiersin.org
+
+===== PDF PAGE 3 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+incrementally trained with high-level features, eliminating the      10- and 30-m Sentinel-2 multispectral remote sensing imagery,
+need to generalize the output. Deep learning models are thus     we established four data-driven models – LSTM (Long Short-
+becoming a powerful tool for predicting the yields of various     Term Memory), RF (Random Forest), SVR (Support Vector
+crops (Haider et al., 2019; Sharma et al., 2020; Tian et al., 2021).      Regression), and GBDT (Gradient Boosting Decision Tree) – to
+For example, Zhang et al. (2021) found the LSTM deep learning      estimate winter wheat yields.
+algorithm outperformed the two other machine learning models
+in estimating maize yields in China. Huang et  al. (2022)
+developed a Dual-Stream deep-learning neural network model   2 Material and methods
+for improving county-level winter wheat yield estimates in
+China and achieved an average R2 of 0.79. Han et al. (2022)    2.1 Study areas
+integrated an attention-based deep learning framework and the
+SAFY-V model for winter wheat yield estimation using time         Located in the Changping District of Beijing (Figure 1),
+series SAR and optical data. Xie and Huang (2021) found the     Xiaotangshan National Precision Agriculture Demonstration
+estimated yields from LSTM, 1-D CNN, RF correlated strongly      Base (40.10°N, 116.26°E; altitude 39 m) has a typical climate
+with statistical yields, and the LSTM model achieved the highest      of the northern winter wheat zone, with an average of 2506.5
+estimation accuracies for wheat yields at the site, municipal and      hours of sunshine a year, an average annual temperature of 13.3°
+county levels. However, the application of ML and DL to yield      C, and an average annual rainfall of 563.8 mm. The base is used
+estimation is still in its infancy, especially in China.                  for high-quality agricultural research area relevant to large
+    In most studies, yield data are obtained from plot-based       irrigated areas and high winter wheat yields.
+manual surveys or consist of county-level regional yields that
+need to be collected from ofﬁcial statistics websites for larger
+areas (Sun et al., 2020b). In our study, the yield data used were    2.2 Datasets and processing
+based on the grid scale (with a resolution of 5 m × 5 m), and
+accurate measurements were made using specialist instruments     2.2.1 Wheat yield data and auxiliary data
+at harvest time. These data were more suitable for use as labels to          (1) Yield data: From 2020 to 2021, as part of the key project
+be trained and validated by the models. The number of sample     ‘Remote sensing inversion of wheat vegetation parameters based
+points (15709) was sufﬁcient to allow proper training of the DL     on deep learning’, a yield survey was conducted on winter wheat
+and ML models.In this study, using this large number of sampled       plots at Xiaotangshan. A total of 15709 dry weight yield data
+data together with 30-m ZY-1 02D hyperspectral imagery and     were collected. These data were to be used for training wheat
+
+
+
+
+
+   FIGURE 1
+   Geographical location and layout of the study area.
+
+
+
+
+
+Frontiers in Plant Science                                     03                                                               frontiersin.org
+
+===== PDF PAGE 4 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+yield estimation models; the values collected ranged from 1.39 to        satellite carries a multispectral imager (MSI) that has a swath
+6.75 t/ha and satisﬁed the amount of variation that was required.      width of 290 km and orbits at an altitude of 786 km. The data
+Measurements of the yield were also made at 39 sample points      cover 13 spectral bands and have ground resolutions of 10, 20,
+on the ground – within the square area in the upper-right corner     and 60 m, respectively. Among all satellite data, only Sentinel-2
+of the study area shown in Figure 1. These data were used to      data contain three bands in the red-edge range, which means
+select the hyperspectral bands.                                        that these data are extremely useful for monitoring vegetation
+    (2) ASD spectral data: Adjustable speed drives (ASDs) are       health. In this study, three visible bands, one near-infrared band,
+mainly used to measure the reﬂectance and transmittance of     one shortwave infrared band, and three red-edge bands were
+surface sediments,  soils, plants, water bodies, and artiﬁcial      used (see Table 1). Winter wheat was sown in the study area on
+targets in the range 350–2450 nm. Using an ASD, we obtained     October 7, 2020 and harvested on June 16, 2021. A total of 99
+spectral data for the 39 sample points on April 14, 2021; these      Sentinel-2 images from the ‘COPERNICUS/S2_SR’ dataset in
+data had a spectral resolution of 3 nm in the 350–1000 nm      the Google earth Engine (GEE) that covered the period from
+interval and 8 nm in the 1000–2450 nm interval. From these     sowing to harvest were used in this study.
+data, we selected the same 166 bands that are contained in ZY-1        (2)ZY-1 02D imagery: The ZY-1 02D  satellite was
+02D data and selected the best vegetation index combination      successfully launched from the Taiyuan  Satellite Launch
+through making correlation analysis with the yield of 39 sample     Center on September 12, 2019 and carries a hyperspectral
+points. The result was then migrated to the band selection of the     camera (Advanced HyperSpectral Imager, AHSI) with 166
+hyperspectral data.                                               bands. This instrument has a spatial resolution better than
+    (3) Grouped data experiments: The data that had been     30 m (9 and 17 nm, respectively in the visible–near-infrared
+acquired at the 39 sample points were divided into several     and shortwave infrared bands), a swath width of 60 km, an
+groups based on the seeding density, irrigation  rate,      operating cycle of 55 days, and bands whose wavelengths range
+fertilization rate, and seeding method; experiments were then     from 396 to 2501 nm. Four ZY-1 02D hyperspectral images
+conducted on these different seeding groups of data. A      acquired on March 24, March 30, April 8, and May 1, 2021 were
+correlation analysis between the different variables and the       selected for use in this study.
+yield was performed in order to provide data on which the
+planting of wheat crops could be based.
+                                              2.3 Methodology
+2.2.2 Remote sensing data
+    (1) Sentinel-2 imagery: Sentinel-2 is an important optical     2.3.1 Feature selection and its importance
+remote sensing satellite of the European Space Agency’s (ESA’s)      2.3.1.1 Selection of the vegetation index
+‘Copernicus’ satellite series. Sentinel-2 data are used for land         Using spectral information about the amount of chlorophyll
+monitoring and can provide images of vegetation, soil and water     and water absorbed or reﬂected by a crop in speciﬁc wavelength
+cover, inland waterways and coastal areas. The Sentinel-2      bands, information about parameters related to the growth of
+
+
+
+TABLE 1  Details of the data used in this study.
+
+
+ Sensor    Band name    Spectral range (nm)   Band number    Bandwidth (nm)     Spatial resolution raw/resample(m)
+
+  Sentinel-2     Blue                     458–523                    1                    65                                10/30
+
+              Green                    543–578                    1                    35                                10/30
+
+              Red                      650–680                    1                    30                                10/30
+
+               Red-edge 1                698–713                    1                    15                                20/30
+
+               Red-edge 2                733–748                    1                    15                                20/30
+
+               Red-edge 3                773–793                    1                    20                                20/30
+
+             NIR                      785–900                    8                    115                                10/30
+
+            SWIR1                  1565–1655                  11                    90                                20
+
+ ZY-1 02D    VNIR                    396–1040                   76                    9                                30
+
+            SWIR                   1006–2501                  90                    17                                30
+
+ ASD        VNIR                    350–1000                  217                    3                 —
+
+            SWIR                   1000–2450                  181                    8                 —
+
+
+
+
+
+Frontiers in Plant Science                                    04                                                               frontiersin.org
+
+===== PDF PAGE 5 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+the crop can be obtained. From our own spectral measurements,     was greater than 30%. After that, using the GEE, we calculated
+we found that there was strong reﬂectance from the wheat ears at      the mean value of each selected vegetation index in one-month
+850 nm (near infrared) and 1800–1900 nm (shortwave infrared)      steps for the period October 2020 to June 2021 and constructed a
+and that the ratio of the red to near-infrared bands effectively      sequence of the mean monthly values. The four ZY-1 02D scenes
+reﬂected the grain quality of the crop and was well correlated     were ﬁrst preprocessed in ENVI5.3 – the preprocessing steps
+with the yield. We thus selected the simple ratio vegetation index     included orthorectiﬁcation, geometric correction, and
+SR for use in this study. In addition, we selected the enhanced     atmospheric correction. The processed data were then
+vegetation index EVI as another index related to vegetation     uploaded to the GEE platform for the feature calculation. All
+greenness; this index is based on the blue, red, and near-infrared     bands of both types of imagery were resampled using nearest-
+bands. At late maturity, the spectral properties of plants are      neighbor interpolation to the spatial resolution required for
+strongly inﬂuenced by the water content and thickness of the     our experiments.
+leaves. Absorption bands close to 1.4 µm, 1.9 µm, and 2.6 µm are
+formed by the absorption of water molecules, and distinct      2.3.1.3 Feature importance
+reﬂection peaks are located at 1.6µm and 2.2µm, between the         In recent years, neural networks have been widely used, and
+absorption bands.The intensity of these two reﬂectance peaks is      they are usually considered black-box models with poor
+important for detecting the water content of plant leaves, and       interpretability (Lu et  al., 2017). Usually, feature selection
+based on this spectral feature, we chose a vegetation index      mostly takes place at the data-processing stage. This means
+NDWI, named by GAO in 1996, to study the water content of      that parameters such as the number of features need to be set
+wheat. The red-edge band  is located between an absorption       artiﬁcially based on experience (Poria. et  al, 2015). This
+valley and a peak and covers the range from 690 to 730 nm; the      introduces a  lot of uncertainty, which leads to a loss of
+leaf reﬂectance changes abruptly in this interval. The red-edge      learning and generalization  ability. To avoid the problem,
+band is sensitive to changes in chlorophyll content and is the    many researchers have tried using different approaches to
+most obvious to use for detecting stress caused by disease in      incorporate the traditional feature selection process into the
+winter wheat (Jiang and Huete, 2010). We therefore also selected      networks in order to understand their convolution processes
+the red-edge position index REP, which is based on the red-edge      (Krizhevsky et  al., 2012; Alain and Bengio, 2018). Various
+band of Sentinel-2, for use in this study.                       methods of obtaining the feature importance have been
+    In summary, we selected a total of eight bands in the visible      proposed: these include Permutation Feature Importance,
+red, green, and blue bands, near-infrared, shortwave infrared    SHAP Feature Importance, and LOFO Feature Importance,
+and red edge, and calculated the following four vegetation     which are universal and can be applied to any model
+indices: Enhanced Vegetation Index (EVI), Normalized      (Breiman, 2001; Fisher et  al., 2019). The principle on which
+Moisture Index (NDWI), Simple Ratio (SR), and Red Edge      the Permutation Feature Importance (PFI) method is based is
+Normalized Difference Vegetation Index (REP) (Table 2).            that the relationship between the features and the true results has
+    B2, B3, and B4: (visible) blue, green, and red bands; B5, B6,     been destroyed and that the model prediction error increases
+and B7: bands within the red edge; B8: near-infrared band       after the replacement of the feature values. The PFI approach
+(wide); B11: shortwave infrared band                               provides a global insight into the behavior of the LSTM yield-
+                                                                   prediction model, and automatically takes into account  all
+2.3.1.2 Data preprocessing and calculation of                   interactions with other features. In contrast to methods that
+vegetation indices                                        remove certain features, PFI does not require the model to be
+  We called Sentinel-2 data from the Google Earth Engine       retrained, thus saving time and computational resources. In
+(GEE) and ﬁltered out all the images in which the cloud cover      addition to this, the use of a subset of features seems intuitive;
+
+
+
+
+TABLE 2 The different vegetation indices used in this study.
+
+
+ VI                                                           Equation                                 Reference
+
+ EVI(Enhanced Vegetation Index)                                              B8 −B4                                       Huete et al. (2002)
+                                                                                   2:5* B8 + 6*B4 −7:5*B2 + 1
+
+  SR(Simple Ratio)                                                  B8                                                         Jordan (1969)
+                                                                 B4
+
+ NDWI(Normalized Difference Water Index)                             B8 −B11                                          Gao (1996)
+                                                                 B8 + B11
+
+                                                                        +                                                                                       0:5*(B4                                                                                          B7) −B5                                  Horler et al. (1983) REP(Red Edge Position Index)                                           705 + 35*                                                                            B6                                                                   −B5
+
+
+
+
+
+Frontiers in Plant Science                                     05                                                               frontiersin.org
+
+===== PDF PAGE 6 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+however, the reduced number of features is meaningless in terms                                  SSI(i,j)=Ri−Rj                      (1)
+of feature importance since we are interested in the importance
+                                                                                                             Riof the ﬁxed features of the model. In this study, the four                                  RSI(i, j) =                          (2)
+                                                                                                              Rjvegetation index feature variables (SR, EVI, NDWI, and REP)
+were input to the proposed model for training, and the
+importance of each feature was calculated using the PFI                                       (Ri −Rj)                                                                                NDSI(i, j) =                                 (3)
+method based on the LSTM neural network that we                                       (Ri + Rj)
+constructed. The steps used to obtain the importance of the
+                                                             Here i, and j are labels representing any two bands; Ri, and Rj
+neural network features in this study consisted of the following:                                                                    represent the corresponding band values.
+train the LSTM neural network model; perform a random
+shufﬂe on one vegetation index feature to make  it not     2.3.3 Establishment of the yield
+corresponding to yield at a time and put it to the model for     prediction models
+prediction to obtain loss; record the corresponding loss of each           All of the feature-yield data were randomly divided into two
+shufﬂed feature column. Taking SR as an example, Figure 2 show      groups in the ratio 9:1, with 90% of the data used for training and
+the ﬂow of PFI method.                                 10% of the data used for testing. In order to allow a comprehensive
+                                                                       evaluation of the experimental results to be made, three metrics
+2.3.2 Hyperspectral band selection                     were used: the mean absolute error (MAE), the root mean squared
+   ZY-1 02D data consist of a total of 166 bands: 3 of these       error (RMSE), and the coefﬁcient of determination (R2). The model
+bands overlap when the VNIR and SWIR bands are partially       that had the largest value of R2 and the smallest values of MAE and
+spliced, giving 163 effective bands. A statistical approach, the    RMSE was considered to be the optimal one.
+band-by-band combination method, was used to select the        The MAE, the RMSE, and R2 were calculated as follows:
+                                                                  m
+bands among the 163 bands that were related to high wheat                             1                                                     MAE(X, h) = mo jh(xi) −yij                             (4)
+yields. In a recent study (Zhang et al., 2018), the band-by-band                                  i=1                                   s ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+combination method that was used consisted of taking every                                 1 m                                                                                                      (h(xi) −yi)2                        (5)                                                       RMSE(X, h) =  mopossible pair of bands to construct vegetation indices based on                                                                                                                         i=1
+speciﬁc mathematical algorithms, and the vegetation index with                                                                                                 (h(xi) −yi)2
+the highest correlation coefﬁcient with the winter wheat LAI was         R2(X, h) = 1 −oi                                          (6)
+selected as the best band combination. In this study, we           o(yi −yi)2
+calculated the values of three types of vegetation index –                                                          i
+difference, ratio, and normalized – by arbitrarily combining      Here, yi is the true value of yield, h(xi) is the value predicted by
+pairs of bands of ASD data that consisted of the same 163      the yield estimation model, m is the number of sample points, yi
+bands as ZY-1 02D data. An analysis of the correlation between        is the mean value of the yield, and i is the i-th sample point.
+the values of these indices and the winter wheat yield was then
+                                                                   2.3.3.1 LSTM time-series DL model
+performed, and the indices that were most relevant to the winter
+                                                          The LSTM model used a Recurrent Neural Network (RNN)
+wheat yield were determined. The above results were then used
+                                                                         architecture consisting of an input layer, one or more LSTM
+to calculate the values of three ZY-1 02D features:
+                                                                               layers, and an output layer that could learn time-dependent
+                                                                 information to incorporate the crop growth process (Hochreiter
+                                                         and Schmidhuber, 1997). The LSTM layers were composed of
+                                             LSTM cells. Each cell contained three types of gates: the input
+                                                                        gates determined what input information was retained, the forget
+                                                                        gates determined how much of the previous information input
+                                                          was retained, and the output gates combined the previous output
+                                                                with the current input to determine the ﬁnal output. In the neural
+                                                             network that was designed, the vegetation index time-series data
+                                                            were passed through two LSTM layers that consisted of 100
+                                                                  neurons, then through an ReLU activation function and a fully
+                                                               connected layer. A dropout rate of 0.3 and L2 regularization were
+                                                                    applied to avoid overﬁtting and improve the generalization effect.
+   FIGURE 2                                   We set lr to be 0.001, batch_size to be 64, and epoch to be 700 to
+   Flowchart of the PFI method.                                          further reduce the risk of overﬁtting. The calculation process of a
+                                                                        basic LSTM unit is as follows:
+
+
+
+
+
+Frontiers in Plant Science                                    06                                                               frontiersin.org
+
+===== PDF PAGE 7 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+                          it = s(Wihht−1 + Wixxt + bi)                           sides of the linear function and which does not calculate the loss
+                                                                         for  all samples falling into the interval band. The model  is
+                          ft = s(Wfhht−1 + Wfxxt + bf )
+                                                                obtained by minimizing the total loss and maximizing the
+                    gt = tanh (Wghht−1 + Wgxxt + bg)                        interval. SVR is sensitive to the choice of hyperparameters. We
+                     ct = it ⊗gt + ft ⊗ct−1                                  selected the Gaussian kernel function (RBF) as the kernel
+                                                                      function. As for the other models, the best parameter settings                  ot = s(Wohht−1 + Woxxt + bo)
+                                                        were found by experiment.  It was found that the best
+                 ht = ot ⊗tanh (ct)                                                             combination was a value of 1 × 105 for C and a value of 0.5
+    Wih, Wix, bi, Wfh, Wfx, bf, Wgh, Wgx, bg, Woh, Wox and b° are       for gamma. The core algorithm of SVR is as follows:
+model parameters; gt is the nonlinear transformation for better
+                                                                              1        m
+representing the input xt; it, ft, ot are the input gate, forget gate                  min                                                                                                                             (xi + x∧i )                                                                         ‖ w ‖22 +Co                                                                                                                w,b 2                                                                                                                                       i=1
+and output gate, respectively; s, ⊗are the sigmoid function and
+the element-wise multiplication  (i.e., Hadamard product)        Where w,b are the model parameters, m is the number of
+operation, respectively.                                        sample points, x is the relaxation variable.
+                                                                          All the source codes are available at https://github.com/
+2.3.3.2 RF, GBDT, and SVR ML models                           limitlesszang/yield_prediction.
+   Given that the machine learning models (RF, GBDT, and
+SVR) could not learn time-series information as the LSTM
+recurrent neural network could, the data had to be converted   3 Results and discussion
+from a 4×9 matrix format into a 1×36 vector format before
+being input.                                        3.1 Winter wheat yield predictions
+  A Random Forest (RF) is formed by integrating multiple    obtained using the different models
+decision trees that are trained on randomly selected samples
+(Breiman, 2001). In our study, 90% of the samples were used for        The ability of the four common vegetation indices to predict the
+training and the remaining out-of-bag (OOB) samples were used      winter wheat yield was evaluated using four methods (LSTM, RF,
+for error assessment. Optimal parameter tuning was performed;     GBDT, and SVR); the results of these predictions are visualized in
+the best combination was found to be a setting of 150 for the      Figure 3. A comparison showed that, of the four models, the LSTM
+number of trees and a value of 200 for the random state     made the best predictions, followed by the RF model. The spatial
+parameter.The core algorithm of RF is as follows:                      distribution of the yield predicted by the four models roughly
+    min|{z} ½min|{z} o    (yi −C1)2 + |{z}min o    (yi −C2)2         matched the true yield distribution: in each case, the yield was high
+           A,s    C1  Xi∈D1(A,s)                C2  Xi∈D2(A,s)                     in the middle of all the plots and low near the edges, a pattern that
+Where C1 is the sample output mean of D1 data set, C2 is the     may have been due to human activities and the presence of trees
+sample output mean of D2 data set, A is the division feature and s     around the plots. Overall, it was shown that the LSTM, RF, GBDT,
+are the division point, yi the i-th sample point.                   and SVR models could be used to make estimates of the winter
+  A Gradient Boosting Decision Tree (GBDT) is an iterative      wheat yield that also reﬂected the spatial distribution.
+decision tree algorithm that consists of multiple decision trees          All three metrics (R2, MAE, and RMSE) showed that the
+and which uses the accumulated conclusions of all the trees as    LSTM model produced the best yield estimates (see Figure 4),
+the ﬁnal result; the advantage of the GBDT method  is  its      with a value of 0.93 for R2. The neural network architecture of
+robustness to outliers. Parameter tuning was performed for the      the deep learning model also performed well, giving an R2 of
+GBDT model, and the best combination was found to be:      0.886. The values of R2 for the GBDT and SVR models were
+number of trees = 1250, subsample = 0.6, and learning rate =      0.839 and 0.573, respectively. The two tree-based models – RF
+0.1. The core algorithm of GBDT is as follows:                  and GBDT – were able to explain the yield change at least 10%
+                                                                         better than the SVR. In contrast, although the SVR technique
+                      m
+                                  f (x) = oT(X, qi)                           could effectively solve multiple collinearity problems among
+                                       i=1                             independent variables,  it only simulates the limited
+Where T(X,q) is the decision tree, q is the parameter of the      relationship between input variables/features and modeling
+decision tree, m is the number of trees.                                targets  (i.e., grain yield), and  is unable to map highly non-
+  A Support Vector Regression (SVR) model  is a tolerant       linear and complex relationship between variables. As reported
+regression model that creates an ‘interval band’ with a spacing of      in many previous works, deep learning methods are generally
+ϵ (the tolerance bias, an empirical value set by hand) on both      considered to be superior when the number of training samples
+
+
+
+
+
+Frontiers in Plant Science                                       07                                                               frontiersin.org
+
+===== PDF PAGE 8 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+                   A                                   B
+
+
+
+
+
+                  C                                 D
+
+
+
+
+
+   FIGURE 3
+   Predictions of winter wheat yields obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models.
+
+
+
+
+is sufﬁciently large (Maimaitijiang et  al., 2020; Khaki et  al.,       data. However, when the amount of data is limited, the RF model
+2021). This is likely due to the fact that DL often exceeds popular      has the advantages of being insensitive to outliers, nonlinearity,
+machine learning methods when dealing with larger sample size,       serial autocorrelation, and high dimensionality. For example,
+complex, nonlinear and redundant datasets (LeCun et al., 2015).     Cao et al. (2021) found that the performance of RF was not
+Our experiments veriﬁed that the network containing two LSTM      always worse than DL at both the county and ﬁeld levels. What’s
+layers could capture more than 90% of the yield information     more, although LSTM yielded superior performance over RF
+from the input features. Previous research has also demonstrated      methods, the improvement in grain yield prediction accuracy
+that LSTM model performed best through several machine     was not substantial (see Figure 4), one reason could be the little
+learning models in winter wheat prediction. Xie and Huang       difference in measured gridded yield data. Future work will
+(2021) demonstrated that the accuracy of the LSTM model was     examine the  ability of more advanced deep learning
+signiﬁcantly higher than that of the 1-D CNN model due to the      architectures (e.g., LSTM and its variants) at county scale to
+better ability of the LSTM model to treat time-series satellite       extract better information for winter wheat yield prediction.
+
+
+
+
+
+Frontiers in Plant Science                                    08                                                               frontiersin.org
+
+===== PDF PAGE 9 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+                  A                                  B
+
+
+
+
+
+                 C                                D
+
+
+
+
+
+   FIGURE 4
+   Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models.
+
+
+3.2 Estimates of the winter wheat                   resolutions, it was found that the spatial resolution had a greater
+yield based on multispectral and                  impact on the winter wheat yield estimates than the spectral
+hyperspectral data                                           resolution: this can be seen from a comparison of the results for
+                                                                   the 10-m Sentinel-2 data and the 30-m ZY-1 02D data. The 10-
+   The LSTM method was then used to produce estimates of   m Sentinel-2 data, which was the dataset with the highest spatial
+the winter wheat yield based on 30-m ZY-1 02D data, 30-m       resolution, performed best, capturing 91% of the yield variation.
+Sentinel-2 data, and 10-m Sentinel -2 data. The modeling with     The observed data consisted of gridded data with a spatial
+the ZY-1 02D data used the vegetation indices NDSI, SSI, and      resolution of 5 m, and the  satellite data with the spatial
+RSI designed by ourselves as features, whereas three      resolution that was closest to this produced the best estimates
+conventional vegetation indices – NDWI, SR, and EVI – were      of the yield. The result was also recognized in previous studies
+used with the Sentinel-2 data. The time-series consisting of      that hyperspectral PRISMA models was lower than the
+20210324, 0330, 0428, and 0501 were input into the LSTM      multispectral Sentinel-2 models (Marshall  et  al., 2022).
+model for training, and predictions of the yield were obtained for     However, multispectral bands provide coarser spectral
+the entire study area (see Figure 5). It can be seen that, for all      information than hypersectral bands (Yang et  al., 2021). A
+three types of data, the yield distribution was correctly modeled     comparison of the results based on the ZY-1 02D and
+and that 10-m Sentinel-2 data best reﬂect the actual distribution      Sentinel-2 data, which have the same spatial resolution,
+of the yield within the study area. The spatial resolution of the     showed that the ZY-1 02D data, which has more spectral
+results based on the other two datasets is low; as a result, the      bands, performed better, indicating that the features most
+corresponding yield distribution maps are coarse and do not      important to the yield  still remained after the band-by-band
+reﬂect the differences in yield between adjacent grid cells.           combination and that the narrow bands could provide relevant
+    Overall, the estimates based on the 10-m Sentinel-2 data     and accurate information about the  yield. Therefore,
+were found to be the most accurate, followed by those based on      Hyperspectral (HS)-Multispectral(MS) fusion paradigm to
+the 30-m ZY-1 02D data; the estimates based on the 30-m      hyperspectral data is considered to get both advantages of high
+Sentinel-2 were the least accurate (see Figure 6). By comparing       spatial and spectral resolution. Here, some of the advantages and
+the results for the datasets with different spatial and spectral      limitations of applying hyperspectral imaging to estimates of
+
+
+
+
+
+Frontiers in Plant Science                                    09                                                               frontiersin.org
+
+===== PDF PAGE 10 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+   FIGURE 5
+    (A) Details of the observed distribution of the winter wheat yield. Details of the modeled distribution based on (B) 10-m Sentinel-2, (C) 30-m
+   ZY-1 02D, and (D) 30-m Sentinel-2 data. The modeled yield distribution based on (E) 10-m Sentinel-2, (F) 30-m ZY-1 02D, and (G) 30-m
+   Sentinel-2 data.
+
+
+
+
+agricultural yields are demonstrated. However, although the    NDWI > EVI > REP. The shufﬂed vegetation index SR produced
+mathematical relevance of the hyperspeactral band selection      the largest loss of 0.4783, followed by a loss of 0.4492 for the
+method is maximized, the computational volume is large and    NDWI, 0.2385 for the EVI, and 0.2371 for the REP. A larger loss
+the physical meaning  is not clear enough, resulting in low      value indicates a greater contribution to the results. The large SR
+applicability (Kong et  al., 2022). Further research should be      contribution is due to the high correlation between the ratio of
+targeted towards to the implementation and evaluation of more      the red band to the NIR wavelength bands and the leaf area
+applicable band select method in hyperspectral, making the most      index, which is a good measure of the crop growth (Jordan,
+effective use of hyperspectral band information.                     1969). The NDWI indicates the amount of biostructural water
+                                                                contained in a crop, so the large contribution made by the
+                                       NDWI indicates that water has a great inﬂuence on the
+3.3 Effect of various spectral bands and         accumulation of organic matter in a crop (Gao, 1996). The
+vegetation indexes on yield estimation          EVI, which is a greenness vegetation index, had less effect on the
+                                                                                results, which may be related to the instability of the blue band
+    In the PFI experiment that was conducted, the importance of     due to residual atmospheric effects. The poor performance of the
+the four features used in the modeling could be ranked as SR >    REP vegetation index in the modeling may be due to the fact that
+
+
+
+
+
+                 A                      B                     C
+
+
+
+
+
+   FIGURE 6
+   Comparison between estimates of the winter wheat yield based on (A) 10-m Sentinel-2, (B) 30-m ZY-1 02D, and (C) 30-m Sentinel-2 data.
+
+
+
+
+
+Frontiers in Plant Science                                        10                                                               frontiersin.org
+
+===== PDF PAGE 11 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+the spatial resolution of the red-edge bands in Sentinel-2 is 20 m,      negatively correlated with the yield with a correlation
+which does not match the spatial resolution of the yield data.      coefﬁcient of –0.7559. For the RSI, the strongest correlation
+However, the vegetation indices we selected were based on     was for the combination 1779–2216 nm, which was positively
+anthropogenic experience about spectral information; other      correlated with the yield with a correlation coefﬁcient of 0.7539.
+vegetation indices such as Green Leaf Area Index (Duchemin     The correlation between bands combination and yield  is
+et  al., 2008), Crop Water Stress Index (Ghaemi et  al., 2016)      consistent with (Marshall et al., 2022). These three customized
+should also be considered. We can combine empirical and      vegetation indices were then adopted as three features for input
+statistical methods in the selection of vegetation indices.             to the hyperspectral data model. The correlation coefﬁcients
+    In most previous studies, each feature was input to a model     shown in Table 3 all pass the signiﬁcance test of P-value< 0.001.
+individually to retrain the model (Cai et al., 2019). This seems an      Importantly, from the values of the correlation between the
+intuitive approach; however,  it  is not appropriate  if we are      vegetation indexes and the yield (see Figure 7),  it was found
+interested in the feature importance of the model where  all      that the combinations of  visible and NIR bands were
+features are trained together instead of one by one. Zhang et al.      negatively correlated with the yield, whereas there was a
+(2021) evaluated six typical VIs separately for their abilities to      positive correlation between the shortwave infrared
+predict maize yield using the three approaches. Compared the     narrowband combinations and the yield. And can be seen
+feature importance rank in Zhang et al. (2021), the advantage of     from Table  3, the difference between the most positively
+the PFI method that we used in this study is that it outputs the      correlated shortwave infrared narrowband combination and
+performance of each feature when all of the features are input to      the most negatively correlated visible–NIR band combination
+the model together, and all interactions with other features are        is almost negligible (between 0.5% and 5%), which indicates that
+automatically considered. We analyzed the spectral information      both combinations can provide equally important information
+in combination with the environmental stresses of the crop, and      for yield estimates. The combinations of bands around the
+the ranking results reﬂected the most important factors for    maximum value in Figure 7 can almost play the same role as
+wheat growth, so as to provide a reference for practical      the chosen bands (see Table 3) and can also be used to build the
+agricultural management: in conducting winter wheat farming,       yield estimation model when the requirements are not too strict.
+we need to focus on natural conditions such as tillage density,      This conclusion conﬁrmed the results reported in the previous
+which  is related to the leaf area index, and the amount of      studies choosing the visible and NIR bands to compute VIs (Jin
+irrigation, which  is closely related to the water within the       et al., 2017) for yield prediction to various crops. Kong et al.
+winter wheat plant. However, besides PFI, more and more      (2022) used the band-by-band combination method between
+methods have recently been proposed to help users interpret     450-950 nm to construct new vegetation index, and analyzed the
+the predictions of complex models, such as a uniﬁed framework      correlation of them with LAI. In our work, we expanded
+for interpreting predictions named SHapley Additive     band range to  full bands following the recommendation
+exPlanations (Lundberg and Lee, 2017), and further research      of Marshall  et  al., 2022 to get a comprehensive use of
+should be targeted towards to the comparison among multiple      hyperspectral information.
+feature importance rank methods.                               The high degree of correlation between the visible–NIR band
+   From the analysis of the correlation between the different      combinations and the yield can be explained by the correlation
+vegetation indices and the yield based on the band-by-band     between the crop growth and the chlorophyll content (Acito
+combination method, we determined which bands had the       et  al., 2022), which has also been demonstrated in previous
+strongest positive and negative correlations with the three      studies (Zhang et  al., 2021). However, in most studies, only
+different vegetation indices (see Table  3). Of the 13203     bands in the range 500 to 900 nm have been used and most other
+combinations calculated for the NDSI, the largest correlation      useful bands have been neglected (Zhang et  al., 2018; Zhang
+with the yield was for the wavelength range 516–765 nm. This       et  al., 2021). In this study, we also found that the shortwave
+lies in the visible and NIR region and was negatively correlated      infrared bands between 1000 and 2500 nm had a highly positive
+with the yield with a correlation coefﬁcient of –0.7413. For the      correlation with the yield (see Figure  7), suggesting that
+SSI, the best combination was 671–679 nm, which was      combinations of narrow shortwave infrared bands can provide
+
+
+
+TABLE 3 Band combinations giving the highest correlations with the customized vegetation indices.
+
+          Band combination (nm)       Correlation coefﬁcient      Band combination (nm)       Correlation coefﬁcient
+
+ NDSI                 1375–1896                             0.6946***                          516–765                              -0.7413***
+
+  SSI                   1408–1930                             0.7506***                          671–679                              -0.7559***
+
+  RSI                    671–679                              -0.7559***                          516–765                              -0.7413***
+
+  ***means the value is signiﬁcant at the 0.001 level
+
+
+
+
+
+Frontiers in Plant Science                                              11                                                               frontiersin.org
+
+===== PDF PAGE 12 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+                   A                    B                    C
+
+
+
+
+   FIGURE 7
+   Heatmap showing the correlation between (A) the NDSIs, (B) RSIs, and (C) SSIs and the yield. The green triangles represent the selected band
+   combinations (thickened in Table 3); in each case, the green circle represents the other band combination listed in Table 3.
+
+
+
+equally important information to that provided by visible–NIR      climate information) to extract better multimodal information
+bands for crop yield estimation and that the use of the two types      for grain yield prediction. The introduction of an attention
+of information might achieve even better results. In future     mechanism to capture and interpret the contribution of each
+studies, experiments using the two types of bands should be     time node in the time-series data to the models can be
+performed to determine the quantitative relationship with the      considered; in combination with knowledge of the crop
+winter wheat yield.                                                phenological period, this could be used to make estimates of
+                                                                pre-production early yields. In subsequent studies, the use of
+                                                                         transfer learning methods to improve the scalability of the model
+3.4 Analysis of the models and other            could also be tried; this would be similar to a method of
+factors affecting the yield                               predicting winter wheat FVC using deep transfer learning (Yu
+                                                                              et al., 2022).
+   The results described above (see Figures 3, 4) show that the         Experiments were then performed in which the Sowing,
+LSTM model produced signiﬁcantly better estimates of the       cultivation and irrigation were varied. It was found that the
+winter wheat yield than the other three models; these results      winter wheat accumulated the most organic matter when the
+are consistent with those found by Zhang et al. (2021) and Lin      seeding rate was set at 225 kg/ha (0.8 times the conventional
+et al. (2020). Compared with machine learning models, deep     sowing rate), rotational tillage was adopted, variable amounts of
+learning with complex neural network structures has the        fertilizer were used, and the amount of irrigation was set at
+advantage that it processes high-dimensional data that reﬂects     60 mm (see Figure 8). It was also found that a high sowing
+the growth and development of crops (Mu et al., 2019; Wang      density leads to a lower yield, probably due to the intense
+et  al., 2020). The LSTM can learn more time-dependent      competition between water,  fertilizer, and light making the
+information (Hochreiter and Schmidhuber, 1997). The data      plant less biologically productive and causing lodging (Chen
+input to the models consisted of series of monthly data that       et al., 2022). Figure 8B shows that the choice of rotational tillage
+can be used to explore various types of changes in crop growth,      as the tillage practice can maximize soil fertility: some studies
+including the yield and other related crop parameters (Haider     have shown that rotational tillage practices can increase the soil
+et al., 2019; Tian et al., 2021; Wang et al., 2022). The two tree      porosity and improve the nutrient quality, thus increasing crop
+models (RF and GBDT) proved to be better than the SVR model       yields (Nie et al., 2015). From Figure 8C it can be seen that the
+at estimating the yield, which also conﬁrms the results reported      use of variable fertilization promotes yield improvement because
+in a previous study (Lin et al., 2020). The LSTM neural network         it meets the nitrogen demand of winter wheat throughout the
+provides an effective tool for building new data-driven models     growing season and allows the crop to maintain a more
+for regional yield estimation. Neural network modeling      reasonable canopy structure for photosynthesis even after
+transforms raw input variables into high-level representations     ﬂowering (Jiang et al., 2015). Figure 8D shows that the greater
+through nonlinear activation and squashing functions, which      the amount of irrigation, the more water is absorbed by the crop
+weakens the traceability and interpretability of the LSTM model     due to osmotic pressure regulation; this increases the soil water
+(Tian et al., 2021). You et al. (2017) add a DGP to Long Short      storage and improves the drought tolerance of the wheat and the
+Term Memory (LSTM) network, and outperforming  all the       yield. The above meteorological variables are closely related to
+competing approaches. Future work will examine the ability of      the crop growth process and directly affect the yield. Currently,
+more advanced deep learning architectures (e.g., LSTM and its      as chemical fertilizer prices are rising sharply and many places
+variants) and more kinds of data (e.g., remote sensing data and      are experiencing water shortages, advanced studies that will lead
+
+
+
+
+
+Frontiers in Plant Science                                           12                                                               frontiersin.org
+
+===== PDF PAGE 13 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+                    A                    B               C               D
+
+
+
+
+
+   FIGURE 8
+   The winter wheat yield plotted against different planting management variables: (A) seeding rate, (B) farming method (Subsoiling-Tillage-
+    Rotatillage-Rototilling), (C) the rate of fertilizer application, and (D) the amount of irrigation.
+
+
+
+
+to the application of precise amounts of fertilizer and irrigation      previous studies demonstrate the tremendouspotential of remote
+so that planting costs and environmental pollution can be      sensing data-based crop yield prediction when employing a
+reduced and high yields of wheat achieved are research     multimodal data fusion and deep neural network approach.
+priorities (Carberry et  al., 2013). Our study quantitatively      Maimaitijiang et  al. (2020) veriﬁed that multimodal data
+explored the effect of environmental conditions on the winter      fusion yielded superior performance for yield prediction over
+wheat yield, and the results provide data that are important to       single sensor data, regardless of modeling methods. Therefore, in
+the cultivation of winter wheat in northern China.                  addition to being adaptable to different remote sensing data-VIs,
+   Meanwhile, from the above experimental results, it can be      within-ﬁeld, multi-ﬁeld, and regional applications require grain
+seen that crop management statistics have a strong correlation       yield models to cope with variation and heterogeneity in space
+with the crop yield and can be used to indicate yield changes.      caused by differences in soil, irrigation, fertilization and other
+Management statistics models are included in crop environment      ﬁeld conditions that affect plant growth (Maimaitijiang et al.,
+models, which can be used in crop yield estimation by      2020). For example, Su et al (2017) integrated geographical data
+establishing a correlation between the crop management     from the weather station in China and the SVR method to
+statistics and crop yields (Guarin and Asseng, 2022). The most      estimate crop growth at various stages. In subsequent research,
+commonly used statistical management model is the systemic    we plan to collect multiple types of data, including
+integrated factor forecasting method developed by Chen (1992).      meteorological data and crop management  statistics, and
+This forecasting method predicts the annual grain yield by     combine these with remote sensing data to produced more
+building a systematic model between  statistical factors      accurate winter wheat yield estimates.
+(irrigation,  fertilizer usage, and mechanical inputs) and the         However, there remain challenges to fully understanding
+crop  yield. Besides management  statistics models, crop     changes in winter wheat yields that arise from a lack of
+environment models (Launay and Guerif, 2005) also include      understanding of the mechanisms involved or a lack of data. If
+agrometeorological models and agronomic yield estimation      fused or integrated data with a high temporal, spatial, and
+models – the former use integral regression models based on      spectral resolution (Cao  et  al., 2020) can be obtained,
+meteorological factors and yields (O'Neal et al., 2002), and the      transferring our proposed model to a larger study area can be
+latter mainly establish relationships between crop growth      considered. In this study, we found that an increase in either the
+conditions and crop yield components, thus allowing them to      spectral or spatial resolution leads to an increase in the
+predict crop yields. Predictions of wheat yields based on      estimation accuracy (Figure 4). Acito et al. (2022) deals with
+management statistics, meteorological data, and crop growth      the problem of improving the spatial resolution of hyperspectral
+conditions can be highly accurate; however, these models do not      data from the PRISMA mission and provides a superresolved
+apply to large areas and the values of the parameters are difﬁcult     image with a spatial resolution of 10 m and the same spectral
+to determine. Using satellite remote sensing, crop information      resolution as the PRISMA hyperspectral sensor. In future,
+can be acquired repeatedly over large areas at a relatively low      following the work by Acito et al. (2022), In future, we also
+cost. The combination of remote sensing data with crop growth     hope to use fused ZY-1 02D and Sentinel-2 data for yield
+dynamics models to predict yields has shown promise, and      estimation to explore how temporally, spectrally, and spatially
+several studies (Cao et  al., 2020; Zhang et  al., 2021; Beyene      rich data perform, in a similar way to how the fusion of ZY-1
+et  al., 2022) have shown that combining remote sensing and    02D and multispectral data has been used for land classiﬁcation
+other factors can improve the accuracy of yield estimates. The     (Sun et al., 2020a). Compared with yield estimation models on
+
+
+
+
+
+Frontiers in Plant Science                                           13                                                               frontiersin.org
+
+===== PDF PAGE 14 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+county scale (Sun et al., 2020b), the yield estimation models that   Data availability statement
+we developed in this study all apply at the pixel scale and may be
+less applicable at the larger scale of experimental ﬁelds. In                                                         The raw data supporting the conclusions of this article will
+subsequent studies, we will collect yield data from a large                                                             be made available by the authors, without undue reservation.
+number of counties and cities, compare agricultural ﬁelds in
+their natural state with small experimental ﬁelds under human
+management, and explore the performance of the yield   Author contributions
+estimation models over spatially heterogeneous large plots.
+Furthermore, the approach can be tested for different crop                                                         The experiment were mainly conceived and designed by BZ
+types at different development stages and environmental                                                        and DP. YL and CX processed the satellite data. EC, LZ, LY, CL,
+conditions to evaluate the robustness.                                                            XL, YC, HY, HW, RY, JH and SY performed the experiments.
+                                                            BZ, DP and EC analyzed the data. The algorithm development
+                                                            were mainly accomplished by BZ, DP and EC. EC wrote the
+4 Conclusion                                          manuscript and DP made very signiﬁcant revisions. BZ helped
+                                                            perform the analysis with constructive discussions. All authors
+                                                                  contributed to the article and approved the submitted version.
+    In this paper, based on Sentinel-2 and ZY-1 02D remote
+sensing imagery and using the LSTM, RF, GBDT, SVR machine
+learning methods, we aimed to ﬁnd the most suitable model,
+                                   Fundingdata source, and combination of spectral bands for making
+estimates of winter wheat yields. It was found that, of these
+                                                       The authors acknowledge the support of the National
+four models, the LSTM model outperformed the SVR, RF, and
+                                                                Natural Science Foundation of China under Grant 42030111,
+GBDT models in learning the temporal relationship between the
+                                                           42071329 and the CCF-AFSG Research Fund.satellite data and the winter wheat yield, giving a value of R2 of
+0.93. After band selection, the 30-m ZY-1 02D hyperspectral
+data produced better results than the 30-m multispectral
+                                    Conﬂict of interestSentinel-2 data and captured 5% more of the yield variation.
+However, the most accurate yield estimates were obtained using
+                                                             Author XL and YC are employed by Aerospace ShuWeithe data with the highest resolution – the 10-m Sentinel-2 data –
+                                                        High Tech. Co., Ltd.for which R2 was 0.91. In addition,  it was found that the
+                                                       The remaining authors declare that the research was
+greenness vegetation index, SR, had the greatest effect on the
+                                                           conducted in the absence of any commercial or ﬁnancial
+yield estimates, followed by the water index, NDWI. For the
+                                                                       relationships that could be construed as a potential conﬂict
+hyperspectral data, the combinations of visible and NIR bands
+                                                                       of interest.
+were usually negatively correlated with the yield, whereas the
+linear combinations of narrow shortwave infrared bands were
+mostly positively correlated with the yield. Our results also show    Publisher’s note
+the strong correlation between crop management statistics and
+yield and suggest the combination of management statistics data          All claims expressed in this article are solely those of the
+and remote sensing data.                                          authors and do not necessarily represent those of their afﬁliated
+    In future work, we will consider the application of the      organizations, or those of the publisher, the editors and the
+modeling to a larger study area and evaluate the performance      reviewers. Any product that may be evaluated in this article, or
+of fused Sentinel-2 and ZY-1 02D data. Approaches that      claim that may be made by its manufacturer, is not guaranteed
+incorporate migration learning will also be considered.              or endorsed by the publisher.
+
+
+
+References
+
+
+   Acito, N., Diani, M., and Corsini, G. (2022). “PRISMA spatial resolution        estimate soybean yield,” in IEEE J Sel Top Appl Earth Obs Remote Sens. 9. 1–14.
+enhancement by fusion with sentinel-2 data,” in IEEE  J. Sel. Top. Appl. Earth         doi: 10.1109/JSTARS.2016. 2541169
+Obs. Remote Sens. 15. 62–79. doi: 10.1109/JSTARS.2021. 3132135                                                                                        Beyene, A. N., Zeng, H., Wu, B., Zhu, L., Gebremicael, T. G., Zhang, M., et al.
+   Alain, G., and Bengio, Y. (2018). Understanding intermediate layers using linear        (2022). Coupling remote sensing and crop growth model to estimate national wheat
+classiﬁer probes. Mach. Learn. doi: 10.48550/arXiv.1610.01644                             yield in Ethiopia. Big Earth Data. 6 (1), 18–35. doi: 10.1080/20964471.2020.1837529
+   Betbeder,  J., Rémy,  F., and Baup, F. (2016). “Assimilation of LAI and dry         Breiman, L. (2001). Random forests. Mach. Learn. 45, 5–32. doi: 10.1023/
+biomass data from optical and SAR images into an agro-meteorological model to       A:1010933404324
+
+
+
+
+
+Frontiers in Plant Science                                         14                                                               frontiersin.org
+
+===== PDF PAGE 15 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+   Cai, Y., Guan, K., Lobell, D., Potgieter, A. B., Wang, S., Peng, J., et al. (2019).        anthesis. Southwest China  J. Agric.  Sci. 28  (1), 255–259. doi: 10.16213/
+Integrating satellite and climate data to predict wheat yield in Australia using        j.cnki.scjas.2015.01.048
+machine learning approaches. Agric. For. Meteorol. 274, 144–159. doi: 10.1016/                                                                                                Jiang,  Z., and Huete, A. R. (2010). Linearization of NDVI based on  its
+j.agrformet.2019.03.010                                                                                           relationship with vegetation fraction. Photogramm. Eng. Rem. S. 76 (8), 965–975.
+  Cao, J., Zhang, Z., Luo, Y., Zhang, L., Zhang, J., Li, Z., et al. (2021). Wheat yield         doi: 10.14358/PERS.76.8.965
+predictions at a county and ﬁeld scale with deep learning, machine learning, and                                                                                                               Jin, Z., Azzari, G., and Lobell, D. B. (2017). Improving the accuracy of satellite-
+google earth engine. Eur. J. Agron. 123, 126204. doi: 10.1016/j.eja.2020.126204                                                                                 based high-resolution yield estimation: A test of multiple scalable approaches.
+  Cao, J., Zhang, Z., Tao, F., Zhang, L., Luo, Y., Han, J., et al. (2020). Identifying the        Agric. For. Meteorol. 247, 207–220. doi: 10.1016/j.agrformet. 2017.08.001
+contributions of multi-source data for winter wheat yield prediction in China.                                                                                          Jordan, C. F. (1969). Derivation of leaf-area index from quality of light on the
+Remote Sens. 12 (5), 750. doi: 10.3390/rs12050750                                                                                                 forest ﬂoor. Ecology. 50 (4), 663–666. doi: 10.2307/1936256
+   Carberry, P.  S., Liang, W., Twomlow,  S., Holzworth, D.  P., Dimes,  J.  P.,                                                                                 Kamir, E., Waldner, F., and Hochman, Z. (2020). Estimating wheat yields in
+McClelland, T., et  al. (2013). Scope for improved eco-efﬁciency varies among                                                                                          Australia using climate records, satellite image time series and machine learning
+diverse cropping systems. PNAS. 10 (21), 8381–8386. doi: 10.1073/       methods. ISPRS J. Photogramm. Remote Sens. 160, 124–135.
+pnas.1208050110
+                                                                                      Khaki, S., Pham, H., and Wang, L. (2021). Simultaneous corn and soybean yield
+  Chen, X. (1992). National grain production forecast research. Bull. Chin. Acad.                                                                                        prediction from remote sensing data using deep transfer learning. Sci. Rep. 11,
+Sci. 4, 330–333.                                                                                   11132. doi: 10.1038/s41598-021-89779-z
+  Chen, M., Liang, X., Li, L., Zhang, L., Chen, G., Wu, J., et al. (2022). Effects of                                                                              Kong, Y., Wang, L., Feng, H., Xu, Y., Liang, L., Xu, L., et al. (2022). Leaf area
+planting densities on grain ﬁlling and grain yield of uniformly sown winter wheat.                                                                                  index estimation based on UAV hyperspectral band selection. Spectrosc Spect Anal.
+Xinjiang Agric. Sci. 59 (6), 1338–1346. doi: 10.6048/j.issn.1001-4330.2022.06.005                                                                           42 (3), 933–939.
+  Cunha, R. L. F., and Silva, B. (2020). “Estimating crop yields with remote sensing                                                                                        Krizhevsky, A., Sutskever, I., and Hinton, G. E. (2012). “ImageNet classiﬁcation
+and deep learning,” in 2020 IEEE Latin American GRSS & ISPRS Remote Sensing                                                                                 with deep convolutional neural networks,” in NIPS(Lake Tahoe, Nevada, USA:
+Conference (LAGIRS) (Piscataway, NJ: IEEE). 59–64. doi: 10.5194/isprs-annals-IV-                                                                 ACM), 1097–1105.
+3-W2-2020-59-2020
+                                                                                   Launay, M., and Guerif, M. (2005). Assimilating remote sensing data into a crop
+  Duchemin, B., Maisongrande, P., Boulet, G., and Benhadj, I. (2008). A simple                                                                        model to improve predictive performance for spatial applications. Agric. Ecosyst.
+algorithm for yield estimates: Evaluation for semi-arid irrigated winter wheat        Environ. 111, 321–339. doi: 10.1016/j.agee.2005.06.005
+monitored with green leaf area index. Environ. Model. Software 23, 876–892. doi:
+10.1016/j.envsoft.2007.10.003                                                     LeCun, Y., Bengio, Y., and Hinton, G. (2015). Deep learning. Nature. 521, 436–
+                                                                                       444. doi: 10.1038/nature14539
+  Feng, Q., and Wu, S. (2006). Processing in crop yield estimating by remote
+sensing in China. World Sci-Tech R&D. 28 (3), 32–36. doi: 10.3969/j.issn.1006-           Lin, T., Zhong, R., Wang, Y., Xu, J., Jiang, H., Xu, J., et al. (2020). DeepCropNet:
+6055.2006.03.006                                                                   a deep spatial-temporal learning framework for county-level corn yield estimation.
+                                                                                     Environ. Res. Lett. 15 (3). doi: 10.1088/1748-9326/ab66cb
+   Fisher, A., Rudin, C., and Dominici, F. (2019). All models are wrong, but many
+are useful: Learning a variable’s importance by studying an entire class of          Lundberg, S., and Lee, S. (2017). A uniﬁed approach to interpreting model
+prediction models simultaneously. J. Mach. Learn Res. 20, 1–81. doi: 10.48550/        predictions. doi: 10.48550/arXiv.1705.07874
+arXiv.1801. 01489                                                                       Lu, H., Zhang, M., Liu, Y., and Ma, S. (2017). Convolution neural network
+  Gao, B. C. (1996). NDWI a normalized difference water index for remote sensing        feature importance analysis and feature selection enhanced model. J. Software 28
+of vegetation liquid water from space. Remote Sens. Environ. 58, 257–266. doi:         (11), 2879–2890.
+10.1016/S0034-4257(96)00067-3                                              Ma, L., Chen, X., Zhang, Q., Lin, J., Yin, C., Ma, Y., et al. (2022). Estimation of
+  Ghaemi, A., Moazed, H., Raﬁe Raﬁee, M., and Broomand Nasab, S. (2016).       nitrogen content based on the hyperspectral vegetation indexes of interannual
+Determining CWSI to estimate eggplant evapotranspiration and yield under      and multi-temporal in cotton. Agronomy 12  (6), 1319. doi: 10.3390/
+greenhouse and outdoor conditions. Iran Agric. Res. 34, 49–60. doi: 10.1109/      agronomy12061319
+JSTARS.2016. 2541169                                                                   Maimaitijiang, M., Sagan, V., Sidike, P., Hartling, S., Esposito, F., and Fritschi, F.
+  Guarin, J. R., and Asseng, S. (2022). Improving wheat production and breeding        B. (2020). Soybean yield prediction from UAV using multimodal data fusion and
+strategies using crop models. Wheat Improvement 573–591. doi: 10.1007/978-3-       deep learning. Remote Sens Environ. 237, 111599. doi: 10.1016/j.rse.2019.111599
+030-90673-3_31                                                                          Marshall, M., Belgiu, M., Boschetti, M., Pepe, M., Stein, A., and Nelson, A.
+  Guo, J., Ren, H., Zheng, Y., Nie, J., Chen, S., Sun, Y., et al. (2019). Identify urban        (2022). Field-level crop yield estimation with PRISMA and sentinel-2. ISPRS  J.
+area from remote sensing image using deep learning method. IGRSS., 7407–7410.       Photogramm. Remote Sens. 187, 191–210. doi: 10.1016/j.isprsjprs.2022.03.008
+doi: 10.1109/IGARSS.2019.8898874                                              Mawani, M., and Li, C. (2020). Coronavirus disease (COVID-19); lessons learnt
+   Haider, S., Naqvi, S., Akram, T., Umar, G., Shahzad, A., Sial, M., et al. (2019).       from international response and advice to the Georgia government. Innovation
+LSTM neural network based forecasting model for wheat production in Pakistan.       (Camb). 1 (2), 100025. doi: 10.1016/j.xinn.2020.100025
+Agronomy. 9 (2), 72. doi: 10.3390/agronomy9020072                                         Mitchell, R. N. (2021). Chang'E-5 reveals the moon's secrets to a longer life.
+  Han, D., Wang,  P., Tansey, K., Liu,  J., Zhang, Y., Tian, H., et  al. (2022).       Innovation (Camb). 2 (4), 100177. doi: 10.1016/j.xinn.2021.100177
+Integrating an attention-based deep learning framework and the SAFY-V model        Mu, H., Zhou, L., Dang, X., and Yuan, B. (2019). Winter wheat yield estimation
+for winter wheat yield estimation using time series SAR and optical data. Comput.      from multitemporal remote sensing images based on convolutional neural
+Electron Agric. 201, 107334. doi: 10.1016/j.compag.2022.107334                      networks.  in:  2019 10th International Workshop on the Analysis  of
+  He, Z., and He, J. (2013). Estimation of winter wheat yield based on the NOAA −       Multitemporal Remote Sensing Images (MultiTemp). 1-4. doi: 10.1109/Multi-
+NDVI data. J. Arid Environ. 27 (5), 46–52. doi: 10.13448/j.cnki.jalre. 2013.05.008       Temp.2019.8866918
+   Hochreiter, S., and Schmidhuber, J. (1997). Long short-term memory. Neural           Nie, L., Guo, L., Niu, H., Wei, J., Li, Z., and Ning, T. (2015). Effects of rotational
+Comput. 9, 1735–1780. doi: 10.1162/neco.1997.9.8.1735                                        tillage on tilth soil structure and crop yield and quality in maize-wheat cropping
+                                                                                      system. Acta Agronomica Sinica. 41 (3), 468. doi: 10.3724/SP.J.1006.2015.00468
+   Horler, D. N. H., Dockray, M., and Barber, J. (1983). The red edge of plant leaf
+reﬂectance. Int. J. Remote Sens. 4 (2), 273–288. doi: 10.1080/01431168308948546           O'Neal, M. R., Engel, B. A., Ess, D. R., and Frankenberger, J. R. (2002). Neural
+                                                                             network prediction of maize yield using alternative data coding algorithms. Biosyst.
+  Huang, H., Huang, J., Feng, Q., Liu, J., Li, X., Wang, X., et al. (2022). Developing        Eng. 83, 31–45. doi: 10.1006/bioe.2002.0098
+a dual-stream deep-learning neural network model for improving county-level
+                                                                                     Peng, D., Huang, J., Li, C., Liu, L., Huang, W., Wang, F., et al. (2014). Modelling
+winter wheat yield estimates in China. Remote Sens. 14 (20), 5280. doi: 10.3390/
+                                                                         paddy rice yield using MODIS data. Agric. For. Meteorol. 184, 107–116. doi:rs14205280
+                                                                                       10.1016/j.agrformet.2013.09.006
+  Huete, A., Didan, K., Miura, T., Rodriguez, E. P., Gao, X., and Ferreira, L. G.                                                                                     Peng, D., Huang,  J., Sun, H., and Wang, F. (2010). County level rice yield
+(2002). Overview of the radiometric and biophysical performance of the MODIS                                                                                      estimation based on combination of Terra and aqua MODIS EVIs. Chin. J. Rice
+vegetation indices. Remote Sens Environ. 83, 195–213. doi: 10.1016/S0034-4257(02)                                                                                               Science. 24 (5), 516–522. doi: 10.3969/j.issn.1001—7216.2010.05.012
+00096-2
+                                                                                               Poria, S., Cambria., E., and Gelbukh., A. (2015). “Deep convolutional neural
+   Jägermeyr,  J., Müller, C., Ruane, A., Elliott,  J., Balkovic,  J., Castilo, O., et al.       network textual features and multiple kernel learning for utterance-level
+(2021). Climate impacts on global agriculture emerge earlier in new generation of       multimodal sentiment analysis,” in EMNLP (Lisbon, Portugal), 2539–2544.
+climate and crop models. Nat. Food. 2, 1–13. doi: 10.1038/s43016-021-00400-y           doi: 10.18653/v1/D15-1303
+
+   Jiang, A., Gao,  J., Guan, J., and Wang, Z. (2015). Effects of variable nitrogen          Qiao, M., He, X., Cheng, X., Li, P., Luo, H., Zhang, L., et al. (2021). Crop yield
+application on character of light radiation and yield in canopy of winter wheat after        prediction from multi-spectral, multi-temporal remotely sensed imagery using
+
+
+
+
+
+Frontiers in Plant Science                                           15                                                               frontiersin.org
+
+===== PDF PAGE 16 / 16 =====
+
+Cheng et al.                                                                                                     10.3389/fpls.2022.1090970
+
+
+
+
+
+recurrent 3D convolutional neural networks. Int. J. Appl. Earth Obs Geoinf. 102,          Xiao, L., Yang, W., Feng, M., Sun, H., and Wang, C. (2022). Development of
+102436. doi: 10.1016/j.jag.2021.102436                                                winter wheat yield estimation models based on hyperspectral vegetation. Chin. J.
+                                                                                                 Ecol. 41 (7), 1433–1440. doi: 10.13292/j.1000-4890. 202207.019   Sellami, M. H., Albrizio, R., Colovic, M., Hamze, M., Cantore, V., Todorovic, M.,
+et al. (2022). Selection of hyperspectral vegetation indices for monitoring yield and           Xie, Y., and Huang, J. (2021). Integration of a crop growth model and deep
+physiological response in sweet maize under different water and nitrogen        learning methods to improve satellite-based yield estimation of winter wheat in
+availability. Agronomy 12 (2), 489. doi: 10.3390/agronomy12020489                Henan Province, China. Remote Sens. 13, 4372. doi: 10.3390/rs13214372
+
+  Sharma, S., Rai, S., and Krishnan, N. C. (2020). Wheat crop yield prediction          Xing, L., Li, X., Li, A., and Zhou, D. (2013). A comparative study on estimation
+using deep LSTM model. doi: 10.48550/arXiv.2011.01498                          model for leaf area index of vegetation in marshes in honghe national nature
+                                                                                          reserve based on hyperspectral and multispectral vegetation indices. Wetland Sci.  Sun,  J., Lai, Z., Di, L., Sun, Z., Tao,  J., and Shen, Y. (2020b). “Multilevel deep
+                                                                           11 (3), 313–319. doi: 10.3969/j.issn.1672- 5948.2013.03.002learning network for county-level corn yield estimation in the US corn belt,” in IEEE J.
+Sel. Top. Appl. Earth Obs. Remote Sens. 13. 5048–5060. doi: 10.1109/JSTARS.2020.         Yang, W., Nigon, T., Hao, Z., Dias Paiao, G., Fernández, F. G., Mulla, D., et al.
+3019046                                                                                 (2021). Estimation of corn yield based on hyperspectral imagery and convolutional
+  Sun, W., Ren, K., Xiao, C., Meng, X., and Yang, G. (2020a). Classiﬁcation of       neural network. Comput. Electron Agric. 184, 106092. doi: 10.1016/
+                                                                                  j.compag.2021.106092coastal wetlands based on hyperspectral and multispectral fusion data of ZY-1-02D
+satellite. Spacecraft Engineering. 29 (6), 162–168. doi: 10.3969/j.issn.1673-         You, J., Li, X., Low, M., Lobell, D., and Ermon, S. (2017). Deep Gaussian process
+8748.2020.06.024                                                                            for crop yield prediction based on remote sensing data. Proc. AAAI Conf. Artif.
+                                                                                                               Intell. 31, 4559-4565. doi: 10.1609/aaai.v31i1.11172   Su, Y., Xu, H., and Yan, L. (2017). Support vector machine-based open crop
+model (SBOCM): Case of rice production in China. Saudi J. Biol. Sci. 24, 537–547.         Yu, R., Li, S., Zhang, B., and Zhang, H. (2022). “A deep transfer learning method
+                                                                                              for estimating fractional vegetation cover of sentinel-2 multispectral images,” in  Thorp, K. R., DeJonge, K. C., Kaleita, A. L., Batchelor, W. D., and Paz, J. O. J. C.
+                                                                        IEEE Geosci. Remote Sens. Lett. 19. 1–5. 10.1109/lgrs.2021.3125429(2008). Methodology for the use of DSSAT models for precision agriculture
+decision support. Comput. Electron Agric. 64, 276–285. doi: 10.1016/         Zhang, B., Chen, Z., Peng, D., Benediktsson, J., Liu, B., Zou, L., et al. (2019).
+j.compag.2008. 05.022                                                         Remotely sensed big data: Evolution in model development for information
+                                                                                              extraction. Proc. IEEE. 107 (12), 2294–2301. doi: 10.1109/JPROC.2019.2948454   Tian, H., Wang, P., Tansey, K., Zhang, J., Zhang, S., and Li, H. (2021). An LSTM
+neural network for improving wheat yield estimates by integrating remote sensing         Zhang, B., Wu, Y., Zhao, B., Chanussot,  J., Hong, D., Yao,  J., et al. (2022).
+data and meteorological data in the guanzhong plain, PR China. Agric. For.        “Progress and challenges in intelligent remote sensing satellite systems,” in IEEE J.
+Meteorol. 310, 108629. doi: 10.1016/j.agrformet.2021.108629                                    Sel. Top. Appl. Earth Obs. Remote Sens. 15. 1814–1822. doi: 10.1109/jstars.2022.
+                                                                           3148139  Wang, X., Huang, J., Feng, Q., and Yin, D. (2020). Winter wheat yield prediction at
+county level and uncertainty analysis in main wheat-producing regions of China with         Zhang, C., Yang, G., Li, H., Tang, F., Liu, C., and Zhang, L. (2018). Remote
+deep learning approaches. Remote Sens. 12 (11), 1744. doi: 10.3390/rs12111744            sensing inversion of leaf area index of winter wheat based on random forest
+  Wang, J., Si, H., Gao, Z., and Shi, L. (2022). Winter wheat yield prediction using        algorithm. Scientia Agricultura Sinica. 51 (5), 855–867. doi: 10.3864/j.issn.0578-
+an LSTM model from MODIS LAI products. Agriculture 12, 1707. doi: 10.3390/        1752.2018.05.005
+agriculture12101707                                                                                Zhang, L., Zhang, Z., Luo, Y., Cao,  J., Xie, R., and Li, S. (2021). Integrating
+  Weiss, M., Jacob, F., and Duveiller, G. (2020). Remote sensing for agricultural         satellite-derived climatic and vegetation indices to predict smallholder maize yield
+applications: A meta-review. Remote Sens Environ. 236, 111402. doi: 10.1016/       using deep learning. Agric. For. Meteorol. 311, 108666. doi: 10.1016/
+j.rse.2019.111402                                                                       j.agrformet.2021.108666.
+
+
+
+
+
+Frontiers in Plant Science                                         16                                                               frontiersin.org

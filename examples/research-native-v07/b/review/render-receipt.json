@@ -1,0 +1,74 @@
+{
+  "sourceSha256": "450d93dc502a0e69614d1760ffb836bdeb99a70bb41b6765539ca6af0153deff",
+  "slideCount": 15,
+  "backend": "wasm",
+  "rendererVersion": "0.1.5",
+  "missingFonts": [],
+  "pdf": {
+    "path": "b/report.pdf",
+    "sha256": "c3818f38d763a04da7af39702463c43b1e27dea0bd9bf9148048efe54d822f08"
+  },
+  "actualPages": [
+    {
+      "path": "b/previews/page-0001.png",
+      "sha256": "315e20b80d671c0c02924a7fdb0080172d94e988bd7a0d32470f1a1e76a7dff5"
+    },
+    {
+      "path": "b/previews/page-0002.png",
+      "sha256": "e8b287d7cfbf94a8785b68e08420358f39dd730d182e9e88b2a0a36f6b6a2ad7"
+    },
+    {
+      "path": "b/previews/page-0003.png",
+      "sha256": "179cc0aae8060ff06e2666822e54abfd61e9dfde8da8646dce0a7374f371d985"
+    },
+    {
+      "path": "b/previews/page-0004.png",
+      "sha256": "214394a30f469555ccdaaf49d605f2081a1f917d94dc61cc383a292ed0fac31c"
+    },
+    {
+      "path": "b/previews/page-0005.png",
+      "sha256": "14035007a314596260f2376462124b40e4fed6987daa5b9fc678729921c5ad6d"
+    },
+    {
+      "path": "b/previews/page-0006.png",
+      "sha256": "28ce47951ffd69d4be0de996609c63cae692d36a9424f1c89d5bfa0d4d38a659"
+    },
+    {
+      "path": "b/previews/page-0007.png",
+      "sha256": "6d3aa6f2fd509fb2cced1155067bd2eb68f5883545761f860b4c2b90ed84f246"
+    },
+    {
+      "path": "b/previews/page-0008.png",
+      "sha256": "17ebd6294d5e146bff0274d1f706c378eced9563f43d70e828af4972739a017e"
+    },
+    {
+      "path": "b/previews/page-0009.png",
+      "sha256": "617af85c06905b63c71cb8547b3cb570143ee099bbd6d4a9557ad5123a802680"
+    },
+    {
+      "path": "b/previews/page-0010.png",
+      "sha256": "7c64ff95792f7afadc9ceceae8a0b5ce4aa586bfaacf4becbe76f3d12039a882"
+    },
+    {
+      "path": "b/previews/page-0011.png",
+      "sha256": "5406fbceee697033f63c720de67c9554d5a5dfeab4c1ea180540d1d211511801"
+    },
+    {
+      "path": "b/previews/page-0012.png",
+      "sha256": "524e3cd3474be63cec6c49e964c81b1451ddbfad9b25f52d8cb0248292e07d09"
+    },
+    {
+      "path": "b/previews/page-0013.png",
+      "sha256": "5e709591f5f4c91639b88c71c6aee42d989b22d658afd39467221fb0838efda4"
+    },
+    {
+      "path": "b/previews/page-0014.png",
+      "sha256": "e91e4d85fbb3bdbdcc594a85f9009599a0c68a50ab0963a934a6f5b20c7e5e04"
+    },
+    {
+      "path": "b/previews/page-0015.png",
+      "sha256": "61d94fd065b64c22418aedc23449a50c451642785230e2fac097189a085c28cf"
+    }
+  ],
+  "note": "Published binary files and page images are exact copies of the reviewed output. Path fields in authored records and review documents are made portable. No visual approval is inherited by the replay command."
+}

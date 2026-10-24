@@ -31,6 +31,21 @@
 
 完整字段与示例见 [本轮构图说明](docs/RESEARCH_NATIVE_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。实际试用与验证边界以 [本轮记录](docs/VALIDATION_V07.md) 为准。
 
+## 本轮实际效果：三篇论文，两套完整报告
+
+两位新上下文作者使用相同真实论文，分别完成 **16 页和 15 页**报告，各有 14 分钟讲稿预算。最终全部 31 页均实际渲染并逐页查看；原图、完整比较、研究条件、负结果和外推边界保留在主要视图。源码回归 **291 项通过**；科学复核对照原始图表检查了 **249 个结果数值**，发现的 5 项必须修正已关闭。[完整示例与验证范围](examples/research-native-v07/README.md)
+
+| A：信息进入位置与外推边界，16 页 | B：观测接口与可纠正误差，15 页 |
+| --- | --- |
+| [PPTX](examples/research-native-v07/a/report.pptx) · [PDF](examples/research-native-v07/a/report.pdf) · [全部页面](examples/research-native-v07/a/overview.png) | [PPTX](examples/research-native-v07/b/report.pptx) · [PDF](examples/research-native-v07/b/report.pdf) · [全部页面](examples/research-native-v07/b/overview.png) |
+| ![A 最终封面](examples/research-native-v07/a/previews/page-0001.png) | ![B 最终封面](examples/research-native-v07/b/previews/page-0001.png) |
+
+两份初稿的封面仍撞了构图，跨稿检查和实际对照后，B 重新设计为上方真实轨迹、下方题名。候选、拒选理由和返工均有记录，终稿不宣称零干预独立成功。A 的完整 11 模型表和 B 的原始散点大字坐标展示不同的证据组织方式；这些数据载体均通过插件原生绘图完成。
+
+![A：完整保留极旱年 11 个模型的比较与反向结果](examples/research-native-v07/a/previews/page-0012.png)
+
+两稿主要数值与条件使用可读原生文字，部分论文原图次级刻度仍偏小；未完成会场投影或用户 DSH／DeepSeek 环境验收。完整源记录、逐页讲稿、原始图源及审阅范围见 [示例说明](examples/research-native-v07/README.md) 和 [本轮验证](docs/VALIDATION_V07.md)。
+
 ## 历史 v0.6：9 页材料进展报告
 
 以下示例保留 v0.6 的历史身份，不作为本轮重建的效果验收。
@@ -141,7 +156,16 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt"
 
 普通 PPTX/HTML 生成不需要 Office。实际 PPTX 图片/PDF 渲染使用可选官方 `@deepseek-ai/libreoffice-kit`；缺引擎或字体时如实返回未验证状态。可通过 `fontDirectories` 提供工作区内有许可的中文字体。
 
-运行随包的[v0.6 独立材料示例](examples/materials-v06/README.md)离线重建入口（历史 C4 可加 `--example materials-v05`）：
+本轮两份真实论文报告可从作者记录离线重建到新目录：
+
+```sh
+node scripts/build-research-demo.mjs --author a --output ./research-demo-a
+node scripts/build-research-demo.mjs --author b --output ./research-demo-b
+```
+
+入口校验来源摘要，通过公开 API 重放作者记录；不请求网络或模型，不继承原稿的视觉通过。实际渲染可加 `--render --font-dir ./fonts`。[文件、来源与重建说明](examples/research-native-v07/README.md)
+
+也可运行随包的[v0.6 独立材料示例](examples/materials-v06/README.md)离线重建入口（历史 C4 可加 `--example materials-v05`）：
 
 ```sh
 npm run demo -- --output ./my-materials-demo
