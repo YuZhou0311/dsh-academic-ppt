@@ -1,0 +1,1080 @@
+{
+  "createdAt": "2026-10-23T14:33:44.561Z",
+  "revision": 15,
+  "mode": "review",
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "figure-label-measurement-missing",
+      "slideId": "b04",
+      "objectId": "b04/drawing/body/e25",
+      "assetId": "c-lstm",
+      "message": "此图需要读数或比较；记录原始像素中的关键标签高度，或在实际 PPTX 画面中逐项核对。不能仅以高分辨率判定可读。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-measurement-missing",
+      "slideId": "b08",
+      "objectId": "b08/drawing/body/e4",
+      "assetId": "z-yield-a-cal",
+      "message": "此图需要读数或比较；记录原始像素中的关键标签高度，或在实际 PPTX 画面中逐项核对。不能仅以高分辨率判定可读。"
+    },
+    {
+      "severity": "warning",
+      "code": "figure-label-measurement-missing",
+      "slideId": "b08",
+      "objectId": "b08/drawing/body/e11",
+      "assetId": "z-yield-b-cal",
+      "message": "此图需要读数或比较；记录原始像素中的关键标签高度，或在实际 PPTX 画面中逐项核对。不能仅以高分辨率判定可读。"
+    },
+    {
+      "severity": "warning",
+      "code": "unused-region-review",
+      "slideId": "b14",
+      "path": "slides.b14",
+      "box": {
+        "x": 392,
+        "y": 116,
+        "w": 304,
+        "h": 542.1
+      },
+      "emptyFraction": 0.2425,
+      "contentCoverage": 0.3474,
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "message": "中部有约 24% 的连续未使用内容区（304×542 px）。扩大主证据、把解读移到证据旁、重排卡片或合并本页；不要缩字、补写无依据观点、拉大卡框或增加装饰来刷占幅。此值是几何诊断，不能代替真实渲染检查。"
+    },
+    {
+      "severity": "warning",
+      "code": "quantitative-evidence-text-only",
+      "slideId": "b10",
+      "path": "slides.b10",
+      "availableSourceFigureIds": [
+        "s-trend",
+        "s-water-importance"
+      ],
+      "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+    },
+    {
+      "severity": "warning",
+      "code": "quantitative-evidence-text-only",
+      "slideId": "b11",
+      "path": "slides.b11",
+      "availableSourceFigureIds": [
+        "s-trend",
+        "s-water-importance"
+      ],
+      "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+    }
+  ],
+  "designDiagnostics": {
+    "basis": "scene-geometry-estimate-not-aesthetic-score",
+    "notes": "忽略背景、卡框、图标与正文装饰。文本按估计行范围计算；原图、数据图表和统计图内部留白不作空洞。封面上下文图单独计可视占幅，不作为科学证据。",
+    "slides": [
+      {
+        "slideId": "b01",
+        "layout": "cover",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 48,
+          "w": 1184,
+          "h": 624
+        },
+        "contentCoverage": 0.7362,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1120,
+          "y": 48,
+          "w": 112,
+          "h": 624
+        },
+        "largestEmptyContentFraction": 0.0946,
+        "largestUnallocatedBox": {
+          "x": 1120,
+          "y": 48,
+          "w": 112,
+          "h": 624
+        },
+        "largestUnallocatedFraction": 0.0946,
+        "grid": {
+          "columns": 148,
+          "rows": 78,
+          "cellWidth": 8,
+          "cellHeight": 8,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": 0.5,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b02",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.2527,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 259.5,
+          "w": 1184,
+          "h": 79.7
+        },
+        "largestEmptyContentFraction": 0.1389,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 259.5,
+          "w": 1184,
+          "h": 79.7
+        },
+        "largestUnallocatedFraction": 0.1389,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b03",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.6333,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 432,
+          "y": 530.6,
+          "w": 800,
+          "h": 79.7
+        },
+        "largestEmptyContentFraction": 0.0938,
+        "largestUnallocatedBox": {
+          "x": 432,
+          "y": 530.6,
+          "w": 800,
+          "h": 79.7
+        },
+        "largestUnallocatedFraction": 0.0938,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b04",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.5665,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 512,
+          "y": 626.2,
+          "w": 720,
+          "h": 63.8
+        },
+        "largestEmptyContentFraction": 0.0676,
+        "largestUnallocatedBox": {
+          "x": 512,
+          "y": 626.2,
+          "w": 720,
+          "h": 63.8
+        },
+        "largestUnallocatedFraction": 0.0676,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b05",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.7684,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 832,
+          "y": 610.3,
+          "w": 400,
+          "h": 79.7
+        },
+        "largestEmptyContentFraction": 0.0469,
+        "largestUnallocatedBox": {
+          "x": 832,
+          "y": 610.3,
+          "w": 400,
+          "h": 79.7
+        },
+        "largestUnallocatedFraction": 0.0469,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b06",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.2913,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1064,
+          "y": 187.8,
+          "w": 168,
+          "h": 502.3
+        },
+        "largestEmptyContentFraction": 0.1242,
+        "largestUnallocatedBox": {
+          "x": 1064,
+          "y": 187.8,
+          "w": 168,
+          "h": 502.3
+        },
+        "largestUnallocatedFraction": 0.1242,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b07",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.7805,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1152,
+          "y": 155.9,
+          "w": 80,
+          "h": 446.4
+        },
+        "largestEmptyContentFraction": 0.0526,
+        "largestUnallocatedBox": {
+          "x": 1152,
+          "y": 155.9,
+          "w": 80,
+          "h": 446.4
+        },
+        "largestUnallocatedFraction": 0.0526,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b08",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.6373,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 544,
+          "y": 235.6,
+          "w": 144,
+          "h": 382.7
+        },
+        "largestEmptyContentFraction": 0.0811,
+        "largestUnallocatedBox": {
+          "x": 544,
+          "y": 235.6,
+          "w": 144,
+          "h": 382.7
+        },
+        "largestUnallocatedFraction": 0.0811,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b09",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.2721,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 208,
+          "y": 227.6,
+          "w": 384,
+          "h": 207.3
+        },
+        "largestEmptyContentFraction": 0.1171,
+        "largestUnallocatedBox": {
+          "x": 208,
+          "y": 227.6,
+          "w": 384,
+          "h": 207.3
+        },
+        "largestUnallocatedFraction": 0.1171,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b10",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.3421,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 872,
+          "y": 498.7,
+          "w": 360,
+          "h": 191.3
+        },
+        "largestEmptyContentFraction": 0.1014,
+        "largestUnallocatedBox": {
+          "x": 872,
+          "y": 498.7,
+          "w": 360,
+          "h": 191.3
+        },
+        "largestUnallocatedFraction": 0.1014,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b11",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.4261,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1048,
+          "y": 203.7,
+          "w": 184,
+          "h": 486.3
+        },
+        "largestEmptyContentFraction": 0.1317,
+        "largestUnallocatedBox": {
+          "x": 1048,
+          "y": 203.7,
+          "w": 184,
+          "h": 486.3
+        },
+        "largestUnallocatedFraction": 0.1317,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b12",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.792,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1144,
+          "y": 426.9,
+          "w": 88,
+          "h": 263.1
+        },
+        "largestEmptyContentFraction": 0.0341,
+        "largestUnallocatedBox": {
+          "x": 1144,
+          "y": 426.9,
+          "w": 88,
+          "h": 263.1
+        },
+        "largestUnallocatedFraction": 0.0341,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b13",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.3606,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 546.5,
+          "w": 1184,
+          "h": 71.8
+        },
+        "largestEmptyContentFraction": 0.125,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 546.5,
+          "w": 1184,
+          "h": 71.8
+        },
+        "largestUnallocatedFraction": 0.125,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "b14",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.3474,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 392,
+          "y": 116,
+          "w": 304,
+          "h": 542.1
+        },
+        "largestEmptyContentFraction": 0.2425,
+        "largestUnallocatedBox": {
+          "x": 392,
+          "y": 116,
+          "w": 304,
+          "h": 542.1
+        },
+        "largestUnallocatedFraction": 0.2425,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "needs-review"
+      },
+      {
+        "slideId": "b15",
+        "layout": "references",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 116,
+          "w": 1184,
+          "h": 574
+        },
+        "contentCoverage": 0.5507,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 498.7,
+          "w": 1184,
+          "h": 119.6
+        },
+        "largestEmptyContentFraction": 0.2083,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 498.7,
+          "w": 1184,
+          "h": 119.6
+        },
+        "largestUnallocatedFraction": 0.2083,
+        "grid": {
+          "columns": 148,
+          "rows": 72,
+          "cellWidth": 8,
+          "cellHeight": 7.9722,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": 1,
+        "status": "no-large-void-detected"
+      }
+    ],
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "unused-region-review",
+        "slideId": "b14",
+        "path": "slides.b14",
+        "box": {
+          "x": 392,
+          "y": 116,
+          "w": 304,
+          "h": 542.1
+        },
+        "emptyFraction": 0.2425,
+        "contentCoverage": 0.3474,
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "message": "中部有约 24% 的连续未使用内容区（304×542 px）。扩大主证据、把解读移到证据旁、重排卡片或合并本页；不要缩字、补写无依据观点、拉大卡框或增加装饰来刷占幅。此值是几何诊断，不能代替真实渲染检查。"
+      }
+    ],
+    "evidenceDesign": {
+      "basis": "visible-carrier-review-prompt-not-aesthetic-score",
+      "slides": [
+        {
+          "slideId": "b04",
+          "visibleCarriers": [
+            "source-figure",
+            "authored-data-marks"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "c-lstm",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "c-resolution",
+              "paperId": "cheng",
+              "figure": "Fig.5",
+              "caption": "(A) Details of the observed distribution of the winter wheat yield. Details of the modeled distribution based on (B) 10-m Sentinel-2, (C) 30-m ZY-1 02D, and (D) 30-m Sentinel-2 data. The modeled yield distribution based on (E) 10-m Sentinel-2, (F) 30-m ZY-1 02D, and (G) 30-m Sentinel-2 data."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "b05",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "c-lstm",
+              "paperId": "cheng",
+              "figure": "Fig.4",
+              "caption": "Comparison between the estimates of the winter wheat yield obtained using the (A) LSTM, (B) RF, (C) GBDT, and (D) SVR models."
+            },
+            {
+              "id": "c-resolution",
+              "paperId": "cheng",
+              "figure": "Fig.5",
+              "caption": "(A) Details of the observed distribution of the winter wheat yield. Details of the modeled distribution based on (B) 10-m Sentinel-2, (C) 30-m ZY-1 02D, and (D) 30-m Sentinel-2 data. The modeled yield distribution based on (E) 10-m Sentinel-2, (F) 30-m ZY-1 02D, and (G) 30-m Sentinel-2 data."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "b08",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "z-trajectory",
+              "paperId": "zhuo",
+              "figure": "Fig.6",
+              "caption": "Figure 6. Comparison of the SM curves simulated by WOFOST model with and without the EnKF-based assimilation method (a sample point in Shenzhou county)."
+            },
+            {
+              "id": "z-yield-full",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-yield-a",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-yield-b",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-yield-a-cal",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            },
+            {
+              "id": "z-yield-b-cal",
+              "paperId": "zhuo",
+              "figure": "Fig.8",
+              "caption": "Figure 8. Winter wheat yield estimation ( a ) without assimilation and ( b ) with EnKF assimilation."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "b10",
+          "visibleCarriers": [],
+          "availableSourceFigures": [
+            {
+              "id": "s-trend",
+              "paperId": "shahhosseini",
+              "figure": "Fig.3",
+              "caption": "Plotting aggregated annual yields for all locations under study and the average yields per year The figure shows the increase in yield with time and the distribution of residuals around the regression."
+            },
+            {
+              "id": "s-water-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "b11",
+          "visibleCarriers": [],
+          "availableSourceFigures": [
+            {
+              "id": "s-trend",
+              "paperId": "shahhosseini",
+              "figure": "Fig.3",
+              "caption": "Plotting aggregated annual yields for all locations under study and the average yields per year The figure shows the increase in yield with time and the distribution of residuals around the regression."
+            },
+            {
+              "id": "s-water-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        },
+        {
+          "slideId": "b12",
+          "visibleCarriers": [
+            "source-figure"
+          ],
+          "availableSourceFigures": [
+            {
+              "id": "s-trend",
+              "paperId": "shahhosseini",
+              "figure": "Fig.3",
+              "caption": "Plotting aggregated annual yields for all locations under study and the average yields per year The figure shows the increase in yield with time and the distribution of residuals around the regression."
+            },
+            {
+              "id": "s-water-importance",
+              "paperId": "shahhosseini",
+              "figure": "Fig.8",
+              "caption": "Average normalized permutation importance of APSIM features for all test years. AvgDroughtStress: Average drought stress on leaf development, AvgWTInseason: Depth to water table of growing season (mm), NlossTotal: Total N loss (denitrification and leaching) (kg N/ha), CropYield: Crop yield (kg/ha), GrainINupt: Grain N uptake (kg N/ha), Bioma: Crop above ground biomass (kg/ha), SWtoDUL30Inseason: Growing season average soil water to field capacity ratio at 30 cm, ETAnnual: Actual evapotranspiration (mm), CropTraspiration: Crop transpiration (mm)."
+            }
+          ],
+          "primaryPanelId": null
+        }
+      ],
+      "issues": [
+        {
+          "severity": "warning",
+          "code": "quantitative-evidence-text-only",
+          "slideId": "b10",
+          "path": "slides.b10",
+          "availableSourceFigureIds": [
+            "s-trend",
+            "s-water-importance"
+          ],
+          "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+        },
+        {
+          "severity": "warning",
+          "code": "quantitative-evidence-text-only",
+          "slideId": "b11",
+          "path": "slides.b11",
+          "availableSourceFigureIds": [
+            "s-trend",
+            "s-water-importance"
+          ],
+          "message": "本页含定量证据，但自动检查尚未识别可见图、表、数据标记或研究关系。核对是否只剩大小字摘要，或自绘载体未被识别；保留有用的对照与分布，不为消除提醒添加装饰图片。"
+        }
+      ]
+    },
+    "contentCoverage": {
+      "basis": "author-specified-visible-text-not-fact-verification",
+      "slides": [
+        {
+          "slideId": "b02",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "原研究未使用遥感",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b03",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "15,709个 5 m × 5 m 产量网格",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "随机9:1留出来自同田同季",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b04",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "0.201",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "同一输入设置下的模型比较",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "跨田、跨年外推尚未检验",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b05",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "0.219",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "0.237",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "0.307",
+              "visible": true
+            },
+            {
+              "id": "check4",
+              "text": "光谱信息与空间尺度",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b06",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "50个集合成员",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "模型 / 观测扰动：10% / 7%；有观测时才更新",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b07",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "0–10 cm",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "根区平均",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "110样点",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b08",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "RMSE 1330",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "RMSE 934",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "110个地面产量样点",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b09",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "原研究未用遥感",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "完整测试年天气",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "293县 · 10,016县年",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b10",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "2017 LightGBM略有退步",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "RMSE单位均为 kg/ha",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b11",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "全部11个混合模型R²仍为负",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "2012极端干旱留年测试",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b12",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "RF是反例",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "重要性不等于因果",
+              "visible": true
+            },
+            {
+              "id": "check3",
+              "text": "1603",
+              "visible": true
+            },
+            {
+              "id": "check4",
+              "text": "1208",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b13",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "不能跨论文按绝对RMSE排总榜",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "未知未来天气",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "b14",
+          "checks": [
+            {
+              "id": "check1",
+              "text": "待检验的共同实验",
+              "visible": true
+            },
+            {
+              "id": "check2",
+              "text": "截止日前不可得：前提不成立",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "issues": []
+    }
+  },
+  "verification": {
+    "static": "checked",
+    "visual": "not-verified"
+  },
+  "sourceHash": "f4839d6b2b19683ff1835d078b301beebb336a6f051a66b46d339be4e9b7d4e1"
+}

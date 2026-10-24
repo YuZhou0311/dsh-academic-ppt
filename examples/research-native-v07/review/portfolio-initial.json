@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "status": "needs-visual-comparison",
+  "basis": "authored-structure-not-rendered-pixels",
+  "inputCount": 2,
+  "uniqueProjectCount": 2,
+  "projects": [
+    {
+      "projectId": "deck-4b2e77b6-e450-4702-a00d-531428dd3c35",
+      "title": "遥感观测如何进入作物产量估计：直接学习、状态同化、机理特征融合的证据与外推边界",
+      "path": ".test-output/rebuild-author-a/project/project.json",
+      "revision": 9,
+      "slideCount": 16,
+      "bodySlides": 14
+    },
+    {
+      "projectId": "deck-7d04ff1b-e8e9-4d86-acc6-cf1c81ee919a",
+      "title": "遥感观测如何进入作物产量估计：直接学习、状态同化、机理特征融合的证据和外推边界",
+      "path": ".test-output/rebuild-author-b/project/project.json",
+      "revision": 12,
+      "slideCount": 15,
+      "bodySlides": 13
+    }
+  ],
+  "comparisons": [
+    {
+      "leftProjectId": "deck-4b2e77b6-e450-4702-a00d-531428dd3c35",
+      "rightProjectId": "deck-7d04ff1b-e8e9-4d86-acc6-cf1c81ee919a",
+      "matchingBodyPages": 0,
+      "smallerBodyPageCount": 13,
+      "matchingBodyFraction": 0,
+      "matchingCover": false,
+      "similarMainCover": true,
+      "status": "needs-visual-comparison",
+      "pairs": []
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "cross-deck-cover-main-reuse",
+      "projectIds": [
+        "deck-4b2e77b6-e450-4702-a00d-531428dd3c35",
+        "deck-7d04ff1b-e8e9-4d86-acc6-cf1c81ee919a"
+      ],
+      "message": "两份封面的题名区与主要图片区高度重合。底部文案、配色或轻微移位不能单独证明整体构图不同；并列查看，确认该组织是否适合各自研究问题。"
+    }
+  ],
+  "limits": "不同工程ID不证明独立作者；本工具不读取模型历史，不判断科学内容、像素相似或审美。没有高相似提示也不证明原创。请结合实际概览、来源与制作过程核对。"
+}

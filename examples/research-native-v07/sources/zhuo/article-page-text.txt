@@ -1,0 +1,845 @@
+
+
+===== PDF PAGE 1 / 17 =====
+
+    remote sensing
+
+
+Article
+Assimilating Soil Moisture Retrieved from Sentinel-1
+and Sentinel-2 Data into WOFOST Model to Improve
+Winter Wheat Yield Estimation
+
+Wen Zhuo 1, Jianxi Huang 1,2,*    , Li Li 1,2, Xiaodong Zhang 1,2, Hongyuan Ma 3, Xinran Gao 1,
+Hai Huang 1, Baodong Xu 4 and Xiangming Xiao 5
+
+  1   College of Land Science and Technology, China Agricultural University, Beijing 100083, China
+  2  Key Laboratory of Remote Sensing for Agri–Hazards, Ministry of Agriculture and Rural Aﬀairs,
+      Beijing 100083, China
+  3  Department of Geography, University College London, and National Centre for Earth Observation,
+    London WC1E 6BT, UK
+  4  Macro Agriculture Research Institute, College of Resource and Environment, Huazhong Agricultural
+      University, Wuhan 430000, China
+  5  Department of Microbiology and Plant Biology, Center for Spatial Analysis, University of Oklahoma,
+    Norman, OK 73019, USA
+ *   Correspondence: jxhuang@cau.edu.cn; Tel.: +86-010-6273-7628, Fax: +86-010-6273-7855
+
+
+  Received: 30 May 2019; Accepted: 6 July 2019; Published: 8 July 2019
+
+ Abstract: Crop yield estimation at a regional scale over a long period of time is of great signiﬁcance to
+ food security. In past decades, the integration of remote sensing observations and crop growth models
+ has been recognized as a promising approach for crop growth monitoring and yield estimation.
+ Optical remote sensing data are susceptible to cloud and rain, while synthetic aperture radar (SAR)
+ can penetrate through clouds and has all-weather capabilities. This allows for more reliable and
+ consistent crop monitoring and yield estimation in terms of radar sensor data. The aim of this
+ study is to improve the accuracy for winter wheat yield estimation by assimilating time series soil
+ moisture images, which are retrieved by a water cloud model using SAR and optical data as input,
+ into the crop model. In this study, SAR images were acquired by C-band SAR sensors boarded on
+ Sentinel-1 satellites and optical images were obtained from a Sentinel-2 multi-spectral instrument
+ (MSI) for Hengshui city of Hebei province in China. Remote sensing data and ground data were all
+  collected during the main growing season of winter wheat. Both the normalized diﬀerence vegetation
+ index (NDVI), derived from Sentinel-2, and backscattering coeﬃcients and polarimetric indicators,
+ computed from Sentinel-1, were used in the water cloud model to derive time series soil moisture
+ (SM) images. To improve the prediction of crop yields at the ﬁeld scale, we incorporated remotely
+ sensed soil moisture into the World Food Studies (WOFOST) model using the Ensemble Kalman Filter
+ (EnKF) algorithm. In general, the trend of soil moisture inversion was consistent with the ground
+ measurements, with the coeﬃcient of determination (R2) equal to 0.45, 0.53, and 0.49, respectively,
+ and RMSE was 9.16%, 7.43%, and 8.53%, respectively, for three observation dates. The winter wheat
+ yield estimation results showed that the assimilation of remotely sensed soil moisture improved the
+  correlation of observed and simulated yields (R2 = 0.35; RMSE =934 kg/ha) compared to the situation
+ without data assimilation (R2 = 0.21; RMSE = 1330 kg/ha). Consequently, the results of this study
+ demonstrated the potential and usefulness of assimilating SM retrieved from both Sentinel-1 C-band
+ SAR and Sentinel-2 MSI optical remote sensing data into WOFOST model for winter wheat yield
+ estimation and could also provide a reference for crop yield estimation with data assimilation for
+ other crop types.
+
+
+ Keywords: SAR; optical; soil moisture; data assimilation; WOFOST model; yield estimation
+
+
+
+
+
+Remote Sens. 2019, 11, 1618; doi:10.3390/rs11131618                               www.mdpi.com/journal/remotesensing
+
+===== PDF PAGE 2 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  2 of 17
+
+
+
+1. Introduction
+
+    Food production and security have drawn the attention of scientiﬁc communities around the
+world. Crop growth simulation and yield monitoring are essential to inform and develop national
+food security policies and production management strategies [1,2]. Climate change, environmental
+pollution, water scarcity, and change of cultivated land quality have serious eﬀects on crop production [3].
+Therefore, timely and accurate information on regional crop growth and yield is of great signiﬁcance
+for food security and the sustainable development of agriculture.
+     Traditional crop yield estimation mainly includes three methods, as follows: Statistical survey,
+agronomy prediction, and the agrometeorological forecast method. Due to their inherent limitations,
+it is diﬃcult for these methods to achieve high precision estimations of regional crop yields [4]. The crop
+growth model is a process-oriented and machine-based dynamic model, which has been successfully
+applied to yield estimation at the ﬁeld scale, but is not applicable for regional yield estimation. As a near
+real time technology, remote sensing can provide crop and soil parameters at a large scale and at lower
+costs than the survey method [5], though it is not as mechanistic as the crop model. Data assimilation
+is a method that optimally combines crop growth models with remote sensing observations, providing
+an eﬀective way to improve crop yield estimation at regional scales and it is recognized as the most
+promising approach for crop growth monitoring and yield estimation [1,6,7].
+    Remotely sensed data derived from both active and passive sensors are utilized to observe the crop,
+providing precise and timely information on the phenological status and development of vegetation
+to monitor crop growth [8]. As an important state variable, soil moisture provides linkage to the
+soil, atmosphere, and plant, and plays a signiﬁcant role in hydrological, ecological, and biological
+processes [9,10]. With the development of remote sensing technologies, soil moisture monitoring at
+diﬀerent spatial and temporal scales has become possible [11,12]. Surface roughness and vegetation
+variables are the two main factors inﬂuencing soil moisture retrievals on the basis of SAR (synthetic
+aperture radar) observations [13]. To overcome the diﬃculty of obtaining the multiple scattering
+between soil and vegetation in vegetated areas, many widely used vegetation scattering models have
+been proposed. These models, which can retrieve soil moisture in vegetation covered areas, include
+the Tor Vergata model [14], the Michigan microwave canopy scattering (MIMICS) model [15], and the
+water cloud model [16].
+    The potential of the water cloud model for correcting the vegetation eﬀect in various types of
+terrain has been previously demonstrated [17–21]. Previous studies have shown that the biophysical
+parameters needed for the water cloud model to represent the scattering properties of vegetation can
+be estimated from optical remote sensing data [22]. Additionally, the complementary information
+from SAR and the optical data provide the possibility to retrieve soil moisture with a high level of
+accuracy [23,24]. Several studies have focused on combining optical and remotely sensed SAR data for
+soil moisture inversion. Bai et al. combined C-band Radarsat-2 and Landsat-8 OLI (Operational Land
+Imager) data to estimate the soil moisture in prairie areas [10], while Tao et al. developed a modiﬁed
+vegetation backscattering model to retrieve vegetation covered soil moisture based on RADARSAT-2,
+GF-1, and ground observations [13], and the results were promising. Thus, in this study, we jointly
+used Sentinel-1 C-band SAR data and Sentinel-2 MSI optical data to retrieve soil moisture by using the
+water cloud model.
+    Remote sensing of soil moisture is potentially useful for sequential data assimilation, because
+it has an obvious inﬂuence on crop growth and especially on crop yields. The spatial and temporal
+coverage of satellite soil moisture allows for data assimilation for crop yield estimation at a regional
+scale. In the ﬁeld of crop model applications, several previous studies have used soil moisture as
+a state variable in crop model data assimilation systems for crop yield estimations. De Wit and
+Van Diepen utilized the Ensemble Kalman ﬁlter (EnKF) method to assimilate soil moisture, derived
+from a microwave sensor, into the WOFOST (World Food Studies) crop model and the conclusion
+indicated that the assimilation of soil moisture into the crop growth model has a beneﬁcial eﬀect on
+the overall performance of the yield forecasting system [4]. Ines et al. jointly assimilated the leaf
+
+===== PDF PAGE 3 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  3 of 17
+
+
+
+area index (LAI) and soil moisture into the CERES-Maize model with the EnKF algorithm and the
+results showed that yield estimation was improved substantially [25]. Chakrabarti et al. assimilated
+SMOS (Soil Moisture and Ocean Salinity) soil moisture into the DSSAT (Decision Support System for
+Agrotechnology Transfer) model to investigate the eﬀects of agricultural drought on crop yield using
+the EnKF technique. They found that the assimilated crop yield was improved during the growing
+season [26]. However, the soil moisture data used in previous studies were mostly retrieved from SAR
+data only or with a coarse spatial resolution (e.g., SMOS soil moisture data at 25 km). Thus, we would
+like to assess the ability of assimilating soil moisture at 10 m scale, retrieved from SAR and optical data
+together, into the crop model to improve crop yield estimation.
+    The objectives of this study are twofold, as follows: (1) To evaluate the performance of combining
+SAR and optical remotely sensed data in the water cloud model for soil moisture inversion; and (2) to
+assess the accuracy of winter wheat yield estimation by assimilating the retrieved soil moisture into
+the WOFOST model with the EnKF method. Based on multi-source observations (optical and SAR
+remotely sensed data, in situ data, and meteorological data), we developed an assimilation framework
+for time series soil moisture images into the WOFOST model to improve its accuracy for winter wheat
+yield estimation at a regional scale. The study area and four major datasets are presented in Section 2
+and this section also introduces the water cloud model, the WOFOST model, and the EnKF assimilation
+algorithm in detail. The results Section 3 is divided into three parts, with (1) the water cloud model
+soil moisture retrieval results, (2) the simulation of soil moisture with the WOFOST model and (3)
+the assimilation of soil moisture into the WOFOST model with the EnKF method. Uncertainties and
+perspectives of this study are described in Section 4 and the conclusion is given in Section 5.
+
+2. Materials and Methods
+
+2.1. Study Area
+
+     This study was implemented in a planted area dominated by winter wheat, in Hengshui city of
+the southern Hebei province, China (Figure 1). It extends from 37◦03′ N to 38◦23′ N and 115◦10′ E
+to 116◦34′ E, covering 8815 km2 in total and consisting of 11 counties. The study area is a temperate
+continental monsoon climate, with the average temperature ranging from 9 °C to 15 °C, and an average
+annual rainfall ranging from 400 mm to 800 mm. The crop rotation of winter wheat and summer maize
+is the main crop planting system in this area [27,28]. Winter wheat is generally planted in October in
+the ﬁrst year and matured in June in the second year. The key phenological stages of winter wheat
+in this area are the wintering stage before February, the green-up stage in early March, the jointing
+stage before early April, the heading stage from late April to early May, the grain ﬁlling stage before
+late May, and milk-maturity in early June [29].The climate is seasonally variable, with only 25% of
+the precipitation occurring from October to May during winter wheat growing season and about 75%
+occurring in June to September during the maize growing season (Data source: China Meteorological
+Administration, http://www.cma.gov.cn/). Water is a major limiting factor for winter wheat growth in
+this area.
+
+2.2. Data
+
+    Four major datasets were used in this study, as follows: WOFOST model input data, optical
+remote sensing data, SAR remote sensing data, and ﬁeld measured data (soil moisture and winter
+wheat yield).
+    The WOFOST model input data includes crop parameters, soil parameters, and meteorological
+data. Some parameters of the crop and soil were calculated from the ﬁeld measurements (e.g., day of
+emergence (IDEM), initial total crop dry weight (TDWI), and cumulative temperature from emergence
+to anthesis and from anthesis to maturity ((TSUM1/TSUM2) et al.). Others were derived from the
+references or default value in the WOFOST model. Ma et al. and Huang et al. provide details
+of the sources of the diﬀerent parameters [30,31]. The meteorological data were obtained from the
+
+===== PDF PAGE 4 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  4 of 17
+
+
+China Meteorological Administration, (http://www.cma.gov.cn/), which includes daily maximum
+and minimum temperatures, solar radiation, wind speed, actual vapor pressure, and precipitation.
+The meteorological parameters were interpolated into raster data at 10 m resolution. Each winter
+wheat assimilation grid has its own meteorological data ﬁles.
+
+
+
+
+
+           Figure 1. Study area. (Every county has 2 measured sites; each site has 5 sample points).
+
+    The optical remote sensing data used in this study is Sentinel-2A MSI data.  Sentinel-2 is a
+constellation with two twin satellites Sentinel-2A and Sentinel-2B, launched by the European Space
+Agency (ESA) in June 2015 and March 2017, respectively. Sentinel-2 carries the multi-spectral instrument
+(MSI) with 13 spectral channels, including visible, near infrared (NIR), and shortwave infrared spectral
+range bands. The revisit time of Sentinel-2A/B is 10 days and the spatial resolution of Sentinel-2 is
+dependent on the particular spectral band. In this study, we used 10 meters for Band 2 (Blue), Band 3
+(Green), Band 4 (Red), and Band 8 (NIR) (https://scihub.esa.int). Based on the ﬁeld experiment dates
+(Figure 2), three cloud-free Sentinel-2 images were collected for the study area. Data pre-processing,
+including atmospheric correction and converting top-of-atmosphere reﬂectance into top-of-canopy
+reﬂectance, was accomplished by the Sentinel Application Platform (SNAP) software [32].
+
+
+
+
+
+     Figure 2. Calendar of the ﬁeld experiment, remote sensing data acquisition dates and general growth
+     stages of winter wheat.
+
+===== PDF PAGE 5 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  5 of 17
+
+
+
+    Three Sentinel-1A images were acquired during ﬁeld experiment dates (Figure 2). The two-satellite
+Sentinel-1 constellation carries a SAR instrument at C-band and has been designed to address medium-
+and high-resolution applications. The Interferometric Wideswath (IW) mode is the pre-deﬁned
+acquisition mode over land.  This mode provides dual-polarization (VV and VH) imagery at a
+resolution of 10 m, with a swath of 250 km (https://scihub.esa.int) [8,21]. In this study, we used
+Level-1 single look complex (SLC) data. Data pre-processing, which includes thermal noise removal,
+calibration, multi-look, speckle ﬁlter, and terrain correction, was accomplished using SNAP to obtain
+the σ0 backscatter coeﬃcient.
+    For the ﬁeld experiment data, we selected 2 sites in each county (Figure 1) throughout the study
+area and monitored the winter wheat growing conditions from March to June in 2017. Each site
+had ﬁve 1 m × 1 m sampling points in an area of 100 m × 100 m. Field experiment dates (Figure 2)
+were selected during the three main growing seasons of winter wheat (jointing stage, heading stage,
+and milk-maturity stage). In the ﬁeld experiment, winter wheat LAI was measured using an LAI-2000
+Plant Canopy Analyzer and the soil moisture was measured using a FieldScout TDR 300 Soil Moisture
+Meter to collect soil moisture data at a depth of 0–10 cm. Winter wheat yields were measured by
+on-site sampling. First, we collected the grain from 1 m2 at each sample plot. Second, they were heated
+to collect the dry weight. Finally, winter wheat yields were calculated as the weight per area of the
+sample plot in kg/ha.
+
+2.3. Water Cloud Model
+
+     Agricultural regions are a combination of vegetation and bare soil and the information obtained
+from optical or radar remote sensing images is inﬂuenced by both components. The water cloud model
+is based on the semi empirical model established by the theory of microwave remote sensing radiation
+transmission. This model considers that the signal received by the radar sensor is composed of soil and
+vegetation and their mutual scattering [17]. It was initially proposed by Attema and Ulaby [16] and
+there are multiple ways of implementing the model [33]. Xu’s version was used in this study, can be
+described with the Formulas (1)–(3) [34].
+
+                                        σ0pq = σ0veg + σ0soil,                                            (1)
+
+where σ0veg and σ0soil represent the part of overall backscatter coeﬃcient, σ0pq, from vegetation and soil,
+respectively. The values p and q represent diﬀerent polarizations of radar.
+
+                        σ0veg = A ∗Veg ∗cosθ(1 −exp(−2 ∗B ∗Veg ∗secθ)),                          (2)
+
+                              σ0 = σ0          ∗B ∗Veg ∗secθ),                                 (3)                                                       soil     pq_soil∗exp(−2
+
+where Veg represents crop related parameters (in this study, we used NDVI calculated from optical
+data), θ represents the detection angle of radar, and A and B represent the vegetation parameters.
+The value σ0     represents the initial backscatter from the soil and we assumed that it has linear                 pq_soil
+relationship with soil moisture in this study.
+
+                                      σ0                         = C ∗SM + D,                                           (4)                                                                      pqsoil
+
+where C and D are soil parameters. Combined with the above formula, we can get the formula of
+soil moisture.
+                                           σ0pq−A∗Veg∗cosθ(1−exp(−2∗B∗Veg∗secθ)) !                                     −D                                                   exp(−2∗B∗Veg∗secθ)
+                SM =                                                                    .                            (5)
+                                   C
+
+     In this study, we used ﬁeld measured soil moisture as a model input parameter, combined with
+backscattering and vegetation information, to train the model. As can be seen in Equation (5), we used
+
+===== PDF PAGE 6 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  6 of 17
+
+
+ﬁeld measured soil moisture data to represent SM and NDVI retrieved from Sentinel-2 to represent
+Veg and σ0pq and θ came from Sentinel-1 backscattering coeﬃcient and the Sentinel-1 incidence angle,
+respectively. We have 110 ﬁeld experimental sites, half of which were used for training the water cloud
+model and half for validating the soil moisture retrieval accuracy. Thus, we will have 55 equations
+with the form of Equation (5) and A, B, C, and D are vegetation and soil parameters to be determined.
+These are multivariate non-linear overdetermined systems of equations and we solved the equations
+using MATLAB software.
+
+2.4. WOFOST Model
+
+    The WOFOST model, developed by the Wageningen University and Research Center (Wageningen,
+the Netherlands),  is a mechanistic model for analyzing the interactions among  soil, water,
+the atmosphere, and plants [35,36]. The model’s outputs are directly usable for crop-speciﬁc yield
+estimation and can provide estimates of biomass and grain yield at a daily time step for diﬀerent crop
+types [1]. The WOFOST model can be run in potential mode, water-limited mode, and nutrient-limited
+mode.  Soil moisture is an important crop growth parameter and is estimated from forcing data
+and soil properties in the WOFOST model. Therefore, SM was adopted as the state variable in the
+data-assimilation procedure in this study.
+   We used the water-limited mode of WOFOST model in our research and assumed that the
+simulation of the soil water balance is performed for freely draining soils. The core of the crop model
+calibration is ﬁtting the simulated values with the observed data [37]. Our previous studies have
+described the parameterization and calibration of the WOFOST model in detail [30,31]. Here, we brieﬂy
+show the main soil and crop parameters (Tables S1 and S2), which are of great importance to the
+water-limited mode. Each winter wheat pixel was considered as an assimilation grid. Each assimilation
+grid has its own unique folder, which contains a soil parameter ﬁle, a crop parameter ﬁle, and a
+meteorological parameter ﬁle. We used the Chinese soil database (http://www.soil.csdb.cn) and
+followed the Saxton and Rawls method to derive soil moisture content at the wilting point (SMW),
+in saturated soil (SM0), and at ﬁeld capacity (SMFCF) [38]. Other soil parameters were used as the
+default value in WOFOST. As for crop parameters, diﬀerent assimilation grids have diﬀerent values
+of IDEM, TSUM1, and TSUM2, and the remaining parameters are the same. The meteorological
+parameters are extracted from 10 m meteorological images interpolated from meteorological stations
+(Section 2.2).
+
+2.5. The Ensemble Kalman Filter
+
+    The Ensemble Kalman Filter (EnKF) is an optimal recursive data assimilation method introduced
+by Evensen [39]. There are several diﬀerent versions of the EnKF. In this work, we used the EnKF of
+Burgers et al. [40]. Therefore, the observations also needed to be treated as random variables and it is
+commonly assumed that observation errors have a Gaussian distribution.
+    The EnKF performs model forecasting where the model responses (state variables) are propagated
+forward in time based on the model dynamics and a ﬁlter update in which the ensemble of the model
+state is adjusted through incorporating available observations [30,41,42]. The EnKF can be considered
+as an approximate version of the Kalman Filter, in which the state uncertainty is represented by the
+ensemble spread [43]. If we assume that observations are related to the true data xt,
+
+                                       y = Hxt + ε,                                               (6)
+
+                                                  xt = Axt−1 + ν,                                              (7)
+
+where y is the observation vector, ε and ν are Gaussian random error vectors with a mean of zero, H is
+the observation operator that relates to y, A represents a linear state-transition model that links xt and
+xt−1, and in the crop model data assimilation system it represents the crop model. The forecast of xt at t
+
+===== PDF PAGE 7 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  7 of 17
+
+
+
+                                                                                                          f= k is Gaussian, mean, xf                           t=k, and error covariance, P t=k, can be calculated as Equations (8)–(9), and yt=k
+is observation vector at t = k, as follows:
+
+                                     xa                      = xf                                                                                                                   ,                                     (8)                                       t=k                                               t=k                          + K yt=k −Hxft=k
+
+                                     Pa  = (I −KH)P f                                             (9)                                             t=k               t=k,
+
+where f and a are indices of the prior and posterior estimates, respectively, I is the identity matrix,
+and K is the Kalman gain matrix, deﬁned as Equation (10), where Rt=k is the error covariance of the
+observation ensemble.
+                                                                                    f                    f             −1
+                       K = Pt=kHT HPt=kHT + Rt=k     .                                (10)
+
+    The EnKF forecast and analysis error covariance come directly from an ensemble of model
+simulations, as follows:
+
+                                                   Ne
+                                                                    T                                                             f     X                    P HT = (Ne −1)−1    (xfn −xf )(Hxfn −Hxf )  ,                         (11)
+                                           n=1
+
+where Ne is the number of ensemble members, n is a running index for ensemble member, and xf
+represents the ensemble mean, calculated as Equation (12). The observation data should be perturbed
+and the variance used in the perturbation is based on the uncertainty of the observation data.
+
+                                            xf = N−1e XNe  xfn.                                       (12)                                                 n=1
+
+     In this study, the soil moisture retrieved by the water cloud model was the only state variable
+that was directly assimilated into the WOFOST model. So, H can be taken as an identity matrix
+and the optimal estimation of state variable xt at the time k (Equation (8)). The Kalman gain matrix
+(Equation (10)) and the EnKF forecast and analysis error covariance (Equation (11)) can be rewritten as
+Equations (13)–(15).
+                                      xa                      = xf                                                                                                       (13)                                        t=k                                                t=k                          + K(yt=k −xft=k),
+                                                                                             f          f          −1
+                         K = P                                   P                             + Rt=k     ,                                    (14)                                                t=k                                                     t=k
+
+                                                   Ne
+                                                                 T                                                                    f    X                      P = (Ne −1)−1    (xfn −xf )(xfn −xf )  .                             (15)
+                                           n=1
+
+    The uncertainties of the crop model parameters and the remotely sensed observations are an
+important part of the EnKF assimilation system. There are two common ways to account for model
+uncertainty in the EnKF assimilation system. One is adding a Gaussian perturbation to the model output
+state variables. Another is to perturb model input parameters to generate ensemble members. In this
+study, we used the ﬁrst method and an uncertainty level of 10% was introduced to WOFOST model
+output soil moisture and perturbed using a Gaussian distribution [25]. Additionally, the uncertainty of
+remotely sensed soil moisture was set to 7%. So, when the WOFOST model starts at the emergence
+date, WOFOST output soil moisture was perturbed by the method showed above to generate 50 model
+ensemble members {MSM1, MSM2, . . . MSM50}. When the observed soil moisture is available at the
+time k, the 50 observation ensemble members {OSM1, OSM2, . . . OSM50} were also generated by adding
+perturbation to observed soil moisture. Finally, we can calculate the model and observation error
+covariance based on the ensemble members and then follow Equations (14) and (13) to calculate the
+Kalman gain and analysis vector, xat=k, at the time k. We considered the mean value of xat=k as the
+optimal estimation of soil moisture at the time k.
+
+===== PDF PAGE 8 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  8 of 17
+
+
+
+2.6. Crop Modeling-Data Assimilation Framework
+
+    Figure 3 provides an overall framework for the process of assimilating remotely sensed SM,
+retrieved by the water cloud model, into the WOFOST model to estimate the regional winter wheat
+yield with the EnKF algorithm.  First, we ran the WOFOST model with the calibrated crop and
+soil parameters and meteorological data. Meanwhile, we set the ensemble members (in our case,
+the ensemble number was set as 50) for the output soil moisture (MSM1−MSMn) from the WOFOST
+model. Second, Processed Sentinel-1, Sentinel-2, and ﬁeld measured data are used in the water
+cloud model to retrieve remotely sensed soil moisture, which are treated as the observation soil
+moisture (OSM1−OSMn). Third, the EnKF assimilation algorithm will be run at the date when a
+new observation soil moisture (OSM1−OSMn) becomes available and will generate the optimized soil
+moisture (SM1−SMn) data set. Finally, the optimum soil moisture is input into WOFOST model to
+simulate winter wheat yield, which will be validated by ground measured yield.
+
+
+
+
+
+     Figure 3. Flowchart for the winter wheat yield estimation using the EnKF-based assimilation algorithm.
+
+3. Results
+
+3.1. Spatial-Temporal Dynamics of Soil Moisture from Inversion of the Water Cloud Model
+
+     In this study, soil moisture content, based on ﬁeld measurements, was used to calibrate the water
+cloud model parameters. The values of parameters A, B, C, and D are shown in Table 1. It is noteworthy
+that, in the water cloud model, the value of the polarization of VV from Sentinel-1 represents the σ0pq,
+while Veg is replaced by NDVI calculated from Sentinel-2.
+
+
+                Table 1. Parameter values used in the water cloud model for the study area.
+
+                            Date     A     B     C    D
+                             1 April     −7.12    −1.56     0.02    −5.71
+                              7 May     −1.28    −2.83    0.0015   −0.91
+                              1 June     −23.37   −3.57     0.06    −6.84
+
+===== PDF PAGE 9 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                  9 of 17
+
+
+
+     Soil moisture maps retrieved from the water cloud model from three dates and the retrieved soil
+moisture content of 22 measured sites over the three dates are shown in Figure 4, respectively. From
+both ﬁgures, we can see that the soil moisture is relatively higher on 1 April and 7 May than 1 June in
+most areas. Soil moisture in most areas was more than 20% on 1 April and 7 May, while soil moisture
+was mostly less than 20%, or even less than 10%, on 1 June. This is primarily due to the diﬀerent
+irrigation on diﬀerent dates. Based on our ﬁeld experiment, we found that the farmers in this area
+usually irrigate the winter wheat 2–4 times during the whole growing season and the irrigation dates
+are mainly concentrated in the jointing stage, the heading stage, and the grain ﬁlling stage, which are
+generally from early March to mid-May, while 1 April and 7 May generally belong to the jointing
+stage and heading stage, respectively. Figure 5 shows the validation of the water cloud model soil
+moisture inversion results. The validation of 7 May has the best precision among the three dates,
+followed by 1 June and 1 April, and the R2 is 0.53, 0.49, and 0.45, respectively. RMSE is 7.43%, 8.53%,
+and 9.16%, respectively. In general, the trend of soil moisture inversion is consistent with the ground
+measurements. Usually, the accuracy of soil moisture retrieval should be higher with less vegetation,
+due to less disturbance of the vegetation. However, the precision of the soil moisture retrieved with
+the water cloud model on 1 April is not the best among the three periods. We think that there are two
+possible reasons. The ﬁrst is the eﬀect of vegetation. We can see from Figure 2 that the study area was
+at the jointing stage of winter wheat on 1 April. We found that the plant height of winter wheat was
+approximate 17–33 cm, LAI ranged from 0.7–2.0 m2/m2, and the vegetation coverage was higher than
+75% when we performed the ﬁeld experiments. We think the vegetation inﬂuence of this period is not
+much diﬀerent from the other two periods. Second is the impact of irrigation. From the end of March
+to early April in Hengshui city is a common irrigation period and the irrigation has a certain impact on
+the accuracy of ﬁeld measurements, which brings errors to the retrieval and validation of soil moisture.
+
+3.2. Simulation of Soil Moisture with the Water-Limited Mode of the WOFOST Model
+
+    For the consideration of irrigation, Wang’s strategy that treats irrigation as a part of precipitation
+with a direct input into WOFOST model was used in our study [44]. We assumed that the study area
+is irrigated three times in DOY (day of year) 95, 110, and 130. The amount of irrigation was set to
+100 mm, 60 mm, and 80 mm in DOY 95, 110, and 130, respectively. Moreover, if the SM is greater than
+95% of SMFCF (soil moisture ﬁeld capacity) on irrigation day, irrigation will not proceed. As shown
+in Figure 6, the green solid line represents the SM curve simulated by the WOFOST model without
+irrigation. We can see that after 28 February the SM curve dropped quickly and the soil moisture
+content had almost approached the wilting point since 19 April. So, winter wheat will suﬀer from
+water stress if there is no irrigation during the last 2–3 months of the growing season. This period
+covers the jointing stage and the grain ﬁlling stage, which proved to be a period of greater water
+requirement for winter wheat [45]. After we added the irrigation artiﬁcially for three dates on 30
+March, 20 April, and 12 May, we could see an obvious increase of the SM curve, shown by the blue
+solid line (Figure 6). This eﬀectively alleviates the reduction in biomass caused by water stress.
+
+3.3. Assimilation of Soil Moisture with the WOFOST Model Using the EnKF algorithm
+
+    The EnKF assimilation method was implemented for the 10 m grid cells with winter wheat pixels.
+The winter wheat yield was validated at the 110 ﬁeld experiment plots. In this study, an ensemble of
+50 members was adopted for the simulations of winter wheat yield in the water-limited mode.
+
+===== PDF PAGE 10 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 10 of 17
+
+
+
+
+
+                   (a)                                (b)                                    (c)
+
+
+
+
+
+                                                    (d)
+
+     Figure 4. Maps of soil moisture in the study area retrieved from the water cloud model (a) 1 April,
+      (b) 7 May and (c) 1 Jun. (d) Retrieved soil moisture content of 22 measured sites in Hengshui city over
+     3 time periods. (Every county has 2 measured sites).
+
+    From the assimilation strategy (Figure 3) we know that the soil moisture retrieved from the water
+cloud model will be assimilated into WOFOST model when the observation is available. As can be seen
+in Figure 6, the gray solid line encircled by three red circles represents the results of EnKF assimilation
+and the soil moisture content increased after data assimilation. Figure 7 shows the comparison results
+of the regional winter wheat yield estimation, with and without EnKF assimilation. The spatial
+diﬀerence of the winter wheat yield map without assimilation is not obvious and most of the estimated
+yields were around 6500 to 6800 kg/ha. As for the result with EnKF assimilation, more realistic
+spatial variability throughout the study area was observed. The yield estimation ranged from 5900 to
+7700 kg/ha. Generally, the northern part of Hengshui city showed lower winter wheat yield estimation
+values, while the central and southern part generally had a relatively higher yield estimation. This is
+likely due to the diﬀerences in temperature, solar radiation, and agronomy activities [31]. In Figure 8,
+the WOFOST simulation without SM assimilation could not estimate the winter wheat yield well,
+with R2 of 0.21 and RMSE equal to 1330 kg/ha. The winter wheat yield estimation accuracy with EnKF
+assimilation was improved, with a higher coeﬃcient of determination (R2 = 0.35) and a much lower
+RMSE (RMSE = 934 kg/ha). Overall, the correlation of the assimilated winter wheat yield is higher
+
+===== PDF PAGE 11 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 11 of 17
+
+
+
+than that without assimilation, although the error of the yield estimation results with assimilation is
+not negligible (RMSE = 934 kg/ha).
+
+
+
+
+
+     Figure 5. Validation of the retrieved soil moisture from the water cloud model; (a) 1 April, (b) 7 May,
+    and (c) 1 June. Note: 55 sample points were used for validation.
+
+
+
+
+
+     Figure 6. Comparison of the SM curves simulated by WOFOST model with and without the EnKF-based
+     assimilation method (a sample point in Shenzhou county).
+
+===== PDF PAGE 12 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 12 of 17
+
+
+
+
+
+     Figure 7. Regional winter wheat yield estimation without and with the EnKF assimilation method ((a)
+     without assimilation; (b) with EnKF assimilation).
+
+
+
+
+
+                          (a)                                                 (b)
+
+       Figure 8. Winter wheat yield estimation (a) without assimilation and (b) with EnKF assimilation.
+
+4. Discussion
+
+    The valuable information obtained from optical and SAR remotely sensed data allows us to
+evaluate the combined ability of the two sources of data by assimilating them into the crop growth
+model. We considered that there are two strategies to assimilate optical and SAR remotely-sensed data
+into the crop model. One strategy is to retrieve state variables from the optical data and SAR data
+individually and then assimilate these parameters into the crop model on the date of observation [46–48].
+The advantage of this method is that the two data sources can complement each other at a temporal
+scale. Another strategy, which was adopted in this study, is to combine the two data sources to retrieve
+
+===== PDF PAGE 13 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 13 of 17
+
+
+
+state variables (e.g., soil moisture) through a mechanism model and then assimilate the retrieved
+parameters into the crop model. An important issue for this strategy is the time consistency of the
+two data sources. For this study, we assumed that the NDVI will not change dramatically in a short
+time. In this paper, the SM was assimilated into the WOFOST model as a state variable using the EnKF
+assimilation algorithm to estimate the winter wheat yield at a regional scale. The SM images were
+retrieved by the water cloud model using Sentinel-1 C-band SAR data and Sentinel-2 MSI optical data.
+
+4.1. Uncertainties of this Study
+
+     Soil moisture variability is the main driver of crop yield variability and accurate estimates of soil
+moisture are important for understanding crop status and estimating crop yields [26,49,50]. Our soil
+moisture retrieval results showed that the accuracy of three SM images was acceptable and the
+maximum R2 was 0.53 and minimum RMSE was 7.43%. However, large magnitude soil moisture
+error can bring a large uncertainty to crop models. The soil moisture retrieval error comes from both
+ﬁeld measurements and the characteristics of the satellite data. It has been found that VV polarized
+radiation, which was used in this study, is eﬀective for monitoring early vegetation, whereas it will
+cause more errors during the later stages of crop development [51].
+     In our analysis, the accuracy of the winter wheat yield estimation was improved by the EnKF
+assimilation method. The R2 increased from 0.21 to 0.35 and RMSE decreased from 1330 kg/ha to
+934 kg/ha and more realistic spatial diﬀerences throughout the study area were shown. This indicates
+the potential of crop yield estimation by combining the WOFOST model and the water cloud model,
+which jointly used the Sentinel-1 C-band SAR data and Sentinel-2 MSI optical data. However, compared
+with our previous study about assimilating time series LAI into the WOFOST model using the EnKF
+method (R2 = 0.43, RMSE = 439 kg/ha) [1], this study still has a relatively high error (RMSE = 934 kg/ha).
+The main reasons for the errors are likely from the following points: First, the uncertainty of soil
+moisture retrieved from the water cloud model is a main source of error. About 7% error for soil
+moisture is slightly high, because the ﬁeld capacity of the soil and the wilting point of the crop are
+around 0.30 m3/m3 and 0.07 m3/m3 in this study area, respectively. Second, the yield breakdown rate,
+which will cause overestimation of the ﬁeld measured winter wheat yield, was not considered when
+calculating the ﬁeld measured yield. Third, the amount of observation data (there are only three dates
+of SM images on April 1st, May 7th, and June 1st) was very limited for the crop model to conduct data
+assimilation. Suﬃcient observations during the crop growth period are of great importance for data
+assimilation to improve crop yield estimation.  It is proven that the data assimilation algorithm is
+sensitive to sampling size and update frequency [44] and the EnKF method is limited by the ﬁnite
+ensemble size, which will bring sampling error into the background covariance [52,53]. Fourth, the soil
+moisture in WOFOST model is an average quantity, which is obtained by dividing the total water
+content of the root zone by the root length. In this study, we only used the 0–10 cm soil moisture data
+in the water cloud model. Thus, it is better to use soil moisture data at diﬀerent depths.
+
+4.2. Future Work
+
+     In summary, there are still several limitations of this study, although it has been proven to have
+potential for winter wheat yield estimation at the regional scale. We have summed up three points to
+help improve the assimilation framework in the future. Firstly, as a semi empirical model, the accuracy
+of the water cloud model strongly relies on in situ measurements, which causes errors and is diﬃcult to
+extend to a large regional scale. A more mechanistic model can be imported to replace the water cloud
+model (e.g., Michigan Microwave Canopy Scattering (MIMICS)). Secondly, owing to the deﬁciency of
+the WOFOST model in the irrigation module [4,44], the irrigation and soil water balance only received
+cursory attention in this study. A soil water atmosphere plant (SWAP) model with more complex soil
+subroutines could be taken into account. The principal diﬀerence between the SWAP and WOFOST
+models is in the soil water balance component calculations. The SWAP model will have a more accurate
+modelling of the soil water balance [54]. Thirdly, this study was simulated at 10 m scale in Hengshui
+
+===== PDF PAGE 14 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 14 of 17
+
+
+
+city, which has more than one million pixels. There is no doubt that this will increase the demand on
+the computing power of computers if we want to run the model at a larger scale. As such, a higher
+eﬃciency assimilation strategy needs to be considered to improve computing eﬃciency, for example
+a cluster strategy on the grid can eﬀectively improve the computing eﬃciency [55,56]. Therefore,
+it would be interesting to try to achieve a better result using the aspects above.
+
+5. Conclusions
+
+     In this study, the SM mapping retrieved from the water cloud model, using Sentinel-1 C-band SAR
+data and Sentinel-2 MSI optical data, was assimilated into WOFOST model with the EnKF algorithm to
+improve winter wheat yield estimation at a regional scale in Hengshui city. The following conclusions
+can be drawn:
+
+•    First, SM retrieval results demonstrated that it is feasible to retrieve soil moisture content with the
+    water cloud model by combining remotely sensed Sentinel-1 and Sentinel-2 data. Results showed
+    an acceptable accuracy on three dates where R2 was 0.45, 0.53, and 0.49, respectively, and RMSE
+    was 9.16%, 7.43%, and 8.53%, respectively.
+•   Second, the assimilation results indicated that, with assimilation of the SM in the WOFOST
+     water-limited mode, the winter wheat yield estimation achieved a higher accuracy, with R2 = 0.35
+    and RMSE = 934 kg/ha, than that without assimilation, with R2 = 0.21 and RMSE = 1330 kg/ha.
+    Consequently, our results highlight the usefulness and ability of assimilating SM, which was
+     retrieved by combining Sentinel-1 C-band SAR and Sentinel-2 MSI optical data into the WOFOST
+    model to improve regional winter wheat yield estimations.
+
+Supplementary Materials: The following are available online at http://www.mdpi.com/2072-4292/11/13/1618/s1,
+Table S1: Values of soil parameters for WOFOST model; Table S2. Values of crop parameters for WOFOST model.
+
+Author Contributions: W.Z., J.H. and L.L. proposed the original idea for the study; W.Z., H.M., X.G., and H.H.
+performed the experiments and processed and analyzed the data, W.Z. wrote the original manuscript. J.H., X.Z.,
+B.X., and X.X. reviewed the paper.
+
+Funding: This study was funded by the National Natural Science Foundation of China (Project No. 41671418),
+Fundamental Research Funds for the Chinese Central Universities (Project No. 2019TC117), Science and Technology
+Facilities Council of UK-Newton Agritech Programme (Sentinels of Wheat), National Natural Science Foundation
+of China–Science and Technology Facilities Council Joint Project (Project No. 6151101278) and China Scholarship
+Council (No.201806350193).
+
+Acknowledgments: We thank the journal’s editors and anonymous reviewers for their kind comments and
+valuable suggestions to improve the quality of this paper.
+
+Conﬂicts of Interest: The authors declare no conﬂict of interest.
+
+
+References
+
+1.   Huang, J.; Sedano, F.; Huang, Y.; Ma, H.; Li, X.; Liang, S.; Tian, L.; Zhang, X.; Fan, J.; Wu, W. Assimilating a
+     synthetic Kalman ﬁlter leaf area index series into the WOFOST model to improve regional winter wheat
+     yield estimation. Agric. For. Meteorol. 2016, 216, 188–202. [CrossRef]
+2.   Huang, J.; Ma, H.; Su, W.; Zhang, X.; Huang, Y.; Fan, J.; Wu, W. Jointly assimilating MODIS LAI and et
+     products into the swap model for winter wheat yield estimation. IEEE J. Sel. Top. Appl. Earth Obs. Remote
+      Sens. 2015, 8, 1–12. [CrossRef]
+3.    Xie, Y.; Wang, P.; Sun, H.; Zhang, S.; Li, L. Assimilation of leaf area index and surface soil moisture with the
+     ceres-wheat model for winter wheat yield estimation using a particle ﬁlter algorithm. IEEE J. Sel. Top. Appl.
+     Earth Obs. Remote Sens. 2017, 10, 1–14. [CrossRef]
+4.   de Wit, A.J.W.; van Diepen, C.A. Crop model data assimilation with the Ensemble Kalman ﬁlter for improving
+     regional crop yield forecasts. Agric. For. Meteorol. 2007, 146, 38–56. [CrossRef]
+5.   Cheng, Z.; Meng, J.; Shang, J.; Liu, J.; Qiao, Y.; Qian, B.; Jing, Q.; Dong, T. Improving soil available nutrient
+     estimation by integrating modiﬁed WOFOST model and time-series earth observations. IEEE Trans. Geosci.
+     Remote Sens. 2018. [CrossRef]
+
+===== PDF PAGE 15 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 15 of 17
+
+
+
+6.   Mathieu, P.-P.; O’Neill, A. Data assimilation: From photon counts to Earth System forecasts. Remote Sens.
+     Environ. 2008, 112, 1258–1267. [CrossRef]
+7.   De Wit, A.; Duveiller, G.; Defourny, P. Estimating regional winter wheat yield with WOFOST through the
+     assimilation of green area index retrieved from MODIS observations. Agric. For. Meteorol. 2012, 164, 39–52.
+     [CrossRef]
+8.    Veloso, A.; Mermoz, S.; Bouvet, A.; Le Toan, T.; Planells, M.; Dejoux, J.-F.; Ceschia, E. Understanding the
+     temporal behavior of crops using Sentinel-1 and Sentinel-2-like data for agricultural applications. Remote Sens.
+     Environ. 2017, 199, 415–426. [CrossRef]
+9.   Charoenhirunyingyos, S.; Honda, K.; Kamthonkiat, D.; Ines, A.V.M. Soil hydraulic parameters estimated
+     from satellite information through data assimilation. Int. J. Remote Sens. 2011, 32, 8033–8051. [CrossRef]
+10.   Bai, X.; He, B. Potential of Dubois model for soil moisture retrieval in prairie areas using SAR and optical
+      data. Int. J. Remote Sens. 2015, 36, 5737–5753. [CrossRef]
+11.  Kornelsen, K.C.; Coulibaly, P. Advances in soil moisture retrieval from synthetic aperture radar and
+     hydrological applications. J. Hydrol. 2013, 476, 460–489. [CrossRef]
+12.  Fang, B.; Lakshmi, V. Soil moisture at watershed scale: Remote sensing techniques.  J. Hydrol. 2014, 516,
+     258–272. [CrossRef]
+13.   Tao, L.; Wang, G.; Chen, W.; Chen, X.; Li, J.; Cai, Q. Soil moisture retrieval from SAR and optical data using a
+    combined model. IEEE J. Sel. Top. Appl. Earth Obs. Remote Sens. 2019, 12, 637–647. [CrossRef]
+14.   Bracaglia, M.; Ferrazzoli, P.; Guerriero, L. A fully polarimetric multiple scattering model for crops. Remote Sens.
+     Environ. 1995, 54, 170–179. [CrossRef]
+15.  Ulaby, F.T.; Sarabandi, K.; McDonald, K.; Whitt, M.; Dobson, M.C. Michigan microwave canopy scattering
+     model. Int. J. Remote Sens. 1990, 11, 1223–1253. [CrossRef]
+16.  Attema, E.P.W.; Ulaby, F.T. Vegetation modeled as a water cloud. Radio Sci. 1978, 13, 357–364. [CrossRef]
+17.   Bindlish, R.; Barros, A.P. Parameterization of vegetation backscatter in radar-based, soil moisture estimation.
+     Remote Sens. Environ. 2011, 76, 130–137. [CrossRef]
+18.   Svoray, T.; Shoshany, M. Herbaceous biomass retrieval in habitats of complex composition: A model merging
+    SAR images with unmixed Landsat TM data. IEEE Trans. Geosci. Remote Sens. 2003, 41, 1592–1601. [CrossRef]
+19.  Kseneman, M.; Gleich, D.; Cucej, Ž. Soil moisture estimation using high-resolution spotlight TerraSAR-X
+      data. IEEE Geosci. Remote Sens. Lett. 2011, 8, 686–690. [CrossRef]
+20.  Kseneman, M.; Gleich, D. Soil moisture estimation from X-band data using Tikhonov regularization and
+     neural net. IEEE Trans. Geosci. Remote Sens. 2013, 51, 3885–3898. [CrossRef]
+21.  Kweon, S.-K.; Oh, Y. A modiﬁed water-cloud model with leaf angle parameters for microwave backscattering
+     from agricultural ﬁelds. IEEE Trans. Geosci. Remote Sens. 2015, 53, 2802–2809. [CrossRef]
+22.  Quan, X.; He, B.; Li, X. A Bayesian network-based method to alleviate the ill-posed inverse problem: A case
+     study on leaf area index and canopy water content retrieval. IEEE Trans. Geosci. Remote Sens. 2015, 53, 1–11.
+     [CrossRef]
+23.   Bai, X.; He, B.; Li, X.; Zeng, J.; Wang, X.; Wang, Z.; Zeng, Y.; Su, Z. First assessment of sentinel-1a data for
+     surface soil moisture estimations using a coupled water cloud model and advanced integral equation model
+     over the Tibetan plateau. Remote Sens. 2017, 9, 714. [CrossRef]
+24.   Petropoulos, G.P.; Ireland, G.; Barrett, B. Surface soil moisture retrievals from remote sensing: Current status,
+     products & future trends. Phys. Chem. Earth Parts A/B/C 2015, 83, 36–56.
+25.   Ines, A.V.; Das, N.N.; Hansen, J.W.; Njoku, E.G. Assimilation of remotely sensed soil moisture and vegetation
+     with a crop simulation model for maize yield prediction. Remote Sens. Environ. 2013, 138, 149–164. [CrossRef]
+26.  Chakrabarti, S.; Bongiovanni, T.; Judge, J.; Zotarelli, L.; Bayer, C. Assimilation of SMOS soil moisture for
+     quantifying drought impacts on crop yield in agricultural regions. IEEE J. Sel. Top. Appl. Earth Obs. Remote
+      Sens. 2014, 7, 3867–3879. [CrossRef]
+27.  Wu, K.; Huang, R.J. The sustainable evaluations, the development potentialities and the countermeasures of
+     water and land resources use in the Huang-Huai-Hai plain. Sci. Geogr. Sin. 2001, 5, 390–395. [CrossRef]
+28.   Jiang, Z.; Chen, Z.; Chen, J.; Liu, J.; Ren, J.; Li, Z.; Sun, L.; Li, H. Application of crop model data assimilation
+     with a particle ﬁlter for estimating regional winter wheat yields. IEEE J. Sel. Top. Appl. Earth Obs. Remote
+      Sens. 2014, 7, 4422–4431. [CrossRef]
+
+===== PDF PAGE 16 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 16 of 17
+
+
+
+29.  Pan, H.; Chen, Z.; Ren, J.; Li, H.; Wu, S. Modeling winter wheat leaf area index and canopy water content
+     with three diﬀerent approaches using Sentinel-2 multispectral instrument data. IEEE J. Sel. Top. Appl. Earth
+     Obs. Remote Sens. 2018, 22, 482–492. [CrossRef]
+30.  Ma, H.; Huang, J.; Zhu, D.; Liu, J.; Su, W.; Zhang, C.; Fan, J. Estimating regional winter wheat yield by
+     assimilation of time series of HJ-1 CCD NDVI into WOFOST–ACRM model with Ensemble Kalman Filter.
+     Math. Comput. Model. 2013, 58, 759–770. [CrossRef]
+31.  Huang, J.; Tian, L.; Liang, S.; Ma, H.; Becker-Reshef, I.; Huang, Y.; Su, W.; Zhang, X.; Zhu, D.; Wu, W.
+     Improving winter wheat yield estimation by assimilation of the leaf area index from Landsat TM and MODIS
+     data into the WOFOST model. Agric. For. Meteorol. 2015, 204, 106–121. [CrossRef]
+32.   Louis, J.; Debaecker, V.; Pﬂug, B.; Main-Knorn, M. Sentinel-2 Sen2Cor: L2A processor for users. In Proceedings
+      of the Living Planet Symposium, Prague, Czech Republic, 9–13 May 2016.
+33.  Graham, A.J.; Harris, R. Extracting biophysical parameters from remotely sensed radar data: a review of the
+     water cloud model. Prog. Phys. Geogr. Earth Environ. 2003, 27, 217–229. [CrossRef]
+34.  Xu, H.; Steven, M.D.; Jaggard, K.W. Monitoring leaf area of sugar beet using ERS-1 SAR data. Int. J. Remote
+      Sens. 1996, 17, 3401–3410. [CrossRef]
+35.  Diepen, C.A.; Wolf, J.; Keulen, H.; Rappoldt, C. Wofost: A simulation model of crop production. Soil Use
+     Manag. 2010, 5, 16–24. [CrossRef]
+36.  Van Ittersum, M.; Leﬀelaar, P.; Van Keulen, H.; Kropﬀ, M.; Bastiaans, L.; Goudriaan, J.; Van Ittersum, M.;
+     Kropﬀ, M. On approaches and applications of the Wageningen crop models. Eur. J. Agron. 2003, 18, 201–234.
+     [CrossRef]
+37.  Eweys, O.A.; Elwan, A.A.; Borham, T.I. Integrating WOFOST and Noah LSM for modeling maize production
+    and soil moisture with sensitivity analysis, in the east of The Netherlands. Field Crop. Res. 2017, 210, 147–161.
+     [CrossRef]
+38.  Saxton, K.E.; Rawls, W.J. Soil water characteristic estimates by texture and organic matter for hydrologic
+      solutions. Soil Sci. Soc. Am. J. 2006, 70, 1569. [CrossRef]
+39.  Evensen, G. Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo
+    methods to forecast error statistics. J. Geophys. Res. Space Phys. 1994, 99, 10143. [CrossRef]
+40.  Burgers, G.; Van Leeuwen, P.J.; Evensen, G. Analysis scheme in the ensemble Kalman ﬁlter. Mon. Weather.
+     Rev. 1998, 126, 1719–1724. [CrossRef]
+41.  Evensen, G. The ensemble Kalman ﬁlter: Theoretical formulation and practical implementation. Ocean Dyn.
+     2003, 53, 343–367. [CrossRef]
+42.  Evensen, G. Data  Assimilation:  The Ensemble Kalman  Filter;  Springer:   Berlin,  Germany,  2009;
+    ISBN 978-3-642-03710-8.
+43.   Katzfuss, M.; Stroud, J.R.; Wikle, C.K. Understanding the ensemble Kalman ﬁlter. Am. Stat. 2016, 70, 350–357.
+     [CrossRef]
+44.  Wang, J.; Li, X.; Lu, L.; Fang, F. Estimating near future regional corn yields by integrating multi-source
+     observations into a crop growth model. Eur. J. Agron. 2013, 49, 126–140. [CrossRef]
+45.  Huang, J.; Zhuo, W.; Li, Y.; Huang, R.; Sedano, F.; Su, W.; Dong, J.; Tian, L.; Huang, Y.; Zhu, D.; et al.
+    Comparison of three remotely sensed drought indices for assessing the impact of drought on winter wheat
+      yield. Int. J. Digit. Earth 2018, 3, 1–23. [CrossRef]
+46.   Betbeder, J.; Fieuzal, R.; Baup, F. Assimilation of LAI and dry biomass data from optical and SAR images into
+     an agro-meteorological model to estimate soybean yield. IEEE J. Sel. Top. Appl. Earth Obs. Remote Sens. 2016,
+      9, 1–14. [CrossRef]
+47.  Dente, L.; Satalino, G.; Mattia, F.; Rinaldi, M. Assimilation of leaf area index derived from ASAR and MERIS
+     data into CERES-Wheat model to map wheat yield. Remote Sens. Environ. 2008, 112, 1395–1407. [CrossRef]
+48.   Prévot, L.; Chauki, H.; Trouﬂeau, D.; Weiss, M.; Baret, F.; Brisson, N. Assimilating optical and radar data into
+     the STICS crop model for wheat. Agronomie 2003, 23, 297–303. [CrossRef]
+49.   Li, Y.; Zhou, Q.; Zhou, J.; Zhang, G.; Chen, C.; Wang, J. Assimilating remote sensing information into a
+     coupled hydrology-crop growth model to estimate regional maize yield in arid regions. Ecol. Model. 2014,
+     291, 15–27. [CrossRef]
+50.   Bolten, J.D.; Crow, W.T.; Zhan, X.; Jackson, T.J.; Reynolds, C.A. Evaluating the utility of remotely sensed soil
+     moisture retrievals for operational agricultural drought monitoring. IEEE J. Sel. Top. Appl. Earth Obs. Remote
+      Sens. 2010, 3, 57–66. [CrossRef]
+
+===== PDF PAGE 17 / 17 =====
+
+Remote Sens. 2019, 11, 1618                                                                                 17 of 17
+
+
+
+51.  Le Toan, T.; Laur, H.; Mougin, E.; Lopes, A. Multitemporal and dual-polarization observations of agricultural
+     vegetation covers by X-band SAR images. IEEE Trans. Geosci. Remote Sens. 1989, 27, 709–718. [CrossRef]
+52.  Han, X.; Li, X. An evaluation of the nonlinear/non-Gaussian ﬁlters for the sequential data assimilation.
+     Remote Sens. Environ. 2008, 112, 1434–1449. [CrossRef]
+53.  Kepert, J.D. Covariance localisation and balance in an ensemble Kalman ﬁlter. Q. J. R. Meteorol. Soc. 2009,
+     135, 1157–1176. [CrossRef]
+54.   Eitzinger, J.; Trnka, M.; Hösch, J.; Zalud, Z.; Dubrovský, M. Comparison of CERES, WOFOST and SWAP
+     models in simulating soil water content during growing season under diﬀerent soil conditions. Ecol. Model.
+     2004, 171, 223–246. [CrossRef]
+55.  Huang, J.; Ma, H.; Sedano, F.; Lewis, P.; Liang, S.; Wu, Q.; Su, W.; Zhang, X.; Zhu, D. Evaluation of regional
+     estimates of winter wheat yield by assimilating three remotely sensed reﬂectance datasets into the coupled
+    WOFOST–PROSAIL model. Eur. J. Agron. 2019, 102, 1–13. [CrossRef]
+56.  Huang, J.; Gómez-Dans, J.; Huang, H.; Ma, H.; Wu, Q.; Lewis, P.; Liang, S.; Chen, Z.; Xue, J.; Wu, Y.; et al.
+     Assimilation of remote sensing into crop growth models: Current status and perspectives. Agric.  For.
+      Meteorol. 2019, 276, 1–16. [CrossRef]
+
+           © 2019 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access
+                           article distributed under the terms and conditions of the Creative Commons Attribution
+                  (CC BY) license (http://creativecommons.org/licenses/by/4.0/).

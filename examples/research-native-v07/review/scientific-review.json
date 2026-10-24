@@ -1,0 +1,587 @@
+{
+  "created_at": "2026-10-23T14:32:10.222601+00:00",
+  "reviewer": "rebuild_paper_sources",
+  "scope": "Scientific content, quantitative units, source locators, figure crop fidelity. Not an aesthetic comparison between the independent drafts.",
+  "write_boundary": ".test-output/paper-science-review",
+  "read_only_author_files": true,
+  "no_network_redownload": true,
+  "no_cross_author_disclosure": true,
+  "version_scope": {
+    "a": {
+      "final_source_project_revision": 15,
+      "final_source_project_sha256": "f2709ff009419159df1dc4e1cf43ca1308931ac742e8ee99f9c2b72aa629435f",
+      "final_source_project_updated_at": "2026-10-23T14:30:36.089Z",
+      "full_initial_render_review": {
+        "render": ".test-output/rebuild-author-a/project/exports/r9-903abe06/render-09803eaa/artifacts/pages",
+        "pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "targeted_revised_render_review": {
+        "render": ".test-output/rebuild-author-a/project/exports/r15-d01f1548/render-93871128/artifacts/pages",
+        "pages": [
+          7,
+          13
+        ]
+      },
+      "all_current_slide_texts_and_notes_compared": true,
+      "semantic_change_audit": "author-a-semantic-change-audit.json",
+      "total_seconds": 840,
+      "all_final_pages_visually_reviewed": false
+    },
+    "b": {
+      "final_source_project_revision": 15,
+      "final_source_project_sha256": "7b9f5047b76b4e11ca0e9ef7451d1370b5612b4fe8714e1f9710689939bef8e5",
+      "final_source_project_updated_at": "2026-10-23T14:33:41.921Z",
+      "full_initial_render_review": {
+        "render": ".test-output/rebuild-author-b/project/exports/r12-ed772b60/render-597ee0fb/artifacts/pages",
+        "pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      "targeted_revised_render_review": {
+        "render": ".test-output/rebuild-author-b/project/exports/r14-7ee69fca/render-28dda3bf/artifacts/pages",
+        "pages": [
+          1,
+          6,
+          8,
+          11,
+          12
+        ]
+      },
+      "all_current_slide_texts_and_notes_compared": true,
+      "semantic_change_audit": "author-b-semantic-change-audit.json",
+      "total_seconds": 840,
+      "all_final_pages_visually_reviewed": false
+    }
+  },
+  "summary": {
+    "material_numeric_transcription_errors": 0,
+    "numeric_values_checked": 249,
+    "optional_ids": [
+      "A-O01",
+      "A-O02",
+      "A-O03",
+      "B-O01",
+      "B-O02",
+      "B-O03"
+    ],
+    "status": "PASS: scientific content and all five must-fix issues cleared within the explicitly recorded review scope",
+    "must_fix_ids_initial": [
+      "A-M01",
+      "A-M02",
+      "B-M01",
+      "B-M02",
+      "B-M03"
+    ],
+    "open_must_fix_ids": [],
+    "resolved_must_fix_ids": [
+      "A-M01",
+      "A-M02",
+      "B-M01",
+      "B-M02",
+      "B-M03"
+    ],
+    "final_numeric_failures": 0
+  },
+  "sources": {
+    "cheng": {
+      "doi": "10.3389/fpls.2022.1090970",
+      "publisher_url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/full",
+      "pdf_path": ".test-output/papers/cheng/article.pdf",
+      "sha256": "57a5d569fca781f5e4041aa1d69e9a5523865ea8d5262ed79019da69e96cc075",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps."
+    },
+    "zhuo": {
+      "doi": "10.3390/rs11131618",
+      "publisher_url": "https://www.mdpi.com/2072-4292/11/13/1618",
+      "pdf_path": ".test-output/papers/zhuo/article.pdf",
+      "sha256": "dbc7fe47462dc6d89c033cbba24bc19599dc6709ade6a3b5a2ea42061b726df8",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps."
+    },
+    "shahhosseini": {
+      "doi": "10.1038/s41598-020-80820-1",
+      "publisher_url": "https://www.nature.com/articles/s41598-020-80820-1",
+      "pdf_path": ".test-output/papers/shahhosseini/article.pdf",
+      "sha256": "bc74ea2ce389f95f9e9ea4969e586fc7601f682eedc899ca93368d9321c171c3",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps."
+    }
+  },
+  "issues": [
+    {
+      "id": "A-M01",
+      "author": "a",
+      "priority": "P2",
+      "action": "must-fix",
+      "slides": [
+        "s01",
+        "s04",
+        "s05",
+        "s06",
+        "s08",
+        "s09",
+        "s13"
+      ],
+      "scope": "asset provenance metadata",
+      "title": "图件来源 PDF 页码有系统性偏移或空值",
+      "observed": "author.mjs asset() uses m.figure_pages?.[fig] with a one-based figure number; current project carries wrong or blank page locations.",
+      "file": "rebuild-author-a/author.mjs:49; project/project.json assets",
+      "evidence": {
+        "ch-map": {
+          "actual": "p.6",
+          "correct": "p.3"
+        },
+        "ch-lstm": {
+          "actual": "p.10",
+          "correct": "p.9"
+        },
+        "ch-sensors": {
+          "actual": "p.12",
+          "correct": "p.10"
+        },
+        "z-trajectory": {
+          "actual": "p.12",
+          "correct": "p.11"
+        },
+        "z-yield/z-yield-trim": {
+          "actual": "p. blank",
+          "correct": "p.12"
+        },
+        "s-importance/s-importance-two": {
+          "actual": "p. blank",
+          "correct": "p.13"
+        }
+      },
+      "source": "Source manifests each figure.pdf_page and the corresponding PDF captions",
+      "recommendation": "Read f.pdf_page or figure_pages[fig-1], update all affected project assets, and verify the saved records; visible footnotes are mostly correct.",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "A project r15: all six active figure references use source-v2 assets with correct PDF pages. asset() now reads f.pdf_page or figure_pages[fig-1]. Historical unused original asset records still retain old pages and must not be used for new sourcing.",
+        "verified_pages": {
+          "ch-map-source-v2": 3,
+          "ch-lstm-source-v2": 9,
+          "ch-sensors-source-v2": 10,
+          "z-yield-trim-source-v2": 12,
+          "z-trajectory-source-v2": 11,
+          "s-importance-two-source-v2": 13
+        },
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "A-M02",
+      "author": "a",
+      "priority": "P2",
+      "action": "must-fix",
+      "slides": [
+        "s13"
+      ],
+      "scope": "rendered figure crop",
+      "title": "APSIM 图8裁切削掉纵轴零刻度字形",
+      "observed": "The actual r9 page-0013.png cuts through the lower half of the 0 tick label. Current normalized h=.735 ends at source y=757.05 px in a 1770×1030 image.",
+      "file": "project assets s-importance-two; r9 page-0013.png",
+      "source": "Shahhosseini Fig.8, PDF p.13; original figure-08.png",
+      "recommendation": "Extend the crop slightly (approximately h=.75, then inspect) to retain the full zero tick and baseline without changing bars; update crop metadata.",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "A r15 page13 actually viewed; source-v2 crop height .755 retains complete zero tick and baseline. Original bars and year colors unchanged.",
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "A-O01",
+      "author": "a",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "s04",
+        "records-papers"
+      ],
+      "scope": "study-unit wording",
+      "title": "同一地块宜精确为同一试验区的同一生长季",
+      "observed": "The paper maps multiple winter-wheat plots at Xiaotangshan; its random split is within one study area and season.",
+      "source": "Cheng §2.1–2.2, PDF pp.3–4; Fig.1 p.3",
+      "recommendation": "Prefer 同试验区同季 or 同区同季 when discussing the complete dataset; the main limitation is already stated correctly.",
+      "status": "optional-not-required"
+    },
+    {
+      "id": "A-O02",
+      "author": "a",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "s10",
+        "records-papers"
+      ],
+      "scope": "mechanism metadata precision",
+      "title": "实测产量“仅是监督目标”可去掉“仅”",
+      "observed": "Visible diagram correctly treats observed county yield as the supervised target, and not a direct APSIM input. The paper Fig.1 caption also allows indirect use of yield data to test/improve crop-model predictions.",
+      "source": "Shahhosseini Fig.1 caption, PDF p.2",
+      "recommendation": "Keep 不是APSIM直接输入; avoid implying observed yields were never involved indirectly in crop-model evaluation/calibration.",
+      "status": "optional-not-required"
+    },
+    {
+      "id": "A-O03",
+      "author": "a",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "s13"
+      ],
+      "scope": "variable terminology",
+      "title": "水位变量可标为地下水埋深",
+      "observed": "AvgWTInseason is growing-season depth to water table in mm, rather than a signed elevation.",
+      "source": "Shahhosseini Fig.8 caption, PDF p.13",
+      "recommendation": "Use 生长季地下水埋深 for exact physical meaning; do not attach mm to the dimensionless normalized-importance axis.",
+      "status": "optional-not-required"
+    },
+    {
+      "id": "B-M01",
+      "author": "b",
+      "priority": "P1",
+      "action": "must-fix",
+      "slides": [
+        "b06"
+      ],
+      "scope": "rendered scientific notation",
+      "title": "EnKF公式上标 a/f 渲染为缺字方框",
+      "observed": "Actual r12 page-0006.png shows boxed-cross replacement glyphs for the superscript a and f. The intended update equation is correct in code, but unreadable on the slide.",
+      "file": "rebuild-author-b/slides.mjs:46; r12 page-0006.png",
+      "source": "Zhuo Eq.13, PDF p.7: analysis = forecast + K(observation − forecast) with H=I in this single-state setup",
+      "recommendation": "Use supported plain-text labels or separately positioned Latin a/f characters; inspect the actual PNG after rendering. A concise Chinese formula is scientifically equivalent.",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "B r14 page6 actually viewed; Chinese EnKF analysis/forecast/observation equation is readable and corresponds to Zhuo Eq.13.",
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "B-M02",
+      "author": "b",
+      "priority": "P2",
+      "action": "must-fix",
+      "slides": [
+        "b06",
+        "b07",
+        "b08",
+        "claim z-design"
+      ],
+      "scope": "claim provenance",
+      "title": "SM训练/验证“随机分半”未获得原文支持",
+      "observed": "The z-design metric denominator says 随机分半; the original only states half the 110 samples were used for training and half for validation.",
+      "file": "rebuild-author-b/sources.mjs:21; records-claims.json z-design; project claims",
+      "source": "Zhuo §2.3, PDF p.6; half training / half validation sentence",
+      "recommendation": "Remove 随机 and retain 55/55划分. This does not affect the separate Cheng random 9:1 split.",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "B project r15 z-design metric says half train/half validate and explicitly notes that random assignment is not stated. Final source locator is §2.2–2.3 pp.5–6; §3.3 p.9 in project and sources.mjs.",
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "B-M03",
+      "author": "b",
+      "priority": "P2",
+      "action": "must-fix",
+      "slides": [
+        "b11"
+      ],
+      "scope": "visible quantitative units",
+      "title": "2012结果表需在页面上注明RMSE单位kg/ha",
+      "observed": "Both RMSE columns are labeled without units in the actual r12 slide; kg/ha is present in notes/claim records but not the displayed page. R² percentage convention is correctly marked.",
+      "source": "Shahhosseini Table3, PDF p.11",
+      "recommendation": "Add RMSE (kg/ha) to the subtitle or column headings. Preserve 原表% for R².",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "B r14 page11 actually viewed; subtitle explicitly states RMSE unit kg/ha. R² remains labeled original percent.",
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "B-O01",
+      "author": "b",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "b03",
+        "b04",
+        "b13",
+        "b14",
+        "records-papers"
+      ],
+      "scope": "study-unit wording",
+      "title": "同田同季宜精确为同试验区同季",
+      "observed": "The Xiaotangshan dataset spans multiple plots in one study area in one season; no independent spatial-block or year test was shown.",
+      "source": "Cheng §2.1–2.2, PDF pp.3–4; Fig.1 p.3",
+      "recommendation": "Use 同试验区同季 so the limitation is not mistaken for a single literal field plot.",
+      "status": "optional-not-required"
+    },
+    {
+      "id": "B-O02",
+      "author": "b",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "b12"
+      ],
+      "scope": "ablation definition",
+      "title": "分组输入标签加“仅加”可避免误解基础特征被删去",
+      "observed": "Notes correctly say only one APSIM subgroup was added; visible labels 仅物候/仅作物/仅水土天气 could be read as total model inputs.",
+      "source": "Shahhosseini Partial inclusion of APSIM variables and Table4, PDF pp.8–9,11",
+      "recommendation": "Use 仅加物候组/仅加作物组/仅加水土天气组 or a short scope label that baseline ML inputs remain.",
+      "status": "resolved",
+      "resolution": {
+        "status": "resolved",
+        "evidence": "B r14 page12 actually viewed; baseline retention and addition of one APSIM group are explicit in the slide labels.",
+        "verified_at": "2026-10-23T14:37:08.883442+00:00"
+      }
+    },
+    {
+      "id": "B-O03",
+      "author": "b",
+      "priority": "P3",
+      "action": "optional",
+      "slides": [
+        "b12"
+      ],
+      "scope": "variable terminology",
+      "title": "水位变量可精确写为地下水埋深",
+      "observed": "AvgWTInseason means depth to water table during the growing season (mm).",
+      "source": "Shahhosseini Fig.8 caption, PDF p.13",
+      "recommendation": "Prefer 生长季地下水埋深; normalized permutation importance itself is dimensionless.",
+      "status": "optional-not-required"
+    }
+  ],
+  "verified_topics": [
+    {
+      "topic": "Cheng experiment identity",
+      "source": "Fig.4 p.9 and §3.2/Fig.6 pp.9–10",
+      "authors": {
+        "a": [
+          "s04",
+          "s05",
+          "s06"
+        ],
+        "b": [
+          "b03",
+          "b04",
+          "b05"
+        ]
+      },
+      "result": "0.201 t/ha belongs to four-VI nine-month model comparison; 0.219 t/ha belongs to distinct three-VI four-date sensor comparison. Authors do not merge them."
+    },
+    {
+      "topic": "Cheng validation scope",
+      "source": "§2.1–2.3 pp.3–7",
+      "authors": {
+        "a": [
+          "s03",
+          "s04",
+          "s05",
+          "s14"
+        ],
+        "b": [
+          "b03",
+          "b04",
+          "b13",
+          "b14"
+        ]
+      },
+      "result": "15,709 5×5 m dry-yield records, one 2020–2021 season at Xiaotangshan, random 9:1 records. 39 ground points distinguished from main test sample. Neither draft claims independent-year or spatial-block validation."
+    },
+    {
+      "topic": "Cheng source inconsistencies",
+      "source": "Abstract pp.1–2; §2.2 p.4 and §3.2 p.9; Figs.4,6",
+      "authors": {
+        "a": [
+          "s06 notes",
+          "records-papers"
+        ],
+        "b": [
+          "b05 notes",
+          "records-papers"
+        ]
+      },
+      "result": "Both avoid treating abstract “about 5%” as relative RMSE decrease for .307→.237, and record April date discrepancy. R² increase is .055; relative RMSE decrease from printed values is about22.8% (review calculation, not a new experiment)."
+    },
+    {
+      "topic": "Zhuo sampling and physical support",
+      "source": "§2.2–2.3 pp.5–6; §4 pp.13–14",
+      "authors": {
+        "a": [
+          "s03",
+          "s07",
+          "s08",
+          "s09"
+        ],
+        "b": [
+          "b06",
+          "b07",
+          "b08"
+        ]
+      },
+      "result": "22 sites ×5 one-square-metre samples =110. SM calibration/validation55/55 versus yield validation110 are distinct. 0–10cm observation vs modeled mean root-zone SM limitation retained."
+    },
+    {
+      "topic": "Zhuo EnKF design",
+      "source": "§2.4–2.6 pp.6–8, Eqs.13–15",
+      "authors": {
+        "a": [
+          "s07"
+        ],
+        "b": [
+          "b06"
+        ]
+      },
+      "result": "50 members, model-output10%/observation7% perturbation, updates only when SM observations exist, feedback returns SM to WOFOST; output is yield. The rendered formula issue was fixed and rechecked."
+    },
+    {
+      "topic": "Zhuo key figures",
+      "source": "Figs.5–6 p.11; Fig.8 p.12",
+      "authors": {
+        "a": [
+          "s08",
+          "s09"
+        ],
+        "b": [
+          "b07",
+          "b08"
+        ]
+      },
+      "result": "SM errors9.16/7.43/8.53% not misrepresented as relative improvement. Yield1330→934kg/ha; R².21→.35, high-yield underestimation preserved. Single-station trajectory identified as illustration, not regional accuracy."
+    },
+    {
+      "topic": "Shah input and time boundary",
+      "source": "Fig.1 p.2; Methods pp.3–8; Discussion pp.12–13",
+      "authors": {
+        "a": [
+          "s02",
+          "s03",
+          "s10",
+          "s14"
+        ],
+        "b": [
+          "b02",
+          "b09",
+          "b13"
+        ]
+      },
+      "result": "No remote sensing inputs in this study. 293 counties,10016 county-years,1984–2018,22 APSIM outputs; leave2012,2017,2018 each in turn. Complete test-year weather acknowledged; not portrayed as proven operational early forecast."
+    },
+    {
+      "topic": "Shah exception and drought stress test",
+      "source": "Table2 p.9; Table3 p.11",
+      "authors": {
+        "a": [
+          "s11",
+          "s12"
+        ],
+        "b": [
+          "b10",
+          "b11"
+        ]
+      },
+      "result": "2017 LightGBM914→916kg/ha exception retained. All11 hybrid R² remain negative in2012. Percentage R² correctly distinguished from decimal R²; no claim that lower RMSE alone establishes extreme-year reliability."
+    },
+    {
+      "topic": "Shah feature interpretation",
+      "source": "Table4 p.11; Figs.7–8 pp.12–13",
+      "authors": {
+        "a": [
+          "s13"
+        ],
+        "b": [
+          "b12"
+        ]
+      },
+      "result": "1040/906/837 for stacked regression and1562/1208/1603 forRF checked. Importance described as predictive association, not causation; APSIM-only importance distinguished from global feature ranking."
+    },
+    {
+      "topic": "Cross-paper synthesis and proposals",
+      "source": "All three paper designs and declared author inference/proposal records",
+      "authors": {
+        "a": [
+          "s03",
+          "s14",
+          "s15"
+        ],
+        "b": [
+          "b13",
+          "b14"
+        ]
+      },
+      "result": "No absolute-RMSE ranking across crop/scale/validation differences. New common-data testing proposals labeled unimplemented, not reported findings."
+    },
+    {
+      "topic": "Bibliography, license, source bytes",
+      "source": "Publisher article metadata and prepared manifests",
+      "authors": {
+        "a": [
+          "s16"
+        ],
+        "b": [
+          "b15"
+        ]
+      },
+      "result": "All titles/authors/years/DOIs match source packet. ThreeCC BY4.0 licenses; no figure-specific exclusion found in inspected publication notices; Nature third-party exception remains conditional. Embedded figure bytes match originals; Active A asset page metadata was corrected and verified."
+    }
+  ],
+  "limitations": [
+    "Visual coverage is initial drafts all31 pages (A r9 all16, B r12 all15), followed by targeted revised pages (A r15 pages7/13; B r14 pages1/6/8/11/12). This is not a claim to have viewed all final pages.",
+    "Latest source/claim metadata checked in A project r15 and B project r15. B final z-design locator explicitly includes pp.5–6.",
+    "All latest slide text, notes, active figure references and the reported249 result values were checked; layout-only changes on unviewed final pages are outside the visual claim.",
+    "Original figure labels can remain small at presentation scale, especially English labels/ticks. Scientific fidelity and native key-number restatement do not establish distant-viewer projection legibility of every original label.",
+    "No original-model rerun, raw-data replication or point digitization was performed. Numeric audit is against the published figures/tables; source contradictions are retained rather than silently repaired.",
+    "Inactive historical A assets retain obsolete page metadata, but every active final slide refers to corrected source-v2 assets. Use active-source mapping in crop-audit.json.",
+    "The P3 wording suggestions remain optional: study area versus a literal field; depth to water table terminology; observed yield not a direct APSIM input but may be used indirectly in crop-model evaluation."
+  ],
+  "frozen_at": "2026-10-23T14:37:08.883442+00:00",
+  "frozen": true,
+  "final_source_locator_check": {
+    "author": "b",
+    "project_revision": 15,
+    "claim": "z-design",
+    "locator": "§2.2–2.3 pp.5–6；§3.3 p.9",
+    "source_file": ".test-output/rebuild-author-b/sources.mjs"
+  }
+}

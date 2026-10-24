@@ -1,0 +1,14 @@
+{
+  "command": "npm test",
+  "node": "v24.19.0",
+  "testConcurrency": 2,
+  "tests": 291,
+  "pass": 291,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "durationMs": 26122.462225,
+  "rawLogSha256": "018e0a279c2bf4179ac1ae2feb498a64106b8bd75bcd459c36d3bd2e718f731a",
+  "sourceCheckpoint": "15ec68f5f95f7f5fbd527d37cc8a35b757125f8b",
+  "scope": "Deterministic regression checks, not model-design quality or target DSH GUI validation."
+}

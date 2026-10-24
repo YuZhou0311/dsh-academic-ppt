@@ -1,0 +1,118 @@
+{
+  "observations": [
+    {
+      "slideId": "b01",
+      "contentCheck": "上方为Zhuo单站SM真实轨迹，图下注明身份和来源；下方完整题名与副题，无第三篇已使用遥感的暗示。",
+      "legibilityCheck": "整行题名清楚，轨迹保留图例、轴与红圈；图与题名上下组织，与初稿骨架不同。封面变化明确记录为跨稿初审反馈后的迭代。",
+      "issue": ""
+    },
+    {
+      "slideId": "b02",
+      "contentCheck": "输入、状态和表征区分；第三路径直接标原研究未使用遥感。",
+      "legibilityCheck": "三个横向关系行与问题对齐，中间字号清楚。",
+      "issue": ""
+    },
+    {
+      "slideId": "b03",
+      "contentCheck": "15709网格、5m、同田同季随机9:1、39点与99景明确。",
+      "legibilityCheck": "地图和条件条都处主视图，主要图例与数值可读。",
+      "issue": ""
+    },
+    {
+      "slideId": "b04",
+      "contentCheck": "4组RMSE及R²核对Fig.4；原图轴方向未知明确保留。",
+      "legibilityCheck": "原生误差条、数值、R²和右侧原始散点面板清楚且无重叠；1–7轴保留，原图缺实测/估计方向在旁注明。关键统计28px，原图内统计为次级重复。",
+      "issue": ""
+    },
+    {
+      "slideId": "b05",
+      "contentCheck": "三传感器结果与前页分开，0.219/0.237/0.307正确。",
+      "legibilityCheck": "原图可辨分辨率差异，右侧比较数字清楚；底部原始色条较小但仍可辨，主要判断无需逐刻度读数。",
+      "issue": ""
+    },
+    {
+      "slideId": "b06",
+      "contentCheck": "SM反演、50成员先验、EnKF、反馈及产量输出正确；公式限定SM更新。",
+      "legibilityCheck": "实际PNG已读到“分析SM = 预报SM + K×(观测SM−预报SM)”，没有原先上标缺字方框；关系箭头和扰动百分数清楚。",
+      "issue": ""
+    },
+    {
+      "slideId": "b07",
+      "contentCheck": "单站轨迹、三日期、0–10cm与根区不同、110样点验证区分。",
+      "legibilityCheck": "主图曲线可辨；三条关键中文图例24px，日期、深度与单站/110点身份28px。原始英文图例及次级坐标保留，不声称全部原图文字达24px。",
+      "issue": ""
+    },
+    {
+      "slideId": "b08",
+      "contentCheck": "全部原始点、1:1线和回归线保留；110样点、kg/ha、两组统计完整。",
+      "legibilityCheck": "24px重建刻度不重叠，6000/8000/10000按图轴中心精确配准，详见coordinate-calibration.json。",
+      "issue": ""
+    },
+    {
+      "slideId": "b09",
+      "contentCheck": "县产量为监督目标；22APSIM特征、原文无RS、完整测试年天气均显式。",
+      "legibilityCheck": "关系端口和回路清晰，主视图限制条可读。",
+      "issue": ""
+    },
+    {
+      "slideId": "b10",
+      "contentCheck": "Table2所选4行在2017/2018分别配对；914→916反例明确。",
+      "legibilityCheck": "两年四行同模型配对表和kg/ha条件清楚，914→916反例标明。机器纯文字告警未识别native数表，实际已核对其表格结构和精确值。",
+      "issue": ""
+    },
+    {
+      "slideId": "b11",
+      "contentCheck": "Table3全11行和负R²保留，副标题主视图写明RMSE单位kg/ha；R²沿用原表百分数。",
+      "legibilityCheck": "所有24px行值完整，统计列无拥挤，Stacked regression适度突出；底部解释没有遮挡末行。",
+      "issue": ""
+    },
+    {
+      "slideId": "b12",
+      "contentCheck": "Fig.8仅APSIM特征；右侧明确2018 Stacked回归保留基线、增添一组；1040/906/837及RF1603/1208反例完整。",
+      "legibilityCheck": "右侧组别和数值不重叠，重要性不等于因果清楚。原始图细轴名为次级，关键干旱胁迫/地下水位用28px中文重述。",
+      "issue": ""
+    },
+    {
+      "slideId": "b13",
+      "contentCheck": "作物、验证单位、划分和外推缺口逐行，显式禁止跨文RMSE排序。",
+      "legibilityCheck": "四列有足够行距和28px正文。",
+      "issue": ""
+    },
+    {
+      "slideId": "b14",
+      "contentCheck": "结论与未实施共同实验分明，支持/反证/信息不足/前提不成立区分。",
+      "legibilityCheck": "结论与未实施共同实验清楚分组；中央约24%几何空区是阅读间隔，实际无缺失内容或挤压，不用装饰补满。",
+      "issue": ""
+    },
+    {
+      "slideId": "b15",
+      "contentCheck": "三篇完整题名、作者、期刊、正确年份、DOI及图权利齐全。",
+      "legibilityCheck": "全书目无截断、无互相重叠，细节为脚注级字号。",
+      "issue": ""
+    }
+  ],
+  "pptxSha256": "450d93dc502a0e69614d1760ffb836bdeb99a70bb41b6765539ca6af0153deff",
+  "reviewer": "vision-model",
+  "basis": "pptx-render",
+  "reviewedSlides": [
+    "b01",
+    "b02",
+    "b03",
+    "b04",
+    "b05",
+    "b06",
+    "b07",
+    "b08",
+    "b09",
+    "b10",
+    "b11",
+    "b12",
+    "b13",
+    "b14",
+    "b15"
+  ],
+  "result": "passed",
+  "notes": "最终r15的15张实际PPTX渲染PNG全部逐页打开查看（page-0001至page-0015），contact sheet另外检查而非替代。两次study的6张候选PNG也分别实际查看。通过表示当前静态画面的主张/条件、关键数字与布局可用，不代表真实PowerPoint/WPS或投影现场。部分原始论文图的次级细字未达到24px；关键所需数值/条件用原生24/28px呈现，原图完整上下文保留。封面C为两份独立初稿跨稿验收后触发的B返工，未阅读另一稿，不能称零介入独立终稿。0个阻断错误，6条机器警告已按实际画面逐项解释。",
+  "createdAt": "2026-10-23T14:36:25.261Z",
+  "attestation": "user-or-agent-recorded-not-an-automatic-visual-judgment"
+}

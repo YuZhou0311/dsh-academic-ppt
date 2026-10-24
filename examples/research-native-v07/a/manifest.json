@@ -1,0 +1,118 @@
+{
+  "author": "a",
+  "title": "遥感观测如何进入作物产量估计：直接学习、状态同化、机理特征融合的证据与外推边界",
+  "revision": 15,
+  "slideCount": 16,
+  "plannedSeconds": 840,
+  "fontFamily": "Noto Sans CJK SC",
+  "originalProjectSha256": "f2709ff009419159df1dc4e1cf43ca1308931ac742e8ee99f9c2b72aa629435f",
+  "rebuildFiles": [
+    "assets/4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9.png",
+    "assets/5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b.png",
+    "assets/527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9.png",
+    "assets/72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1.png",
+    "assets/a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae.png",
+    "assets/d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a.png",
+    "sources/cheng/article-page-text.txt",
+    "sources/cheng/provenance.json",
+    "sources/shahhosseini/article-page-text.txt",
+    "sources/shahhosseini/provenance.json",
+    "sources/zhuo/article-page-text.txt",
+    "sources/zhuo/provenance.json"
+  ],
+  "sha256": {
+    "assets/4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9.png": "4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9",
+    "assets/5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b.png": "5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b",
+    "assets/527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9.png": "527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9",
+    "assets/72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1.png": "72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1",
+    "assets/a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae.png": "a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae",
+    "assets/d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a.png": "d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a",
+    "sources/cheng/article-page-text.txt": "856ad859d62c9ad5f6fbe340c7065e6be8efe0b7750022b4638d928f3c417381",
+    "sources/cheng/provenance.json": "a1086d68c02654378cde5476df5b552bf7f23a4a398911aef295293870ae8484",
+    "sources/shahhosseini/article-page-text.txt": "2cbb517d00c87114757e8b1a2b9f886181ff8d19899ddf64159d0001fc467110",
+    "sources/shahhosseini/provenance.json": "1ef749f00b3157672c9ee83680ed3e2e193675596d49575d09a16242e119df2f",
+    "sources/zhuo/article-page-text.txt": "c85050e230fd1f48741f9834de829332fea3f38aaa7196163e63c966f8c69a18",
+    "sources/zhuo/provenance.json": "7a95b06d5d310aea502b0117d9e945f0963163a471c5d38005f523e04422ebef"
+  },
+  "assetProvenance": [
+    {
+      "assetId": "ch-map-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.1",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "sourceVersion": "Official published article; PDF p.3",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。",
+      "sha256": "d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a",
+      "file": "assets/d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a.png"
+    },
+    {
+      "assetId": "ch-lstm-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.4",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "sourceVersion": "Official published article; PDF p.9",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "仅显示左上LSTM面板，保留其边界、散点、对角线与原始统计；未生成点位。横轴共享的1–7范围由完整原图核对，在页面文字说明。",
+      "sha256": "527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9",
+      "file": "assets/527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9.png"
+    },
+    {
+      "assetId": "ch-sensors-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.6",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "sourceVersion": "Official published article; PDF p.10",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。",
+      "sha256": "a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae",
+      "file": "assets/a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae.png"
+    },
+    {
+      "assetId": "z-yield-trim-source-v2",
+      "paperId": "zhuo",
+      "figure": "Fig.8",
+      "sourceUrl": "https://mdpi-res.com/remotesensing/remotesensing-11-01618/article_deploy/html/images/remotesensing-11-01618-g008.png",
+      "sourceVersion": "Official published article; PDF p.12",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "裁去底部(a)(b)面板代号与空白，保留全部点、坐标、单位和回归统计；以原生标题重新标明同化条件。",
+      "sha256": "4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9",
+      "file": "assets/4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9.png"
+    },
+    {
+      "assetId": "z-trajectory-source-v2",
+      "paperId": "zhuo",
+      "figure": "Fig.6",
+      "sourceUrl": "https://mdpi-res.com/remotesensing/remotesensing-11-01618/article_deploy/html/images/remotesensing-11-01618-g006.png",
+      "sourceVersion": "Official published article; PDF p.11",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。",
+      "sha256": "5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b",
+      "file": "assets/5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b.png"
+    },
+    {
+      "assetId": "s-importance-two-source-v2",
+      "paperId": "shahhosseini",
+      "figure": "Fig.8",
+      "sourceUrl": "https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-020-80820-1/MediaObjects/41598_2020_80820_Fig8_HTML.png",
+      "sourceVersion": "Official published article; PDF p.13",
+      "license": "CC BY 4.0 https://creativecommons.org/licenses/by/4.0/",
+      "cropNote": "裁取前两变量的数据区与纵轴完整0刻度，去掉倾斜变量名；原生标签复述两个变量身份与2017粉、2018灰、2012蓝；未改绘柱高。",
+      "sha256": "72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1",
+      "file": "assets/72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1.png"
+    }
+  ],
+  "publishedPptxSha256": "0accb8fc38beb2df603c9bdb303135206ab334c9f183d88e8ad031f3e73ff7ec",
+  "publishedPdfSha256": "9eb1521aaace943b0fa3162fe7424ec0b6ff0f1197472529121c9134e952cf61",
+  "recordChangesForPortability": [
+    "Only assets referenced by final slides are included; obsolete asset IDs remain in the private author history.",
+    "Local reading.source paths point to packaged PDF text extractions; PDF versions and hashes are in sources/*/provenance.json.",
+    "Image data is stored once under assets/; public import embeds the identical bytes.",
+    "Project IDs, revision history, build state and visual approvals are not replayed."
+  ],
+  "limits": [
+    "14 minutes is a script budget, not a timed human rehearsal.",
+    "Several original-image fine labels remain below the native text target. Main numerical comparisons and conditions have readable native labels.",
+    "No target DSH/DeepSeek account, PowerPoint/WPS GUI or physical projection test."
+  ]
+}

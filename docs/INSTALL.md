@@ -2,18 +2,32 @@
 
 本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十四个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-本次重建版本为 **v0.7.0-rc.4**，从 [重建分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/research-native-rebuild)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+当前正式版本为 **v0.7.0**。从 [v0.7.0 Release](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.7.0) 下载安装包，或取得 [v0.7.0 标签源码](https://github.com/YuZhou0311/dsh-academic-ppt/tree/v0.7.0)。本地实际版本以 `package.json` 为准；旧版与候选版验证记录保留其原版本身份。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
-## 1. 准备本地包
+## 1. 准备 v0.7.0 安装包或源码
 
-安装本次 rc.4，请克隆重建分支：
+需要 Node **`^22.19.0 || >=24.0.0`**，并已安装 DSH。使用 `dsh plugin` 命令时，`pnpm` 必须在 PATH 中。插件支持的 Node 范围以 [`package.json`](../package.json) 的 `engines.node` 为准。
+
+### 方式 A：下载 Release 安装包
+
+从 [v0.7.0 Release](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.7.0) 的 Assets 下载 **`dsh-academic-ppt-0.7.0.tgz`** 和 `SHA256SUMS.txt`。核对安装包的 SHA-256 后，将包的真实绝对路径交给插件管理器：
 
 ```sh
-git clone --branch feat/research-native-rebuild --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0.tgz"
+```
+
+桌面版先正常启动一次以初始化 profile，再退出应用并安装；完成后启用并重启。网页版把 `desktop` 换成 `web`。图形界面的「插件 → 添加插件」也可填写本地安装包的绝对路径。
+
+安装包包含运行代码、技能、文档和示例，依赖由 DSH 的包管理器解析。它不是开发 checkout，不含源码测试目录及根 `package-lock.json`；不要解压后直接运行 `npm ci` 或 `npm test`。需要开发、测试或离线重建示例时，使用下面的完整标签源码。
+
+### 方式 B：取得固定版本源码
+
+```sh
+git clone --branch v0.7.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
-rc.4 增加自由区域、原生drawing、标题设计、阅读角色字号政策、实际study候选与跨稿portfolio。新流程见 [RESEARCH_NATIVE_DESIGN.md](RESEARCH_NATIVE_DESIGN.md)，实际制作和验证见 [VALIDATION_V07.md](VALIDATION_V07.md)。历史示例保留其原版本身份。
+也可以下载 Release 页面自动提供的 **Source code** 归档并解压。标签源码固定为本次发布内容；不依赖后续开发分支的变化。v0.7 增加自由区域、原生绘图、标题设计、阅读角色字号政策、实际 `study` 候选与跨稿 `portfolio`。新流程见 [RESEARCH_NATIVE_DESIGN.md](RESEARCH_NATIVE_DESIGN.md)，真实论文制作和验证见 [VALIDATION_V07.md](VALIDATION_V07.md)。
 
 插件位于本仓库根目录。完整文件夹应包含 `package.json`、`package-lock.json`、`cordis.patch.yml`、`src/`、`skills/` 和 `bin/`。
 
@@ -22,27 +36,27 @@ rc.4 增加自由区域、原生drawing、标题设计、阅读角色字号政�
 ```sh
 npm ci --ignore-scripts
 node bin/academic-ppt.mjs --help
-npm test
 ```
 
-Node 版本以 [`package.json`](../package.json) 的 `engines.node` 为准。普通 PPTX/HTML 生成不要求安装 Microsoft Office；查看和修改成品可使用 PowerPoint 或 WPS。实际 PPTX 渲染与视觉验收的验证范围见项目说明，HTML 预览不能代替 Office 渲染。
+开发者可另运行 `npm test` 与 `npm run check`。安装到 DSH 时，将源码目录的绝对路径交给第 2 节的插件管理命令。
+
+### 渲染引擎与字体
+
+普通 PPTX/HTML 生成不要求安装 Microsoft Office；查看和修改成品可使用 PowerPoint 或 WPS。实际 PPTX 渲染与视觉验收的验证范围见项目说明，HTML 预览不能代替 Office 渲染。
 
 默认 `npm ci --ignore-scripts` 包含可选官方 `@deepseek-ai/libreoffice-kit`，供 `academic_ppt_render` 生成实际 PPTX 图片/PDF。只需要普通生成时改用 `npm ci --ignore-scripts --omit=optional`；未安装或引擎不可用时，渲染工具如实返回不可用状态。
 
 渲染默认使用系统字体。最小环境缺中文字体时，可将有许可的 Noto CJK 等字体放入工作区的 `fonts/`，在 render 参数中传 `fontDirectories`，每次 1–4 个工作区内目录；日常字体齐全时不必传。工具报告字体问题后仍需检查实际页面。
 
-v0.5 封存示例的实际渲染使用 **Noto Sans CJK SC Regular/Bold**。可按 [Noto官方字体下载说明](https://github.com/notofonts/noto-cjk/blob/main/Sans/README.md) 的 Language-specific OTFs 选择 Simplified Chinese，取得相应字重；字体遵循其 [SIL Open Font License 1.1](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)。插件包不附带字体。`fontDirectories`用于本次渲染端，不把字体嵌入PPTX；要保持可编辑PPTX的同样字形，演示电脑也应准备所用字体。随稿实际渲染PDF可用于核对固定版面。
+v0.7 两份真实论文报告和 v0.5 封存示例的实际渲染使用 **Noto Sans CJK SC Regular/Bold**。可按 [Noto官方字体下载说明](https://github.com/notofonts/noto-cjk/blob/main/Sans/README.md) 的 Language-specific OTFs 选择 Simplified Chinese，取得相应字重；字体遵循其 [SIL Open Font License 1.1](https://github.com/notofonts/noto-cjk/blob/main/Sans/LICENSE)。插件包不附带字体。`fontDirectories`用于本次渲染端，不把字体嵌入PPTX；要保持可编辑PPTX的同样字形，演示电脑也应准备所用字体。随稿实际渲染PDF可用于核对固定版面。
 
-### 直接使用安装包
+### 自行打包
 
-也可以在本次源码根目录运行 `npm pack --ignore-scripts` 得到 `dsh-academic-ppt-0.7.0-rc.4.tgz`，再将压缩包的完整路径交给插件管理：
+在 v0.7.0 源码根目录运行 `npm pack --ignore-scripts`，会得到 `dsh-academic-ppt-0.7.0.tgz`，再按方式 A 安装。自行打包后的文件应独立计算摘要；只有与 Release 中的摘要一致时，才能视为同一份安装包。
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0-rc.4.tgz"
+npm pack --ignore-scripts
 ```
-
-自行打包不改变其候选版本身份；尚无 npm 公共 registry 包。
-DSH 的包管理器负责解析依赖。安装包包含运行代码、技能、文档和示例；开发测试及根 `package-lock.json` 由源码归档提供。不要把本节的安装包解压后直接套用源码流程中的 `npm ci` 或 `npm test`。
 
 ## 2. 安装到 DSH
 
@@ -73,11 +87,11 @@ dsh web
 
 ### 更新已安装的 file: 包
 
-退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:design) 与 contract(topic:slide)，检查是否含 drawings、composition.regions、heading、projection、contentChecks，并确认 study/portfolio 两个工具可见，避免把旧安装副本当作本轮版本。
+退出对应 DSH 应用，准备好 v0.7.0 源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在插件详情或已安装包的 `package.json` 中确认版本为 `0.7.0`，并在新会话中确认技能与工具可见。分别查询 `contract(topic:design)` 与 `contract(topic:slide)`，检查是否含 `drawings`、`composition.regions`、`heading`、`projection`、`contentChecks`，并确认 `study` / `portfolio` 两个工具可见，避免把旧安装副本当作新版本。
 
 仅修改仓库、运行测试或生成安装包，不会替你更新正在运行的 DSH。本文提供安装步骤，不表示已在你的电脑上完成安装或验收。
 
-官方依据：[包与安装教程](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.md)、[CLI 插件管理](https://github.com/deepseek-ai/deepseek-harness/blob/master/apps/cli/reference/README.zh.md#插件管理)、[本地 file: 包的官方用例](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk/README.zh.md#自定义插件)、[桌面插件管理](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/client/ui-plugin-manager/README.md#installing-a-bundle)。协议核对日期：2026-10-20。
+官方依据：[包与安装教程](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.md)、[CLI 插件管理](https://github.com/deepseek-ai/deepseek-harness/blob/master/apps/cli/reference/README.zh.md#插件管理)、[桌面插件管理](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/client/ui-plugin-manager/README.md#installing-a-bundle)。以上安装入口与命令语法核对日期：2026-10-24。
 
 ## 3. 确认插件加载
 
@@ -104,9 +118,9 @@ dsh web
 
 首次提示词可以直接复制：
 
-> 使用 dsh-academic-ppt，依据我提供的论文和数据，制作一场 12 分钟的正式学术汇报。讲清中心问题、方法、核心证据、局限与启示，区分已有发现、归纳和待验证设想。优先论文原图，按每页的信息关系自主设计布局；为独立解读、条件与边界设计清楚的小卡片，保持图文紧凑、层次丰富、字号可读，避免大面积无用留白。封面与结尾独立设计，标题线、角标和小字按用途保留，主题图片与语义图标按需使用。参考模板只借鉴适用的字体、配色和层级。先完成代表页并查看真实渲染，再完成全稿；保留来源、关键限定与逐页讲稿，实际检查当前 PPTX 的每一页后交付可编辑文件及工程。
+> 使用 dsh-academic-ppt，依据我提供的论文和数据，制作一场 12 分钟的正式学术汇报。讲清中心问题、方法、核心证据、局限与启示，区分原文发现、汇报者推断和待验证设想。先盘点原始图表、完整比较、必要条件和负结果，再按各页研究关系设计布局。参考模板只学习信息密度、主辅比例、分组、层级和阅读节奏。为封面和最难的证据页绘制至少两种真实 SVG/PPTX 构图，查看实际渲染后选定；无生图模型时使用原生绘图。正文以可读的中间字级呈现关键条件与结论，按关系选择开放标注、图文邻接、表格或局部分组，小字仅用于次要注释与来源。完整题名、语义色、方法箭头和结尾都需专门设计；保留来源与逐页讲稿。构建后实际检查当前 PPTX 的每一页，修正拥挤、空疏、误导关系和重复构图，再交付可编辑文件及工程。
 
-上述流程针对 v0.7.0-rc.4 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，严重空洞需修复，不能切换 balanced 或增加装饰来绕过。确实需要疏朗风格时在初始化中明确选择 balanced。
+上述流程针对 v0.7.0 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，严重空洞需修复，不能切换 balanced 或增加装饰来绕过。确实需要疏朗风格时在初始化中明确选择 balanced。
 
 ## 4. 命令行使用
 

@@ -1,0 +1,31 @@
+{
+  "doi": "10.1038/s41598-020-80820-1",
+  "title": "Coupling machine learning and crop modeling improves crop yield prediction in the US Corn Belt",
+  "authors": [
+    "Shahhosseini, Mohsen",
+    "Hu, Guiping",
+    "Huber, Isaiah",
+    "Archontoulis, Sotirios V."
+  ],
+  "journal": "Scientific Reports",
+  "year": 2021,
+  "volume": "11",
+  "article_number": "1606",
+  "publication_date": "2021-01-15",
+  "publisher_url": "https://www.nature.com/articles/s41598-020-80820-1",
+  "pdf_url": "https://www.nature.com/articles/s41598-020-80820-1.pdf",
+  "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_evidence": [
+    "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/."
+  ],
+  "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps.",
+  "pdf_pages": 15,
+  "pdf_sha256": "bc74ea2ce389f95f9e9ea4969e586fc7601f682eedc899ca93368d9321c171c3",
+  "page_number_convention": "PDF physical page index, starting at 1. Main PDF printed page numbers agree with this index.",
+  "providedText": {
+    "file": "sources/shahhosseini/article-page-text.txt",
+    "sha256": "2cbb517d00c87114757e8b1a2b9f886181ff8d19899ddf64159d0001fc467110",
+    "modifications": "Text extracted from the official PDF with physical page markers. Original PDF is linked and hashed, not redistributed in this bundle."
+  }
+}

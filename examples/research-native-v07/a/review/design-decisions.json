@@ -1,0 +1,62 @@
+{
+  "brief": "两份真实封面构图与两份同一极旱证据的不同构图；没有查看另一个作者产物。",
+  "actualStudies": [
+    {
+      "dir": "study-v1",
+      "viewedPngPages": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "dir": "study-v2",
+      "viewedPngPages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pptxSha256": "847f20108d0418f64f581ff8c88231a3b14deab26f8209d5dadcd306d62aa3d6"
+    },
+    {
+      "dir": "study-v3",
+      "viewedPngPages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "pptxSha256": "8658083fee7c3a6e0b09e0ff319c8961c548a24806cb3d92f0fc2fe5abcda299",
+      "notes": "修正来源元数据后重出同四候选并逐张实际查看。未选chart末行孤立“立”，亦记录为未采用原因；正式稿不含此页。"
+    }
+  ],
+  "decision": [
+    {
+      "id": "cover-a",
+      "selected": true,
+      "reason": "真实研究区与题名并置，保留论文身份，主副层级与中间问题层完整；副标题改为语义两行。"
+    },
+    {
+      "id": "cover-b",
+      "selected": false,
+      "reason": "三路径网络信息很多，封面就展开完整方法会抢占后文逻辑；未使用遥感的第三路径需额外虚线说明，封面不够直接。"
+    },
+    {
+      "id": "evidence-table",
+      "selected": true,
+      "reason": "11个模型都留在主视图，同时展示RMSE改善与所有R²仍负；单位进入副标题，表内最优与失败共存。"
+    },
+    {
+      "id": "evidence-chart",
+      "selected": false,
+      "reason": "四模型配对很直观，但删去其余7模型降低全体负R²的可查性；本任务中保全完整对照比突出少数代表模型更重要。 实际PNG末行“立”孤行也是未采用的局部排版问题，未把未选候选当正式通过页。"
+    }
+  ],
+  "limitations": [
+    "候选不代表所有可能构图。",
+    "外部反馈参与孤字/单位/来源修订，不能称零干预成功。",
+    "study-v1/v2来源元数据后续修订；正式稿使用纠正版asset新ID。"
+  ]
+}

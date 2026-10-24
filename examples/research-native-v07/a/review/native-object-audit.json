@@ -1,0 +1,13 @@
+{
+  "pptxSha256": "0accb8fc38beb2df603c9bdb303135206ab334c9f183d88e8ad031f3e73ff7ec",
+  "counts": {
+    "slides": 16,
+    "nativeShapes": 473,
+    "pictureObjects": 7,
+    "nativeTables": 0,
+    "nativeChartReferences": 0,
+    "connectors": 0,
+    "notesSlides": 16
+  },
+  "interpretation": "Native shapes include editable text, marks and diagram parts. A table or plot made from native shapes is not counted as an Office table/chart. Picture objects are original paper images, not editable data. No GUI edit round-trip was tested."
+}

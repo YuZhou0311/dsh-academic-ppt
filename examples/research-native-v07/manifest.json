@@ -1,0 +1,40 @@
+{
+  "version": "0.7.0-rc.4",
+  "rendererVersion": 11,
+  "createdOn": "2026-10-23",
+  "authors": {
+    "a": {
+      "title": "遥感观测如何进入作物产量估计：直接学习、状态同化、机理特征融合的证据与外推边界",
+      "slideCount": 16,
+      "plannedSeconds": 840,
+      "publishedPptxSha256": "0accb8fc38beb2df603c9bdb303135206ab334c9f183d88e8ad031f3e73ff7ec",
+      "publishedPdfSha256": "9eb1521aaace943b0fa3162fe7424ec0b6ff0f1197472529121c9134e952cf61",
+      "nativeObjects": {
+        "slides": 16,
+        "nativeShapes": 473,
+        "pictureObjects": 7,
+        "nativeTables": 0,
+        "nativeChartReferences": 0,
+        "connectors": 0,
+        "notesSlides": 16
+      }
+    },
+    "b": {
+      "title": "遥感观测如何进入作物产量估计：直接学习、状态同化、机理特征融合的证据和外推边界",
+      "slideCount": 15,
+      "plannedSeconds": 840,
+      "publishedPptxSha256": "450d93dc502a0e69614d1760ffb836bdeb99a70bb41b6765539ca6af0153deff",
+      "publishedPdfSha256": "c3818f38d763a04da7af39702463c43b1e27dea0bd9bf9148048efe54d822f08",
+      "nativeObjects": {
+        "slides": 15,
+        "nativeShapes": 357,
+        "pictureObjects": 8,
+        "nativeTables": 0,
+        "nativeChartReferences": 0,
+        "connectors": 0,
+        "notesSlides": 15
+      }
+    }
+  },
+  "independence": "Two fresh author contexts received the same brief and three papers without access to the other draft. Scientific and cross-deck review subsequently triggered corrections; final versions are not zero-intervention productions."
+}

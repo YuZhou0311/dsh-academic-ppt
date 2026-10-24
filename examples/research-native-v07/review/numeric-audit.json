@@ -1,0 +1,2061 @@
+{
+  "created_at": "2026-10-23T14:32:10.222601+00:00",
+  "method": "Exact comparison of authored claim metrics to original figure values and source CSV transcriptions; source PDFs and rendered rows also read. Reported percentage improvements are preserved as printed rather than recomputed from rounded RMSE.",
+  "numeric_value_count": 249,
+  "failures": [],
+  "checks": [
+    {
+      "author": "a",
+      "slide": "s05",
+      "claim": "C-model",
+      "metric_label": "LSTM",
+      "value": "RMSE=0.201; R²=0.930; MAE=0.1413",
+      "observed_numbers": [
+        0.201,
+        0.93,
+        0.1413
+      ],
+      "expected_numbers": [
+        0.201,
+        0.93,
+        0.1413
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.201; R²=0.930; MAE=0.1413",
+      "final_observed_numbers": [
+        0.201,
+        0.93,
+        0.1413
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s05",
+      "claim": "C-model",
+      "metric_label": "RF",
+      "value": "RMSE=0.260; R²=0.886; MAE=0.1750",
+      "observed_numbers": [
+        0.26,
+        0.886,
+        0.175
+      ],
+      "expected_numbers": [
+        0.26,
+        0.886,
+        0.175
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.260; R²=0.886; MAE=0.1750",
+      "final_observed_numbers": [
+        0.26,
+        0.886,
+        0.175
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s05",
+      "claim": "C-model",
+      "metric_label": "GBDT",
+      "value": "RMSE=0.306; R²=0.839; MAE=0.2199",
+      "observed_numbers": [
+        0.306,
+        0.839,
+        0.2199
+      ],
+      "expected_numbers": [
+        0.306,
+        0.839,
+        0.2199
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.306; R²=0.839; MAE=0.2199",
+      "final_observed_numbers": [
+        0.306,
+        0.839,
+        0.2199
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s05",
+      "claim": "C-model",
+      "metric_label": "SVR",
+      "value": "RMSE=0.489; R²=0.573; MAE=0.2467",
+      "observed_numbers": [
+        0.489,
+        0.573,
+        0.2467
+      ],
+      "expected_numbers": [
+        0.489,
+        0.573,
+        0.2467
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.489; R²=0.573; MAE=0.2467",
+      "final_observed_numbers": [
+        0.489,
+        0.573,
+        0.2467
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s06",
+      "claim": "C-sensor",
+      "metric_label": "S2 · 10 m",
+      "value": "RMSE=0.219; R²=0.914; MAE=0.1563",
+      "observed_numbers": [
+        0.219,
+        0.914,
+        0.1563
+      ],
+      "expected_numbers": [
+        0.219,
+        0.914,
+        0.1563
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.6, PDF p.10",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.219; R²=0.914; MAE=0.1563",
+      "final_observed_numbers": [
+        0.219,
+        0.914,
+        0.1563
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s06",
+      "claim": "C-sensor",
+      "metric_label": "ZY-1 · 30 m",
+      "value": "RMSE=0.237; R²=0.902; MAE=0.1638",
+      "observed_numbers": [
+        0.237,
+        0.902,
+        0.1638
+      ],
+      "expected_numbers": [
+        0.237,
+        0.902,
+        0.1638
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.6, PDF p.10",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.237; R²=0.902; MAE=0.1638",
+      "final_observed_numbers": [
+        0.237,
+        0.902,
+        0.1638
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s06",
+      "claim": "C-sensor",
+      "metric_label": "S2 · 30 m",
+      "value": "RMSE=0.307; R²=0.847; MAE=0.2128",
+      "observed_numbers": [
+        0.307,
+        0.847,
+        0.2128
+      ],
+      "expected_numbers": [
+        0.307,
+        0.847,
+        0.2128
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.6, PDF p.10",
+      "unit": "RMSE/MAE t/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "RMSE=0.307; R²=0.847; MAE=0.2128",
+      "final_observed_numbers": [
+        0.307,
+        0.847,
+        0.2128
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b04",
+      "claim": "c-model",
+      "metric_label": "RMSE LSTM/RF/GBDT/SVR",
+      "value": "0.201 / 0.260 / 0.306 / 0.489",
+      "observed_numbers": [
+        0.201,
+        0.26,
+        0.306,
+        0.489
+      ],
+      "expected_numbers": [
+        0.201,
+        0.26,
+        0.306,
+        0.489
+      ],
+      "numeric_value_count": 4,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "t/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.201 / 0.260 / 0.306 / 0.489",
+      "final_observed_numbers": [
+        0.201,
+        0.26,
+        0.306,
+        0.489
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b05",
+      "claim": "c-sensor",
+      "metric_label": "RMSE S2-10m/ZY-30m/S2-30m",
+      "value": "0.219 / 0.237 / 0.307",
+      "observed_numbers": [
+        0.219,
+        0.237,
+        0.307
+      ],
+      "expected_numbers": [
+        0.219,
+        0.237,
+        0.307
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.6, PDF p.10",
+      "unit": "t/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.219 / 0.237 / 0.307",
+      "final_observed_numbers": [
+        0.219,
+        0.237,
+        0.307
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b04",
+      "claim": "c-model",
+      "metric_label": "R² LSTM/RF/GBDT/SVR",
+      "value": "0.930 / 0.886 / 0.839 / 0.573",
+      "observed_numbers": [
+        0.93,
+        0.886,
+        0.839,
+        0.573
+      ],
+      "expected_numbers": [
+        0.93,
+        0.886,
+        0.839,
+        0.573
+      ],
+      "numeric_value_count": 4,
+      "source": "Cheng Fig.4, PDF p.9",
+      "unit": "dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.930 / 0.886 / 0.839 / 0.573",
+      "final_observed_numbers": [
+        0.93,
+        0.886,
+        0.839,
+        0.573
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b05",
+      "claim": "c-sensor",
+      "metric_label": "R² S2-10m/ZY-30m/S2-30m",
+      "value": "0.914 / 0.902 / 0.847",
+      "observed_numbers": [
+        0.914,
+        0.902,
+        0.847
+      ],
+      "expected_numbers": [
+        0.914,
+        0.902,
+        0.847
+      ],
+      "numeric_value_count": 3,
+      "source": "Cheng Fig.6, PDF p.10",
+      "unit": "dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.914 / 0.902 / 0.847",
+      "final_observed_numbers": [
+        0.914,
+        0.902,
+        0.847
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s09",
+      "claim": "Z-retrieval",
+      "metric_label": "4月1日",
+      "value": "9.16; R²=.45",
+      "observed_numbers": [
+        9.16,
+        0.45
+      ],
+      "expected_numbers": [
+        9.16,
+        0.45
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.5, PDF p.11; §3.1 p.9",
+      "unit": "SM percentage scale; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "9.16; R²=.45",
+      "final_observed_numbers": [
+        9.16,
+        0.45
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s09",
+      "claim": "Z-retrieval",
+      "metric_label": "5月7日",
+      "value": "7.43; R²=.53",
+      "observed_numbers": [
+        7.43,
+        0.53
+      ],
+      "expected_numbers": [
+        7.43,
+        0.53
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.5, PDF p.11; §3.1 p.9",
+      "unit": "SM percentage scale; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "7.43; R²=.53",
+      "final_observed_numbers": [
+        7.43,
+        0.53
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s09",
+      "claim": "Z-retrieval",
+      "metric_label": "6月1日",
+      "value": "8.53; R²=.49",
+      "observed_numbers": [
+        8.53,
+        0.49
+      ],
+      "expected_numbers": [
+        8.53,
+        0.49
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.5, PDF p.11; §3.1 p.9",
+      "unit": "SM percentage scale; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "8.53; R²=.49",
+      "final_observed_numbers": [
+        8.53,
+        0.49
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b07 notes",
+      "claim": "z-sm",
+      "metric_label": "SM RMSE",
+      "value": "9.16 / 7.43 / 8.53",
+      "observed_numbers": [
+        9.16,
+        7.43,
+        8.53
+      ],
+      "expected_numbers": [
+        9.16,
+        7.43,
+        8.53
+      ],
+      "numeric_value_count": 3,
+      "source": "Zhuo Fig.5, PDF p.11; §3.1 p.9",
+      "unit": "SM percentage scale",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "9.16 / 7.43 / 8.53",
+      "final_observed_numbers": [
+        9.16,
+        7.43,
+        8.53
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b07 notes",
+      "claim": "z-sm",
+      "metric_label": "SM R²",
+      "value": "0.45 / 0.53 / 0.49",
+      "observed_numbers": [
+        0.45,
+        0.53,
+        0.49
+      ],
+      "expected_numbers": [
+        0.45,
+        0.53,
+        0.49
+      ],
+      "numeric_value_count": 3,
+      "source": "Zhuo Fig.5, PDF p.11; §3.1 p.9",
+      "unit": "dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.45 / 0.53 / 0.49",
+      "final_observed_numbers": [
+        0.45,
+        0.53,
+        0.49
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s08",
+      "claim": "Z-yield",
+      "metric_label": "无同化",
+      "value": "1330; R²=.21",
+      "observed_numbers": [
+        1330.0,
+        0.21
+      ],
+      "expected_numbers": [
+        1330,
+        0.21
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.8, PDF p.12",
+      "unit": "RMSE kg/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1330; R²=.21",
+      "final_observed_numbers": [
+        1330.0,
+        0.21
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s08",
+      "claim": "Z-yield",
+      "metric_label": "EnKF同化",
+      "value": "934; R²=.35",
+      "observed_numbers": [
+        934.0,
+        0.35
+      ],
+      "expected_numbers": [
+        934,
+        0.35
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.8, PDF p.12",
+      "unit": "RMSE kg/ha; R² dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "934; R²=.35",
+      "final_observed_numbers": [
+        934.0,
+        0.35
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s08 claim",
+      "claim": "Z-yield",
+      "metric_label": "RMSE绝对下降",
+      "value": "396",
+      "observed_numbers": [
+        396.0
+      ],
+      "expected_numbers": [
+        396
+      ],
+      "numeric_value_count": 1,
+      "source": "1330−934, computed from Zhuo Fig.8",
+      "unit": "kg/ha",
+      "kind": "reviewed calculation",
+      "pass_check": true,
+      "final_value": "396",
+      "final_observed_numbers": [
+        396.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b08",
+      "claim": "z-yield",
+      "metric_label": "RMSE 无同化/同化",
+      "value": "1330 / 934",
+      "observed_numbers": [
+        1330.0,
+        934.0
+      ],
+      "expected_numbers": [
+        1330,
+        934
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.8, PDF p.12",
+      "unit": "kg/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1330 / 934",
+      "final_observed_numbers": [
+        1330.0,
+        934.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b08",
+      "claim": "z-yield",
+      "metric_label": "R² 无同化/同化",
+      "value": "0.21 / 0.35",
+      "observed_numbers": [
+        0.21,
+        0.35
+      ],
+      "expected_numbers": [
+        0.21,
+        0.35
+      ],
+      "numeric_value_count": 2,
+      "source": "Zhuo Fig.8, PDF p.12",
+      "unit": "dimensionless",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "0.21 / 0.35",
+      "final_observed_numbers": [
+        0.21,
+        0.35
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "LASSO",
+      "value": "1160 → 1094; Δ=5.7%; hybrid R²=32.8%",
+      "observed_numbers": [
+        1160.0,
+        1094.0,
+        5.7,
+        32.8
+      ],
+      "expected_numbers": [
+        "1160",
+        "1094",
+        "5.7",
+        "32.8"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1160 → 1094; Δ=5.7%; hybrid R²=32.8%",
+      "final_observed_numbers": [
+        1160.0,
+        1094.0,
+        5.7,
+        32.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "XGBoost",
+      "value": "1482 → 1172; Δ=20.9%; hybrid R²=22.8%",
+      "observed_numbers": [
+        1482.0,
+        1172.0,
+        20.9,
+        22.8
+      ],
+      "expected_numbers": [
+        "1482",
+        "1172",
+        "20.9",
+        "22.8"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1482 → 1172; Δ=20.9%; hybrid R²=22.8%",
+      "final_observed_numbers": [
+        1482.0,
+        1172.0,
+        20.9,
+        22.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "LightGBM",
+      "value": "1067 → 883; Δ=17.3%; hybrid R²=56.2%",
+      "observed_numbers": [
+        1067.0,
+        883.0,
+        17.3,
+        56.2
+      ],
+      "expected_numbers": [
+        "1067",
+        "883",
+        "17.3",
+        "56.2"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1067 → 883; Δ=17.3%; hybrid R²=56.2%",
+      "final_observed_numbers": [
+        1067.0,
+        883.0,
+        17.3,
+        56.2
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Random forest",
+      "value": "1259 → 1055; Δ=16.1%; hybrid R²=37.5%",
+      "observed_numbers": [
+        1259.0,
+        1055.0,
+        16.1,
+        37.5
+      ],
+      "expected_numbers": [
+        "1259",
+        "1055",
+        "16.1",
+        "37.5"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1259 → 1055; Δ=16.1%; hybrid R²=37.5%",
+      "final_observed_numbers": [
+        1259.0,
+        1055.0,
+        16.1,
+        37.5
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Linear regression",
+      "value": "1095 → 955; Δ=12.7%; hybrid R²=48.8%",
+      "observed_numbers": [
+        1095.0,
+        955.0,
+        12.7,
+        48.8
+      ],
+      "expected_numbers": [
+        "1095",
+        "955",
+        "12.7",
+        "48.8"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1095 → 955; Δ=12.7%; hybrid R²=48.8%",
+      "final_observed_numbers": [
+        1095.0,
+        955.0,
+        12.7,
+        48.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Optimized weighted ens",
+      "value": "1033 → 909; Δ=12.0%; hybrid R²=53.6%",
+      "observed_numbers": [
+        1033.0,
+        909.0,
+        12.0,
+        53.6
+      ],
+      "expected_numbers": [
+        "1033",
+        "909",
+        "12.0",
+        "53.6"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1033 → 909; Δ=12.0%; hybrid R²=53.6%",
+      "final_observed_numbers": [
+        1033.0,
+        909.0,
+        12.0,
+        53.6
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Average ensemble",
+      "value": "959 → 938; Δ=2.2%; hybrid R²=50.7%",
+      "observed_numbers": [
+        959.0,
+        938.0,
+        2.2,
+        50.7
+      ],
+      "expected_numbers": [
+        "959",
+        "938",
+        "2.2",
+        "50.7"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "959 → 938; Δ=2.2%; hybrid R²=50.7%",
+      "final_observed_numbers": [
+        959.0,
+        938.0,
+        2.2,
+        50.7
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Stacked regression ens",
+      "value": "1140 → 943; Δ=17.3%; hybrid R²=50.1%",
+      "observed_numbers": [
+        1140.0,
+        943.0,
+        17.3,
+        50.1
+      ],
+      "expected_numbers": [
+        "1140",
+        "943",
+        "17.3",
+        "50.1"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1140 → 943; Δ=17.3%; hybrid R²=50.1%",
+      "final_observed_numbers": [
+        1140.0,
+        943.0,
+        17.3,
+        50.1
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Stacked LASSO ensemble",
+      "value": "1128 → 941; Δ=16.6%; hybrid R²=50.3%",
+      "observed_numbers": [
+        1128.0,
+        941.0,
+        16.6,
+        50.3
+      ],
+      "expected_numbers": [
+        "1128",
+        "941",
+        "16.6",
+        "50.3"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1128 → 941; Δ=16.6%; hybrid R²=50.3%",
+      "final_observed_numbers": [
+        1128.0,
+        941.0,
+        16.6,
+        50.3
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Stacked Random f. ens",
+      "value": "1363 → 1002; Δ=26.5%; hybrid R²=43.6%",
+      "observed_numbers": [
+        1363.0,
+        1002.0,
+        26.5,
+        43.6
+      ],
+      "expected_numbers": [
+        "1363",
+        "1002",
+        "26.5",
+        "43.6"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1363 → 1002; Δ=26.5%; hybrid R²=43.6%",
+      "final_observed_numbers": [
+        1363.0,
+        1002.0,
+        26.5,
+        43.6
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2018",
+      "metric_label": "Stacked LightGBM ens",
+      "value": "1365 → 995; Δ=27.1%; hybrid R²=44.4%",
+      "observed_numbers": [
+        1365.0,
+        995.0,
+        27.1,
+        44.4
+      ],
+      "expected_numbers": [
+        "1365",
+        "995",
+        "27.1",
+        "44.4"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1365 → 995; Δ=27.1%; hybrid R²=44.4%",
+      "final_observed_numbers": [
+        1365.0,
+        995.0,
+        27.1,
+        44.4
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b10",
+      "claim": "s-normal",
+      "metric_label": "2018 RMSE LASSO/LightGBM/平均/Stacked regression 基线",
+      "value": "1160 / 1067 / 959 / 1140",
+      "observed_numbers": [
+        1160.0,
+        1067.0,
+        959.0,
+        1140.0
+      ],
+      "expected_numbers": [
+        "1160",
+        "1067",
+        "959",
+        "1140"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9; four selected rows",
+      "unit": "RMSE kg/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1160 / 1067 / 959 / 1140",
+      "final_observed_numbers": [
+        1160.0,
+        1067.0,
+        959.0,
+        1140.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b10",
+      "claim": "s-normal",
+      "metric_label": "2018 RMSE LASSO/LightGBM/平均/Stacked regression 混合",
+      "value": "1094 / 883 / 938 / 943",
+      "observed_numbers": [
+        1094.0,
+        883.0,
+        938.0,
+        943.0
+      ],
+      "expected_numbers": [
+        "1094",
+        "883",
+        "938",
+        "943"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9; four selected rows",
+      "unit": "RMSE kg/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1094 / 883 / 938 / 943",
+      "final_observed_numbers": [
+        1094.0,
+        883.0,
+        938.0,
+        943.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "LASSO",
+      "value": "835 → 771; Δ=7.6%; hybrid R²=71.9%",
+      "observed_numbers": [
+        835.0,
+        771.0,
+        7.6,
+        71.9
+      ],
+      "expected_numbers": [
+        "835",
+        "771",
+        "7.6",
+        "71.9"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "835 → 771; Δ=7.6%; hybrid R²=71.9%",
+      "final_observed_numbers": [
+        835.0,
+        771.0,
+        7.6,
+        71.9
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "XGBoost",
+      "value": "957 → 946; Δ=1.2%; hybrid R²=57.7%",
+      "observed_numbers": [
+        957.0,
+        946.0,
+        1.2,
+        57.7
+      ],
+      "expected_numbers": [
+        "957",
+        "946",
+        "1.2",
+        "57.7"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "957 → 946; Δ=1.2%; hybrid R²=57.7%",
+      "final_observed_numbers": [
+        957.0,
+        946.0,
+        1.2,
+        57.7
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "LightGBM",
+      "value": "914 → 916; Δ=-0.2%; hybrid R²=60.3%",
+      "observed_numbers": [
+        914.0,
+        916.0,
+        -0.2,
+        60.3
+      ],
+      "expected_numbers": [
+        "914",
+        "916",
+        "-0.2",
+        "60.3"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "914 → 916; Δ=-0.2%; hybrid R²=60.3%",
+      "final_observed_numbers": [
+        914.0,
+        916.0,
+        -0.2,
+        60.3
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Random forest",
+      "value": "1004 → 841; Δ=16.2%; hybrid R²=66.5%",
+      "observed_numbers": [
+        1004.0,
+        841.0,
+        16.2,
+        66.5
+      ],
+      "expected_numbers": [
+        "1004",
+        "841",
+        "16.2",
+        "66.5"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1004 → 841; Δ=16.2%; hybrid R²=66.5%",
+      "final_observed_numbers": [
+        1004.0,
+        841.0,
+        16.2,
+        66.5
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Linear regression",
+      "value": "858 → 830; Δ=3.3%; hybrid R²=67.4%",
+      "observed_numbers": [
+        858.0,
+        830.0,
+        3.3,
+        67.4
+      ],
+      "expected_numbers": [
+        "858",
+        "830",
+        "3.3",
+        "67.4"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "858 → 830; Δ=3.3%; hybrid R²=67.4%",
+      "final_observed_numbers": [
+        858.0,
+        830.0,
+        3.3,
+        67.4
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Optimized weighted ens",
+      "value": "885 → 787; Δ=11.1%; hybrid R²=70.7%",
+      "observed_numbers": [
+        885.0,
+        787.0,
+        11.1,
+        70.7
+      ],
+      "expected_numbers": [
+        "885",
+        "787",
+        "11.1",
+        "70.7"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "885 → 787; Δ=11.1%; hybrid R²=70.7%",
+      "final_observed_numbers": [
+        885.0,
+        787.0,
+        11.1,
+        70.7
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Average ensemble",
+      "value": "859 → 762; Δ=11.3%; hybrid R²=72.5%",
+      "observed_numbers": [
+        859.0,
+        762.0,
+        11.3,
+        72.5
+      ],
+      "expected_numbers": [
+        "859",
+        "762",
+        "11.3",
+        "72.5"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "859 → 762; Δ=11.3%; hybrid R²=72.5%",
+      "final_observed_numbers": [
+        859.0,
+        762.0,
+        11.3,
+        72.5
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Stacked regression ens",
+      "value": "940 → 810; Δ=13.8%; hybrid R²=68.9%",
+      "observed_numbers": [
+        940.0,
+        810.0,
+        13.8,
+        68.9
+      ],
+      "expected_numbers": [
+        "940",
+        "810",
+        "13.8",
+        "68.9"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "940 → 810; Δ=13.8%; hybrid R²=68.9%",
+      "final_observed_numbers": [
+        940.0,
+        810.0,
+        13.8,
+        68.9
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Stacked LASSO ensemble",
+      "value": "935 → 809; Δ=13.4%; hybrid R²=69.0%",
+      "observed_numbers": [
+        935.0,
+        809.0,
+        13.4,
+        69.0
+      ],
+      "expected_numbers": [
+        "935",
+        "809",
+        "13.4",
+        "69.0"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "935 → 809; Δ=13.4%; hybrid R²=69.0%",
+      "final_observed_numbers": [
+        935.0,
+        809.0,
+        13.4,
+        69.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Stacked Random f. ens",
+      "value": "993 → 888; Δ=10.6%; hybrid R²=62.7%",
+      "observed_numbers": [
+        993.0,
+        888.0,
+        10.6,
+        62.7
+      ],
+      "expected_numbers": [
+        "993",
+        "888",
+        "10.6",
+        "62.7"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "993 → 888; Δ=10.6%; hybrid R²=62.7%",
+      "final_observed_numbers": [
+        993.0,
+        888.0,
+        10.6,
+        62.7
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s11",
+      "claim": "S-2017",
+      "metric_label": "Stacked LightGBM ens",
+      "value": "921 → 838; Δ=9.1%; hybrid R²=66.8%",
+      "observed_numbers": [
+        921.0,
+        838.0,
+        9.1,
+        66.8
+      ],
+      "expected_numbers": [
+        "921",
+        "838",
+        "9.1",
+        "66.8"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "921 → 838; Δ=9.1%; hybrid R²=66.8%",
+      "final_observed_numbers": [
+        921.0,
+        838.0,
+        9.1,
+        66.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b10",
+      "claim": "s-normal",
+      "metric_label": "2017 RMSE LASSO/LightGBM/平均/Stacked regression 基线",
+      "value": "835 / 914 / 859 / 940",
+      "observed_numbers": [
+        835.0,
+        914.0,
+        859.0,
+        940.0
+      ],
+      "expected_numbers": [
+        "835",
+        "914",
+        "859",
+        "940"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9; four selected rows",
+      "unit": "RMSE kg/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "835 / 914 / 859 / 940",
+      "final_observed_numbers": [
+        835.0,
+        914.0,
+        859.0,
+        940.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b10",
+      "claim": "s-normal",
+      "metric_label": "2017 RMSE LASSO/LightGBM/平均/Stacked regression 混合",
+      "value": "771 / 916 / 762 / 810",
+      "observed_numbers": [
+        771.0,
+        916.0,
+        762.0,
+        810.0
+      ],
+      "expected_numbers": [
+        "771",
+        "916",
+        "762",
+        "810"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table2, PDF p.9; four selected rows",
+      "unit": "RMSE kg/ha",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "771 / 916 / 762 / 810",
+      "final_observed_numbers": [
+        771.0,
+        916.0,
+        762.0,
+        810.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "LASSO",
+      "value": "4311 → 3160; Δ=26.7%; hybrid R²=-72.6%",
+      "observed_numbers": [
+        4311.0,
+        3160.0,
+        26.7,
+        -72.6
+      ],
+      "expected_numbers": [
+        "4311",
+        "3160",
+        "26.7",
+        "-72.6"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "4311 → 3160; Δ=26.7%; hybrid R²=-72.6%",
+      "final_observed_numbers": [
+        4311.0,
+        3160.0,
+        26.7,
+        -72.6
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "XGBoost",
+      "value": "3664 → 2602; Δ=29.0%; hybrid R²=-17.1%",
+      "observed_numbers": [
+        3664.0,
+        2602.0,
+        29.0,
+        -17.1
+      ],
+      "expected_numbers": [
+        "3664",
+        "2602",
+        "29.0",
+        "-17.1"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3664 → 2602; Δ=29.0%; hybrid R²=-17.1%",
+      "final_observed_numbers": [
+        3664.0,
+        2602.0,
+        29.0,
+        -17.1
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "LightGBM",
+      "value": "3245 → 2608; Δ=19.6%; hybrid R²=-17.5%",
+      "observed_numbers": [
+        3245.0,
+        2608.0,
+        19.6,
+        -17.5
+      ],
+      "expected_numbers": [
+        "3245",
+        "2608",
+        "19.6",
+        "-17.5"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3245 → 2608; Δ=19.6%; hybrid R²=-17.5%",
+      "final_observed_numbers": [
+        3245.0,
+        2608.0,
+        19.6,
+        -17.5
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Random forest",
+      "value": "3782 → 3591; Δ=5.0%; hybrid R²=-122.9%",
+      "observed_numbers": [
+        3782.0,
+        3591.0,
+        5.0,
+        -122.9
+      ],
+      "expected_numbers": [
+        "3782",
+        "3591",
+        "5.0",
+        "-122.9"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3782 → 3591; Δ=5.0%; hybrid R²=-122.9%",
+      "final_observed_numbers": [
+        3782.0,
+        3591.0,
+        5.0,
+        -122.9
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Linear regression",
+      "value": "4869 → 2784; Δ=42.8%; hybrid R²=-34.0%",
+      "observed_numbers": [
+        4869.0,
+        2784.0,
+        42.8,
+        -34.0
+      ],
+      "expected_numbers": [
+        "4869",
+        "2784",
+        "42.8",
+        "-34.0"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "4869 → 2784; Δ=42.8%; hybrid R²=-34.0%",
+      "final_observed_numbers": [
+        4869.0,
+        2784.0,
+        42.8,
+        -34.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Optimized weighted ens",
+      "value": "3380 → 2664; Δ=21.2%; hybrid R²=-22.7%",
+      "observed_numbers": [
+        3380.0,
+        2664.0,
+        21.2,
+        -22.7
+      ],
+      "expected_numbers": [
+        "3380",
+        "2664",
+        "21.2",
+        "-22.7"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3380 → 2664; Δ=21.2%; hybrid R²=-22.7%",
+      "final_observed_numbers": [
+        3380.0,
+        2664.0,
+        21.2,
+        -22.7
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Average ensemble",
+      "value": "3946 → 2908; Δ=26.3%; hybrid R²=-46.2%",
+      "observed_numbers": [
+        3946.0,
+        2908.0,
+        26.3,
+        -46.2
+      ],
+      "expected_numbers": [
+        "3946",
+        "2908",
+        "26.3",
+        "-46.2"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3946 → 2908; Δ=26.3%; hybrid R²=-46.2%",
+      "final_observed_numbers": [
+        3946.0,
+        2908.0,
+        26.3,
+        -46.2
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Stacked regression ens",
+      "value": "3398 → 2545; Δ=25.1%; hybrid R²=-12.0%",
+      "observed_numbers": [
+        3398.0,
+        2545.0,
+        25.1,
+        -12.0
+      ],
+      "expected_numbers": [
+        "3398",
+        "2545",
+        "25.1",
+        "-12.0"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3398 → 2545; Δ=25.1%; hybrid R²=-12.0%",
+      "final_observed_numbers": [
+        3398.0,
+        2545.0,
+        25.1,
+        -12.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Stacked LASSO ensemble",
+      "value": "3403 → 2561; Δ=24.7%; hybrid R²=-13.4%",
+      "observed_numbers": [
+        3403.0,
+        2561.0,
+        24.7,
+        -13.4
+      ],
+      "expected_numbers": [
+        "3403",
+        "2561",
+        "24.7",
+        "-13.4"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3403 → 2561; Δ=24.7%; hybrid R²=-13.4%",
+      "final_observed_numbers": [
+        3403.0,
+        2561.0,
+        24.7,
+        -13.4
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Stacked Random f. ens",
+      "value": "3289 → 2571; Δ=21.8%; hybrid R²=-14.3%",
+      "observed_numbers": [
+        3289.0,
+        2571.0,
+        21.8,
+        -14.3
+      ],
+      "expected_numbers": [
+        "3289",
+        "2571",
+        "21.8",
+        "-14.3"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3289 → 2571; Δ=21.8%; hybrid R²=-14.3%",
+      "final_observed_numbers": [
+        3289.0,
+        2571.0,
+        21.8,
+        -14.3
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s12",
+      "claim": "S-drought",
+      "metric_label": "Stacked LightGBM ens",
+      "value": "3462 → 2588; Δ=25.2%; hybrid R²=-15.8%",
+      "observed_numbers": [
+        3462.0,
+        2588.0,
+        25.2,
+        -15.8
+      ],
+      "expected_numbers": [
+        "3462",
+        "2588",
+        "25.2",
+        "-15.8"
+      ],
+      "numeric_value_count": 4,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha; decrease/R² as reported percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3462 → 2588; Δ=25.2%; hybrid R²=-15.8%",
+      "final_observed_numbers": [
+        3462.0,
+        2588.0,
+        25.2,
+        -15.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b11",
+      "claim": "s-drought",
+      "metric_label": "2012混合RMSE",
+      "value": "3160 / 2602 / 2608 / 3591 / 2784 / 2664 / 2908 / 2545 / 2561 / 2571 / 2588",
+      "observed_numbers": [
+        3160.0,
+        2602.0,
+        2608.0,
+        3591.0,
+        2784.0,
+        2664.0,
+        2908.0,
+        2545.0,
+        2561.0,
+        2571.0,
+        2588.0
+      ],
+      "expected_numbers": [
+        "3160",
+        "2602",
+        "2608",
+        "3591",
+        "2784",
+        "2664",
+        "2908",
+        "2545",
+        "2561",
+        "2571",
+        "2588"
+      ],
+      "numeric_value_count": 11,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha (missing in visible slide heading)",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "3160 / 2602 / 2608 / 3591 / 2784 / 2664 / 2908 / 2545 / 2561 / 2571 / 2588",
+      "final_observed_numbers": [
+        3160.0,
+        2602.0,
+        2608.0,
+        3591.0,
+        2784.0,
+        2664.0,
+        2908.0,
+        2545.0,
+        2561.0,
+        2571.0,
+        2588.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b11",
+      "claim": "s-drought",
+      "metric_label": "2012混合R²",
+      "value": "−72.6 / −17.1 / −17.5 / −122.9 / −34.0 / −22.7 / −46.2 / −12.0 / −13.4 / −14.3 / −15.8",
+      "observed_numbers": [
+        -72.6,
+        -17.1,
+        -17.5,
+        -122.9,
+        -34.0,
+        -22.7,
+        -46.2,
+        -12.0,
+        -13.4,
+        -14.3,
+        -15.8
+      ],
+      "expected_numbers": [
+        "-72.6",
+        "-17.1",
+        "-17.5",
+        "-122.9",
+        "-34.0",
+        "-22.7",
+        "-46.2",
+        "-12.0",
+        "-13.4",
+        "-14.3",
+        "-15.8"
+      ],
+      "numeric_value_count": 11,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "R² percent",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "−72.6 / −17.1 / −17.5 / −122.9 / −34.0 / −22.7 / −46.2 / −12.0 / −13.4 / −14.3 / −15.8",
+      "final_observed_numbers": [
+        -72.6,
+        -17.1,
+        -17.5,
+        -122.9,
+        -34.0,
+        -22.7,
+        -46.2,
+        -12.0,
+        -13.4,
+        -14.3,
+        -15.8
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b11",
+      "claim": "s-drought",
+      "metric_label": "2012基线RMSE",
+      "value": "4311 / 3664 / 3245 / 3782 / 4869 / 3380 / 3946 / 3398 / 3403 / 3289 / 3462",
+      "observed_numbers": [
+        4311.0,
+        3664.0,
+        3245.0,
+        3782.0,
+        4869.0,
+        3380.0,
+        3946.0,
+        3398.0,
+        3403.0,
+        3289.0,
+        3462.0
+      ],
+      "expected_numbers": [
+        "4311",
+        "3664",
+        "3245",
+        "3782",
+        "4869",
+        "3380",
+        "3946",
+        "3398",
+        "3403",
+        "3289",
+        "3462"
+      ],
+      "numeric_value_count": 11,
+      "source": "Shahhosseini Table3, PDF p.11",
+      "unit": "RMSE kg/ha (missing in visible slide heading)",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "4311 / 3664 / 3245 / 3782 / 4869 / 3380 / 3946 / 3398 / 3403 / 3289 / 3462",
+      "final_observed_numbers": [
+        4311.0,
+        3664.0,
+        3245.0,
+        3782.0,
+        4869.0,
+        3380.0,
+        3946.0,
+        3398.0,
+        3403.0,
+        3289.0,
+        3462.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s13",
+      "claim": "S-ablation",
+      "metric_label": "Stacked regression",
+      "value": "1040 / 906 / 837",
+      "observed_numbers": [
+        1040.0,
+        906.0,
+        837.0
+      ],
+      "expected_numbers": [
+        "1040",
+        "906",
+        "837"
+      ],
+      "numeric_value_count": 3,
+      "source": "Shahhosseini Table4, PDF p.11",
+      "unit": "RMSE kg/ha; added APSIM subgroup, baseline inputs retained",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1040 / 906 / 837",
+      "final_observed_numbers": [
+        1040.0,
+        906.0,
+        837.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "a",
+      "slide": "s13",
+      "claim": "S-ablation",
+      "metric_label": "Random forest",
+      "value": "1562 / 1208 / 1603",
+      "observed_numbers": [
+        1562.0,
+        1208.0,
+        1603.0
+      ],
+      "expected_numbers": [
+        "1562",
+        "1208",
+        "1603"
+      ],
+      "numeric_value_count": 3,
+      "source": "Shahhosseini Table4, PDF p.11",
+      "unit": "RMSE kg/ha; added APSIM subgroup, baseline inputs retained",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1562 / 1208 / 1603",
+      "final_observed_numbers": [
+        1562.0,
+        1208.0,
+        1603.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b12",
+      "claim": "s-water",
+      "metric_label": "Stacked regression消融RMSE 物候/作物/水土天气",
+      "value": "1040 / 906 / 837",
+      "observed_numbers": [
+        1040.0,
+        906.0,
+        837.0
+      ],
+      "expected_numbers": [
+        "1040",
+        "906",
+        "837"
+      ],
+      "numeric_value_count": 3,
+      "source": "Shahhosseini Table4, PDF p.11",
+      "unit": "RMSE kg/ha; added APSIM subgroup, baseline inputs retained",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1040 / 906 / 837",
+      "final_observed_numbers": [
+        1040.0,
+        906.0,
+        837.0
+      ],
+      "final_pass": true
+    },
+    {
+      "author": "b",
+      "slide": "b12",
+      "claim": "s-water",
+      "metric_label": "RF消融RMSE 物候/作物/水土天气",
+      "value": "1562 / 1208 / 1603",
+      "observed_numbers": [
+        1562.0,
+        1208.0,
+        1603.0
+      ],
+      "expected_numbers": [
+        "1562",
+        "1208",
+        "1603"
+      ],
+      "numeric_value_count": 3,
+      "source": "Shahhosseini Table4, PDF p.11",
+      "unit": "RMSE kg/ha; added APSIM subgroup, baseline inputs retained",
+      "kind": "reported",
+      "pass_check": true,
+      "final_value": "1562 / 1208 / 1603",
+      "final_observed_numbers": [
+        1562.0,
+        1208.0,
+        1603.0
+      ],
+      "final_pass": true
+    }
+  ],
+  "final_rechecked_at": "2026-10-23T14:37:08.883442+00:00",
+  "final_project_sha256": {
+    "a": "f2709ff009419159df1dc4e1cf43ca1308931ac742e8ee99f9c2b72aa629435f",
+    "b": "7b9f5047b76b4e11ca0e9ef7451d1370b5612b4fe8714e1f9710689939bef8e5"
+  },
+  "final_failures": []
+}

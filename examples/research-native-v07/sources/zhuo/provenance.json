@@ -1,0 +1,37 @@
+{
+  "doi": "10.3390/rs11131618",
+  "title": "Assimilating Soil Moisture Retrieved from Sentinel-1 and Sentinel-2 Data into WOFOST Model to Improve Winter Wheat Yield Estimation",
+  "authors": [
+    "Zhuo, Wen",
+    "Huang, Jianxi",
+    "Li, Li",
+    "Zhang, Xiaodong",
+    "Ma, Hongyuan",
+    "Gao, Xinran",
+    "Huang, Hai",
+    "Xu, Baodong",
+    "Xiao, Xiangming"
+  ],
+  "journal": "Remote Sensing",
+  "year": 2019,
+  "volume": "11",
+  "issue": "13",
+  "article_number": "1618",
+  "publication_date": "2019-07-08",
+  "publisher_url": "https://www.mdpi.com/2072-4292/11/13/1618",
+  "pdf_url": "https://www.mdpi.com/2072-4292/11/13/1618/pdf?version=1562581027",
+  "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_evidence": [
+    "© 2019 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/)."
+  ],
+  "third_party_review": "Reviewed main figure captions and article credit/rights statements. No figure-specific third-party exclusion from CC BY was found. This is a review of published notices, not an independent verification of upstream ownership. Preserve attribution of underlying datasets and geographic basemaps.",
+  "pdf_pages": 17,
+  "pdf_sha256": "dbc7fe47462dc6d89c033cbba24bc19599dc6709ade6a3b5a2ea42061b726df8",
+  "page_number_convention": "PDF physical page index, starting at 1. Main PDF printed page numbers agree with this index.",
+  "providedText": {
+    "file": "sources/zhuo/article-page-text.txt",
+    "sha256": "c85050e230fd1f48741f9834de829332fea3f38aaa7196163e63c966f8c69a18",
+    "modifications": "Text extracted from the official PDF with physical page markers. Original PDF is linked and hashed, not redistributed in this bundle."
+  }
+}

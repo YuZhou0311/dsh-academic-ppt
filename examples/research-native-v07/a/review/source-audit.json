@@ -1,0 +1,105 @@
+{
+  "usedFinalAssetsOnly": true,
+  "usedAssets": [
+    {
+      "assetId": "ch-map-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.1",
+      "pdfPhysicalPage": 3,
+      "sourceVersion": "Official published article; PDF p.3",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "fileSha256": "d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a",
+      "packetSha256": "d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": null,
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。"
+    },
+    {
+      "assetId": "ch-lstm-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.4",
+      "pdfPhysicalPage": 9,
+      "sourceVersion": "Official published article; PDF p.9",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "fileSha256": "527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9",
+      "packetSha256": "527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "w": 0.497,
+        "h": 0.477
+      },
+      "cropNote": "仅显示左上LSTM面板，保留其边界、散点、对角线与原始统计；未生成点位。横轴共享的1–7范围由完整原图核对，在页面文字说明。"
+    },
+    {
+      "assetId": "ch-sensors-source-v2",
+      "paperId": "cheng",
+      "figure": "Fig.6",
+      "pdfPhysicalPage": 10,
+      "sourceVersion": "Official published article; PDF p.10",
+      "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/pdf",
+      "fileSha256": "a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae",
+      "packetSha256": "a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": null,
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。"
+    },
+    {
+      "assetId": "z-yield-trim-source-v2",
+      "paperId": "zhuo",
+      "figure": "Fig.8",
+      "pdfPhysicalPage": 12,
+      "sourceVersion": "Official published article; PDF p.12",
+      "sourceUrl": "https://mdpi-res.com/remotesensing/remotesensing-11-01618/article_deploy/html/images/remotesensing-11-01618-g008.png",
+      "fileSha256": "4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9",
+      "packetSha256": "4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.9
+      },
+      "cropNote": "裁去底部(a)(b)面板代号与空白，保留全部点、坐标、单位和回归统计；以原生标题重新标明同化条件。"
+    },
+    {
+      "assetId": "z-trajectory-source-v2",
+      "paperId": "zhuo",
+      "figure": "Fig.6",
+      "pdfPhysicalPage": 11,
+      "sourceVersion": "Official published article; PDF p.11",
+      "sourceUrl": "https://mdpi-res.com/remotesensing/remotesensing-11-01618/article_deploy/html/images/remotesensing-11-01618-g006.png",
+      "fileSha256": "5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b",
+      "packetSha256": "5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": null,
+      "cropNote": "原始图像未改绘数据；显示范围及原生中文说明见本稿资产记录。"
+    },
+    {
+      "assetId": "s-importance-two-source-v2",
+      "paperId": "shahhosseini",
+      "figure": "Fig.8",
+      "pdfPhysicalPage": 13,
+      "sourceVersion": "Official published article; PDF p.13",
+      "sourceUrl": "https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-020-80820-1/MediaObjects/41598_2020_80820_Fig8_HTML.png",
+      "fileSha256": "72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1",
+      "packetSha256": "72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1",
+      "shaMatches": true,
+      "pageMatches": true,
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "w": 0.272,
+        "h": 0.755
+      },
+      "cropNote": "裁取前两变量的数据区与纵轴完整0刻度，去掉倾斜变量名；原生标签复述两个变量身份与2017粉、2018灰、2012蓝；未改绘柱高。"
+    }
+  ],
+  "unusedHistoryNote": "旧资产按immutable约定保留在工程和历史中；本表仅审计当前16页实际引用的纠正版source-v2资产。"
+}

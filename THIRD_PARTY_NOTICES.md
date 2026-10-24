@@ -52,12 +52,26 @@ S04 使用的 `examples/assets/author-pla_plot.png` 为作者在官方 [vios-s/P
 
 示例的原生解释层由汇报者整理，研究方案标注为待验证。它是单篇论文的软件功能与版式示例，不是此前五篇综述的重新交付，也不是对 DeepSeek 或本插件的科学效果评价。
 
-## 4. 模板与字体
+## 4. v0.7 真实论文重建示例
 
-本版本实际读取并渲染用户提供的两份学术 PPTX，共 39 页，依据其标题、图文分区和小题签结构改良版式。新制作的 48 页参考包、六组件示范页与教学图资产由本项目提供；源 PPTX、人物照片、机构标识和其原有研究图片不随包重新分发。具体观察见 [原模板研究](docs/USER_TEMPLATE_STUDY.md)。实际用户工程可以在本地继续使用其授权模板，按组件支持范围处理。
+[research-native-v07](examples/research-native-v07/README.md) 使用三篇正式论文的公开图像、数据表与全文提取文本：
+
+| 作者与论文 | 出版信息与来源 |
+| --- | --- |
+| Cheng, Enhui, et al. *Wheat yield estimation using remote sensing data based on machine learning approaches* | Frontiers in Plant Science 13:1090970，2022；[10.3389/fpls.2022.1090970](https://doi.org/10.3389/fpls.2022.1090970) |
+| Zhuo, Wen, et al. *Assimilating Soil Moisture Retrieved from Sentinel-1 and Sentinel-2 Data into WOFOST Model to Improve Winter Wheat Yield Estimation* | Remote Sensing 11(13):1618，2019；[10.3390/rs11131618](https://doi.org/10.3390/rs11131618) |
+| Shahhosseini, Mohsen; Hu, Guiping; Huber, Isaiah; Archontoulis, Sotirios V. *Coupling machine learning and crop modeling improves crop yield prediction in the US Corn Belt* | Scientific Reports 11:1606，2021；[10.1038/s41598-020-80820-1](https://doi.org/10.1038/s41598-020-80820-1) |
+
+三篇采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。所用主图图注和版权声明未见具体第三方排除条款，原图内已有地理底图等署名继续保留。完整作者、出版方 PDF 链接、版本与许可原文见 [来源记录](examples/research-native-v07/sources/README.md)。本包提供实际使用的 7 份完整源图像与带页码的提取文本；PDF 原件提供来源链接和 SHA-256，不重复分发。
+
+修改限于页面显示视窗、原生中文说明、经核验的数表与外置坐标标签；没有生成或改写原始散点、柱高、拟合线。每次使用的图号、页码、许可和裁切说明见 [A manifest](examples/research-native-v07/a/manifest.json)、[B manifest](examples/research-native-v07/b/manifest.json)。论文图和文本不适用本插件 MIT 许可；再分发时应继续保留作者、来源、CC BY 4.0 链接及修改说明。
+
+## 5. 模板与字体
+
+历史版本曾实际读取并渲染用户提供的两份学术 PPTX，共 39 页，依据其标题、图文分区和小题签结构改良版式。原文件在本轮重建时已丢失，v0.7 不声称重新观察过这些页面。保留的 48 页参考包、六组件示范页与教学图资产由本项目提供；源 PPTX、人物照片、机构标识和其原有研究图片不随包重新分发。历史观察见 [原模板研究](docs/USER_TEMPLATE_STUDY.md)。实际用户工程可以在本地继续使用其授权模板，按组件支持范围处理。
 
 默认字体名为 `Noto Sans CJK SC`。字体不随插件源码分发；使用者可以安装 [Noto CJK 官方字体](https://github.com/notofonts/noto-cjk) 或指定已有合法字体。示例渲染测试使用官方 Noto Sans CJK SC Regular / Bold，遵循其 SIL Open Font License。字体文件未被改写或重命名为其他字体。
 
-## 5. 方法论来源
+## 6. 方法论来源
 
 学术工作流源自同一用户此前的汇报制作和返工反馈，并以本次工程化设计继续完善。DeepSeek、DSH 协议与模型能力说明的官方出处、核对日期及适用边界列于 [docs/DESIGN.md](docs/DESIGN.md)。
