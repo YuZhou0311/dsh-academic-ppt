@@ -1,0 +1,650 @@
+{
+  "purpose": "Publish the completed academic-PPT plugin examples to the exact GitHub repository named and authorized by the user. This is the same payload from the rejected action, now audited before any retry.",
+  "repository": "YuZhou0311/dsh-academic-ppt",
+  "targetRef": "refs/heads/feat/research-native-rebuild",
+  "baseCommit": "15ec68f5f95f7f5fbd527d37cc8a35b757125f8b",
+  "targetCommit": "b80033d0f57fb4d89d62ce36fe3ad347b7334c54",
+  "targetTree": "06794299d3800d30b1d35eca50472b7cfe302cde",
+  "packSha256": "1bb09fd81a2bfe308dd439e6fb9345ec5c90557a9eb1f80d66b21fef7d2709fd",
+  "packBytes": 22699528,
+  "packedObjectCount": 121,
+  "exactlyEqualsTargetMinusBaseObjects": true,
+  "extraObjects": [],
+  "fileCount": 101,
+  "onlyAuthorizedFilePaths": true,
+  "credentialPatternMatches": [],
+  "sessionOrCredentialFilesIncluded": false,
+  "pptxContainsMacrosOrOleFiles": false,
+  "emptyPptxArchiveDirectories": [
+    "examples/research-native-v07/a/report.pptx:ppt/embeddings/",
+    "examples/research-native-v07/b/report.pptx:ppt/embeddings/"
+  ],
+  "publicScientificSources": [
+    {
+      "doi": "10.3389/fpls.2022.1090970",
+      "publisherUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.1090970/full",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "pdfSha256": "57a5d569fca781f5e4041aa1d69e9a5523865ea8d5262ed79019da69e96cc075"
+    },
+    {
+      "doi": "10.3390/rs11131618",
+      "publisherUrl": "https://www.mdpi.com/2072-4292/11/13/1618",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "pdfSha256": "dbc7fe47462dc6d89c033cbba24bc19599dc6709ade6a3b5a2ea42061b726df8"
+    },
+    {
+      "doi": "10.1038/s41598-020-80820-1",
+      "publisherUrl": "https://www.nature.com/articles/s41598-020-80820-1",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "pdfSha256": "bc74ea2ce389f95f9e9ea4969e586fc7601f682eedc899ca93368d9321c171c3"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 25024,
+      "gitBlobSha": "ca33ac61abcee5a16112b4a92ca46ff46493f366",
+      "sha256": "0cb78abbc720ded43cdd0d9f835092f9662591de8b9fac924568fe23a9cb63da"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 9505,
+      "gitBlobSha": "599949528538331c5b6f7ce3b298a5cf9258adb9",
+      "sha256": "48c92d966e6e1d38c05930a182e57f328aae9779f8cfdc9e22b798cc553e5f9b"
+    },
+    {
+      "path": "docs/VALIDATION_V07.md",
+      "bytes": 6357,
+      "gitBlobSha": "15930ca5238009c21dac1f6bd7e15fabdd64468a",
+      "sha256": "7f888966e5ac402ea983796ddcf154a437dce0463bae827ddc6f7d88fd016c8e"
+    },
+    {
+      "path": "examples/research-native-v07/README.md",
+      "bytes": 6635,
+      "gitBlobSha": "a593718d7df20a537704b3d3f222c1fd86f3ff3d",
+      "sha256": "eac2c46306debfbc9938c09a68d960cc1207922d5a553d8e3114c83f2112cd4a"
+    },
+    {
+      "path": "examples/research-native-v07/a/README.md",
+      "bytes": 2661,
+      "gitBlobSha": "42a475a989bfea83790484905ae432d25a971394",
+      "sha256": "c520fc3db31abb46bbcf61b321551c2756caccf280b078bf0621f3ca6a1237fd"
+    },
+    {
+      "path": "examples/research-native-v07/a/candidates/study-v3/overview.png",
+      "bytes": 97964,
+      "gitBlobSha": "c50ce377abf7ce1faab5699cf698625993bebebe",
+      "sha256": "6be5b8f3a9d7599a806d9c2678d335f2c316cc1b44cc5692be0a1a9cfca54500"
+    },
+    {
+      "path": "examples/research-native-v07/a/candidates/study-v3/page-0001.png",
+      "bytes": 224433,
+      "gitBlobSha": "cac53d081f15fc9cdb9fd020fc10cf274ae770d4",
+      "sha256": "1e2610d80199126bdbeec5a64f1039d46e95127389f2957e9790c8960a7bda9b"
+    },
+    {
+      "path": "examples/research-native-v07/a/candidates/study-v3/page-0002.png",
+      "bytes": 117200,
+      "gitBlobSha": "67cca185d98ec22d39f894e3d14fe9d56199c510",
+      "sha256": "ec0a8c13eb608432bb88bdca4a4ab1899a216aa81d0090f48c6c83c4f002a91f"
+    },
+    {
+      "path": "examples/research-native-v07/a/candidates/study-v3/page-0003.png",
+      "bytes": 217619,
+      "gitBlobSha": "a3b1747632cef4efc70f7bb10f473c7b32a1b59d",
+      "sha256": "37c61826a0cb3bb6825dc44e3c88c466869f543a8dc134d9af7b84ad5fbc8fb4"
+    },
+    {
+      "path": "examples/research-native-v07/a/candidates/study-v3/page-0004.png",
+      "bytes": 123051,
+      "gitBlobSha": "a5e7a6d814846d3fd579fa153e54ee7c2bb93595",
+      "sha256": "c8d149e6be6addfbfa0aad1ea4e87e139fe2c30d7b817835cdf9842460af0f48"
+    },
+    {
+      "path": "examples/research-native-v07/a/deck.json",
+      "bytes": 257675,
+      "gitBlobSha": "4a6dc8c2555ad726accc2fb63322c1c697e14659",
+      "sha256": "1a216400c70fc161fce4e630c6aceeadc78aa0136c5684c4d94ae74c3982c438"
+    },
+    {
+      "path": "examples/research-native-v07/a/manifest.json",
+      "bytes": 7868,
+      "gitBlobSha": "6849c3d073e973a12429e09321408d3a23a37795",
+      "sha256": "a499ece2eeb24d5f0d45369ceacae36e08cc11b8272e14b877f659db8041adb8"
+    },
+    {
+      "path": "examples/research-native-v07/a/overview.png",
+      "bytes": 482114,
+      "gitBlobSha": "f5485109126f37acceb2d0aad77497708cd7d4e0",
+      "sha256": "3706f7eafc70b11679908ac3633da311046735696112fa4c623b70c54f901fc0"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0001.png",
+      "bytes": 224433,
+      "gitBlobSha": "cac53d081f15fc9cdb9fd020fc10cf274ae770d4",
+      "sha256": "1e2610d80199126bdbeec5a64f1039d46e95127389f2957e9790c8960a7bda9b"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0002.png",
+      "bytes": 163155,
+      "gitBlobSha": "08f26d1fe68852cf3ad61642f64cf7f14396c62f",
+      "sha256": "eddf52f74ab9dedbedf38a52707227c4187e551548ee04919dcc04b9f002310c"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0003.png",
+      "bytes": 161090,
+      "gitBlobSha": "adae0f1368b2569b2800bdc6f216ae1b881ff9f1",
+      "sha256": "9249b26ac9488011637517f130d9cdc32404dfb90df4e00c6a887a449b3da75d"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0004.png",
+      "bytes": 279515,
+      "gitBlobSha": "a3e0753ef7cd57bc28987d2303b2774befc086df",
+      "sha256": "1c83b348ba0fa0acac5a6b8a4c73933202247745d4d9831cfeffb0cfeb07f540"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0005.png",
+      "bytes": 218136,
+      "gitBlobSha": "973d1be7705bd6fc6182c0ab7eddea68093495ca",
+      "sha256": "2f9210951847b8718bb3a16818fba580af0ec3aa12bcf31b5773a174b4ffdad7"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0006.png",
+      "bytes": 264056,
+      "gitBlobSha": "00224afb245c3b110d3f9bb46bef8b1c36b20001",
+      "sha256": "223742ef1d73c3ae361b5699c050e642997596224da3e35fb219b58ad99b3ff9"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0007.png",
+      "bytes": 165540,
+      "gitBlobSha": "24e02fb8f099d8e6c5b58e9392e31560e164f827",
+      "sha256": "456b59344ecc0a197caf936baac51ef1da05eadb6f06644cc6702f30b8f6809f"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0008.png",
+      "bytes": 293896,
+      "gitBlobSha": "486080a5c4657493cbd16b6a4b28538b4cadb809",
+      "sha256": "7d7bc600461c548eeee56ac467f326c4cbdf09404828f5d972e6deff5675c7fe"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0009.png",
+      "bytes": 307775,
+      "gitBlobSha": "83c5fc321e7f8c430e63373325c84d27c85a0465",
+      "sha256": "6d045c278ad7a69d35f35f4003a6328651eaa4788fb77d3285dbcd5f7553ea59"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0010.png",
+      "bytes": 143872,
+      "gitBlobSha": "d848e217667e25f3fe407f2620dd3d7d03f9ea0b",
+      "sha256": "4857b5f5531041127896bb8a9c0c53bf9c5d49dce997a5cb63b360680871cc1d"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0011.png",
+      "bytes": 196480,
+      "gitBlobSha": "69cabb30991a54b56a3da3d2e6ca4a34f527fda5",
+      "sha256": "4c1b7fa5b2ce63c5c9cfe2b554641f7e8da7cde2a660b7f9646dc86e69509d50"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0012.png",
+      "bytes": 217186,
+      "gitBlobSha": "ef954dd994a4e00e87dcad18dc4f45d35e1b8a12",
+      "sha256": "6658f890c17d3724ed23da182219bbfbfbf5ed12672523313c30e60f8120481e"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0013.png",
+      "bytes": 176983,
+      "gitBlobSha": "a4d3224e5309a7dea5eb78fcfa2916acd8a5698d",
+      "sha256": "5453ae267960a2fd34f1a02d06c4066d1f6876864f7b7fc71dea7c7628f7db23"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0014.png",
+      "bytes": 187212,
+      "gitBlobSha": "afffac1ec43a7e043eca1ca763a7224c9a0a7a71",
+      "sha256": "c937321ce2272e5d8bf55ee7a1cf20b4ea10d1843d9ac77b0663a8849798c645"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0015.png",
+      "bytes": 157115,
+      "gitBlobSha": "8dadca9a605510ab1a180c6ec020ecfe2c56c55b",
+      "sha256": "e8894e496966ce72af646b0666b193ef35202a1be6b9d4e58557d6475bc8fe57"
+    },
+    {
+      "path": "examples/research-native-v07/a/previews/page-0016.png",
+      "bytes": 173183,
+      "gitBlobSha": "f719452697e15425bb44b30761f10899e5bc23dd",
+      "sha256": "78129588fc3c00ada7bde7af554b4f8e53a67daa4095b9ed7a6902617ded5795"
+    },
+    {
+      "path": "examples/research-native-v07/a/report.pdf",
+      "bytes": 1244777,
+      "gitBlobSha": "e4d889ac4b6b20b5663bd97dacc8d4a4cc523b1d",
+      "sha256": "9eb1521aaace943b0fa3162fe7424ec0b6ff0f1197472529121c9134e952cf61"
+    },
+    {
+      "path": "examples/research-native-v07/a/report.pptx",
+      "bytes": 9573227,
+      "gitBlobSha": "d8cf1e4db5c9d401f65c00b7ed87203398fd72cd",
+      "sha256": "0accb8fc38beb2df603c9bdb303135206ab334c9f183d88e8ad031f3e73ff7ec"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/design-decisions.json",
+      "bytes": 2098,
+      "gitBlobSha": "07fa2587a71671e75d4e229e0344b06393f65924",
+      "sha256": "47e37b5a0ffd89cc1cae29775710f864adbb603ae289e80bdcc51525e0b9129c"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/native-object-audit.json",
+      "bytes": 535,
+      "gitBlobSha": "0dfc3640b5885cd387bb7a8f150d7dc2fa8ed4a4",
+      "sha256": "d367fafad259e50b7726021c11ffd222e5c92f9aaf832a69cafa971b409c63d6"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/render-receipt.json",
+      "bytes": 2758,
+      "gitBlobSha": "66e7120b6279635cdece7ac2e1f1c734209b7780",
+      "sha256": "bb9d15ed368a03c149f877dedc25a28e6739aa2f9e52a88b94608ba188fe9539"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/source-audit.json",
+      "bytes": 4783,
+      "gitBlobSha": "3a649ef63c940c588725e2b2ed1adc19f84b4485",
+      "sha256": "7409b7843fbe3378dfe8847ff9b7378b1cb2f7f147077e1d8cfaef1c0896f3a3"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/static-quality.json",
+      "bytes": 36713,
+      "gitBlobSha": "b89b2213da5bcd12859172b841c52821f25c6bdb",
+      "sha256": "71f82cfe03b9d1ce80cbf7f353ed637b2f8d9660af9c2c823b4af520ec41f16f"
+    },
+    {
+      "path": "examples/research-native-v07/a/review/visual-review.json",
+      "bytes": 7908,
+      "gitBlobSha": "7aff0f18d525fc74a3e90361d375ab3b23929e1f",
+      "sha256": "3fb6da1bdf9839e2fbd29c8ed4a480906fbff13fb7a642da67df289a05cd1311"
+    },
+    {
+      "path": "examples/research-native-v07/a/speaker-notes.md",
+      "bytes": 8157,
+      "gitBlobSha": "44ea9e172cc2a6506e88507c5fb22e8414391535",
+      "sha256": "b9c9b310beb5a8457216d7511fe8a957935c2f4137ebac8650aedadfd260ec97"
+    },
+    {
+      "path": "examples/research-native-v07/assets/37f5351b26b46880a0ebc0f22211ba81015f2478b419eaba3febf2b338a44b19.png",
+      "bytes": 1563279,
+      "gitBlobSha": "3ed679d6bcaa1c369e278f70ce3ce69e2fa0da25",
+      "sha256": "37f5351b26b46880a0ebc0f22211ba81015f2478b419eaba3febf2b338a44b19"
+    },
+    {
+      "path": "examples/research-native-v07/assets/4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9.png",
+      "bytes": 1378926,
+      "gitBlobSha": "2aef0af4232cafc3a6e6e8ad8976883435bd9c80",
+      "sha256": "4802dbb2f2b1096bccf0b293f70790f88458e84bd97999c9aa7bdc6e609680d9"
+    },
+    {
+      "path": "examples/research-native-v07/assets/5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b.png",
+      "bytes": 1186340,
+      "gitBlobSha": "a8ac1a1a8fe59642d84bcb4ccd014ffa756dedcf",
+      "sha256": "5058e7b1514ae7718c0df3bbc03e22f5a3eb039265ff035c7aa6b6ae8841cb1b"
+    },
+    {
+      "path": "examples/research-native-v07/assets/527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9.png",
+      "bytes": 1820388,
+      "gitBlobSha": "e0e9551471b7587299d7cb0de8de3870946c2a88",
+      "sha256": "527ce9d3faf29a5abd94dc12e46dd12f57f3d6eeeed1ad3b9d49c1c0b64041e9"
+    },
+    {
+      "path": "examples/research-native-v07/assets/72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1.png",
+      "bytes": 222851,
+      "gitBlobSha": "36625e721a67ef5258bcedd0fefd7a464e3a0272",
+      "sha256": "72d6be7105b343b43471ea29d07b4d9d10887c0af530744ab803279ff656c3a1"
+    },
+    {
+      "path": "examples/research-native-v07/assets/a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae.png",
+      "bytes": 640863,
+      "gitBlobSha": "f1ab10ddadb610b449cf404242ba3f28c2d1c7c7",
+      "sha256": "a2b882ee62420547745c271d2bf948aef852bdb7bec8d58d97204ed6aeb2fcae"
+    },
+    {
+      "path": "examples/research-native-v07/assets/d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a.png",
+      "bytes": 1901511,
+      "gitBlobSha": "26f354cdcce862dcef15fd21c93c55b1e3a0e734",
+      "sha256": "d4ae22a4385a24d5dfb5abbd874abe8b6790e3030ae1763b0ad17c2bd871891a"
+    },
+    {
+      "path": "examples/research-native-v07/b/README.md",
+      "bytes": 2867,
+      "gitBlobSha": "b98e28cdc8be283d882237fb3c67c815261bf1ae",
+      "sha256": "fcaece1e0624181b7d59f81e46e90d3f8f7f92b880f0eed6479cc1b973ba9cee"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-01/overview.png",
+      "bytes": 119426,
+      "gitBlobSha": "8f6a312763a304d18d4b7f26f932f9cf4753c3ce",
+      "sha256": "0f450747d0b9fd02f7e4f8f7b6da89f5078102e4a9c6ec7387476af593a32cb0"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-01/page-0001.png",
+      "bytes": 231007,
+      "gitBlobSha": "0d110ee4fe94e46b2ada7b94cdaa236c761c5cc2",
+      "sha256": "af34d27baa90db9118cc08b431ce411a86bdb85fd49f23a7b19e9d5ac31e2ab0"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-01/page-0002.png",
+      "bytes": 136969,
+      "gitBlobSha": "a67678ce2836baa582be6d3772960de7fd76ac6d",
+      "sha256": "3e59f299a94e3c60997ca20ea85ca101e6e36512e23f0f0640556a388614ea7d"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-01/page-0003.png",
+      "bytes": 276565,
+      "gitBlobSha": "088809d32daad66e401bf643aa792dd41773acd2",
+      "sha256": "50b054bf0fb3293f90466ef5f7e5becd9795f98480ae837d23f3b75f451e1b42"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-01/page-0004.png",
+      "bytes": 268442,
+      "gitBlobSha": "0a18609d70907be2a3950b1f4bce1e2a0eecdc0f",
+      "sha256": "332b97f6f267659c025a3c734888cd80d419e06e2b60f5f68c0490126854fdfb"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-02/overview.png",
+      "bytes": 67767,
+      "gitBlobSha": "ed6bc42dfe8b5d73fcd90c60526bf149e3a52bb2",
+      "sha256": "6fdb7324ca159c7f2ebd1b6e2ec001b56400d6475a4b40e00d1cfe9ceb9542a2"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-02/page-0001.png",
+      "bytes": 231803,
+      "gitBlobSha": "f70b5a4a21527c4e9134559b7a88f6620a8dc997",
+      "sha256": "6477aa611b3399c9922db4bfc00311e47bedb86cac4986c15eba425c9689c382"
+    },
+    {
+      "path": "examples/research-native-v07/b/candidates/study-02/page-0002.png",
+      "bytes": 301997,
+      "gitBlobSha": "980f4f00f772ca831eb2e7815cba0979dfae1415",
+      "sha256": "315e20b80d671c0c02924a7fdb0080172d94e988bd7a0d32470f1a1e76a7dff5"
+    },
+    {
+      "path": "examples/research-native-v07/b/deck.json",
+      "bytes": 217721,
+      "gitBlobSha": "929e7e7b94d705ff725d856c64df14b0ddfc8e22",
+      "sha256": "123b0b7e3824942660e840f9a92aa31d895f35be58e056c66a1333860b9ed14b"
+    },
+    {
+      "path": "examples/research-native-v07/b/manifest.json",
+      "bytes": 8881,
+      "gitBlobSha": "48900fa313444a07bf51183631897bad22db78f8",
+      "sha256": "c14cf14b277cdec15d546b30fc10b33c8867f2706a2eb3b51ad10ea5a72ecf3d"
+    },
+    {
+      "path": "examples/research-native-v07/b/overview.png",
+      "bytes": 463335,
+      "gitBlobSha": "9183f3219fd6ecad4e24c72f6dd8832e3b457270",
+      "sha256": "867ab7e2afa199833e81b6edabcd3d14937e2b879bbdb0ec19bb33139bc43fd8"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0001.png",
+      "bytes": 301997,
+      "gitBlobSha": "980f4f00f772ca831eb2e7815cba0979dfae1415",
+      "sha256": "315e20b80d671c0c02924a7fdb0080172d94e988bd7a0d32470f1a1e76a7dff5"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0002.png",
+      "bytes": 140706,
+      "gitBlobSha": "ef5938c0083f21084b12854021397f517dd83d32",
+      "sha256": "e8b287d7cfbf94a8785b68e08420358f39dd730d182e9e88b2a0a36f6b6a2ad7"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0003.png",
+      "bytes": 290919,
+      "gitBlobSha": "7c8f3d3dc2933ca7b6cfaff7a73ea0cc00a18f72",
+      "sha256": "179cc0aae8060ff06e2666822e54abfd61e9dfde8da8646dce0a7374f371d985"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0004.png",
+      "bytes": 197680,
+      "gitBlobSha": "c805aa57197e6fcb7e4571db0818af4f8c9ad50c",
+      "sha256": "214394a30f469555ccdaaf49d605f2081a1f917d94dc61cc383a292ed0fac31c"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0005.png",
+      "bytes": 330032,
+      "gitBlobSha": "5c619542802518a39b371064222281bf14ec1451",
+      "sha256": "14035007a314596260f2376462124b40e4fed6987daa5b9fc678729921c5ad6d"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0006.png",
+      "bytes": 149891,
+      "gitBlobSha": "693b2f06c35d52824603ee5cfc06bc38f4f70111",
+      "sha256": "28ce47951ffd69d4be0de996609c63cae692d36a9424f1c89d5bfa0d4d38a659"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0007.png",
+      "bytes": 331902,
+      "gitBlobSha": "667d9eff6535591cfde979562ca685c9414ea297",
+      "sha256": "6d3aa6f2fd509fb2cced1155067bd2eb68f5883545761f860b4c2b90ed84f246"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0008.png",
+      "bytes": 268132,
+      "gitBlobSha": "f00594d1b698ca2e8c75aa4416a2510ecbdce5e9",
+      "sha256": "17ebd6294d5e146bff0274d1f706c378eced9563f43d70e828af4972739a017e"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0009.png",
+      "bytes": 131426,
+      "gitBlobSha": "25a7fbea498272fe4d5ee864b3eb308761597ae8",
+      "sha256": "617af85c06905b63c71cb8547b3cb570143ee099bbd6d4a9557ad5123a802680"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0010.png",
+      "bytes": 162661,
+      "gitBlobSha": "a3feea427571f0c82924f7392fb54afcb3e3148f",
+      "sha256": "7c64ff95792f7afadc9ceceae8a0b5ce4aa586bfaacf4becbe76f3d12039a882"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0011.png",
+      "bytes": 206470,
+      "gitBlobSha": "83a34731b9854a0461789f7623320b17b61ad5d0",
+      "sha256": "5406fbceee697033f63c720de67c9554d5a5dfeab4c1ea180540d1d211511801"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0012.png",
+      "bytes": 197740,
+      "gitBlobSha": "df96a79788e65c4568f3c46206bd8cd9859dfee0",
+      "sha256": "524e3cd3474be63cec6c49e964c81b1451ddbfad9b25f52d8cb0248292e07d09"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0013.png",
+      "bytes": 189341,
+      "gitBlobSha": "37f14b12352050909832dd6e2dd97c34f899164e",
+      "sha256": "5e709591f5f4c91639b88c71c6aee42d989b22d658afd39467221fb0838efda4"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0014.png",
+      "bytes": 189166,
+      "gitBlobSha": "dff45f78c0d6211c8b06e9e7ac6968134655352b",
+      "sha256": "e91e4d85fbb3bdbdcc594a85f9009599a0c68a50ab0963a934a6f5b20c7e5e04"
+    },
+    {
+      "path": "examples/research-native-v07/b/previews/page-0015.png",
+      "bytes": 187731,
+      "gitBlobSha": "a0513c9899527d6dd6382bc15b803fd171324c89",
+      "sha256": "61d94fd065b64c22418aedc23449a50c451642785230e2fac097189a085c28cf"
+    },
+    {
+      "path": "examples/research-native-v07/b/report.pdf",
+      "bytes": 1377184,
+      "gitBlobSha": "20c00dfc924e0979d60a48403ebacc7abc9ce511",
+      "sha256": "c3818f38d763a04da7af39702463c43b1e27dea0bd9bf9148048efe54d822f08"
+    },
+    {
+      "path": "examples/research-native-v07/b/report.pptx",
+      "bytes": 11081759,
+      "gitBlobSha": "0e08d90baca497e3a2365c9f592d399768bb9b46",
+      "sha256": "450d93dc502a0e69614d1760ffb836bdeb99a70bb41b6765539ca6af0153deff"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/coordinate-calibration.json",
+      "bytes": 1391,
+      "gitBlobSha": "4d5306fc25f7ae24929ba2c45ba47382f4fef851",
+      "sha256": "d92f0f7d4f88a9b6dcd491c49ff28d198f858396a9eb4a3599d7c8a675fdf217"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/design-decisions.json",
+      "bytes": 3169,
+      "gitBlobSha": "c7d8dcd4e99d3bf97f613b1c74197a27a9c8a8c7",
+      "sha256": "72804eae4eb94b90299894df32b79f77c3fdf1a7a4b12722bad53838b3669822"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/native-object-audit.json",
+      "bytes": 535,
+      "gitBlobSha": "4865e4fad1c8c4fd5c9947db35e78e0caf140d4b",
+      "sha256": "af47df7a1f2eeb3c042d551470c41125df70a6c641c448941ef97507f1af3326"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/render-receipt.json",
+      "bytes": 2620,
+      "gitBlobSha": "11e39a3a9fa484bedb5ddad6d373f5986ee91c71",
+      "sha256": "dc3158079d40e47831eb50974b89ee3a05a75d329d7efa85e482b99e1e44cee5"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/static-quality.json",
+      "bytes": 33078,
+      "gitBlobSha": "75a5da4aa8d03e7329fd5266aeb7fbcb73376efe",
+      "sha256": "a8f05064b9e30be94fa0cccee877e572e6c25a593dd6027f14a743f15734faa9"
+    },
+    {
+      "path": "examples/research-native-v07/b/review/visual-review.json",
+      "bytes": 5853,
+      "gitBlobSha": "84939a338792fb45aa64a1085786ed9c8f8710a3",
+      "sha256": "72e28115d80e76d22479b3887f333184e8da9fcbf90b6901f1da3cb96541fa32"
+    },
+    {
+      "path": "examples/research-native-v07/b/speaker-notes.md",
+      "bytes": 8893,
+      "gitBlobSha": "92bad71f311a31102df1124a6673c75434e498ce",
+      "sha256": "1a8a48459c6452a04fa84c209b257a15e83d936c774fcd66f3684b8990b960b0"
+    },
+    {
+      "path": "examples/research-native-v07/manifest.json",
+      "bytes": 1603,
+      "gitBlobSha": "de09c9e8d66e7d25cf2a22f80058b12e4e95f834",
+      "sha256": "6a8bd397bb38426e38dca726103ad9dca8b479536c49c6e74f05e5e4b6a1660a"
+    },
+    {
+      "path": "examples/research-native-v07/review/author-a-review.md",
+      "bytes": 5279,
+      "gitBlobSha": "e900b91b829a66ff3725bb0956c6a771f34dcefe",
+      "sha256": "228c7003b43c5a537a3ce9a7193b9ce729f57da0708ad8dbeb827fb3ed2fb51c"
+    },
+    {
+      "path": "examples/research-native-v07/review/author-b-review.md",
+      "bytes": 5389,
+      "gitBlobSha": "76f68a67b91f64ee6ae33d187a02c6cbeddea88f",
+      "sha256": "245864ce9eaf49d895bd7ff06821c0e18e2ee1c04ae907d0fcd2cb2bfa4ba05c"
+    },
+    {
+      "path": "examples/research-native-v07/review/crop-audit.json",
+      "bytes": 30847,
+      "gitBlobSha": "e6ce3c3b514b1f03812480e6148f876d69771ec4",
+      "sha256": "57c97830e5437b647eac6032f353c31eafdca45f5aa70a80d812a9363a74a98c"
+    },
+    {
+      "path": "examples/research-native-v07/review/numeric-audit.json",
+      "bytes": 48587,
+      "gitBlobSha": "a72411df4559f4ebb119cfe52e1f1fbdd6076b03",
+      "sha256": "69f6a9f4d99ae6f6353af9fb67992b15572c7e3b4669b2475a627dd675244437"
+    },
+    {
+      "path": "examples/research-native-v07/review/package-check.json",
+      "bytes": 344,
+      "gitBlobSha": "b608273f4480cdd5610ab96be4b3a5456b1f763f",
+      "sha256": "37203958507b6a4c48cf33b06f1f8ff67b00a945080ff7d075b43dd07025837b"
+    },
+    {
+      "path": "examples/research-native-v07/review/portfolio-final.json",
+      "bytes": 1524,
+      "gitBlobSha": "7e1b5962a0bcefaf65091114ac852f0e36d3ee6a",
+      "sha256": "1dd38078a2674d25132a556cb2e2ee09140e725dce12937c2a07f679d34e7b05"
+    },
+    {
+      "path": "examples/research-native-v07/review/portfolio-initial.json",
+      "bytes": 1954,
+      "gitBlobSha": "46376b4be801bc0700a91bacbeca1284416dceff",
+      "sha256": "4b59db11164d91ef5d99be3a5c8fa0923844c0aa414561f875dfae5289475b98"
+    },
+    {
+      "path": "examples/research-native-v07/review/regression-summary.json",
+      "bytes": 436,
+      "gitBlobSha": "31da908998cb0164093bc74a7c90437358bd400c",
+      "sha256": "00dbcdcce0040f5c6b1bef56b48878ed85072ee90ff1f0c50d012e2b1127e231"
+    },
+    {
+      "path": "examples/research-native-v07/review/replay-verification.json",
+      "bytes": 2090,
+      "gitBlobSha": "a925a42c87a50f8024c3d50cdf5fd3e83facd48e",
+      "sha256": "bfac0a53058003c3432f1ec438c29828276fb2eb8ccec6d9b4138796d6f0ee3f"
+    },
+    {
+      "path": "examples/research-native-v07/review/scientific-review.json",
+      "bytes": 23439,
+      "gitBlobSha": "824f7991ccf4afa9112b9d31b989e228327acbcd",
+      "sha256": "4659a60717a0837a43270650f4c0e52c2a5978dbf914d4cf9e35bb0feb393644"
+    },
+    {
+      "path": "examples/research-native-v07/sources/README.md",
+      "bytes": 3232,
+      "gitBlobSha": "184129e5b92aa39edb778e4c91e50cb20d89e59a",
+      "sha256": "a3bc342442ad25dfa18faeb7f62d151d9bbf73895b4b36654433b1b7eadda56c"
+    },
+    {
+      "path": "examples/research-native-v07/sources/cheng/article-page-text.txt",
+      "bytes": 96585,
+      "gitBlobSha": "6a62e4f6674fb4bb85b0956f490b2540a206e976",
+      "sha256": "856ad859d62c9ad5f6fbe340c7065e6be8efe0b7750022b4638d928f3c417381"
+    },
+    {
+      "path": "examples/research-native-v07/sources/cheng/provenance.json",
+      "bytes": 2292,
+      "gitBlobSha": "3ad07fcd7d17496bbbb411860eb897db08dabfda",
+      "sha256": "a1086d68c02654378cde5476df5b552bf7f23a4a398911aef295293870ae8484"
+    },
+    {
+      "path": "examples/research-native-v07/sources/papers.json",
+      "bytes": 6903,
+      "gitBlobSha": "cc6530bfdf26d6de00e74020ba5fb3950a5ad9b9",
+      "sha256": "afc856047c4e481f244a4b8e4509d759d40c83006e5ec11840b03667790d65fe"
+    },
+    {
+      "path": "examples/research-native-v07/sources/scientific-source-notes.md",
+      "bytes": 17938,
+      "gitBlobSha": "e2ef4c15b88d759e6c75d5c0e6d87cdf68a26f8e",
+      "sha256": "3c71493ae1cc088e4bd36716e486bcd71b588327a57e44489d703c5726c99327"
+    },
+    {
+      "path": "examples/research-native-v07/sources/shahhosseini/article-page-text.txt",
+      "bytes": 104665,
+      "gitBlobSha": "cff577f5c71fabae9ce9f8ce90a83dd2fb02cfad",
+      "sha256": "2cbb517d00c87114757e8b1a2b9f886181ff8d19899ddf64159d0001fc467110"
+    },
+    {
+      "path": "examples/research-native-v07/sources/shahhosseini/provenance.json",
+      "bytes": 2444,
+      "gitBlobSha": "48a6a6d5976a6146127fbe20eef8612668fd5024",
+      "sha256": "1ef749f00b3157672c9ee83680ed3e2e193675596d49575d09a16242e119df2f"
+    },
+    {
+      "path": "examples/research-native-v07/sources/zhuo/article-page-text.txt",
+      "bytes": 59894,
+      "gitBlobSha": "65c44e8184076ddf653ca6cd16937c7d18bb31fe",
+      "sha256": "c85050e230fd1f48741f9834de829332fea3f38aaa7196163e63c966f8c69a18"
+    },
+    {
+      "path": "examples/research-native-v07/sources/zhuo/provenance.json",
+      "bytes": 1941,
+      "gitBlobSha": "556a2e4e3c9878979f1a8387d8b1c7b98c86ff06",
+      "sha256": "7a95b06d5d310aea502b0117d9e945f0963163a471c5d38005f523e04422ebef"
+    }
+  ]
+}

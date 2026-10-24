@@ -1,0 +1,7 @@
+{
+  "targetCommit": "b80033d0f57fb4d89d62ce36fe3ad347b7334c54",
+  "targetTree": "06794299d3800d30b1d35eca50472b7cfe302cde",
+  "packSha256": "1bb09fd81a2bfe308dd439e6fb9345ec5c90557a9eb1f80d66b21fef7d2709fd",
+  "authorizedFileCount": 101,
+  "purpose": "Restore the explicitly authorized academic-PPT source and reviewed examples to the reconstruction branch."
+}
