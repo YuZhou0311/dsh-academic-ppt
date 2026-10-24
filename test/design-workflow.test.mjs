@@ -16,10 +16,11 @@ async function setup(t,design){
 }
 const state=async options=>JSON.parse(await readFile(options.projectPath,'utf8'));
 
-test('new projects expose visible cards and compact diagnostics through public check and build',async t=>{
+test('new projects expose authored surfaces and compact diagnostics through public check and build',async t=>{
   const options=await setup(t),p=await state(options);
   assert.equal(p.design.density,'compact');
-  assert.equal(p.design.cardDefaults.surface,'outline');
+  assert.equal(p.design.cardDefaults.surface,'plain');
+  assert.deepEqual(p.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
   const checked=await checkProject(options);
   const empty=checked.issues.find(issue=>issue.code==='large-unused-region');
   assert.ok(empty,'the deliberately sparse protocol fixture must not pass compact delivery');

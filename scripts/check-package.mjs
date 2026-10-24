@@ -12,7 +12,7 @@ const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
 assert.equal(packageJson.name,'dsh-academic-ppt');
 assert.equal(packageJson.dsh.bundle.patch,'./cordis.patch.yml');
 const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
-const tools=buildAcademicTools();assert.equal(tools.length,12);
+const tools=buildAcademicTools();assert.equal(tools.length,14);
 const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);

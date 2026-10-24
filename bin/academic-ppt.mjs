@@ -28,6 +28,8 @@ const HELP = `DSH Academic PPT — 学术汇报工程工具
   template  提取模板设计语法与受支持原生组件
   reference 检索48种中性页型（includeExamples显式查看示范）
   render    用可选引擎渲染当前 PPTX 的实际页面
+  study     比较实际候选SVG/PPTX，可生成真实预览
+  portfolio 比较指定工程的主体结构，供视觉复核
   review    记录实际完成的视觉检查
 
 --args 必须指向 UTF-8 JSON 对象文件，路径相对当前目录解析。

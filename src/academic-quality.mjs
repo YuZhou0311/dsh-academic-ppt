@@ -26,7 +26,7 @@ export function academicIssues(project) {
   const issues=[],add=(code,path,message)=>issues.push({severity:'error',code,path,message});
   const claims=new Map(project.claims.map(c=>[c.id,c]));
   const assets=new Map(project.assets.map(a=>[a.id,a]));
-  const ids=s=>[...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[])])];
+  const ids=s=>[...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[]),...(s.drawings??[]).flatMap(d=>[...(d.claimIds??[]),...(d.elements??[]).flatMap(e=>e.claimIds??[])])])];
   const cited=new Set(project.slides.flatMap(s=>expandClaimIds(project.claims,ids(s))));
   const used=new Set([...project.slides.flatMap(s=>[...s.paperIds,...s.figureIds.map(id=>assets.get(id)?.paperId)]),...[...cited].map(id=>claims.get(id)?.paperId)].filter(Boolean));
   for(const p of project.papers.filter(p=>used.has(p.id))) {
@@ -56,7 +56,7 @@ export function academicIssues(project) {
       if(!ids(s).length) add('slide-without-evidence',path,'正文页需要实际证据链，不能只由介绍卡片构成。');
       if(s.argument&&['synthesis','proposal'].includes(s.argument.role)&&!ids(s).some(id=>claims.get(id)?.kind!=='reported')) add('synthesis-without-reasoning',path,'综合或方案页需可追溯的 inference/proposal，不只罗列作者结论。');
     }
-    const prose=[s.title,s.subtitle,s.takeaway,s.composition?.lead,s.composition?.conclusion?.text,...(s.composition?.rows??[]).flatMap(r=>r.panels.map(p=>p.title)),...(s.cards??[]).flatMap(c=>[c.title,c.body])].filter(Boolean);
+    const prose=[s.title,s.subtitle,s.takeaway,s.composition?.lead,s.composition?.conclusion?.text,...(s.composition?.rows??[]).flatMap(r=>r.panels.map(p=>p.title)),...(s.composition?.regions??[]).map(p=>p.title),...(s.heading?.lines??[]),...(s.drawings??[]).flatMap(d=>d.elements.filter(e=>e.kind==='text').map(e=>e.text)),...(s.cards??[]).flatMap(c=>[c.title,c.body])].filter(Boolean);
     if(prose.some(text=>demonstrationProse().some(sample=>normalize(text).includes(sample)))) add('template-text-reused',path,'页上含内置版式示例的长段原文。模板只提供形式，重新根据当前证据写论证。');
     if(prose.some(text=>/\[(?:待填|待补|TODO|INSERT)[^\]]*\]|<[^>]*(?:待填|YOUR TITLE)[^>]*>/i.test(text))) add('unfilled-placeholder',path,'正式页仍含明确占位符，补齐真实内容或移除不必要项。');
   }

@@ -11,8 +11,10 @@ import { brief, paper, claim } from './fixtures.mjs';
 
 // Authored topology only; a software fixture does not establish causality.
 const copy = value => structuredClone(value);
+// These v0.6 geometry fixtures assert their authored font sizes; projection has dedicated tests.
+const legacyDesign = () => { const design = copy(DEFAULT_DESIGN); delete design.projection; return design; };
 const diagramSlide = changes => ({ id: 's', layout: 'method', title: '机制关系核验', paperIds: ['P1'], claimIds: ['C1'], notes: '合成拓扑回归。', seconds: 60, figureIds: [], cards: [], ...changes });
-const project = slide => ({ schemaVersion: 1, id: 'diagram-fixture', revision: 0, title: '原生机制图回归', brief: copy(brief), capabilities: { imageInput: 'unknown', source: 'synthetic fixture' }, design: copy(DEFAULT_DESIGN), papers: [copy(paper)], claims: [copy(claim)], assets: [], slides: [slide] });
+const project = slide => ({ schemaVersion: 1, id: 'diagram-fixture', revision: 0, title: '原生机制图回归', brief: copy(brief), capabilities: { imageInput: 'unknown', source: 'synthetic fixture' }, design: legacyDesign(), papers: [copy(paper)], claims: [copy(claim)], assets: [], slides: [slide] });
 const render = p => { assertProject(p); return buildScenes(p).pages[0]; };
 const errors = page => page.issues.filter(issue => issue.severity === 'error');
 const frame = (page, id) => page.nodes.find(node => node.id === `s/node:${id}:frame`);

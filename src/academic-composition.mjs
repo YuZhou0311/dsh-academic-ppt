@@ -1,3 +1,4 @@
+import { needsFreeComposition, renderFreeComposition } from './free-composition.mjs';
 /**
  * Flow layout for authored academic panels on a 1280 × 720 canvas.
  *
@@ -12,7 +13,7 @@
 
 import { measureCardSurface } from './card-surface.mjs';
 import { measureScientificPlotMinimum } from './scientific-plot.mjs';
-import { measureAcademicDiagramMinimum } from './academic-diagram.mjs';
+import { measureAcademicDiagramMinimum, automaticDiagramRows } from './academic-diagram.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
 const textOf = value => value === undefined || value === null ? '' : String(value);
@@ -60,11 +61,11 @@ function figureCaption(project, asset) {
 }
 
 /** Match the source-legend helper's wrapping; a legend is never guessed. */
-function legendHeight(items, width, wrapText, measureTextWidth) {
+function legendHeight(items, width, wrapText, measureTextWidth, size=22) {
   let height = 0, used = 0, rowHeight = 34, rowItems = 0;
   for (const item of list(items)) {
-    const label = textOf(item.label), labelW = Math.max(1, Math.min(measureTextWidth(label, 22) + 4, width - 33));
-    const itemW = 33 + labelW, itemH = Math.max(34, wrapText(label, labelW, 22).length * 22 * 1.2 + 4);
+    const label = textOf(item.label), labelW = Math.max(1, Math.min(measureTextWidth(label, size) + 4, width - 33));
+    const itemW = 33 + labelW, itemH = Math.max(34, wrapText(label, labelW, size).length * size * 1.2 + 4);
     if (rowItems && used + 24 + itemW > width) { height += rowHeight; used = 0; rowHeight = 34; rowItems = 0; }
     used += (rowItems ? 24 : 0) + itemW; rowHeight = Math.max(rowHeight, itemH); rowItems += 1;
   }
@@ -74,7 +75,7 @@ function legendHeight(items, width, wrapText, measureTextWidth) {
 function figureMetrics(project, id, width, ctx) {
   const asset = sourceAsset(project, id), caption = figureCaption(project, asset);
   const captionH = caption ? Math.max(ctx.captionSize * 1.45, ctx.lines(caption, width, ctx.captionSize) * ctx.captionSize * 1.24 + 4) : 0;
-  const legend = legendHeight(asset?.displayLegend, width, ctx.wrapText, ctx.measureTextWidth);
+  const legend = legendHeight(asset?.displayLegend, width, ctx.wrapText, ctx.measureTextWidth, Math.max(22,ctx.design.projection?.labelMin??0));
   const pad = asset?.treatment === 'plain' ? 0 : 5;
   const visibleW = Number(asset?.width || asset?.pixelWidth || 1) * (asset?.viewport?.w ?? 1);
   const visibleH = Number(asset?.height || asset?.pixelHeight || 1) * (asset?.viewport?.h ?? 1);
@@ -164,8 +165,9 @@ function tableHeight(data, width, ctx) {
 
 function diagramHeight(slide, width, ctx) {
   const nodes = list(slide.nodes), requestedRows = list(slide.diagram?.rows);
-  if (requestedRows.length) {
-    return measureAcademicDiagramMinimum(slide, width, { wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system }).minimumHeight;
+  if (requestedRows.length || ctx.design.projection && nodes.length && !nodes.some(n=>n.box)) {
+    const planned=requestedRows.length?slide:{...slide,diagram:{rows:automaticDiagramRows(nodes)}};
+    return measureAcademicDiagramMinimum(planned, width, { wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system, projection:ctx.design.projection }).minimumHeight;
   }
   const columns = Math.min(nodes.length, nodes.length === 4 ? 2 : 3);
   const rows = Array.from({ length: Math.ceil(nodes.length / Math.max(1, columns)) }, (_, index) => nodes.slice(index * columns, (index + 1) * columns));
@@ -196,11 +198,11 @@ function chartPlan(project, chart, width, ctx) {
   const plotW = width - (horizontal ? 195 : 120);
   if (plotW < 96) ctx.error('chart-width', '数据图表需要为坐标、标签和绘图区保留独立空间；扩大图表所在面板。', { availableWidth: width, requiredWidth: horizontal ? 291 : 216 });
   const categoryW = horizontal ? 139 : plotW / Math.max(1, categories.length) - 6;
-  if (categories.some(value => ctx.measureTextWidth(value, 21) > categoryW + 1)) ctx.error('chart-category-width', '图表的完整分类标签超过可用宽度；扩大面板、减少同页分类，或提供完整且简洁的分类标签。', { availableWidth: categoryW });
+  if (categories.some(value => ctx.measureTextWidth(value, Math.max(21,ctx.design.projection?.labelMin??0)) > categoryW + 1)) ctx.error('chart-category-width', '图表的完整分类标签超过可用宽度；扩大面板、减少同页分类，或提供完整且简洁的分类标签。', { availableWidth: categoryW });
   const legendStep = Math.min(230, (width - 86) / Math.max(1, series.length));
-  if (series.length > 1 && series.some(item => ctx.measureTextWidth(item.name, 19) + 24 > legendStep)) ctx.error('chart-legend-width', '图表系列图例的完整名称超过当前列宽；为图例和比较数据扩大图表面板。');
-  if (ctx.measureTextWidth(chart.unit, 19) > width - 36) ctx.error('chart-unit-width', '图表单位超过可用宽度；扩大图表面板，保留完整单位。');
-  const plotH = Math.max(96, horizontal ? categories.length * Math.max(28, series.length * 18) : 96);
+  if (series.length > 1 && series.some(item => ctx.measureTextWidth(item.name, Math.max(19,ctx.design.projection?.labelMin??0)) + 24 > legendStep)) ctx.error('chart-legend-width', '图表系列图例的完整名称超过当前列宽；为图例和比较数据扩大图表面板。');
+  if (ctx.measureTextWidth(chart.unit, Math.max(19,ctx.design.projection?.labelMin??0)) > width - 36) ctx.error('chart-unit-width', '图表单位超过可用宽度；扩大图表面板，保留完整单位。');
+  const plotH = Math.max(96, horizontal ? categories.length * Math.max(28,ctx.design.projection?.labelMin??0, series.length * 18) : 96);
   const caption = chartSource(project, chart, ctx), captionH = caption ? Math.max(ctx.captionSize * 1.45, ctx.lines(caption, width, ctx.captionSize) * ctx.captionSize * 1.24 + 4) : 0;
   return { minimumH: plotH + 123 + (captionH ? captionH + 8 : 0), caption, captionH };
 }
@@ -208,7 +210,7 @@ function chartPlan(project, chart, width, ctx) {
 function scientificPlotPlan(data, width, ctx, panelId, plotId) {
   const details = { panelId, ...(plotId ? { plotId } : {}) };
   if (width < 380) ctx.error('plot-width', '科学统计图的面板正文宽度至少为380px；扩大面板或将统计图单独成行。', { ...details, availableWidth: width, requiredWidth: 380 });
-  const measurement = measureScientificPlotMinimum(data, width, { fontFamily: ctx.fontFamily, wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system });
+  const measurement = measureScientificPlotMinimum(data, width, { fontFamily: ctx.fontFamily, wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system, projection:ctx.design.projection });
   for (const issue of list(measurement.issues)) ctx.recordIssue(issue, details);
   if (!positive(measurement.minimumHeight) && !list(measurement.issues).some(issue => issue.severity === 'error')) ctx.error('plot-measurement', '科学统计图无法在指定列宽保留完整标签、刻度、来源和所有观测；请扩大面板或拆页。', details);
   // An impossible width/density has already raised a blocking error. Keeping
@@ -358,18 +360,19 @@ function renderConclusion(b, data, area, ctx) {
  * is the one supported authored geometry override. The input is never mutated.
  */
 export function renderAcademicComposition(b, project, slide, helpers) {
+  if(needsFreeComposition(slide.composition))return renderFreeComposition(b,project,slide,helpers);
   const { card, figure, table, diagram, plot, wrapText, measureTextWidth, clone = value => structuredClone(value), design = b.design || project.design || {}, contentBox = DEFAULT_CONTENT } = helpers || {};
   if (![card, figure, table, diagram, wrapText, measureTextWidth].every(value => typeof value === 'function')) throw new TypeError('ACADEMIC_COMPOSITION_HELPERS: card, figure, table, diagram, wrapText and measureTextWidth are required');
   b.page.issues ||= [];
   const error = (code, message, details = {}) => b.page.issues.push({ severity: 'error', code: `composition-${code}`, slideId: b.page.id, ...details, message });
   const composition = slide.composition;
   if (!composition || typeof composition !== 'object' || !validBox(contentBox)) { error('structure', 'composition 必须是有效对象，且正文区域必须有有限坐标和正尺寸。'); return; }
-  const system = b.system || design.system || {}, bodySize = system.bodySize ?? 24, titleSize = system.panelTitleSize ?? 26, captionSize = system.captionSize ?? 18;
+  const system = b.system || design.system || {}, bodySize = system.bodySize ?? 24, titleSize = system.panelTitleSize ?? 26, captionSize = Math.max(system.captionSize ?? 18,design.projection?.noteMin??0);
   if (![bodySize, titleSize, captionSize].every(positive) || bodySize < 22 || titleSize < 24 || captionSize < 16) { error('typography', '学术面板须使用公共设计契约中的字号：正文至少22px、标题至少24px、来源图注至少16px；布局不会自行缩小字号容纳内容。'); return; }
   const panelStyle = system.panel || 'band';
   if (!['band', 'tint', 'line'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint 或 line。'); return; }
   const academicTables = b.design?.hasAcademicSystem ?? Boolean(project.design?.system || design.system);
-  const ctx = { design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: academicTables ? bodySize : 23, fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
+  const ctx = { design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: Math.max(academicTables ? bodySize : 23,design.projection?.labelMin??0), fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
   const unknown = (value, allowed, name) => { for (const key of Object.keys(value || {})) if (!allowed.includes(key)) error('unsupported-field', `${name}.${key} 没有可见排版规则；移除此字段或使用明确支持的内容字段。`, { field: `${name}.${key}` }); };
   unknown(composition, ['lead', 'rows', 'conclusion'], 'composition');
   if (composition.conclusion) unknown(composition.conclusion, ['label', 'text'], 'composition.conclusion');

@@ -11,6 +11,12 @@ const validRows = (nodes, rows) => {
   return rows.length && rows.every(row => Array.isArray(row) && row.length) && new Set(ids).size === ids.length && ids.length === nodes.length && ids.every(id => known.has(id));
 };
 
+/** Preserve the legacy node order/column count when no positions were authored. */
+export function automaticDiagramRows(nodes) {
+ const columns=Math.min(nodes.length,nodes.length===4?2:3);
+ return Array.from({length:Math.ceil(nodes.length/Math.max(1,columns))},(_,i)=>nodes.slice(i*columns,(i+1)*columns).map(n=>n.id));
+}
+
 /** X extent of a segment inside a horizontal strip, including diagonals. */
 function stripExtent(a, z, top, bottom) {
   if (Math.max(a.y, z.y) < top || Math.min(a.y, z.y) > bottom) return null;
@@ -20,10 +26,11 @@ function stripExtent(a, z, top, bottom) {
   return [Math.min(...xs), Math.max(...xs)];
 }
 
-function prepare(slide, width, { wrapText, measureTextWidth, system = {}, bodySize, captionSize }) {
+function prepare(slide, width, { wrapText, measureTextWidth, system = {}, bodySize, captionSize, projection }) {
   const nodes = arr(slide.nodes), rows = arr(slide.diagram?.rows), edges = arr(slide.edges), rowLabels = arr(slide.diagram?.rowLabels);
   if (!validRows(nodes, rows)) return null;
-  const titleSize = bodySize ?? system.bodySize ?? 24, detailSize = Math.max(20, titleSize - 2), edgeSize = Math.max(18, captionSize ?? system.captionSize ?? 18);
+  const labelMin=projection?.labelMin??0;
+  const titleSize = Math.max(bodySize ?? system.bodySize ?? 24,labelMin), detailSize = Math.max(20, titleSize - 2,labelMin), edgeSize = Math.max(18, captionSize ?? system.captionSize ?? 18,labelMin), rowLabelSize=Math.max(22,labelMin);
   const labelW = rowLabels.length ? 126 : 0, left = SIDE + labelW, nodeAreaW = width - SIDE * 2 - labelW;
   const byId = new Map(nodes.map(node => [node.id, node])), positions = new Map();
   const rowInfo = rows.map((row, ri) => {
@@ -34,7 +41,7 @@ function prepare(slide, width, { wrapText, measureTextWidth, system = {}, bodySi
       const detailH = node.detail ? wrapText(node.detail, Math.max(1, w - 24), detailSize).length * detailSize * 1.2 + 6 : 0;
       return 18 + labelH + detailH;
     });
-    const rowLabelH = rowLabels[ri] ? wrapText(rowLabels[ri], labelW - 30, 22, { bold: true }).length * 22 * 1.2 + 18 : 0;
+    const rowLabelH = rowLabels[ri] ? wrapText(rowLabels[ri], labelW - 30, rowLabelSize, { bold: true }).length * rowLabelSize * 1.2 + 18 : 0;
     return { w, h: Math.max(52, rowLabelH, ...heights) };
   });
   const band = base => ({ base, labels: [], lanes: 0, laneH: 0, routes: [] });
@@ -69,7 +76,7 @@ function prepare(slide, width, { wrapText, measureTextWidth, system = {}, bodySi
       return (ox - ux) * (zx - lx) < 0 || Math.min(Math.max(ux, lx), Math.max(ox, zx)) - Math.max(Math.min(ux, lx), Math.min(ox, zx)) > 1;
     });
   }
-  return { nodes, rows, edges, rowLabels, rowInfo, positions, edgeInfo, gaps, overhead, width, labelW, titleSize, detailSize, edgeSize };
+  return { nodes, rows, edges, rowLabels, rowInfo, positions, edgeInfo, gaps, overhead, width, labelW, titleSize, detailSize, edgeSize, rowLabelSize };
 }
 
 function bandHeight(band) {
@@ -194,7 +201,7 @@ export function renderAcademicDiagram(b, project, slide, area, { wrapText, measu
   const nodes = arr(slide.nodes), rows = arr(slide.diagram?.rows);
   if (!validRows(nodes, rows)) { fail('diagram-row-membership', 'diagram.rows 需将所有节点恰好列出一次；行只定义阶段或层级，连线仍由 edges 明确提供。'); return; }
   if (nodes.some(node => node.box)) { fail('diagram-layout-conflict', 'diagram.rows 与 node.box 不能混用；按节点行规划关系时由工具统一分配几何。'); return; }
-  const result = measurePlan(slide, area.w, { wrapText, measureTextWidth, system: b.system }), { plan } = result, need = result.drawing.requiredHeight;
+  const result = measurePlan(slide, area.w, { wrapText, measureTextWidth, system: b.system, projection: b.design?.projection }), { plan } = result, need = result.drawing.requiredHeight;
   if (plan.rowLabels.length && plan.rowLabels.length !== rows.length) fail('diagram-row-label-count', 'diagram.rowLabels 必须与 rows 一一对应。');
   if (plan.rowInfo.some(row => row.w <= 24)) fail('diagram-node-width', '图区不足以容纳当前节点列与完整文字；扩大图区或减少每行节点。');
   if (need > area.h + 2) fail('diagram-content-overflow', `节点内容与完整连线标签需 ${Math.ceil(need)}px，当前图区 ${Math.floor(area.h)}px；扩大机制图或拆解两级机制，不能缩小字体。`, { requiredHeight: need, availableHeight: area.h });
@@ -205,7 +212,7 @@ export function renderAcademicDiagram(b, project, slide, area, { wrapText, measu
     if (!plan.rowLabels[ri]) return;
     const { y, h } = boxes.get(row[0]);
     b.rect(`diagram-row:${ri}:fill`, { x: area.x, y, w: plan.labelW - 10, h }, b.p.tint, 'none');
-    b.text(`diagram-row:${ri}:label`, plan.rowLabels[ri], { x: area.x + 10, y: y + 9, w: plan.labelW - 30, h: h - 16 }, 22, { color: b.p.accent, bold: true, align: 'center', lineHeight: 1.2, role: 'diagram-group' });
+    b.text(`diagram-row:${ri}:label`, plan.rowLabels[ri], { x: area.x + 10, y: y + 9, w: plan.labelW - 30, h: h - 16 }, plan.rowLabelSize, { color: b.p.accent, bold: true, align: 'center', lineHeight: 1.2, role: 'diagram-group' });
   });
   const paintedLabels = [];
   for (const route of drawing.routes) {

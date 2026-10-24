@@ -12,7 +12,7 @@ const finite = value => Number.isFinite(value);
 const validBox = value => value && ['x', 'y', 'w', 'h'].every(key => finite(value[key])) && value.w > 0 && value.h > 0;
 const rounded = value => Math.round(value * 10000) / 10000;
 const roundedBox = box => box ? Object.fromEntries(['x', 'y', 'w', 'h'].map(key => [key, Math.round(box[key] * 10) / 10])) : null;
-const ignoredRoles = new Set(['footer', 'identity', 'section-label', 'section-index', 'index', 'logo', 'icon', 'decoration']);
+const ignoredRoles = new Set(['footer', 'identity', 'section-label', 'section-index', 'index', 'logo', 'icon', 'group', 'decoration']);
 
 function intersect(box, area) {
   const x = Math.max(box.x, area.x), y = Math.max(box.y, area.y);
@@ -84,7 +84,8 @@ function semanticBoxes(project, page, slide, area) {
     if (node.kind === 'text') boxes.push(...textInk(node));
     else if (['chart', 'table'].includes(node.kind) && validBox(node)) boxes.push(node);
     else if (node.kind === 'image' && validBox(node) && assets.get(node.assetId)?.usage !== 'decorative') boxes.push(node);
-    else if (node.kind === 'line' && /\/edge:\d+(?::segment:\d+)?$/.test(node.id || '')) boxes.push(...lineInk(node));
+    else if (node.kind === 'line' && (['relationship','data'].includes(node.role) || /\/edge:\d+(?::segment:\d+)?$/.test(node.id || ''))) boxes.push(...lineInk(node));
+    else if (['rect','ellipse'].includes(node.kind) && node.role==='data' && validBox(node)) boxes.push(node);
   }
   for (const members of plotGroups.values()) {
     const box = enclosing(members);

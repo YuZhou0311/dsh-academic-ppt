@@ -4,31 +4,36 @@
 
 适用于论文精读、文献综述、研究进展、开题、学位答辩和项目汇报。研究问题、原始证据、解释边界和验证方案保存在可恢复工程中；文字、机制图、表格与支持的图表使用原生对象，论文原图独立保留。
 
-当前版本为 **v0.6.0**。这轮重点是让模型实际设计可见小卡片、紧凑的空间分布、独立封面和结尾，并能按页删改标题线与角标。页面分析和构图由当前 DSH 会话的模型完成；插件提供原生组件、可恢复设计记录、渲染与检查工具，设计模式不会自动生成布局。
+当前重建版本为 **v0.7.0-rc.4，renderer 11**。这轮把流程改为原文图表盘点、参考组织方式、实际候选、自由原生构图与全稿复核，处理固定卡片阵列和大小字摘要之间反复摆动的问题。页面由当前会话模型设计；插件提供真实 SVG/PPTX 候选、可编辑对象和可解释的检查，不承诺一条提示词自动获得原创设计。
 
-[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)提供安装包、实际成稿和附件校验；v0.5 的[发布凭证](docs/PUBLICATION_V05.md)保留历史身份。尚未发布 npm。插件使用宿主已有的模型和工具，不另行调用付费模型，也不管理 DeepSeek 密钥。可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
+[本次重建分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/research-native-rebuild)提供 rc.4 源码；[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)保留旧稳定包和历史成稿。此前未上传的工作区已经丢失，本版从远端 v0.6 重新实现，不声称恢复旧提交。尚未发布 npm。插件使用宿主已有模型，不另行调用付费模型或管理 DeepSeek 密钥；可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
 
-[安装与升级](docs/INSTALL.md) · [按内容设计页面](docs/CONTENT_LED_DESIGN.md) · [设计来源与取舍](docs/DESIGN_REFERENCES.md) · [验证范围](docs/VALIDATION_V06.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [设计与边界](docs/DESIGN.md)
+[安装与升级](docs/INSTALL.md) · [自由原生构图与实际候选](docs/RESEARCH_NATIVE_DESIGN.md) · [本轮验证](docs/VALIDATION_V07.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [历史设计依据](docs/DESIGN_REFERENCES.md)
 
 ## 本次重构的目标与具体能力
 
-充盈的学术页面需要清晰的主证据、辅助解释、研究条件和来源层级。模型先判断本页表达的是比较、机制、流程还是证据与解释，再分配空间；模板可提供字体、配色与对齐习惯，卡片数量和页面结构随当前内容决定。
+充盈的学术页面需要主证据、辅助解释、研究条件和来源层级。参考学习包括主辅比例、局部分组、图文邻接和全稿节奏；当前内容决定图表、卡片、标题和页面结构。主视图需要可读的中间字级，不能只剩几句大字，也不能用小字填满空白。
 
 | 能力 | 使用方式与边界 |
 | --- | --- |
 | 明确设计模式 | `content-led` 默认按内容设计；`reference-guided` 借鉴参考的视觉语言；`template-faithful` 用于用户明确要求沿用版式的任务 |
 | 保存简短构图决策 | `slide.visualPlan` 记录信息关系、主面板、阅读顺序和选择理由；关键页可保存其他方案及取舍，便于复核 |
-| 自行组织页面 | `layout:academic` 与 `composition.rows` 支持不等权证据区，无须先选择模板编号 |
+| 自行组织页面 | `composition.rows/regions` 与 `drawings` 支持自由区域及可编辑文本、形状、折线和箭头，无须先选择模板编号 |
+| 先看真实候选 | `study` 输出2–6个作者实际绘制的SVG/PPTX候选和并列预览，可实际渲染；不修改原工程或冒充正式批准 |
+| 专业标题与阅读层级 | `heading` 自定位置与完整题名断行；新默认主要正文28px、图标签24px、注释18px，检查缩放后的实际字级 |
+| 必要条件保全 | `contentChecks` 检查正文中的指定条件与数字，讲稿和脚注不算；保留正负号、科学计数与单位大小写 |
 | 原生小卡片与层次 | `design.cardDefaults` 与 `card.appearance` 可设计轮廓、浅底、实底、圆角、内边距、强调边与轻微阴影；`card.icon` 提供十种可编辑语义线图标 |
-| 面板与卡片分别设计 | `panel.surface` 控制区域分组，卡片控制局部解释；外层开放可配内层浅底/轮廓，避免裸文字侧栏与多重套框。`align:start` 仅用于不会制造大空洞的短组 |
+| 面板与卡片分别设计 | `panel.surface` 控制区域分组，卡片控制局部解释；按关系选择浅底、边界、题签或开放标注，避免机械阵列与多重套框 |
 | 独立封面、结尾与页角 | 封面可用 `custom + boxes` 自主分配题名/身份/视觉区，也可选 `split/editorial`；`closing` 支持主判断、证据卡与讨论问题。`slide.chrome` 可逐页调整或删除无用品牌字、章节、页脚与标题线 |
 | 检查大块空疏 | 新工程默认 `density:compact`；正文/结尾连续未使用区达到正文区四分之一、封面达到二分之一时阻断正式交付。背景、卡框、图标不能刷占幅，科学图内部留白不处罚 |
-| 检查整稿同质化 | 连续及非相邻的近似结构、等权纯文字面板、无边界文字堆叠提供可审查提醒；换色、边框与微调比例不算结构创新，合理同尺度比较可保留 |
+| 检查稿内与跨稿同质化 | `portfolio` 比较明确指定的不同工程，返回可并列的页对；换色、换字或改变数据值不算新构图，合理同尺度比较可保留 |
 | 保留学术约束 | 事实、推断、方案分别登记，来源、单位、比较条件与结论边界仍需核对；构图自由不授权新增实验结果 |
 
-完整字段与示例见 [按内容设计页面](docs/CONTENT_LED_DESIGN.md)。重构参考了 PPTAgent、Presenton、MiniMax、frontend-slides 与 Anthropic pptx 的相关机制，具体采用与舍弃内容见 [设计来源与取舍](docs/DESIGN_REFERENCES.md)。这些是可用能力与执行约束；实际效果和验证边界以[当前验证记录](docs/VALIDATION_V06.md)为准。
+完整字段与示例见 [本轮构图说明](docs/RESEARCH_NATIVE_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。实际试用与验证边界以 [本轮记录](docs/VALIDATION_V07.md) 为准。
 
-## v0.6 实际独立制作：9 页材料进展报告
+## 历史 v0.6：9 页材料进展报告
+
+以下示例保留 v0.6 的历史身份，不作为本轮重建的效果验收。
 
 新上下文制作者只获得原始教学协议、48 行 CSV、普通任务和插件，没有旧稿、模板 PPT 或预先给定的结论。最终 9 页、9 分 15 秒预算，使用自定义封面、可见卡片、语义图标、原生数据图和关系流程；未使用固定模板编号。实际 PPTX 全部渲染并逐页检查，主线程另行复算数据与审阅画面，接受当前版本并保留可优化项。
 
@@ -105,9 +110,9 @@
 
 没有参考模板时，直接采用默认 `content-led` 模式。先确定本页问题、主证据和阅读顺序，再组织构图。关键页可以比较两种方案并保存简短选择理由；相同实验的连续对照可以有意复用结构，无须为了求新而破坏可比性。
 
-用户提供参考时，可调用 `academic_ppt_template` 保存 profile，取得 `suggestedDesign`、结构推断依据与不含旧正文的 `study`。`render:true` 同时返回源模板的实际页面和编号概览。查看代表页后，通常以 `reference-guided` 模式选取适用的字体、配色、层级和对齐方式，再调整并写入 record 批次的 design。模板页序、卡片数量与图文比例不自动成为要求。只有用户明确要求沿用版式时使用 `template-faithful`；它也不保证任意母版无损复刻。[模板学习方法](skills/dsh-academic-ppt/references/template-learning.md)
+用户提供参考时，可调用 `academic_ppt_template` 保存 profile，取得 `suggestedDesign`、结构推断依据与不含旧正文的 `study`。`render:true` 同时返回源模板的实际页面和编号概览。查看代表页后，通常以 `reference-guided` 模式学习主辅证据、局部分组、图文邻接、层级和对齐方式，再为当前材料重新构图。模板页序、卡片数量与图文比例不自动成为要求。只有用户明确要求沿用版式时使用 `template-faithful`；它也不保证任意母版无损复刻。[模板学习方法](skills/dsh-academic-ppt/references/template-learning.md)
 
-正文用 `layout:academic` 与 `composition.rows` 分配证据面板；图、表、分布、区间和机制图各有明确归属，紧邻解释和最终判断形成推导。`visualPlan` 记录这份构图的理由，不会自动重排页面。面板可使用 `inherit/plain/rule/tint/band` 表面，独立解释卡再通过 `appearance` 形成可见边界；外层 plain 不意味着内层也应裸露。`align:start` 收紧局部后仍须处理剩余空间，不与同一面板的显式 `card.box` 或所消费机制节点的 `node.box` 混用。复杂统计图可由有来源的计算脚本绘制，再登记为作者自制资产。[组合页与科学图](skills/dsh-academic-ppt/references/composition.md)
+正文用 `composition.rows/regions` 或 `drawings` 分配证据与研究关系；图、表、分布、区间和机制图各有明确归属，紧邻解释和最终判断形成推导。`visualPlan` 记录这份构图的理由，不会自动重排页面。面板可使用 `inherit/plain/rule/tint/band` 表面，独立解释可通过 `appearance` 形成边界，也可用开放标注或题签，按局部关系选择。`align:start` 收紧局部后仍须处理剩余空间，不与同一面板的显式 `card.box` 或所消费机制节点的 `node.box` 混用。复杂统计图可由有来源的计算脚本绘制，再登记为作者自制资产。[组合页与科学图](skills/dsh-academic-ppt/references/composition.md)
 
 封面先确定题名与主题视觉的关系，结尾重新收束判断、证据和待回答问题。标题、品牌字、章节、页码、页脚与顶部横线可独立选择；没有用途的元素可以删去并回收正文空间。全稿统一字体、语义色、线宽和间距，不要求每页重复同一套页眉或三卡结构。主题图片与图标承担识别、尺度或概念职责，不能冒充论文证据。[视觉设计与卡片语法](skills/dsh-academic-ppt/references/design.md)
 
@@ -117,10 +122,10 @@
 
 ## 安装与首次使用
 
-需要 Node **`^22.19.0 || >=24.0.0`**。可克隆 v0.6.0 标签；安装包与更新方法见[安装说明](docs/INSTALL.md)：
+需要 Node **`^22.19.0 || >=24.0.0`**。本轮 rc.4 从重建分支取得；安装与更新见[安装说明](docs/INSTALL.md)：
 
 ```sh
-git clone --branch v0.6.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch feat/research-native-rebuild --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 node bin/academic-ppt.mjs --help
@@ -148,11 +153,11 @@ npm run demo -- --output ./my-materials-demo
 
 ### 可直接使用的任务指令
 
-> 使用 dsh-academic-ppt，依据我提供的论文和数据，制作一场 12 分钟的正式学术汇报。讲清中心问题、方法、核心证据、局限与启示，区分已有发现、归纳和待验证设想。优先论文原图，按每页的信息关系自主设计布局；为独立解读、条件与边界设计清楚的小卡片，保留紧凑图文、丰富层次和可读字号，避免大面积无用留白。封面与结尾独立设计，标题线、角标和小字只在有用时保留，主题图片与语义图标可按需使用。若有参考模板，只借鉴适用的字体、配色和层级。先完成代表页，查看真实渲染后完成全稿；保留来源、关键限定与逐页讲稿，实际检查当前 PPTX 的每一页后交付可编辑文件及工程。
+> 使用 dsh-academic-ppt，依据提供的真实论文和数据制作12分钟正式学术汇报。先盘点原图、表格、实验条件和负结果，建立研究问题与证据链。参考页面的主辅比例、局部分组、图旁解释和阅读层级，由当前内容决定构图。先实际绘制两个封面和两个困难证据页候选，用study导出并看图选择；没有生图模型也用原生绘图完成。全稿保留主证据和可读中间字级，必要条件进入主要视图。颜色和连线表达真实研究关系，封面与页标题认真设计。完成后查看最终PPTX每页，与原文核对，并交付可编辑文件、实际预览、讲稿和可恢复工程。
 
 论文数量、IF、全文范围、材料来源和汇报时长均以用户任务为准。恢复中断任务时提供 `project.json` 文件路径，调用 `academic_ppt_context` 继续，不从头重复研究。
 
-## 十二个工具
+## 十四个工具
 
 | 工具 | 作用 |
 | --- | --- |
@@ -162,6 +167,8 @@ npm run demo -- --output ./my-materials-demo
 | `academic_ppt_context` | 读取阶段、待解决问题和聚焦记录 |
 | `academic_ppt_template` | 按需研究参考模板，返回候选设计变量、结构依据及实际页面/概览 |
 | `academic_ppt_reference` | 按需查询 48 个中性布局，或取得最多三个图片适配候选 |
+| `academic_ppt_study` | 从文件读取实际候选并生成SVG/PPTX与可选真实渲染，不改原工程 |
+| `academic_ppt_portfolio` | 比较明确指定的2–12份工程结构，提供并列复核页对 |
 | `academic_ppt_build` | 预检后生成原生 PPTX、HTML、讲稿与来源材料 |
 | `academic_ppt_edit` | 明确限定页面内容或小卡片样式的修改范围 |
 | `academic_ppt_undo` | 以新修订恢复上一内容状态 |
@@ -179,7 +186,7 @@ npm run demo -- --output ./my-materials-demo
 
 ## 验证范围
 
-本次契约、渲染器、兼容性和实际试用的验证范围记录于 [VALIDATION_V06.md](docs/VALIDATION_V06.md)；v0.5 的封存候选与独立审查仍见[历史验证记录](docs/VALIDATION.md)。历史成稿保留其版本身份，不继承为本轮新流程的验收。本次渲染器版本为 7，旧产物需重新构建、实际渲染并审查后，才能登记当前交付状态。
+本次契约、渲染器、兼容性和实际试用见 [VALIDATION_V07.md](docs/VALIDATION_V07.md)；v0.6 与 v0.5 的封存记录仍见[历史v0.6验证](docs/VALIDATION_V06.md)和[历史v0.5验证](docs/VALIDATION.md)。本次渲染器版本为11；旧产物需重新构建、实际渲染并审查。两个独立作者试用与十份合成结构重复测试是不同的验证，不能声称做了十次真实模型独立成稿。
 
 **尚未在用户的 DeepSeek 账户和真实 DSH Desktop/Web 中完成收费端到端对照试验，也未完成 PowerPoint/WPS 全平台显示验收。** 工具定义字节减少不等于同比账单下降；本项目不报告没有测量过的人民币节省或独立创作稳定成功率。
 
