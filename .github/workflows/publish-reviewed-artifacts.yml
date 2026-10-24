@@ -1,0 +1,25 @@
+name: Publish reviewed research artifacts
+
+on:
+  push:
+    branches: [publish/research-native-v07-transfer-20261024]
+    paths: [.publication/READY.json]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-research-native-v07-transfer
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    if: github.repository == 'YuZhou0311/dsh-academic-ppt' && github.ref == 'refs/heads/publish/research-native-v07-transfer-20261024'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and publish the reviewed commit
+        run: python .publication/restore.py
