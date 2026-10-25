@@ -15,7 +15,7 @@ import { compareProjectStructures } from './portfolio.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'line',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=12;
+const RENDERER_VERSION=13;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -187,15 +187,15 @@ export async function contextProject(options={}){
   design:[`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
    '阅读references/visual-decision.md；从contract(design)的academicPalettes选择合适学术色板，用direction说明依据，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
    '用academic_ppt_study实际绘制2个封面和2个困难证据页候选（SVG与原生PPTX），可render:true查看真实画面。与参考和论文原图并列选择，不以方案名称代替设计。',
-   '局部浅底、边界、题签和卡片按研究关系设计；无需每段套框，也不要求完全去框。空区诊断只定位可审阅问题，不能靠装饰或巨字刷占幅。'],
+   '局部浅底、边界、题签和卡片按研究关系设计；card.appearance.layout可用stacked、banded或side-label表达实际不同的题签与内容关系。无需每段套框，也不要求完全去框。空区诊断只定位可审阅问题，不能靠装饰或巨字刷占幅。'],
   storyboard:['先用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','逐页写argument、内容覆盖与简短visualPlan，再用composition.rows/regions或drawings组织证据；不必选择referenceTemplateId。',
-   '图、表和方法结构承担主视图，解释贴近相应证据。用contentChecks登记必须可见的关键条件，不能只留在notes。',
-   'heading与cover自定题名位置和语义断行；颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',
+   '先盘点本页证据、解释、条件和方法关系，再分配区域。visualPlan.contentLayers可用role、panelIds和summary记录实际信息层，不规定层数或分栏；上下、主辅、跨栏和单一主载体均按内容选择。用contentChecks登记必须可见的关键条件，不能只留在notes。',
+   'heading与cover自定题名位置和语义断行；heading.inheritChrome:true可保留章节带与身份层，作者题名box须避开保留区，不静默挪动或缩字。颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',
    '保留普通正文和图标签的中间字级；拥挤时先重排主辅/去重复或拆任务，不能删重要边界或缩成脚注。references/referenceIds显示完整书目。'],
   render:['academic_ppt_build(mode:review)生成原生PPTX；存在材料缺口的中间稿明确使用draft，不把它当交付。'],
   review:['academic_ppt_render后查看每张实际PPTX图片和整稿概览，核对缺字、原图裁切、坐标标签、颜色语义、流程方向及内容覆盖。',
    '先单独读目录、章节问题、逐页标题与过渡，确认前一证据能引出下一问题、结尾回应中心问题；再与参考和原图对照。有此前工程时portfolio只比较明确提供的工程。',
-   '将未解决问题登记needs-fix，修改后查看当前版本变化页并核对未变化页；只有实际看过的最终画面才能登记通过。'],
+   '逐页核对contentLayers中的证据、解读和条件是否在实际画面可找到；近似结构提示也覆盖自由区域和drawings，合理同尺度比较可用repetitionReason解释，不能靠换色或细移文字框作变化。将未解决问题登记needs-fix，修改后查看当前版本变化页并核对未变化页；只有实际看过的最终画面才能登记通过。'],
   delivery:['academic_ppt_check核对当前成品hash、真实渲染及审查范围。','交付PPTX、PDF/实际预览、讲稿、来源与可重建记录；如实说明仍存问题和未测宿主。'],
  }[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));

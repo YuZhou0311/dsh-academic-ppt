@@ -7,7 +7,7 @@ const metricText = metric => metric && [metric.value, metric.unit].filter(value 
 export function resolveCardAppearance(card = {}, design = {}) {
   const defaults = !card.style || plainStyles.has(card.style) ? design.cardDefaults : undefined;
   if (!card.appearance && !defaults && !card.icon) return null;
-  return { surface:'outline', radius:4, padding:16, accent:'none', elevation:false, ...defaults, ...card.appearance };
+  return { layout:'stacked', surface:'outline', radius:4, padding:16, accent:'none', elevation:false, ...defaults, ...card.appearance };
 }
 
 /** One calculation is used for layout minima and rendered text positions. */
@@ -15,16 +15,24 @@ export function measureCardSurface(card, width, { design = {}, system = {}, wrap
   const appearance = resolveCardAppearance(card, design);
   if (!appearance) return null;
   const padding = appearance.padding, titleSize = system.panelTitleSize ?? 26, bodySize = system.bodySize ?? 24;
-  const innerW = Math.max(1, width - padding * 2), iconSize = card.icon ? 34 : 0;
-  const titleW = Math.max(1, innerW - (iconSize ? iconSize + 12 : 0));
+  const layout = appearance.layout, availableW = Math.max(1, width - padding * 2), iconSize = card.icon ? 34 : 0;
+  const side = layout === 'side-label';
+  const railW = side ? Math.min(220, Math.max(112, width * .28), Math.max(1, width * .46)) : 0;
+  const titleX = side ? padding : padding + (iconSize ? iconSize + 12 : 0);
+  const titleY = padding + (side && iconSize ? iconSize + 10 : 0);
+  const titleW = Math.max(1, side ? railW - padding * 2 : availableW - (iconSize ? iconSize + 12 : 0));
   const titleH = wrapText(text(card.title), titleW, titleSize, { bold:true }).length * titleSize * 1.15;
-  const headH = Math.max(titleH, iconSize), contentY = padding + headH + 12;
+  const headH = side ? titleY - padding + titleH : Math.max(titleH, iconSize);
+  const headerH = layout === 'banded' ? padding * 2 + headH : 0;
+  const contentX = side ? railW + padding : padding;
+  const innerW = Math.max(1, width - contentX - padding);
+  const contentY = side ? padding : layout === 'banded' ? headerH + padding / 2 : padding + headH + 12;
   const rows = []; let y = contentY;
   const append = (key, value, size, lineHeight, bold = false, color = 'ink', gap = 0, emphasis) => {
     if (!text(value)) return;
     const reserve = emphasis?.length ? size * .22 : 0;
     const h = wrapText(text(value), Math.max(1, innerW - reserve), size, { bold: bold || Boolean(emphasis?.length) }).length * size * lineHeight;
-    rows.push({ key, value:text(value), y, h, size, lineHeight, bold, color, ...(emphasis?.length ? { emphasis } : {}) }); y += h + gap;
+    rows.push({ key, value:text(value), x:contentX, y, w:innerW, h, size, lineHeight, bold, color, ...(emphasis?.length ? { emphasis } : {}) }); y += h + gap;
   };
   const metric = metricText(card.metric);
   if (metric) {
@@ -33,9 +41,14 @@ export function measureCardSurface(card, width, { design = {}, system = {}, wrap
     append('metric-context', card.metric.context, bodySize, 1.2, false, 'muted', 8);
   }
   append('body', Array.isArray(card.body) ? card.body.join('\n') : card.body, bodySize, 1.24, false, 'ink', 0, card.emphasis);
+  const minimumH = Math.max(padding + headH, y) + padding;
   return { appearance, padding, innerW, iconSize, titleW, titleH, headH, titleSize, rows, metric,
+    titleBox:{x:titleX,y:titleY,w:titleW,h:titleH},
+    iconBox:iconSize?{x:padding,y:padding,w:iconSize,h:iconSize}:null,
+    contentBox:{x:contentX,y:contentY,w:innerW,h:Math.max(0,minimumH-contentY-padding)},
+    headerBox:side?{x:0,y:0,w:railW,h:minimumH}:layout==='banded'?{x:0,y:0,w:width,h:headerH}:null,
     metricWidth:metric ? measureTextWidth(metric,38,{bold:true}) : 0,
-    minimumH:Math.max(padding + headH, y) + padding };
+    minimumH };
 }
 
 /** Small line symbols built entirely from editable PowerPoint primitives. */
@@ -68,14 +81,22 @@ export function renderCardSurface(b, card, box, index, project, helpers) {
   const surfaceFill=solid?accent:a.surface==='tint'?p.tint:a.surface==='plain'?'none':p.paper;
   const stroke=a.surface==='plain'?'none':a.surface==='solid'?accent:p.line;
   if(a.surface!=='plain') b.rect(`${key}/surface`,box,surfaceFill,stroke,{radius:a.radius,strokeWidth:1.2,role:'card-surface',semantic:false,...(a.elevation?{shadow:{color:'#20334A',opacity:.1,blur:3,offset:2,angle:90}}:{})},id);
+  const banded=a.layout==='banded',side=a.layout==='side-label';
+  const titleColor=banded||side&&solid?'#FFFFFF':color;
+  if(m.headerBox){
+    const header={x:box.x+m.headerBox.x,y:box.y+m.headerBox.y,w:m.headerBox.w,h:side?box.h:m.headerBox.h};
+    const fill=solid?p.ink:banded?accent:p.tint;
+    b.rect(`${key}/heading-surface`,header,fill,'none',{role:'group',semantic:false},id);
+    if(side)b.line(`${key}/heading-divider`,header.x+header.w,header.y,header.x+header.w,header.y+header.h,solid?'#FFFFFF':p.line,{strokeWidth:1.2,role:'decoration',semantic:false},id);
+  }
   if(a.accent!=='none') {
     const inset=Math.max(4,a.radius*.55), bar=a.accent==='top'?{x:box.x+inset,y:box.y+4,w:box.w-inset*2,h:3}:{x:box.x+4,y:box.y+inset,w:3,h:box.h-inset*2};
     b.rect(`${key}/accent`,bar,color,'none',{radius:1.5,role:'decoration',semantic:false},id);
   }
   b.region(key,box,'card');
-  if(card.icon)drawSemanticIcon(b,card.icon,{x:box.x+m.padding,y:box.y+m.padding,w:m.iconSize,h:m.iconSize},color,`${key}/icon`,id);
-  b.text(`${key}/title`,card.title,{x:box.x+m.padding+(m.iconSize?m.iconSize+12:0),y:box.y+m.padding,w:m.titleW,h:m.titleH},m.titleSize,{bold:true,color,lineHeight:1.15,role:'card-title'},id);
-  for(const row of m.rows)b.text(`${key}/${row.key}`,row.value,{x:box.x+m.padding,y:box.y+row.y,w:m.innerW,h:row.h},row.size,{bold:row.bold,color:row.color==='accent'?color:row.color==='muted'?muted:ink,lineHeight:row.lineHeight,role:row.key,emphasis:row.emphasis,emphasisColor:color},id);
+  if(m.iconBox)drawSemanticIcon(b,card.icon,{...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y},titleColor,`${key}/icon`,id);
+  b.text(`${key}/title`,card.title,{...m.titleBox,x:box.x+m.titleBox.x,y:box.y+m.titleBox.y},m.titleSize,{bold:true,color:titleColor,lineHeight:1.15,role:'card-title'},id);
+  for(const row of m.rows)b.text(`${key}/${row.key}`,row.value,{x:box.x+row.x,y:box.y+row.y,w:row.w,h:row.h},row.size,{bold:row.bold,color:row.color==='accent'?color:row.color==='muted'?muted:ink,lineHeight:row.lineHeight,role:row.key,emphasis:row.emphasis,emphasisColor:color},id);
   if(m.minimumH>box.h+2)b.page.issues.push({severity:'error',code:'card-surface-overflow',slideId:b.page.id,cardId:id,requiredHeight:Math.ceil(m.minimumH),availableHeight:box.h,message:'卡片内边距、图标、完整文字与指标超出卡片高度；扩大卡片或调整内容分组，不能裁掉正文。'});
   if(m.metricWidth>m.innerW+2)b.page.issues.push({severity:'error',code:'card-metric-width',slideId:b.page.id,cardId:id,message:'指标数值和单位在卡片内无法保持一行；扩大卡片或重排。'});
   return true;

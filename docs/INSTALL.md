@@ -2,18 +2,18 @@
 
 本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十四个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-本次候选版本为 **v0.7.0-rc.5**，从 [改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+本次候选版本为 **v0.7.0-rc.6**，从 [改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
-安装本次 rc.5，请克隆改进分支：
+安装本次 rc.6，请克隆改进分支：
 
 ```sh
 git clone --branch feat/academic-story-and-style --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
-rc.5 增加整稿叙事与章节关联、目录问题、讲稿过渡、五套学术色板和默认细描边卡片，封面与导航留白改为视觉提醒。新流程见 [ACADEMIC_STORY_DESIGN.md](ACADEMIC_STORY_DESIGN.md)，验证见 [VALIDATION_V07_RC5.md](VALIDATION_V07_RC5.md)。历史示例保留其原版本身份。
+rc.6 改进逐页信息规划、多层区域组合、章节与自定义标题融合、卡片内部结构和连续页面复核；保留已有叙事、学术色板与证据约束。新流程与公开教程研究见 [PAGE_COMPOSITION_V07_RC6.md](PAGE_COMPOSITION_V07_RC6.md)，验证见 [VALIDATION_V07_RC6.md](VALIDATION_V07_RC6.md)。历史示例保留其原版本身份。
 
 插件位于本仓库根目录。完整文件夹应包含 `package.json`、`package-lock.json`、`cordis.patch.yml`、`src/`、`skills/` 和 `bin/`。
 
@@ -35,10 +35,10 @@ v0.5 封存示例的实际渲染使用 **Noto Sans CJK SC Regular/Bold**。可�
 
 ### 直接使用安装包
 
-也可以在本次源码根目录运行 `npm pack --ignore-scripts` 得到 `dsh-academic-ppt-0.7.0-rc.5.tgz`，再将压缩包的完整路径交给插件管理：
+也可以在本次源码根目录运行 `npm pack --ignore-scripts` 得到 `dsh-academic-ppt-0.7.0-rc.6.tgz`，再将压缩包的完整路径交给插件管理：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0-rc.5.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0-rc.6.tgz"
 ```
 
 自行打包不改变其候选版本身份；尚无 npm 公共 registry 包。
@@ -73,7 +73,7 @@ dsh web
 
 ### 更新已安装的 file: 包
 
-退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:brief/design/slide)，检查是否含 narrative、academicPalettes、sectionId、transition 和 agenda.items.question，并确认 study/portfolio 两个工具可见，避免把旧安装副本当作本轮版本。
+退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:brief/design/slide)，检查是否含 narrative、academicPalettes、visualPlan.contentLayers、heading.inheritChrome 和 card.appearance.layout，并确认 study/portfolio 两个工具可见，避免把旧安装副本当作本轮版本。
 
 仅修改仓库、运行测试或生成安装包，不会替你更新正在运行的 DSH。本文提供安装步骤，不表示已在你的电脑上完成安装或验收。
 
@@ -104,9 +104,9 @@ dsh web
 
 首次提示词可以直接复制：
 
-> 使用 dsh-academic-ppt，依据提供的真实论文和数据制作12分钟正式学术汇报。先明确中心问题，规划各节要回答的问题及证据路线，再安排目录、章节定位、逐页论证和具体过渡，结尾回应开场问题。选用适合当前证据的克制学术色板，独立卡片使用细描边。封面以完整题名、留白、对齐和真实身份完成设计，图片只在有研究用途时使用。参考图只借鉴信息层级与正式程度，按本稿内容重新构图。先用study比较两个封面和两个困难证据页，再完成全稿。保留关键条件、原始证据与结论边界，实际查看最终PPTX每页后交付可编辑文件、讲稿和可恢复工程。
+> 使用 dsh-academic-ppt，依据提供的真实论文和数据制作12分钟正式学术汇报。先明确中心问题、各节问题和证据路线，再为每页列出必须呈现的证据、条件、方法、解释与综合判断。根据它们的关系设计主辅、上下分层、局部嵌套、跨区连接或其他组合，不预设固定栏数、块数或相同卡片。章节定位、本页判断和局部题签形成清楚的标题层级；保留足够的有效信息与可读的中间字级。学习参考正文的信息组织与连续页面节奏，按当前材料重新创作。选择克制的学术色板，封面以完整题名、对齐和真实身份完成设计，图片须有研究用途。用study比较真实封面和困难证据页候选，再看相邻三页的推进和重复，随后完成全稿。保留关键条件、来源与结论边界；实际查看最终PPTX每页后交付可编辑文件、讲稿和可恢复工程。
 
-上述流程针对 v0.7.0-rc.5 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，正文证据页严重空洞需修复，不能切换 balanced 或增加装饰来绕过；封面、目录和章节页的有意留白只提醒看图判断。确实需要疏朗风格时在初始化中明确选择 balanced。
+上述流程针对 v0.7.0-rc.6 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，正文证据页严重空洞需修复，不能切换 balanced 或增加装饰来绕过；封面、目录和章节页的有意留白只提醒看图判断。确实需要疏朗风格时在初始化中明确选择 balanced。
 
 ## 4. 命令行使用
 

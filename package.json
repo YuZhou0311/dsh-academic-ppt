@@ -1,6 +1,6 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.7.0-rc.5",
+  "version": "0.7.0-rc.6",
   "description": "DeepSeek Harness学术汇报插件：参考证据组织、自由原生构图、真实设计候选、跨稿结构复核与可编辑PPTX。",
   "type": "module",
   "main": "src/index.mjs",
