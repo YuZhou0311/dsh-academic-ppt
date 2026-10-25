@@ -61,7 +61,7 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
   }
   const y=bottom+10;
   if(headerStyle!=='plain')b.line('header-rule',48,y,1232,y,p.line,{strokeWidth:1});
-  if(headerStyle==='rule')b.line('header-accent',48,y,172,y,p.accent,{strokeWidth:3});
+  if(headerStyle==='rule')b.line('header-accent',48,y,172,y,p.accent,{strokeWidth:1.6});
   const gap=headerStyle==='plain'?10:16;
   const contentBox={x:48,y:y+gap,w:1184,h:bottomLimit-y-gap};
   if(contentBox.h<360)fail(b,'academic-header-too-tall','章节与标题挤占过多正文空间；去掉重复副题，或在不丢失研究含义的前提下精简标题。');
@@ -96,7 +96,7 @@ export function academicCover(b, project, slide, {wrapText}) {
     b.rect('cover-base',{x:0,y:590,w:1280,h:130},p.accent,'none');
     b.line('cover-identity-rule',84,132,1196,132,p.line,{strokeWidth:1.2});
   }else{
-    b.line('cover-identity-rule',558,130,722,130,p.accent,{strokeWidth:4});
+    b.line('cover-identity-rule',590,130,690,130,p.accent,{strokeWidth:1.6});
     if(occasion)b.text('cover-occasion',occasion,{x:64,y:52,w:1152,h:60},26,{color:p.muted,align:'center',lineHeight:1.2,role:'cover-occasion'});
   }
   const titleH=wrapText(title,w,size,{bold:true}).length*size*1.16;
@@ -104,7 +104,7 @@ export function academicCover(b, project, slide, {wrapText}) {
   const groupH=titleH+(subH?subH+24:0),groupTop=style==='project'?165:154,groupLimit=style==='project'?500:504;
   const y=groupTop+Math.max(0,(groupLimit-groupTop-groupH)/2);
   b.text('title',title,{x,y,w,h:titleH},size,{bold:true,color:style==='framed'?p.ink:p.accent,align,lineHeight:1.16,role:'cover-title'});
-  if(subH)b.text('subtitle',slide.subtitle,{x,y:y+titleH+24,w,h:subH},subSize,{color:p.accent,align,lineHeight:1.22,role:'cover-subtitle'});
+  if(subH)b.text('subtitle',slide.subtitle,{x,y:y+titleH+24,w,h:subH},subSize,{color:style==='minimal'?p.ink:p.accent,align,lineHeight:1.22,role:'cover-subtitle'});
   if(y+groupH>groupLimit+2)fail(b,'cover-title-metadata-overlap','完整题名和副题超出封面研究主题区；使用语义换行、减少重复副题，或调整 design.system.coverTitleSize（不可小于60px）。');
   const metaSize=24;
   if(style==='project'){
@@ -116,7 +116,7 @@ export function academicCover(b, project, slide, {wrapText}) {
     const heights=info.map(value=>wrapText(value,metaW,metaSize).length*metaSize*1.2);
     let my=style==='minimal'?560:566;
     for(let i=0;i<info.length;i++){
-      b.text(i===0&&data.presenter?'cover-presenter':'cover-affiliation',info[i],{x:metaX,y:my,w:metaW,h:heights[i]},metaSize,{color:p.accent,align:'center',lineHeight:1.2,role:'cover-metadata'});my+=heights[i]+8;
+      b.text(i===0&&data.presenter?'cover-presenter':'cover-affiliation',info[i],{x:metaX,y:my,w:metaW,h:heights[i]},metaSize,{color:style==='minimal'?p.ink:p.accent,align:'center',lineHeight:1.2,role:'cover-metadata'});my+=heights[i]+8;
     }
     if(data.date)b.text('cover-date',data.date,{x:64,y:666,w:1152,h:30},22,{color:p.muted,align:'center',lineHeight:1.2,role:'cover-metadata'});
     if(my>656)fail(b,'cover-metadata-overflow','封面责任主体超过身份区；精简重复身份表述，保留真实机构和署名。');
@@ -174,26 +174,29 @@ function customCover(b,project,slide,{wrapText}) {
 }
 
 function modernCover(b, project, slide, {wrapText}, style) {
-  const data=slide.cover||{},s=b.system,p=b.p,title=exactTitle(b,slide),split=style==='split';
+  const data=slide.cover||{},s=b.system,p=b.p,title=exactTitle(b,slide),split=style==='split',hasVisual=Boolean(data.assetId||data.icon);
   const titleBox=split?{x:64,y:150,w:650,h:366}:{x:64,y:116,w:1112,h:260};
+  const detailW=split?650:hasVisual?740:1112;
   const occasion=[...new Set([data.occasion,slide.kicker].filter(Boolean))].join(' · ');
-  if(split)b.rect('cover-visual-field',{x:758,y:70,w:458,h:580},p.tint,'none',{radius:18,role:'decoration',semantic:false});
-  else b.rect('cover-editorial-field',{x:842,y:0,w:438,h:720},p.tint,'none',{role:'decoration',semantic:false});
+  // A media region must have a semantic occupant. Text-only editorial covers
+  // reclaim the width instead of drawing an empty, brand-like side panel.
+  if(split&&hasVisual)b.rect('cover-visual-field',{x:758,y:70,w:458,h:580},p.tint,'none',{radius:4,role:'decoration',semantic:false});
+  else if(hasVisual)b.rect('cover-editorial-field',{x:848,y:364,w:384,h:302},p.tint,'none',{radius:4,role:'decoration',semantic:false});
   if(occasion)b.text('cover-occasion',occasion,{x:64,y:50,w:split?650:1112,h:56},24,{color:p.muted,lineHeight:1.16,role:'cover-occasion'});
   const titleH=wrapText(title,titleBox.w,s.coverTitleSize,{bold:true}).length*s.coverTitleSize*1.12;
   b.text('title',title,{...titleBox,h:titleH},s.coverTitleSize,{bold:true,color:p.accent,lineHeight:1.12,role:'cover-title'});
   let bottom=titleBox.y+titleH;
-  if(slide.subtitle){const size=autoSize(b,'body',28),h=wrapText(slide.subtitle,split?650:740,size).length*size*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:split?650:740,h},size,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
+  if(slide.subtitle){const size=autoSize(b,'body',28),h=wrapText(slide.subtitle,detailW,size).length*size*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:detailW,h},size,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
   if(bottom>(split?530:450))fail(b,'cover-title-metadata-overlap','当前封面的完整题名与副题超出主题区；按语义换行，调整封面变体或去掉重复副题。');
   const visual=split?{x:782,y:102,w:410,h:516}:{x:872,y:376,w:344,h:274};
-  if(data.assetId||data.icon)contextVisual(b,project,data,visual,'cover-context',wrapText);
+  if(hasVisual)contextVisual(b,project,data,visual,'cover-context',wrapText);
   else if(data.visualCaption)fail(b,'context-caption-without-visual','visualCaption需要对应的assetId或icon。');
   else if(split)fail(b,'cover-visual-missing','split封面需要登记的语境图片或有语义用途的icon；无媒体时改用editorial/framed等文字主导构图。');
   const metadata=[['cover-presenter',data.presenter],['cover-affiliation',data.affiliation],['cover-date',data.date]].filter(([,value])=>value);
   let y=split?558:530;
-  for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,split?650:740,size).length*size*1.2;b.text(key,value,{x:64,y,w:split?650:740,h},size,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
+  for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,detailW,size).length*size*1.2;b.text(key,value,{x:64,y,w:detailW,h},size,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
   if(y>700)fail(b,'cover-metadata-overflow','封面责任主体超过页面；保留真实身份并精简重复表述。');
-  b.rect('cover-accent',{x:64,y:(split?538:502),w:Math.min(180,titleBox.w*.3),h:4},p.accent,'none',{role:'decoration',semantic:false});
+  b.line('cover-accent',64,split?538:502,164,split?538:502,p.accent,{strokeWidth:1.6,role:'decoration',semantic:false});
 }
 
 export function academicClosing(b,project,slide,{wrapText,measureTextWidth,card,contentBox}) {

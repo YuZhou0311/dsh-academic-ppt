@@ -1,7 +1,7 @@
 /** Reading-role checks on the final native scene, not a claim of live projection legibility. */
 export const DEFAULT_PROJECTION=Object.freeze({bodyMin:28,labelMin:24,noteMin:18});
 const notes=new Set(['note','caption','citation','footer','source-details','context-caption','cover-metadata','cover-occasion']);
-const labels=new Set(['label','diagram-group','diagram-label','diagram-body','diagram-edge-label','figure-legend','plot-axis-label','plot-axis-tick','plot-group-label','plot-unit','plot-value-label','plot-reading-note','reference-title','reference-index','identity','section-label','index','metric-label']);
+const labels=new Set(['label','diagram-group','diagram-label','diagram-body','diagram-edge-label','figure-legend','plot-axis-label','plot-axis-tick','plot-group-label','plot-unit','plot-value-label','plot-reading-note','reference-title','reference-index','identity','section-label','section-index','index','metric-label']);
 export function readingRole(node){
  if(notes.has(node.role))return 'note';
  if(labels.has(node.role))return 'label';

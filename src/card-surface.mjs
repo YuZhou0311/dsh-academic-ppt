@@ -7,7 +7,7 @@ const metricText = metric => metric && [metric.value, metric.unit].filter(value 
 export function resolveCardAppearance(card = {}, design = {}) {
   const defaults = !card.style || plainStyles.has(card.style) ? design.cardDefaults : undefined;
   if (!card.appearance && !defaults && !card.icon) return null;
-  return { surface:'outline', radius:12, padding:16, accent:'left', elevation:false, ...defaults, ...card.appearance };
+  return { surface:'outline', radius:4, padding:16, accent:'none', elevation:false, ...defaults, ...card.appearance };
 }
 
 /** One calculation is used for layout minima and rendered text positions. */
@@ -67,7 +67,7 @@ export function renderCardSurface(b, card, box, index, project, helpers) {
   const solid=a.surface==='solid', ink=solid?'#FFFFFF':p.ink, muted=solid?'#FFFFFF':p.muted, color=solid?'#FFFFFF':accent;
   const surfaceFill=solid?accent:a.surface==='tint'?p.tint:a.surface==='plain'?'none':p.paper;
   const stroke=a.surface==='plain'?'none':a.surface==='solid'?accent:p.line;
-  if(a.surface!=='plain') b.rect(`${key}/surface`,box,surfaceFill,stroke,{radius:a.radius,strokeWidth:1.1,role:'card-surface',semantic:false,...(a.elevation?{shadow:{color:'#20334A',opacity:.1,blur:3,offset:2,angle:90}}:{})},id);
+  if(a.surface!=='plain') b.rect(`${key}/surface`,box,surfaceFill,stroke,{radius:a.radius,strokeWidth:1.2,role:'card-surface',semantic:false,...(a.elevation?{shadow:{color:'#20334A',opacity:.1,blur:3,offset:2,angle:90}}:{})},id);
   if(a.accent!=='none') {
     const inset=Math.max(4,a.radius*.55), bar=a.accent==='top'?{x:box.x+inset,y:box.y+4,w:box.w-inset*2,h:3}:{x:box.x+4,y:box.y+inset,w:3,h:box.h-inset*2};
     b.rect(`${key}/accent`,bar,color,'none',{radius:1.5,role:'decoration',semantic:false},id);

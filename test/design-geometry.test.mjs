@@ -38,14 +38,25 @@ test('the compact body gate is one continuous unused quarter, with a just-below 
   assert.equal(below.issues[0].severity, 'warning');
 });
 
-test('the compact cover gate is one continuous unused half, with a just-below control', () => {
+test('a sparse compact cover receives a visual reminder without forcing an image', () => {
   const resultFor = width => diagnose([image('cover-visual', { x: 48, y: 48, w: width, h: 624 }, { role: 'context-visual', semantic: false })], 'cover');
   const half = resultFor(588), below = resultFor(596);
   assert.equal(half.slides[0].largestUnallocatedFraction, .5);
-  assert.equal(half.slides[0].blockingThreshold, .5);
-  assert.equal(half.issues[0].severity, 'error');
+  assert.equal(half.slides[0].blockingThreshold, null);
+  assert.equal(half.issues[0].severity, 'warning');
+  assert.match(half.issues[0].message, /无需增加图片/);
   assert.ok(below.slides[0].largestUnallocatedFraction < .5);
   assert.equal(below.issues[0].severity, 'warning');
+});
+
+test('chapter and roadmap whitespace does not inherit the evidence-page density gate', () => {
+  for (const layout of ['section', 'roadmap']) {
+    const result = diagnose([text('title', 48, 160, 500, ['研究问题与验证路线'], { role: 'title' })], layout);
+    assert.ok(result.slides[0].largestUnallocatedFraction > .6);
+    assert.equal(result.slides[0].blockingThreshold, null);
+    assert.equal(result.issues[0].severity, 'warning');
+    assert.match(result.issues[0].message, /位置与问题/);
+  }
 });
 
 test('a long diagonal relationship stroke does not fill its bounding rectangle', () => {
@@ -132,7 +143,8 @@ test('a cover context visual is measured separately without becoming scientific 
   assert.equal(result.slides[0].contentCoverage, baseline.slides[0].contentCoverage);
   assert.ok(result.slides[0].contextVisualCoverage > .40);
   assert.ok(result.slides[0].largestUnallocatedFraction < baseline.slides[0].largestUnallocatedFraction);
-  assert.equal(baseline.issues[0].severity, 'error');
+  assert.equal(baseline.issues[0].severity, 'warning');
+  assert.equal(baseline.slides[0].blockingThreshold, null);
 });
 
 test('a body context illustration does not erase a missing explanation or evidence region', () => {

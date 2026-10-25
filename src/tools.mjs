@@ -26,13 +26,13 @@ export const TOOL_COMMANDS = Object.freeze({
 })
 
 const descriptions = {
-  academic_ppt_init: '创建学术汇报工程，记录研究问题、听众、时间与证据要求；参考证据组织、局部分组与阅读层级，逐页自主构图。Create a revisioned academic presentation project.',
+  academic_ppt_init: '创建学术汇报工程，记录研究问题、论证路线、分节问题、听众与证据要求；用学术色板、文字主导封面与可见导航组织报告。Create a revisioned academic presentation project.',
   academic_ppt_record: '从工作区 recordsPath 读取≤1MiB UTF-8 JSON批次，登记论文、论点、图资产或页面；参数只放工程文件路径与修订号。字段不清楚先用academic_ppt_contract按主题查询，先登记被引用记录。Read bounded record batches from a workspace JSON file.',
   academic_ppt_context: '按阶段读取工程的精简工作上下文与待解决项；不回传整篇论文或图片数据。Get compact stage context and stable IDs.',
   academic_ppt_build: '把工程生成原生可编辑 PPTX、HTML 与检查材料；保存新版本，不覆盖 Office 手工修改。Build editable artifacts; successful export is not visual approval.',
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
-  academic_ppt_check: '只读检查论文证据、内容占幅、最大空区、全稿结构重复与产物摘要，给出问题位置；背景装饰不算内容。静态检查不能代替逐页看最终 PPTX。Inspect evidence, actual content distribution and output integrity.',
+  academic_ppt_check: '只读检查论文证据、整稿论证路线、章节一致性、内容占幅与产物摘要；封面与导航留白只作视觉提醒，正文证据门槛保留。静态检查不能代替逐页看最终 PPTX。Inspect evidence, actual content distribution and output integrity.',
   academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，学习主辅证据、邻接解释、分组、密度与层级，当前内容决定实际坐标；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
   academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
   academic_ppt_contract: '按brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
@@ -106,7 +106,7 @@ function templateSummary(profile, profilePath) {
     study: profile.study, suggestedDesign:profile.suggestedDesign, designInference:profile.designInference, components,
     componentIndex: { total: profile.components?.length ?? 0, returned: components.length, truncated: (profile.components?.length ?? 0) > components.length },
     scope: profile.scope, visualReview: profile.visualReview,
-    instructions: ['结构推断尚未视觉确认。查看实际代表页，学习主辅证据、局部分组、图旁解释、密度与阅读层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；按研究关系选择浅底、题签、边界或开放标注，避免机械卡片阵列与无组织文字堆叠。短旁注仅在不造成大空区时align=start。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式会阻断严重未使用区域，须调整真实内容与构图，不能靠背景或装饰填空。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
+    instructions: ['结构推断尚未视觉确认。查看实际代表页，学习主辅证据、局部分组、图旁解释、密度与阅读层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；按研究关系选择浅底、题签、边界或开放标注，避免机械卡片阵列与无组织文字堆叠。短旁注仅在不造成大空区时align=start。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式保留正文证据页的占幅门槛；封面、目录和章节留白只提醒看图判断，不为填空添加图片或装饰。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
   }
 }
 
@@ -214,6 +214,7 @@ export function formatToolResult(name, result) {
     if (Array.isArray(data.notes)) lines.push(...data.notes)
     if (data.schema) lines.push(`完整JSON Schema：${JSON.stringify(data.schema)}`)
     if (data.capabilityRecord) lines.push(`图像输入能力记录：${JSON.stringify(data.capabilityRecord)}`)
+    if (data.academicPalettes) lines.push(`学术配色候选（默认${data.defaultPalette}）：${JSON.stringify(data.academicPalettes)}`)
   }
   if (name === 'academic_ppt_context') {
     if (typeof data.context === 'string') lines.push(clip(data.context, 16000))
@@ -221,6 +222,7 @@ export function formatToolResult(name, result) {
     if (typeof data.designMode === 'string') lines.push(`设计模式：${clip(data.designMode, 80)}`)
     if (typeof data.nextAction === 'string') lines.push(`下一步：${clip(data.nextAction, 1200)}`)
     if (data.brief) lines.push(`研究问题：${clip(data.brief.centralQuestion, 1200)}；听众：${clip(data.brief.audience, 200)}；时长：${data.brief.talkMinutes} 分钟。`)
+    if (data.brief?.narrative) lines.push(`整稿论证路线：${clip(data.brief.narrative.throughline, 1600)}；章节：${JSON.stringify(data.brief.narrative.sections)}`)
     if (data.capabilities) lines.push(`图像输入能力：${clip(data.capabilities.imageInput, 40)}；依据：${clip(data.capabilities.source, 350)}`)
     if (Array.isArray(data.records) && data.records.length) {
       for (const item of data.records.slice(0, 4)) {

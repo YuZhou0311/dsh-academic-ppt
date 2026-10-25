@@ -82,7 +82,7 @@ test('new default projection policy remains attached on record updates while exp
   const created=await createProject({cwd:o.cwd,projectDir:'new-default',title:'Projection default fixture'});
   let current=JSON.parse(await readFile(created.projectPath,'utf8'));
   assert.deepEqual(current.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
-  assert.equal(current.design.cardDefaults.surface,'plain');
+  assert.equal(current.design.cardDefaults.surface,'outline');
   await updateRecords({cwd:o.cwd,projectPath:created.projectPath,expectedRevision:0,design:{fontFamily:current.design.fontFamily,palette:current.design.palette}});
   current=JSON.parse(await readFile(created.projectPath,'utf8'));
   assert.deepEqual(current.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
