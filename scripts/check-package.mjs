@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {readBundledSkill,buildAcademicTools} from '../src/index.mjs';
 import {REFERENCE_TEMPLATES,REFERENCE_CATEGORIES} from '../src/reference-catalog.mjs';
+import {readResearchDemoInputs} from './research-demo-inputs.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
@@ -13,7 +14,7 @@ assert.equal(packageJson.name,'dsh-academic-ppt');
 assert.equal(packageJson.dsh.bundle.patch,'./cordis.patch.yml');
 const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
 const tools=buildAcademicTools();assert.equal(tools.length,14);
-const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs'];
+const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs','scripts/build-research-demo.mjs','scripts/research-demo-inputs.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
 const templateRoot=join(root,'skills/dsh-academic-ppt/references/templates');
@@ -27,6 +28,17 @@ for(const [i,template] of REFERENCE_TEMPLATES.entries())assert.deepEqual(manifes
 for(const file of [manifest.collection,...manifest.categoryFiles]){
  const actual=createHash('sha256').update(await readFile(join(templateRoot,file.file))).digest('hex');
  assert.equal(actual,file.sha256,'reference PPTX digest '+file.file);
+}
+
+// A passing source/package check must include everything its replay CLI reads.
+// The transfer archive on main is not a substitute for materialized inputs.
+let researchSourceDigestsChecked=0;
+for(const author of ['a','b']){
+ const {content,manifest,supportFiles}=await readResearchDemoInputs(join(root,'examples/research-native-v07'),author);
+ assert.equal(manifest.author,author,'research demo author');
+ assert.equal(content.slides.length,manifest.slideCount,'research demo slide count');
+ assert.ok(content.papers.length&&content.slides.length,'nonempty research demo '+author);
+ researchSourceDigestsChecked+=supportFiles.length;
 }
 
 async function files(dir){const out=[];for(const entry of await readdir(dir,{withFileTypes:true})){if(['node_modules','.git','.test-output','dist'].includes(entry.name))continue;const path=join(dir,entry.name);if(entry.isDirectory())out.push(...await files(path));else out.push(path);}return out;}
@@ -46,4 +58,4 @@ for(const path of markdown){
 for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,referenceTemplates:48,referencePptxDigestsChecked:9,researchDemoBundlesChecked:2,researchSourceDigestsChecked,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, replay input integrity, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');

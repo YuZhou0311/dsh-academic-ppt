@@ -23,3 +23,25 @@ jobs:
       - run: npm test
       - run: npm run check
       - run: npm pack --dry-run --ignore-scripts
+      - name: Verify and replay the packed research examples
+        shell: bash
+        run: |
+          replay_dir="$(mktemp -d)"
+          npm pack --ignore-scripts --pack-destination "$replay_dir"
+          tar -xzf "$replay_dir"/*.tgz -C "$replay_dir"
+          ln -s "$GITHUB_WORKSPACE/node_modules" "$replay_dir/package/node_modules"
+          cd "$replay_dir/package"
+          node scripts/check-package.mjs
+          for author in a b; do
+            node scripts/build-research-demo.mjs --author "$author" --output "./replay-$author" > "$replay_dir/result-$author.json"
+            node --input-type=module - "$replay_dir/result-$author.json" <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+          const result = JSON.parse(await readFile(process.argv[2], 'utf8'));
+          assert.equal(result.ok, true);
+          assert.equal(result.summary.errors, 0);
+          assert.equal(result.verification.readyForDelivery, false);
+          assert.equal(result.verification.visual, 'not-verified');
+          console.log(`Packaged author ${result.author}: replay passed without inherited approval`);
+          NODE
+          done

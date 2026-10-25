@@ -2,6 +2,7 @@
  * No scientific value is inferred here: every visible result comes from the project.
  */
 import { getReferenceTemplate } from './reference-catalog.mjs';
+import { effectiveBibliographyIds } from './reference.mjs';
 import { assessFigurePlacement } from './figure-planning.mjs';
 import { resolveAcademicSystem } from './design-system.mjs';
 import { academicHeader, academicCover, academicSection, academicClosing, resolveChrome } from './academic-chrome.mjs';
@@ -577,14 +578,15 @@ function table(b, data, box, fontFamily) {
 }
 
 function references(b,project,slide,box) {
-  const selected=arr(project.papers).filter(p=>!slide.paperIds?.length||slide.paperIds.includes(p.id));
+  const selectedIds=effectiveBibliographyIds(project,slide);
+  const selected=arr(project.papers).filter(p=>selectedIds.includes(p.id));
   let y=box.y;
   for(const [i,p] of selected.entries()){
     const titleW=box.w-70,titleH=wrapText(p.title,titleW,24,{bold:true}).length*28.8;
     const indexLabel=referenceLabel(project,p.id);
     const meta=[arr(p.authors).join(', '),p.journal,p.year,p.doi?`DOI: ${p.doi}`:p.url,p.version].filter(Boolean).join(' · '),metaH=wrapText(meta,titleW,18).length*22.3;
     b.text(`ref:${p.id}:id`,indexLabel,{x:box.x,y:y+2,w:58,h:32},22,{color:b.p.accent,bold:true,role:'reference-index'});
-    b.text(`ref:${p.id}:title`,p.title,{x:box.x+70,y,w:titleW,h:titleH},24,{bold:true,lineHeight:1.2,role:'reference-title'});
+    b.text(`ref:${p.id}:title`,p.title,{x:box.x+70,y,w:titleW,h:titleH},24,{bold:true,lineHeight:1.2,role:'reference-title',referenceId:p.id});
     b.text(`ref:${p.id}:meta`,meta,{x:box.x+70,y:y+titleH+7,w:titleW,h:metaH},18,{color:b.p.muted,lineHeight:1.24,role:'citation'});
     y+=titleH+metaH+31;
     if(i<selected.length-1)b.line(`ref:${p.id}:line`,box.x+70,y-13,box.x+box.w,y-13,b.p.line);
@@ -770,7 +772,7 @@ export function buildScenes(project) {
     }else if(slide.layout==='roadmap'){
       const gap=24,count=Math.max(cards.length,1),h=(bodyBox.h-gap*(count-1))/count;
       cards.forEach((c,i)=>{const y=bodyBox.y+i*(h+gap);b.text(`roadmap:${i}:number`,String(i+1).padStart(2,'0'),{x:48,y:y+2,w:63,h:42},29,{color:b.p.accent,bold:true,role:'index'});card(b,c,c.box||{x:128,y,w:1104,h},i,project);});
-    }else if(slide.layout==='references'){if(design.projection||slide.referenceIds)renderBibliography(b,project,slide.referenceIds||slide.paperIds,bodyBox,{wrapText});else references(b,project,slide,bodyBox);}
+    }else if(slide.layout==='references'){if(design.projection||slide.referenceIds)renderBibliography(b,project,effectiveBibliographyIds(project,slide),bodyBox,{wrapText});else references(b,project,slide,bodyBox);}
     else if(slide.layout==='academic'&&slide.drawings?.length){}
     else{
       let y=bodyBox.y;

@@ -2,6 +2,7 @@
 import PptxGenJS from 'pptxgenjs';
 import { unzipSync, zipSync, strFromU8, strToU8 } from 'fflate';
 import { buildScenes } from './scene.mjs';
+import { chartDisplayValue, chartValueFormat } from './chart-labels.mjs';
 
 const esc = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const hex = value => /^#[a-f\d]{6}$/i.test(String(value)) ? value.slice(1) : '171C22';
@@ -9,8 +10,6 @@ const abort = signal => { if (signal?.aborted) throw signal.reason || new Error(
 const inch = px => px / 96;
 const pos = n => ({ x: inch(n.x), y: inch(n.y), w: inch(n.w), h: inch(n.h) });
 const drawColors = p => [p.accent, p.secondary, p.gold, '#70859A', '#385866', '#929EAB'];
-const chartDisplayValue = (value, chart) => chart.valueDecimals === undefined ? String(value) : value.toFixed(chart.valueDecimals);
-const chartValueFormat = chart => chart.valueDecimals === undefined ? '0.############' : chart.valueDecimals ? '0.' + '0'.repeat(chart.valueDecimals) : '0';
 const chartScale = values => {
   const lo = Math.min(0, ...values), hi = Math.max(0, ...values), span = hi - lo || 1;
   const rawStep = span / 4, base = 10 ** Math.floor(Math.log10(rawStep));

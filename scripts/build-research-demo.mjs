@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /** Replay one published author's exact records. This is not new model authoring. */
-import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
-import { constants } from 'node:fs';
-import { join, dirname, isAbsolute } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { createProject, updateRecords, buildProject, renderProjectArtifact, checkProject } from '../src/core.mjs';
-import { safePath, hash } from '../src/io.mjs';
+import { safePath } from '../src/io.mjs';
+import { readResearchDemoInputs } from './research-demo-inputs.mjs';
 
 const argv=process.argv.slice(2),cwd=process.cwd(),fontDirectories=[];
 let author='a',output,render=false;
@@ -22,27 +22,20 @@ for(let i=0;i<argv.length;i++){
 }
 if(fontDirectories.length>4)throw new Error('Use at most four font directories.');
 const bundle=fileURLToPath(new URL('../examples/research-native-v07/',import.meta.url));
-const content=JSON.parse(await readFile(join(bundle,author,'deck.json'),'utf8'));
-const manifest=JSON.parse(await readFile(join(bundle,author,'manifest.json'),'utf8'));
+const {content,manifest,supportFiles}=await readResearchDemoInputs(bundle,author);
 const files=manifest.rebuildFiles;
-if(!Array.isArray(files)||!files.length||new Set(files).size!==files.length)throw new Error('Expected unique declared rebuildFiles.');
 const root=await safePath(cwd,output||`research-demo-${author}-${randomUUID().slice(0,8)}`);
 await mkdir(root); // A new output is required; no cleanup of an existing path.
 await mkdir(join(root,'records'));
-for(const name of files){
-  if(typeof name!=='string'||isAbsolute(name)||!(/^(?:assets|sources)\//.test(name)))throw new Error('Unexpected support path: '+name);
-  const source=await safePath(bundle,name,{mustExist:true}),destination=await safePath(root,name);
-  const bytes=await readFile(source),expected=manifest.sha256?.[name];
-  if(!expected||hash(bytes)!==expected)throw new Error('SOURCE_HASH_MISMATCH: '+name);
-  await mkdir(dirname(destination),{recursive:true});await copyFile(source,destination,constants.COPYFILE_EXCL);
+for(const {name,bytes} of supportFiles){
+  const destination=await safePath(root,name);
+  await mkdir(dirname(destination),{recursive:true});await writeFile(destination,bytes,{flag:'wx'});
 }
 const declared=new Set(files);
 for(const paper of content.papers){
   if(declared.has(paper.reading.source))paper.reading.source=join(root,paper.reading.source);
-  else if(!/^https:\/\//.test(paper.reading.source))throw new Error('Undeclared paper source: '+paper.id);
 }
 for(const asset of content.assets){
-  if(asset.data||!declared.has(asset.path))throw new Error('Use a declared source asset path: '+asset.id);
   asset.path=join(root,asset.path);
   delete asset.sourcePath; // Public import records this replay's actual source path.
 }

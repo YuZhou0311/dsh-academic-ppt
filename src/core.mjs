@@ -5,6 +5,7 @@ import {assertToolArgs,assertProject,contentOf} from './schema.mjs';
 import {normalizeTemplateProfiles} from './template-profile.mjs';
 import {DEFAULT_ACADEMIC_SYSTEM} from './design-system.mjs';
 import {getReferenceTemplate} from './reference-catalog.mjs';
+import {effectiveBibliographyIds} from './reference.mjs';
 import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-quality.mjs';
 import {designIssues,designGeometryReport} from './design-quality.mjs';
 import { evidenceDesignReport, contentCoverageReport } from './evidence-design.mjs';
@@ -13,7 +14,7 @@ import { compareProjectStructures } from './portfolio.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'plain',radius:0,padding:12,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:{ink:'#161D27',paper:'#FFFFFF',background:'#FFFFFF',accent:'#0B4D89',secondary:'#B13E36',muted:'#536070',line:'#C8D4DF',soft:'#EFF4F8',gold:'#B13E36',tint:'#EFF4F8'},system:{...DEFAULT_ACADEMIC_SYSTEM,header:'plain',titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=11;
+const RENDERER_VERSION=12;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -74,11 +75,11 @@ export function evidenceIssues(p){
  const papers=new Map(p.papers.map(x=>[x.id,x])),claims=new Map(p.claims.map(x=>[x.id,x])),assets=new Map(p.assets.map(x=>[x.id,x]));
  if(!p.brief.centralQuestion.trim())add('error','central-question','brief.centralQuestion','先明确汇报中心问题。');
  if(!p.slides.length)add('error','no-slides','slides','尚无幻灯片。');
- const used=new Set(p.slides.flatMap(s=>[...s.paperIds,...expandClaimIds(p.claims,slideClaimIds(s)).map(id=>claims.get(id)?.paperId),...slideAssetIds(s).map(id=>assets.get(id)?.paperId)].filter(Boolean)));
+ const used=new Set(p.slides.flatMap(s=>[...s.paperIds,...effectiveBibliographyIds(p,s),...expandClaimIds(p.claims,slideClaimIds(s)).map(id=>claims.get(id)?.paperId),...slideAssetIds(s).map(id=>assets.get(id)?.paperId)].filter(Boolean)));
  const usedArticles=[...used].filter(id=>['article','preprint'].includes(papers.get(id)?.sourceType??'article'));
  if(usedArticles.length<p.brief.targetPaperCount)add('error','paper-count','papers',`正文关联 ${usedArticles.length} 篇论文，要求至少 ${p.brief.targetPaperCount} 篇。`);
  const introduced=new Set(p.slides.filter(s=>s.layout==='paper').flatMap(s=>s.paperIds));
- const referenced=new Set(p.slides.flatMap(s=>[...(s.layout==='references'?s.paperIds:[]),...(s.referenceIds??[])]));
+ const referenced=new Set(p.slides.flatMap(s=>effectiveBibliographyIds(p,s)));
  for(const id of used){const paper=papers.get(id);if(!paper)continue;
   if(p.brief.requireFullText&&paper.reading.status!=='full-text')add('error','full-text-required','papers.'+id,'全文阅读条件未满足，不能用摘要替代。');
   if(paper.reading.status==='full-text'&&(!paper.reading.notes.trim()||paper.reading.sections.length<3||!paper.methodSummary.trim()||!paper.limitations.length))add('error','reading-coverage','papers.'+id,'全文记录需覆盖至少三个实际章节、方法及局限。');
@@ -103,7 +104,7 @@ export function evidenceIssues(p){
   if(['figure-focus','figure-split'].includes(s.layout)&&!s.figureIds.length)add('error','missing-main-figure',path,'此页型需要原图。');
   if(s.layout==='figure-split'&&!s.referenceTemplateId&&s.figureIds.length>2)add('error','too-many-figures',path,'默认此页型最多两幅图；更多面板请使用匹配的 referenceTemplateId 或拆页。');
   if(s.layout==='paper'&&s.paperIds.length!==1)add('error','paper-page-count',path,'导读页一次展示一篇论文完整标题。');
-  if(s.layout==='references'&&s.paperIds.length>4)add('error','dense-references',path,'每页最多四条完整书目，请显式拆页。');
+  if(s.layout==='references'&&effectiveBibliographyIds(p,s).length>4)add('error','dense-references',path,'每页最多四条完整书目，请显式拆页。');
   if(!s.notes.trim()&&s.layout!=='references')add('warning','missing-notes',path,'补充与本页一致的演讲备注。');
   if(s.cards.length>4&&!s.referenceTemplateId&&!s.composition)add('warning','dense-cards',path,'同页解释区较多，请确认每个区域都承担独立研究任务，并给主证据保留足够空间；数量本身不是密度评分。');
   for(const card of s.cards){if(card.kind==='hypothesis'&&!card.claimIds.some(id=>claims.get(id)?.kind==='proposal'))add('warning','proposal-label',path+'/card/'+card.id,'假说卡请关联 proposal 证据，避免与已验证结果混淆。');
@@ -277,9 +278,9 @@ export async function studyProject(options={}){
  if(a.candidatesPath){const path=await safePath(options.cwd,a.candidatesPath,{mustExist:true});const bytes=await readBounded(path,1024*1024);let candidates;try{candidates=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{throw new Error('INVALID_CANDIDATES_FILE: use a UTF-8 JSON candidate array');}const {candidatesPath,...rest}=a;a={...rest,candidates};assertToolArgs('academic_ppt_study',a);}
  const state=await load(options);checkRevision(state.p,a.expectedRevision);
  const candidateProject={...state.p,slides:a.candidates.map(c=>({...c.slide,id:c.id}))};
- const sourceCodes=new Set(['dangling-paper','dangling-claim','dangling-figure','claim-source-not-visible','figure-source-not-visible','reference-source-not-visible','drawing-data-source','chart-data-source','table-data-source','plot-data-source','dangling-context-visual','context-visual-usage']);
+ const sourceCodes=new Set(['dangling-paper','dangling-claim','dangling-figure','claim-source-not-visible','figure-source-not-visible','reference-source-not-visible','drawing-data-source','chart-data-source','chart-dimensions','table-data-source','plot-data-source','dangling-context-visual','context-visual-usage']);
  const sourceIssues=evidenceIssues(candidateProject).filter(i=>sourceCodes.has(i.code));
- if(sourceIssues.some(i=>i.severity==='error'))return {ok:false,status:'blocked',issues:sourceIssues,note:'候选也须绑定存在的来源；这不是全文阅读或完整报告的正式验收。'};
+ if(sourceIssues.some(i=>i.severity==='error'))return {ok:false,status:'blocked',issues:sourceIssues,note:'候选也须绑定存在的来源并保留一致的数据结构；这不是全文阅读或完整报告的正式验收。'};
  return writeDesignStudy(state.p,a,{cwd:options.cwd,signal:options.signal});
 }
 

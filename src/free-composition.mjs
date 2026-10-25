@@ -98,7 +98,13 @@ export function renderFreeComposition(b,project,slide,h){
    if(item.kind==='drawing')renderNativeDrawing(b,project,item.value,slot,{wrapText:h.wrapText});
    else if(item.kind==='figure')h.figure(b,project,item.id,slot,`${key}/figure/${item.id}`);
    else if(item.kind==='references')renderBibliography(b,project,item.ids,slot,h);
-   else if(item.kind==='chart')b.add('chart','data-chart',{...slot,chart:structuredClone(item.value),palette:structuredClone(b.p),fontFamily:b.design.fontFamily,projection:b.design.projection});
+   else if(item.kind==='chart'){
+    let valid=true;
+    const chartError=(code,message,details={})=>{valid=false;fail(code,message,{...details,panelId:panel.id});};
+    const measurement=h.measureChart(item.value,slot.w,chartError);
+    if(slot.h+1e-9<measurement.minimumH)chartError('chart-height','数据图表须保留坐标、标签、图例与完整绘图区；扩大图表所在区域或拆分页面。',{availableHeight:slot.h,requiredHeight:measurement.minimumH});
+    if(valid)b.add('chart','data-chart',{...slot,chart:structuredClone(item.value),palette:structuredClone(b.p),fontFamily:b.design.fontFamily,projection:b.design.projection});
+   }
    else if(item.kind==='table')h.table(b,item.value,slot,b.design.fontFamily);
    else if(item.kind==='diagram')h.diagram(b,project,slide,slot);
    else if(item.kind==='plot')h.plot(b,item.value,slot,{fontFamily:b.design.fontFamily,wrapText:h.wrapText,measureTextWidth:h.measureTextWidth});

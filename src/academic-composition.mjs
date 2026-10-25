@@ -193,7 +193,9 @@ function chartSource(project, chart, ctx) {
   return [referenceLabel(project, claim.paperId), claim.locator].filter(Boolean).join(' · ');
 }
 
-function chartPlan(project, chart, width, ctx) {
+// Shared by row layout and free regions. The chart body includes its own axes,
+// category labels, legend and unit; source captions are measured separately.
+function measureChartMinimum(chart, width, ctx) {
   const categories = list(chart.categories), series = list(chart.series), horizontal = chart.kind === 'bar';
   const plotW = width - (horizontal ? 195 : 120);
   if (plotW < 96) ctx.error('chart-width', '数据图表需要为坐标、标签和绘图区保留独立空间；扩大图表所在面板。', { availableWidth: width, requiredWidth: horizontal ? 291 : 216 });
@@ -203,8 +205,13 @@ function chartPlan(project, chart, width, ctx) {
   if (series.length > 1 && series.some(item => ctx.measureTextWidth(item.name, Math.max(19,ctx.design.projection?.labelMin??0)) + 24 > legendStep)) ctx.error('chart-legend-width', '图表系列图例的完整名称超过当前列宽；为图例和比较数据扩大图表面板。');
   if (ctx.measureTextWidth(chart.unit, Math.max(19,ctx.design.projection?.labelMin??0)) > width - 36) ctx.error('chart-unit-width', '图表单位超过可用宽度；扩大图表面板，保留完整单位。');
   const plotH = Math.max(96, horizontal ? categories.length * Math.max(28,ctx.design.projection?.labelMin??0, series.length * 18) : 96);
+  return { minimumH: plotH + 123 };
+}
+
+function chartPlan(project, chart, width, ctx) {
+  const measurement = measureChartMinimum(chart, width, ctx);
   const caption = chartSource(project, chart, ctx), captionH = caption ? Math.max(ctx.captionSize * 1.45, ctx.lines(caption, width, ctx.captionSize) * ctx.captionSize * 1.24 + 4) : 0;
-  return { minimumH: plotH + 123 + (captionH ? captionH + 8 : 0), caption, captionH };
+  return { minimumH: measurement.minimumH + (captionH ? captionH + 8 : 0), caption, captionH };
 }
 
 function scientificPlotPlan(data, width, ctx, panelId, plotId) {
@@ -360,7 +367,13 @@ function renderConclusion(b, data, area, ctx) {
  * is the one supported authored geometry override. The input is never mutated.
  */
 export function renderAcademicComposition(b, project, slide, helpers) {
-  if(needsFreeComposition(slide.composition))return renderFreeComposition(b,project,slide,helpers);
+  if(needsFreeComposition(slide.composition))return renderFreeComposition(b,project,slide,{
+    ...helpers,
+    measureChart: (chart, width, error) => measureChartMinimum(chart, width, {
+      design: helpers.design || b.design || project.design || {},
+      measureTextWidth: helpers.measureTextWidth, error,
+    }),
+  });
   const { card, figure, table, diagram, plot, wrapText, measureTextWidth, clone = value => structuredClone(value), design = b.design || project.design || {}, contentBox = DEFAULT_CONTENT } = helpers || {};
   if (![card, figure, table, diagram, wrapText, measureTextWidth].every(value => typeof value === 'function')) throw new TypeError('ACADEMIC_COMPOSITION_HELPERS: card, figure, table, diagram, wrapText and measureTextWidth are required');
   b.page.issues ||= [];

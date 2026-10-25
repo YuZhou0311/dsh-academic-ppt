@@ -1,6 +1,7 @@
 /** Reviewable signals over the actual export scene, not an aesthetic or scientific score. */
 import { expandClaimIds } from './academic-quality.mjs';
 import { readingRole } from './projection-quality.mjs';
+import { chartVisibleText } from './chart-labels.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
 const roots = slide => [...list(slide.claimIds), ...list(slide.cards).flatMap(c => list(c.claimIds)),
@@ -9,7 +10,7 @@ const roots = slide => [...list(slide.claimIds), ...list(slide.cards).flatMap(c 
   ...list(slide.drawings).flatMap(d => [...list(d.claimIds), ...list(d.elements).flatMap(e => list(e.claimIds))])];
 const textsOf = node => node.kind === 'text' ? [String(node.text || '')]
   : node.kind === 'table' ? [...list(node.table?.columns), ...list(node.table?.rows).flat()].map(String)
-  : node.kind === 'chart' ? [...list(node.chart?.categories), ...list(node.chart?.series).flatMap(s => [s.name, ...list(s.values)]), node.chart?.unit].filter(v=>v!==undefined).map(String)
+  : node.kind === 'chart' ? chartVisibleText(node.chart)
   : [];
 
 /** Normalise typography and whitespace; retain signs, decimals and units. */

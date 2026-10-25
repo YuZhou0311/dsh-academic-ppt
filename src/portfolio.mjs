@@ -32,6 +32,28 @@ function similarCoverMain(a,b){
   return a.images.every(x=>{const i=b.images.findIndex((y,i)=>!used.has(i)&&boxIoU(x,y)>=.65);if(i<0)return false;used.add(i);return true;});
 }
 
+// Fuzzy similarity is not transitive: an early page may match two candidates
+// while a later page matches only the first. Augmenting paths find the maximum
+// one-to-one matching without making the count depend on page order. At the
+// public 120-page limit this is bounded polynomial work, not a permutation search.
+function maximumBodyMatches(left,right){
+  const candidates=left.map(x=>right.flatMap((y,index)=>similarStructure(x.structure,y.structure)?[index]:[]));
+  const matchedRight=Array(right.length).fill(-1);
+  const augment=(index,seen)=>{
+    // Keep existing valid pairs when an unused candidate is already available.
+    for(const target of candidates[index])if(!seen[target]&&matchedRight[target]<0){seen[target]=1;matchedRight[target]=index;return true;}
+    for(const target of candidates[index]){
+      if(seen[target])continue;seen[target]=1;
+      if(augment(matchedRight[target],seen)){matchedRight[target]=index;return true;}
+    }
+    return false;
+  };
+  for(let index=0;index<left.length;index++)augment(index,new Uint8Array(right.length));
+  const matchedLeft=Array(left.length).fill(-1);
+  matchedRight.forEach((index,target)=>{if(index>=0)matchedLeft[index]=target;});
+  return matchedLeft.flatMap((target,index)=>target<0?[]:[[index,target]]);
+}
+
 export function compareProjectStructures(entries) {
   const summaries=entries.map(({project,path})=>({projectId:project.id,title:project.title,path,revision:project.revision,
     slideCount:project.slides.length,bodySlides:project.slides.filter(isBodySlide).length}));
@@ -40,13 +62,13 @@ export function compareProjectStructures(entries) {
     const left=entries[i].project,right=entries[j].project;
     const a=left.slides.filter(isBodySlide).map(s=>({slide:s,structure:structureOf(s)}));
     const b=right.slides.filter(isBodySlide).map(s=>({slide:s,structure:structureOf(s)}));
-    // One-to-one matching prevents one generic page from inflating the whole
-    // report's duplicate count. Text, identifiers and paint do not affect it.
-    const used=new Set(),pairs=[];
-    for(const x of a){const k=b.findIndex((y,k)=>!used.has(k)&&similarStructure(x.structure,y.structure));
-      if(k<0)continue;used.add(k);pairs.push({leftSlideId:x.slide.id,rightSlideId:b[k].slide.id,
-        leftTitle:x.slide.title,rightTitle:b[k].slide.title,
-        comparisonReason:x.slide.visualPlan?.repetitionReason||b[k].slide.visualPlan?.repetitionReason||null});}
+    // Each source page participates at most once. Text, identifiers and paint
+    // remain excluded from similarity; retain the actual matched pair metadata.
+    const pairs=maximumBodyMatches(a,b).map(([leftIndex,rightIndex])=>{
+      const x=a[leftIndex].slide,y=b[rightIndex].slide;
+      return {leftSlideId:x.id,rightSlideId:y.id,leftTitle:x.title,rightTitle:y.title,
+        comparisonReason:x.visualPlan?.repetitionReason||y.visualPlan?.repetitionReason||null};
+    });
     const denominator=Math.min(a.length,b.length), fraction=denominator?pairs.length/denominator:0;
     const ac=left.slides.find(s=>s.layout==='cover'),bc=right.slides.find(s=>s.layout==='cover');
     const matchingCover=Boolean(ac&&bc&&coverStructure(ac,left.design)===coverStructure(bc,right.design));

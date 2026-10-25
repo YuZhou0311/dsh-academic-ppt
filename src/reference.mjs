@@ -8,6 +8,19 @@ const overview = template => ({ id: template.id, category: template.category, ta
 const neutralBox = box => Object.fromEntries(['x', 'y', 'w', 'h', 'style', 'kind'].filter(key => box[key] !== undefined).map(key => [key, box[key]]))
 const roleFor = { paper: 'question', method: 'mechanism', experiment: 'design', results: 'evidence', figure: 'evidence', synthesis: 'synthesis', limitations: 'limitation', plan: 'proposal' }
 
+/** The bibliography selection used by both rendering and source gates.
+ * Explicit referenceIds replace paperIds, including an explicit empty array.
+ * Legacy reference pages without projection retain their all-papers fallback.
+ * On composition pages the renderer separately verifies that each declared ID
+ * has a visible, assigned reference-title object.
+ */
+export function effectiveBibliographyIds(project, slide) {
+  if (slide.referenceIds !== undefined) return slide.referenceIds
+  if (slide.layout !== 'references') return []
+  if (slide.paperIds?.length || project.design?.projection) return slide.paperIds ?? []
+  return (project.papers ?? []).map(paper => paper.id)
+}
+
 function neutralTemplate(template) {
   return {
     id: template.id, category: template.category, name: template.name, layout: template.layout,
