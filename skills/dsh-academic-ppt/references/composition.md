@@ -1,12 +1,12 @@
 # 从研究关系到可编辑画面
 
-先确定页面要回答的问题和必要信息，再设计主构图与局部分组。一个核心问题可包含主辅证据、方法、比较条件、解释和边界；按当前任务取舍，不设固定五块。完整字段查academic_ppt_contract(topic:slide)，不要根据本文片段猜测未列出的字段。
+从[visual-decision.md](visual-decision.md)中的完整逐页设计稿出发，先核对实际可见内容与关系，再设计主构图、局部分组和坐标。页面任务可包含证据、方法、比较条件、解释和边界，按材料取舍。完整字段查academic_ppt_contract(topic:slide)，不要根据本文片段猜测未列出的字段。
 
 ## 流式行列与自由区域
 
 组合页面使用layout:academic。composition.rows按行及面板安排，适合顺序明确的图文关系；composition.regions用每个区域的box安排独立位置，适合上下层次、主辅、跨栏大图、局部解释等自由组合。两者择一，不能同页同时设置，也不与referenceTemplateId混用。多区域不要求并排、等宽或等高，单一完整载体足够时也不硬拆。
 
-先用visualPlan记录主关系、主区域与完整阅读顺序。可选contentLayers为`[{role,panelIds,summary}]`，role取evidence / explanation / conditions / method / synthesis，panelIds引用本页真实面板。一个信息层可对应多个区域，不要求全部角色出现；它是作者声明，不是自动生成内容或原创性证明。readingOrder按当前契约覆盖实际面板一次，上限12不表示应该凑到12个。
+用visualPlan摘要本页主关系、阅读入口/主区域与完整阅读顺序。primaryPanelId可指包含数据、方法或多组对比的组合区域，不强制唯一大图。可选contentLayers为`[{role,panelIds,summary}]`，role取evidence / explanation / conditions / method / synthesis，panelIds引用本页真实面板。一个信息层可对应多个区域，不要求全部角色出现；它是作者声明，实际对象仍要逐项兑现。readingOrder按当前契约覆盖实际面板一次，上限12不表示应该凑到12个。
 
 主布局之下可继续设计局部关系，例如上部总体比较、下部方法解释，或大图内部的对照组和旁侧条件。独立regions不得重叠；有意义的嵌套用一个区域内的drawing分组表达，不用互相覆盖的独立面板模拟。row/panel的weight只是空间比例，位置与层次都由作者根据关系决定。
 
@@ -25,7 +25,7 @@
 
 区域保留稳定id和具体title。重复的可见题签可用heading:hidden隐藏，padding在0–24px内按图、表与文字分配，避免嵌套边距挤小主证据。隐藏题签不表示删除重要条件：仍需让听众在相邻位置读到必要语义。
 
-surface控制局部分组，align决定是否收紧；它们不改变科学内容。短旁注可收紧后重新安排余下空间，不能让一条短句占据高空栏。图表自己的边界已经清楚时，外围可以开放；没有明确归属的多组文字可用浅底、题签或细线区分。不同内容不必强行装成等大卡片。
+surface控制局部分组。align:start仅用于未启用自由布局功能的流式rows；自由regions，以及含heading、padding、drawingIds或referenceIds的rows，通过区域box或行权重控制高度，不设置align:start。短旁注按所用布局收紧后重新安排余下空间，不能让一条短句占据高空栏。图表自己的边界已经清楚时，外围可以开放；没有明确归属的多组文字可用浅底、题签或细线区分。不同内容不必强行装成等大卡片。
 
 先确定是否需要卡片；图、表、流程和开放旁注可以自行建立结构。确需独立卡片时，默认细描边仍可保留，并按题签/正文关系选择appearance.layout。外层panel已有清楚归属时，可将内层surface设为plain或隐藏重复题签。必要的包含层级保留，无意义套框删除。
 
@@ -66,6 +66,6 @@ chart的分类、系列、单位与sourceClaimId须准确；valueDecimals只控�
 
 ## 计高、字号与验收
 
-画布为1280×720px，1px约0.75pt。新稿普通正文/必要标签/辅助注释可从28/24/18px起步，并按材料和投影需求显式声明projection。主要条件不降为note角色，原图像素标签需要另行查看；数字达下限也不保证清晰。
+画布为1280×720px，1px约0.75pt。按[design.md](design.md)先确定章节、页题、题签、正文、数据标签与来源的职责及字级，再在当前契约范围内显式声明projection和system。28/24/18px是既有默认，不要求全稿只有这三种字号，也不自动适配所有阅读场景。主要条件不降为note角色，原图像素标签需要另行查看；数字达下限也不保证清晰。
 
 文字放不下先删除同义重复、重新分配区域、减少无用题签或拆任务，不持续缩字。check处理已知几何和内容保全问题后，仍要查看实际PPTX的每页。没有溢出、所有载体被消费或结构不重复，都不能独立证明好设计。

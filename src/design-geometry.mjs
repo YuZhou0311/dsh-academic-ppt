@@ -169,7 +169,7 @@ export function designGeometryReport(project, scenes) {
           ? '查看题名、真实身份和留白是否形成清晰层级；文字主导的封面可以保持留白，无需增加图片或装饰。'
           : navigation
             ? '查看目录或章节页是否清楚交代位置与问题；有意留白可以保留，不为占幅增加卡片或装饰。'
-            : '扩大主证据、把解读移到证据旁、重排卡片或合并本页；不要缩字、补写无依据观点、拉大卡框或增加装饰来刷占幅。';
+            : '先核对遗漏的证据、条件、比较与解释，重组相关区域或合并重复页面，再按可读性调整证据尺寸；不要缩字掩盖问题，也不要用巨字、无依据观点、空卡框或装饰来刷占幅。';
       issues.push({ severity: blocks ? 'error' : 'warning', code: blocks ? 'large-unused-region' : 'unused-region-review', slideId: page.id, path: `slides.${page.id}`, box, emptyFraction: report.largestUnallocatedFraction, contentCoverage: report.contentCoverage, basis: report.basis,
         message: `${location(box, area)}有约 ${percent(allocation.emptyFraction)} 的连续未使用内容区（${Math.round(box.w)}×${Math.round(box.h)} px）。${suggestion}此值是几何诊断，不能代替真实渲染检查。` });
     }
