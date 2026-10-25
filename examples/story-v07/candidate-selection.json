@@ -1,0 +1,24 @@
+{
+  "cover": "cover-left",
+  "evidence": "evidence-horizontal",
+  "observedAt": "2026-10-25T05:38:43Z",
+  "basis": "逐页查看真实PPTX的4张PNG及概览；非SVG代替最终渲染",
+  "candidatePptxSha256": "c3792e7bae34a1fa4a8b814282d0c9e19ccc07bf5a9968ebe93332eb6243f0d6",
+  "imageInputEvidence": "本次会话使用view_image实际打开report/study/render/artifacts/pages/page-0001.png至page-0004.png及contact-sheet-01.png；能辨认两种题名对齐、B批24个观测点、区间跨0及中文/数学符号。",
+  "choices": [
+    {
+      "selected": "cover-left",
+      "reason": "完整两行题名与副题共用左对齐，模拟身份独立在下方，适合该较长题名及正文的阅读起点。",
+      "rejected": "cover-center",
+      "rejection": "居中方案同样可读，但题名、范围与下方模拟身份间的留白更分散；本次选择左侧连续对齐便于迅速进入问题。"
+    },
+    {
+      "selected": "evidence-horizontal",
+      "reason": "24件原始观察有全宽横轴；下方差值区间与精确均值/SD邻近，零线和跨零范围能直接读出；关键非随机边界在同页可见。",
+      "rejected": "evidence-vertical",
+      "rejection": "纵向图保留同样数据，但右侧汇总、区间与方法边界形成较长阅读跳转；横向方案可更直接连起组分布和均值差。"
+    }
+  ],
+  "sourceComparison": "无原始图或参考模板。依据原CSV复算并核对点位、各12件、同200 MPa、全部failed；未读取其他报告、模板教学正文或测试结论。",
+  "formalFinalApproval": false
+}

@@ -31,13 +31,21 @@
 | 检查稿内与跨稿同质化 | `portfolio` 比较明确指定的不同工程，返回可并列的页对；换色、换字或改变数据值不算新构图，合理同尺度比较可保留 |
 | 保留学术约束 | 事实、推断、方案分别登记，来源、单位、比较条件与结论边界仍需核对；构图自由不授权新增实验结果 |
 
-新叙事与色板字段见 [学术叙事与设计](docs/ACADEMIC_STORY_DESIGN.md)，自由构图见 [构图说明](docs/RESEARCH_NATIVE_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。实际试用与验证边界以 [本轮记录](docs/VALIDATION_V07.md) 为准。
+新叙事与色板字段见 [学术叙事与设计](docs/ACADEMIC_STORY_DESIGN.md)，自由构图见 [构图说明](docs/RESEARCH_NATIVE_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。实际试用与验证边界以 [本轮记录](docs/VALIDATION_V07_RC5.md) 为准。
 
 ## 本轮实际样张
 
 [查看封面、目录、分节与细描边卡片](examples/academic-style-v07/README.md)。以下是插件生成的 PPTX 实际渲染，使用合成回归内容，不代表完整研究报告的科学验收。
 
 ![rc.5 学术视觉与导航样张](examples/academic-style-v07/preview.png)
+
+## 本轮完整试作：8页学术进展报告
+
+新上下文制作者只收到原始教学协议、48件CSV记录、当前插件和8页/8分钟任务，自行组织“比较条件—证据边界—下一步验证”的路线，并实际比较两个封面和两个困难证据页候选。全稿使用细框说明、开放旁注、原始点图、区间和实验流程；独立计算者复算数据，制作者与主线程查看实际PPTX页面并修订。来源、讲稿、审查提醒和重建方法均随示例保留。
+
+[完整示例与验证边界](examples/story-v07/README.md) · [可编辑PPTX](examples/story-v07/delivery/fatigue-progress.pptx) · [PDF](examples/story-v07/delivery/fatigue-progress.pdf) · [全稿概览](examples/story-v07/delivery/preview.png) · [讲稿](examples/story-v07/delivery/speaker-notes.md)
+
+这是使用本次宿主agent完成的单例；所有数据为教学模拟，不能视为真实研究结论、目标模型稳定成功率或DSH GUI验收。
 
 ## 历史 v0.6：9 页材料进展报告
 

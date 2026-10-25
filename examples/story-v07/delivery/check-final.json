@@ -1,0 +1,719 @@
+{
+  "ok": true,
+  "projectPath": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/project.json",
+  "revision": 9,
+  "counts": {
+    "papers": 2,
+    "claims": 13,
+    "assets": 0,
+    "slides": 8
+  },
+  "summary": {
+    "errors": 0,
+    "warnings": 3
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "narrative-section-without-content",
+      "path": "brief.narrative.sections",
+      "message": "章节“记录与比较”尚无关联正文。核对是否遗漏材料，或是否应合并章节；目录不能承诺未展示的内容。",
+      "sectionId": "scope"
+    },
+    {
+      "severity": "warning",
+      "code": "unused-region-review",
+      "slideId": "s1",
+      "path": "slides.s1",
+      "box": {
+        "x": 512,
+        "y": 328,
+        "w": 720,
+        "h": 344
+      },
+      "emptyFraction": 0.3352,
+      "contentCoverage": 0.2191,
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "message": "右下部有约 34% 的连续未使用内容区（720×344 px）。查看题名、真实身份和留白是否形成清晰层级；文字主导的封面可以保持留白，无需增加图片或装饰。此值是几何诊断，不能代替真实渲染检查。"
+    },
+    {
+      "severity": "warning",
+      "code": "unused-region-review",
+      "slideId": "s8",
+      "path": "slides.s8",
+      "box": {
+        "x": 168,
+        "y": 265.8,
+        "w": 1064,
+        "h": 205.4
+      },
+      "emptyFraction": 0.3595,
+      "contentCoverage": 0.36,
+      "basis": "scene-geometry-estimate-not-aesthetic-score",
+      "message": "中部有约 36% 的连续未使用内容区（1064×205 px）。检查能否合并参考页或重新分配书目；保留完整题名与可读字号。此值是几何诊断，不能代替真实渲染检查。"
+    }
+  ],
+  "designDiagnostics": {
+    "basis": "scene-geometry-estimate-not-aesthetic-score",
+    "notes": "忽略背景、卡框、图标与正文装饰。文本按估计行范围计算；原图、数据图表和统计图内部留白不作空洞。封面上下文图单独计可视占幅，不作为科学证据。",
+    "slides": [
+      {
+        "slideId": "s1",
+        "layout": "cover",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 48,
+          "w": 1184,
+          "h": 624
+        },
+        "contentCoverage": 0.2191,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 512,
+          "y": 328,
+          "w": 720,
+          "h": 344
+        },
+        "largestEmptyContentFraction": 0.3352,
+        "largestUnallocatedBox": {
+          "x": 512,
+          "y": 328,
+          "w": 720,
+          "h": 344
+        },
+        "largestUnallocatedFraction": 0.3352,
+        "grid": {
+          "columns": 148,
+          "rows": 78,
+          "cellWidth": 8,
+          "cellHeight": 8,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": null,
+        "status": "needs-review"
+      },
+      {
+        "slideId": "s2",
+        "layout": "roadmap",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.3009,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 48,
+          "y": 566,
+          "w": 1184,
+          "h": 79
+        },
+        "largestEmptyContentFraction": 0.1538,
+        "largestUnallocatedBox": {
+          "x": 48,
+          "y": 566,
+          "w": 1184,
+          "h": 79
+        },
+        "largestUnallocatedFraction": 0.1538,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.34,
+        "blockingThreshold": null,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s3",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.3083,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 168,
+          "y": 265.8,
+          "w": 304,
+          "h": 276.5
+        },
+        "largestEmptyContentFraction": 0.1383,
+        "largestUnallocatedBox": {
+          "x": 168,
+          "y": 265.8,
+          "w": 304,
+          "h": 276.5
+        },
+        "largestUnallocatedFraction": 0.1383,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s4",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.3576,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 736,
+          "y": 131.5,
+          "w": 496,
+          "h": 134.3
+        },
+        "largestEmptyContentFraction": 0.1096,
+        "largestUnallocatedBox": {
+          "x": 736,
+          "y": 131.5,
+          "w": 496,
+          "h": 134.3
+        },
+        "largestUnallocatedFraction": 0.1096,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s5",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.3619,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1112,
+          "y": 131.5,
+          "w": 120,
+          "h": 513.5
+        },
+        "largestEmptyContentFraction": 0.1014,
+        "largestUnallocatedBox": {
+          "x": 1112,
+          "y": 131.5,
+          "w": 120,
+          "h": 513.5
+        },
+        "largestUnallocatedFraction": 0.1014,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s6",
+        "layout": "academic",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.3208,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 336,
+          "y": 131.5,
+          "w": 896,
+          "h": 79
+        },
+        "largestEmptyContentFraction": 0.1164,
+        "largestUnallocatedBox": {
+          "x": 336,
+          "y": 131.5,
+          "w": 896,
+          "h": 79
+        },
+        "largestUnallocatedFraction": 0.1164,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s7",
+        "layout": "closing",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.352,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 1024,
+          "y": 131.5,
+          "w": 208,
+          "h": 513.5
+        },
+        "largestEmptyContentFraction": 0.1757,
+        "largestUnallocatedBox": {
+          "x": 1024,
+          "y": 131.5,
+          "w": 208,
+          "h": 513.5
+        },
+        "largestUnallocatedFraction": 0.1757,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.2,
+        "blockingThreshold": 0.25,
+        "status": "no-large-void-detected"
+      },
+      {
+        "slideId": "s8",
+        "layout": "references",
+        "density": "compact",
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "contentBox": {
+          "x": 48,
+          "y": 131.5,
+          "w": 1184,
+          "h": 513.5
+        },
+        "contentCoverage": 0.36,
+        "contextVisualCoverage": 0,
+        "largestEmptyContentBox": {
+          "x": 168,
+          "y": 265.8,
+          "w": 1064,
+          "h": 205.4
+        },
+        "largestEmptyContentFraction": 0.3595,
+        "largestUnallocatedBox": {
+          "x": 168,
+          "y": 265.8,
+          "w": 1064,
+          "h": 205.4
+        },
+        "largestUnallocatedFraction": 0.3595,
+        "grid": {
+          "columns": 148,
+          "rows": 65,
+          "cellWidth": 8,
+          "cellHeight": 7.9006,
+          "opticalHalo": 4
+        },
+        "warningThreshold": 0.28,
+        "blockingThreshold": null,
+        "status": "needs-review"
+      }
+    ],
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "unused-region-review",
+        "slideId": "s1",
+        "path": "slides.s1",
+        "box": {
+          "x": 512,
+          "y": 328,
+          "w": 720,
+          "h": 344
+        },
+        "emptyFraction": 0.3352,
+        "contentCoverage": 0.2191,
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "message": "右下部有约 34% 的连续未使用内容区（720×344 px）。查看题名、真实身份和留白是否形成清晰层级；文字主导的封面可以保持留白，无需增加图片或装饰。此值是几何诊断，不能代替真实渲染检查。"
+      },
+      {
+        "severity": "warning",
+        "code": "unused-region-review",
+        "slideId": "s8",
+        "path": "slides.s8",
+        "box": {
+          "x": 168,
+          "y": 265.8,
+          "w": 1064,
+          "h": 205.4
+        },
+        "emptyFraction": 0.3595,
+        "contentCoverage": 0.36,
+        "basis": "scene-geometry-estimate-not-aesthetic-score",
+        "message": "中部有约 36% 的连续未使用内容区（1064×205 px）。检查能否合并参考页或重新分配书目；保留完整题名与可读字号。此值是几何诊断，不能代替真实渲染检查。"
+      }
+    ],
+    "evidenceDesign": {
+      "basis": "visible-carrier-review-prompt-not-aesthetic-score",
+      "slides": [
+        {
+          "slideId": "s3",
+          "visibleCarriers": [
+            "authored-data-marks"
+          ],
+          "availableSourceFigures": [],
+          "primaryPanelId": "points"
+        },
+        {
+          "slideId": "s4",
+          "visibleCarriers": [
+            "authored-data-marks"
+          ],
+          "availableSourceFigures": [],
+          "primaryPanelId": "raw"
+        }
+      ],
+      "issues": []
+    },
+    "contentCoverage": {
+      "basis": "author-specified-visible-text-not-fact-verification",
+      "slides": [
+        {
+          "slideId": "s2",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "每行一件独立试件",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "无重复试验",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "200 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "180 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-5",
+              "text": "未报告随机分配",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s3",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "200 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "180 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "runout",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "观察时间（万循环）",
+              "visible": true
+            },
+            {
+              "id": "required-5",
+              "text": "未能归因",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s4",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "B批",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "200 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "全部失效",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "95%区间",
+              "visible": true
+            },
+            {
+              "id": "required-5",
+              "text": "未报告随机分配",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s5",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "寿命 > 50万",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "右删失",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "因果未确立",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "未提供断口、组织或残余应力测量",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s6",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "尚未开展",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "固定200 MPa",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "区组内随机分配",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "50万循环内限制平均寿命差",
+              "visible": true
+            },
+            {
+              "id": "required-5",
+              "text": "先定最小重要差值δ",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s7",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "L > 0",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "U < 0",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "L ≤ 0 ≤ U",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "前提不成立",
+              "visible": true
+            },
+            {
+              "id": "required-5",
+              "text": "不能据此判等效",
+              "visible": true
+            },
+            {
+              "id": "required-6",
+              "text": "效应未确立",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "slideId": "s8",
+          "checks": [
+            {
+              "id": "required-1",
+              "text": "教学模拟数据",
+              "visible": true
+            },
+            {
+              "id": "required-2",
+              "text": "原尺度Welch 95%区间",
+              "visible": true
+            },
+            {
+              "id": "required-3",
+              "text": "右删失",
+              "visible": true
+            },
+            {
+              "id": "required-4",
+              "text": "尚未实施",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "issues": []
+    }
+  },
+  "artifact": {
+    "current": true,
+    "pptxSha256": "49940596e688a01b1e23099665a40a58a127002d7c7a041f86edefbb6812ad94"
+  },
+  "verification": {
+    "evidence": "records-checked-not-independently-verified",
+    "layout": "estimated",
+    "pptxRender": "rendered",
+    "visual": "reported-passed",
+    "htmlVisual": "not-verified",
+    "readyForDelivery": true
+  },
+  "render": {
+    "ok": true,
+    "status": "rendered",
+    "backend": "wasm",
+    "rendererVersion": "0.1.5",
+    "slideCount": 8,
+    "sourceSha256": "49940596e688a01b1e23099665a40a58a127002d7c7a041f86edefbb6812ad94",
+    "missingFonts": [],
+    "pngPaths": [
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0001.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0002.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0003.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0004.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0005.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0006.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0007.png",
+      "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/pages/page-0008.png"
+    ],
+    "pdfPath": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/document.pdf",
+    "receiptPath": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c/artifacts/render-receipt.json",
+    "outputDir": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/exports/r9-3202153d/render-0323248c",
+    "visual": "not-verified"
+  },
+  "slides": [
+    {
+      "id": "s1",
+      "title": "改性工艺的疲劳寿命差异：现有证据与下一步验证",
+      "layout": "cover",
+      "seconds": 30
+    },
+    {
+      "id": "s2",
+      "title": "48件记录：只有B批含同应力工艺对照",
+      "layout": "roadmap",
+      "seconds": 60
+    },
+    {
+      "id": "s3",
+      "title": "跨批合并会混入应力与批次差异",
+      "layout": "academic",
+      "seconds": 65
+    },
+    {
+      "id": "s4",
+      "title": "B批均值偏高，区间仍跨越零差异",
+      "layout": "academic",
+      "seconds": 95
+    },
+    {
+      "id": "s5",
+      "title": "删失与机制缺项限定了结论范围",
+      "layout": "academic",
+      "seconds": 60
+    },
+    {
+      "id": "s6",
+      "title": "下一批：固定应力并随机分配工艺",
+      "layout": "academic",
+      "seconds": 85
+    },
+    {
+      "id": "s7",
+      "title": "预先写明判据，区分四种可能结果",
+      "layout": "closing",
+      "seconds": 60
+    },
+    {
+      "id": "s8",
+      "title": "来源与分析口径",
+      "layout": "references",
+      "seconds": 25
+    }
+  ],
+  "note": "格式、引用链和内容分布诊断不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。"
+}

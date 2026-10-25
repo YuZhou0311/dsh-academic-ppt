@@ -1,0 +1,184 @@
+{
+  "main_revision": 9,
+  "main_pptx_sha256": "49940596e688a01b1e23099665a40a58a127002d7c7a041f86edefbb6812ad94",
+  "page_count": 8,
+  "time_budget_seconds": 480,
+  "missing_fonts": [],
+  "actual_render_backend": "wasm",
+  "native_object_counts": [
+    {
+      "slide": 1,
+      "native_shapes": 4,
+      "text_runs": 5,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 2,
+      "native_shapes": 35,
+      "text_runs": 34,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 3,
+      "native_shapes": 81,
+      "text_runs": 30,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 4,
+      "native_shapes": 75,
+      "text_runs": 32,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 5,
+      "native_shapes": 33,
+      "text_runs": 23,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 6,
+      "native_shapes": 37,
+      "text_runs": 22,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 7,
+      "native_shapes": 27,
+      "text_runs": 21,
+      "pictures": 0,
+      "connectors": 0
+    },
+    {
+      "slide": 8,
+      "native_shapes": 13,
+      "text_runs": 11,
+      "pictures": 0,
+      "connectors": 0
+    }
+  ],
+  "notes_slides": 8,
+  "embedded_media_count": 1,
+  "rebuild_command_result": "Fresh all-phase run completed: 4 candidate pages and 8 report pages rendered, check/build succeeded.",
+  "rebuild_page_comparison": [
+    {
+      "slide": 1,
+      "final_sha256": "955208870dc71454db9d47c637ebd77ebd5904182fafdadca34437002ad6e072",
+      "rebuilt_sha256": "955208870dc71454db9d47c637ebd77ebd5904182fafdadca34437002ad6e072",
+      "byte_identical": true
+    },
+    {
+      "slide": 2,
+      "final_sha256": "410aacbf35c3655125e31d563806307f9928505279b88fb3eb4165e440402113",
+      "rebuilt_sha256": "410aacbf35c3655125e31d563806307f9928505279b88fb3eb4165e440402113",
+      "byte_identical": true
+    },
+    {
+      "slide": 3,
+      "final_sha256": "a172d53ebffee12bdc7a779c00825fda71aca7aac284289a8c5c3af83bbec53c",
+      "rebuilt_sha256": "a172d53ebffee12bdc7a779c00825fda71aca7aac284289a8c5c3af83bbec53c",
+      "byte_identical": true
+    },
+    {
+      "slide": 4,
+      "final_sha256": "f4a0e39c4abfe87d4e40c77fa0a906997403da24a52b5cff290eb9170c2e70e7",
+      "rebuilt_sha256": "f4a0e39c4abfe87d4e40c77fa0a906997403da24a52b5cff290eb9170c2e70e7",
+      "byte_identical": true
+    },
+    {
+      "slide": 5,
+      "final_sha256": "b802463e63deff9e6e8de6ed360b11f27e8d7ebbcba6af2f79f0e0520030ba22",
+      "rebuilt_sha256": "b802463e63deff9e6e8de6ed360b11f27e8d7ebbcba6af2f79f0e0520030ba22",
+      "byte_identical": true
+    },
+    {
+      "slide": 6,
+      "final_sha256": "984ec11c86da980311a5b28487e8aaba4a6ba2e40ff8f6bc0083a7e8a82f51b8",
+      "rebuilt_sha256": "984ec11c86da980311a5b28487e8aaba4a6ba2e40ff8f6bc0083a7e8a82f51b8",
+      "byte_identical": true
+    },
+    {
+      "slide": 7,
+      "final_sha256": "23fd3bcf1d346c69574949da8dafbe4805169b91373f20c225efc07bbbdb2798",
+      "rebuilt_sha256": "23fd3bcf1d346c69574949da8dafbe4805169b91373f20c225efc07bbbdb2798",
+      "byte_identical": true
+    },
+    {
+      "slide": 8,
+      "final_sha256": "c8abb550b5954a9f93fa0682de3b13803945dc849dc3b88a1163afdbdb8698f5",
+      "rebuilt_sha256": "c8abb550b5954a9f93fa0682de3b13803945dc849dc3b88a1163afdbdb8698f5",
+      "byte_identical": true
+    }
+  ],
+  "all_rebuild_png_bytes_identical": true,
+  "review_scope": "Current r9 PPTX: all 8 actual PNG pages and overview were visually inspected after the final narrow wording correction; not a PowerPoint/WPS GUI test or live rehearsal.",
+  "remaining_items": [
+    {
+      "type": "scope",
+      "detail": "原始资料为教学模拟、按可用加工顺序取样；明确未随机跨批分配，B批内部随机分配未报告。Welch区间为近似均值推断，不校正混杂。"
+    },
+    {
+      "type": "scope",
+      "detail": "工程最小重要差值δ、样本量和跨批验证尚待决定，未虚构数值或已开展实验。"
+    },
+    {
+      "type": "environment",
+      "detail": "使用Noto Sans CJK SC进行WASM静态渲染；未在PowerPoint/WPS宿主实测，未真人排练8分钟。"
+    },
+    {
+      "type": "reviewed-warning",
+      "detail": "narrative-section-without-content：第2页是自定义路线+完整样本矩阵，scope证据实际可见；自动分类将roadmap排除为正文。"
+    },
+    {
+      "type": "reviewed-warning",
+      "detail": "封面及来源页留白提醒已实际核对；留白保留题名层次和来源/分析口径分组。"
+    }
+  ],
+  "resolved_issues": [
+    "Node execFileSync python3 EPERM：改用shell先运行统计，再调用public core。",
+    "字体路径位于repo之外：public core cwd设为已授权工作区；字体路径参数化。",
+    "中文绘图ID、数值来源绑定、过短reasoning、书目组合冲突和随机节点换行：按契约修正作者输入。",
+    "第3页应力单位断行、第5页共同尺度与循环单位：受控slide-content edit后重新构建并查看全部8页。",
+    "最后窄修正：将B批随机分配状态写为未报告，不把资料缺失表述为已知不存在；同步讲稿和证据。"
+  ],
+  "r7_to_r9_png_comparison": [
+    {
+      "slide": 1,
+      "unchanged": true
+    },
+    {
+      "slide": 2,
+      "unchanged": false
+    },
+    {
+      "slide": 3,
+      "unchanged": true
+    },
+    {
+      "slide": 4,
+      "unchanged": false
+    },
+    {
+      "slide": 5,
+      "unchanged": true
+    },
+    {
+      "slide": 6,
+      "unchanged": true
+    },
+    {
+      "slide": 7,
+      "unchanged": true
+    },
+    {
+      "slide": 8,
+      "unchanged": true
+    }
+  ]
+}

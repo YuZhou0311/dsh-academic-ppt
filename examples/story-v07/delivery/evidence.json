@@ -1,0 +1,479 @@
+{
+  "brief": {
+    "centralQuestion": "现有记录能否支持改性工艺延长疲劳寿命，下一批怎样更可靠地验证？",
+    "audience": "材料工程课题组",
+    "talkMinutes": 8,
+    "targetPaperCount": 0,
+    "requireFullText": true,
+    "genre": "research-progress",
+    "qualityProfile": "academic",
+    "requirePaperIntro": false,
+    "narrative": {
+      "throughline": "先识别记录的可比条件，再用B批原始分布与区间界定证据，最后把未解决的归因和删失问题转成随机化检验。",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "记录与比较",
+          "question": "48件记录允许哪些比较？"
+        },
+        {
+          "id": "evidence",
+          "title": "证据与边界",
+          "question": "同批同应力的寿命差支持到哪里？"
+        },
+        {
+          "id": "validation",
+          "title": "下一步验证",
+          "question": "怎样区分工艺效应、波动与设计缺陷？"
+        }
+      ]
+    }
+  },
+  "papers": [
+    {
+      "id": "protocol",
+      "title": "金属构件疲劳试验记录（教学模拟材料）",
+      "authors": [
+        "未署名（原资料未提供）"
+      ],
+      "year": 2026,
+      "journal": "用户提供的教学模拟资料；非期刊",
+      "doi": "",
+      "url": "sources/protocol.md",
+      "version": "版本1，2026-10-20",
+      "sourceType": "protocol",
+      "studyType": "simulation",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "来源与目的",
+          "试件与条件",
+          "终点与数据字典",
+          "研究进度"
+        ],
+        "source": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/sources/protocol.md",
+        "notes": "已逐段读完本资料包说明；全文是教学模拟协议，不是实际实验论文。"
+      },
+      "methodSummary": "每行一件独立试件；按批内可用加工顺序取样；A与B为200 MPa，C为180 MPa；50万循环为统一计划停止点。",
+      "limitations": [
+        "非随机跨批次分配；批内按可用加工顺序取样。",
+        "没有断口、微观组织、残余应力测量。",
+        "所有结果只属于教学模拟，不对应真实实验、机构、项目或论文。"
+      ],
+      "analysis": {
+        "question": "现有记录能否支持改性工艺延长疲劳寿命；下一批应如何区分工艺与条件差异？",
+        "gap": "资料未提供工艺有效性结论；只有B批有两工艺同应力记录，且未报告随机分配。",
+        "mechanism": "改性工艺具体机制未报告，不能据寿命表猜测微观组织、残余应力或断口过程。",
+        "design": "48件独立试件，A只有常规、B有两工艺、C只有改性；共同50万循环行政停止，runout表示未观察到失效。",
+        "unitOfAnalysis": "一件试件；无重复试验。",
+        "comparators": [
+          "B批200 MPa常规对改性是同批同应力比较。",
+          "A与B常规同应力，可显示批次相关分布差异。",
+          "C批180 MPa不能充当200 MPa工艺对照。"
+        ],
+        "validity": "能够界定比较条件和删失；不支持因果有效性或材料机制结论。",
+        "locators": [
+          "protocol.md：来源与目的、试件与条件",
+          "protocol.md：终点与数据字典、研究进度"
+        ]
+      }
+    },
+    {
+      "id": "fatigue",
+      "title": "fatigue.csv：48件金属构件疲劳试件记录（教学模拟数据）",
+      "authors": [
+        "未署名（原资料未提供）"
+      ],
+      "year": 2026,
+      "journal": "用户提供的合成数据文件；非期刊",
+      "doi": "",
+      "url": "sources/fatigue.csv",
+      "version": "随资料版本1提供，2026-10-20",
+      "sourceType": "dataset",
+      "studyType": "simulation",
+      "reading": {
+        "status": "full-text",
+        "sections": [
+          "字段名",
+          "A-con-01至A-con-12",
+          "B-con-01至B-con-12",
+          "B-mod-01至B-mod-12",
+          "C-mod-01至C-mod-12"
+        ],
+        "source": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/sources/fatigue.csv",
+        "notes": "已读取全部48行并复算分组、均值、样本SD和B批Welch区间；不是原文件已报告的统计结论。"
+      },
+      "methodSummary": "按batch/process/stress_MPa分组；保留每件原始cycles_observed及endpoint，B批全部failed，均值差区间采用原尺度Welch近似。",
+      "limitations": [
+        "48行全部是合成试件。",
+        "两条C批500000值为runout，不是已测失效寿命。",
+        "每组12件，均值区间依赖抽样与分布近似，且不包含混杂偏倚。"
+      ],
+      "analysis": {
+        "question": "各比较组的原始分布、删失与B批均值差有多大？",
+        "gap": "汇总工艺差异混入应力和批次；数据本身没有随机化或机制测量信息。",
+        "mechanism": "该文件只包含寿命观察、状态、批次、工艺和应力，无法判断材料机制。",
+        "design": "48个不同specimen_id；46 failed、2 runout；四个batch-process组合各12件。",
+        "unitOfAnalysis": "每个唯一specimen_id对应一件独立试件。",
+        "comparators": [
+          "B-con-01至12与B-mod-01至12，均200 MPa。",
+          "A常规200 MPa与B常规200 MPa仅作描述。"
+        ],
+        "validity": "B批描述差为25622.25循环，95%区间跨0；不能把同批同应力视作已随机化。C尾部超出观察。",
+        "locators": [
+          "fatigue.csv：第2–13行A常规；第14–25行B常规",
+          "fatigue.csv：第26–37行B改性；第38–49行C改性",
+          "fatigue.csv：C-mod-02、C-mod-08两条runout"
+        ]
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "sim-identity",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "本资料是教学模拟合成数据，不对应真实实验、机构、项目或论文。",
+      "locator": "protocol.md：来源与目的",
+      "context": "版本1；2026-10-20。",
+      "reasoning": {
+        "warrant": "协议“来源与目的”明确将资料定义为学术沟通练习用合成数据，未提供真实实验归属。",
+        "boundary": "所有本报告结果只用于学术沟通练习。"
+      },
+      "verified": true
+    },
+    {
+      "id": "sampling-design",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "A仅常规、B含两工艺、C仅改性；A/B为200 MPa、C为180 MPa；按批内可用加工顺序取样，未随机跨批次分配。",
+      "locator": "protocol.md：试件与条件",
+      "context": "每行一件独立试件，无重复试验；设备环境没有另作差异记录，不等于已证实完全相同。",
+      "reasoning": {
+        "warrant": "协议逐项列明各批次工艺和应力，并明确按加工顺序取样而非随机跨批次分配。",
+        "boundary": "不能假定批内随机分配，不能把未记录差异当作不存在。"
+      },
+      "verified": true
+    },
+    {
+      "id": "group-counts",
+      "paperId": "fatigue",
+      "kind": "reported",
+      "text": "48个独立试件，四个批次-工艺组合各12件；46 failed、2 runout。",
+      "locator": "fatigue.csv：第2–49行",
+      "context": "由全部48行复算；试件是独立单位，无重复。",
+      "reasoning": {
+        "warrant": "逐行核对48个specimen_id均不同，四个组合各12行，endpoint合计46个failed和2个runout。",
+        "boundary": "计数只覆盖给定48条教学模拟记录，不能将试件数等同于随机化证据或真实实验样本。"
+      },
+      "verified": true,
+      "metrics": [
+        {
+          "label": "独立试件数",
+          "value": "48",
+          "unit": "件",
+          "baseline": "全部原始记录",
+          "denominator": "48个唯一specimen_id",
+          "aggregation": "逐行计数"
+        },
+        {
+          "label": "失效数",
+          "value": "46",
+          "unit": "件",
+          "baseline": "全部试件",
+          "denominator": "48件",
+          "aggregation": "endpoint=failed计数"
+        },
+        {
+          "label": "runout数",
+          "value": "2",
+          "unit": "件",
+          "baseline": "全部试件",
+          "denominator": "48件",
+          "aggregation": "endpoint=runout计数"
+        }
+      ]
+    },
+    {
+      "id": "endpoint-definition",
+      "paperId": "protocol",
+      "kind": "reported",
+      "text": "failed为该循环失效；runout为到500000循环尚未失效的最后观察，属于右删失。",
+      "locator": "protocol.md：终点与数据字典；fatigue.csv：C-mod-02、C-mod-08",
+      "context": "资料未提供提前失访；两个runout均在C批180 MPa。",
+      "reasoning": {
+        "warrant": "停止观察与失效是不同状态，runout不提供之后的失效时刻。",
+        "boundary": "不能把50万循环改写成失效寿命或完整均值。"
+      },
+      "verified": true
+    },
+    {
+      "id": "all-observations",
+      "paperId": "fatigue",
+      "kind": "reported",
+      "text": "四组原始观察与均值已按CSV复算：A常规236265.92、B常规303682.83、B改性329305.08、C改性434824.33循环；C均值含两条runout。",
+      "locator": "fatigue.csv：第2–49行；随附fatigue-summary.json逐组复算",
+      "context": "每组n=12；A/B均failed，C有10 failed和2 runout；C为180 MPa。",
+      "reasoning": {
+        "warrant": "所有观察点均保留，不删极端值或连成时间序列。",
+        "boundary": "C的数字是观察时间均值；不能称完整平均失效寿命。"
+      },
+      "verified": true,
+      "metrics": [
+        {
+          "label": "A-conventional观察时间均值",
+          "value": "236265.91666666666",
+          "unit": "循环",
+          "baseline": "同组全部原始观察",
+          "denominator": "12件独立试件",
+          "aggregation": "cycles_observed算术平均；12失效/0runout"
+        },
+        {
+          "label": "B-conventional观察时间均值",
+          "value": "303682.8333333333",
+          "unit": "循环",
+          "baseline": "同组全部原始观察",
+          "denominator": "12件独立试件",
+          "aggregation": "cycles_observed算术平均；12失效/0runout"
+        },
+        {
+          "label": "B-modified观察时间均值",
+          "value": "329305.0833333333",
+          "unit": "循环",
+          "baseline": "同组全部原始观察",
+          "denominator": "12件独立试件",
+          "aggregation": "cycles_observed算术平均；12失效/0runout"
+        },
+        {
+          "label": "C-modified观察时间均值",
+          "value": "434824.3333333333",
+          "unit": "循环",
+          "baseline": "同组全部原始观察",
+          "denominator": "12件独立试件",
+          "aggregation": "cycles_observed算术平均；10失效/2runout"
+        }
+      ]
+    },
+    {
+      "id": "b-descriptive",
+      "paperId": "fatigue",
+      "kind": "reported",
+      "text": "B批200 MPa：常规均值303682.83、样本SD30977.28；改性均值329305.08、样本SD56622.71；每组12件且全部失效。",
+      "locator": "fatigue.csv：B-con-01至12、B-mod-01至12；原尺度复算",
+      "context": "两组独立试件；SD为n−1分母。",
+      "reasoning": {
+        "warrant": "B批两组应力和批次一致且无删失，允许比较观察到的失败寿命分布。",
+        "boundary": "资料只记录按加工顺序取样，未报告工艺的随机分配；同批同应力的均值差仍不能直接作因果解释。"
+      },
+      "verified": true,
+      "metrics": [
+        {
+          "label": "常规均值",
+          "value": "303682.8333333333",
+          "unit": "循环",
+          "baseline": "B批常规200 MPa",
+          "denominator": "12件",
+          "aggregation": "算术平均"
+        },
+        {
+          "label": "改性均值",
+          "value": "329305.0833333333",
+          "unit": "循环",
+          "baseline": "B批常规作为对比基线",
+          "denominator": "12件",
+          "aggregation": "算术平均"
+        },
+        {
+          "label": "常规样本SD",
+          "value": "30977.28122301402",
+          "unit": "循环",
+          "baseline": "B批常规均值",
+          "denominator": "12件",
+          "aggregation": "n−1样本标准差"
+        },
+        {
+          "label": "改性样本SD",
+          "value": "56622.71262160431",
+          "unit": "循环",
+          "baseline": "B批改性均值",
+          "denominator": "12件",
+          "aggregation": "n−1样本标准差"
+        }
+      ]
+    },
+    {
+      "id": "b-interval",
+      "paperId": "fatigue",
+      "kind": "inference",
+      "text": "B批样本均值差（改性−常规）为25622.25循环；原尺度Welch 95%区间为[-13679.80,64924.30]循环。",
+      "locator": "fatigue.csv：B两组24行；independent_fatigue_analysis.py的Welch计算",
+      "context": "近似均值区间：SE=18631.79079，df=17.04322630，t*=2.109408027；两组n=12、全部failed。",
+      "reasoning": {
+        "warrant": "相同应力和批次内比较减少已知条件差异；Welch近似量化均值差的抽样不确定性。",
+        "boundary": "未报告随机分配；区间不能证明因果，也不能说明两工艺相等。",
+        "alternatives": "改性工艺差异、加工顺序或选择差异、样本波动均仍可能。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "b-descriptive",
+        "sampling-design"
+      ],
+      "metrics": [
+        {
+          "label": "样本均值差",
+          "value": "25622.25",
+          "unit": "循环",
+          "baseline": "改性−常规",
+          "denominator": "各12件，共24件",
+          "aggregation": "原尺度两组算术均值相减"
+        },
+        {
+          "label": "95%区间下限",
+          "value": "-13679.799052276394",
+          "unit": "循环",
+          "baseline": "差值0",
+          "denominator": "各12件，共24件",
+          "aggregation": "Welch双侧95%区间"
+        },
+        {
+          "label": "95%区间上限",
+          "value": "64924.299052276394",
+          "unit": "循环",
+          "baseline": "差值0",
+          "denominator": "各12件，共24件",
+          "aggregation": "Welch双侧95%区间"
+        }
+      ]
+    },
+    {
+      "id": "comparability-limit",
+      "paperId": "protocol",
+      "kind": "inference",
+      "text": "全样本按工艺汇总会混入批次与应力；即使只限200 MPa，A+B常规对B改性也不是同批对照。",
+      "locator": "protocol.md：试件与条件；fatigue.csv：四组构成",
+      "context": "A与B常规同200 MPa均值相差67416.92循环，仅为描述。",
+      "reasoning": {
+        "warrant": "比较组在批次和应力上不同，数据构成改变会改变汇总差。",
+        "boundary": "不能把A/B差直接称为批次因果效应。",
+        "alternatives": "原料/加工顺序差异、应力条件与随机波动均可贡献分布差异。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "sampling-design",
+        "all-observations"
+      ]
+    },
+    {
+      "id": "evidence-boundary",
+      "paperId": "protocol",
+      "kind": "inference",
+      "text": "当前只有B批正向点估计的线索；改性因果效应、50万循环之后的寿命尾部及材料机制均未确立。",
+      "locator": "protocol.md：终点与数据字典；B批区间分析",
+      "context": "未提供断口、微观组织、残余应力测量。",
+      "reasoning": {
+        "warrant": "按问题逐项对应现有信息与缺项，避免从寿命差推导未测机制。",
+        "boundary": "结论仅适用于当前教学模拟记录。",
+        "alternatives": "真实效应可能正向、反向或较小；现有记录不能区分。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "b-interval",
+        "endpoint-definition",
+        "sampling-design"
+      ]
+    },
+    {
+      "id": "next-randomized",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "尚未开展：下一批固定200 MPa，在同一材料批次内随机分配常规/改性工艺，按加工时段分区组并交错测试。",
+      "locator": "protocol.md：研究进度；本报告提出的待检验方案",
+      "context": "同一批可申请新试件；具体数量、材料规格与分区组条件待事先确认。",
+      "reasoning": {
+        "warrant": "同批同应力和随机分配有助于减少选择与顺序混杂。",
+        "boundary": "单批只回答该批次该应力；跨批推广需后续复现。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "sampling-design",
+        "comparability-limit",
+        "b-interval"
+      ]
+    },
+    {
+      "id": "next-estimand",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "尚未开展：预先指定50万循环内限制平均寿命差（改性−常规）为主要效应量，完整记录失效与runout，并事先规划δ、样本量及异常停止处理。",
+      "locator": "protocol.md：终点定义和研究进度；本报告分析方案",
+      "context": "共同50万停止点；若仅行政删失，RMST经验均值为min(T,50万)均值；若有更早失访需生存分析与删失假设。",
+      "reasoning": {
+        "warrant": "主要估计对象容纳未失效试件，同时限定观察窗口，避免以runout当作失效。",
+        "boundary": "δ尚未提供，应由工程意义确定；B批变异只作为样本量规划参考。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "endpoint-definition",
+        "next-randomized",
+        "b-descriptive"
+      ]
+    },
+    {
+      "id": "decision-branches",
+      "paperId": "protocol",
+      "kind": "proposal",
+      "text": "尚未开展：在有效前提下用预设区间区分正向、反向和跨零不确定；若随机实施或删失前提失效则先核查偏倚。",
+      "locator": "本报告预先判定方案；依赖protocol.md的未实施研究进度",
+      "context": "L、U为主要差值的预设95%区间；正值代表改性较长。δ为另行事先确定的最小重要差值。",
+      "reasoning": {
+        "warrant": "先检验比较有效性，再解释方向与区间；统计方向和工程价值分开。",
+        "boundary": "区间跨0不等于等效；有方向也不自动达到工程价值。"
+      },
+      "verified": true,
+      "dependsOn": [
+        "next-randomized",
+        "next-estimand",
+        "evidence-boundary"
+      ]
+    },
+    {
+      "id": "endpoint-observations",
+      "paperId": "fatigue",
+      "kind": "reported",
+      "text": "C-mod-12在482497循环失效；C-mod-02和C-mod-08在500000循环runout。",
+      "locator": "fatigue.csv：C-mod-12、C-mod-02、C-mod-08",
+      "context": "三件均属C批180 MPa；用于说明终点状态，非工艺对照。",
+      "reasoning": {
+        "warrant": "逐行保留cycles_observed与endpoint配对，分别表示已发生失效和最后观察时刻。",
+        "boundary": "两个runout没有之后的失败时刻，不能视为恰好500000循环失效。"
+      },
+      "verified": true,
+      "metrics": [
+        {
+          "label": "C-mod-12失效时刻",
+          "value": "482497",
+          "unit": "循环",
+          "baseline": "endpoint=failed",
+          "denominator": "1件独立试件",
+          "aggregation": "原始单件观察，非组均值"
+        },
+        {
+          "label": "C-mod-02最后观察",
+          "value": "500000",
+          "unit": "循环",
+          "baseline": "endpoint=runout",
+          "denominator": "1件独立试件",
+          "aggregation": "原始行政停止时刻，非失败寿命"
+        },
+        {
+          "label": "C-mod-08最后观察",
+          "value": "500000",
+          "unit": "循环",
+          "baseline": "endpoint=runout",
+          "denominator": "1件独立试件",
+          "aggregation": "原始行政停止时刻，非失败寿命"
+        }
+      ]
+    }
+  ]
+}
