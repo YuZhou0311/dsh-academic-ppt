@@ -10,6 +10,7 @@
 
 export { designGeometryReport } from './design-geometry.mjs';
 import { resolveCardAppearance } from './card-surface.mjs';
+import { cardHasContent } from './card-content.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
 const panelsOf = slide => [...list(slide.composition?.regions), ...list(slide.composition?.rows).flatMap(r => list(r.panels))];
@@ -32,7 +33,7 @@ export function isBodySlide(slide) {
   if(nonBodyLayouts.has(slide.layout))return false;
   // A paper-reading slide often contains the central figure and interpretation;
   // only a genuinely metadata-only introduction is administrative.
-  return slide.layout!=='paper'||Boolean(list(slide.figureIds).length||slide.chart||slide.table||slide.plot||list(slide.plots).length||list(slide.drawings).length||list(slide.nodes).length||list(slide.cards).some(c=>hasText(c.body)||c.metric));
+  return slide.layout!=='paper'||Boolean(list(slide.figureIds).length||slide.chart||slide.table||slide.plot||list(slide.plots).length||list(slide.drawings).length||list(slide.nodes).length||list(slide.cards).some(cardHasContent));
 }
 
 // Weights express ratios. Multiplying every weight by the same factor does not
@@ -53,7 +54,7 @@ function meaningfulCards(slide, panel) {
     const card = list(slide.cards).find(item => item.id === id);
     // Broken references are handled by schema/evidence validation. Unresolved
     // IDs still participate here so that this diagnostic cannot hide them.
-    return !card || hasText(card.body) || Boolean(card.metric);
+    return !card || cardHasContent(card);
   });
 }
 
@@ -198,7 +199,7 @@ function hasEqualTextPanels(slide) {
 }
 
 function panelHasContent(slide,panel) {
-  if(meaningfulCards(slide,panel).some(id=>list(slide.cards).some(c=>c.id===id&&(hasText(c.body)||c.metric))))return true;
+  if(meaningfulCards(slide,panel).some(id=>list(slide.cards).some(c=>c.id===id&&cardHasContent(c))))return true;
   if(list(panel.figureIds).some(id=>list(slide.figureIds).includes(id)))return true;
   if(list(panel.drawingIds).some(id=>drawingHasContent(list(slide.drawings).find(d=>d.id===id))))return true;
   if(list(panel.referenceIds).some(id=>list(slide.referenceIds).includes(id)))return true;

@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import {templateProfileSchema,assertTemplateProfile} from './template-profile.mjs';
 import { SEMANTIC_ICONS } from './card-surface.mjs';
+import { CARD_PRESET_IDS, CARD_FAMILIES } from './card-catalog.mjs';
 
 export const LAYOUTS = ['cover','section','academic','roadmap','paper','figure-focus','figure-split','comparison','method','results','synthesis','proposal','closing','references'];
 export const CARD_STYLES = ['plain','ruled','compact','academic-panel','academic-tab','academic-side','open-frame','floating-tab','split-label','paper-shadow','title-band','stacked-corner','ledger','dashed-note'];
@@ -40,7 +41,8 @@ export const paperSchema = obj({id,title:nonempty(1800),authors:arr(nonempty(180
 export const metricSchema = obj({label:nonempty(250),value:nonempty(250),unit:nonempty(250),baseline:nonempty(1200),denominator:nonempty(1200),aggregation:nonempty(1200)},['label','value','unit','baseline','denominator','aggregation']);
 export const claimSchema = obj({id,paperId:id,kind:en(['reported','inference','proposal']),text:nonempty(5000),locator:nonempty(2000),context:nonempty(4000),metrics:arr(metricSchema,12),reasoning:reasoningSchema,dependsOn:ids,verified:bool},['id','paperId','kind','text','locator','context','verified']);
 export const assetSchema = obj({id,path:nonempty(3000),sourcePath:{...nonempty(6000),description:'由 path 导入时自动保存解析后的来源路径；已嵌入 data 保留此值，不重新读取源文件。'},data:nonempty(12000000),width:integer(1,16000),height:integer(1,16000),sha256:{type:'string',pattern:'^[a-f0-9]{64}$'},paperId:id,figure:str(500),panel:str(300),caption:nonempty(2000),displayCaption:nonempty(300),displayLegend:arr(obj({label:nonempty(80),color},['label','color']),10,1),treatment:en(['paper','plain']),reading:figureReadingSchema,sourceUrl:nonempty(2000),sourceVersion:nonempty(500),license:nonempty(2000),usage:en(['figure','decorative']),provenance:en(['source','author-created','template-demo']),cropNote:nonempty(2000),viewport},['id','caption','sourceUrl','sourceVersion','license','usage','cropNote']);
-export const cardSchema = obj({id,kind:en(['question','method','setting','result','boundary','hypothesis']),title:nonempty(300),body:str(2600),emphasis:arr(nonempty(180),4,1),claimIds:ids,metric:obj({value:nonempty(100),unit:nonempty(100),label:nonempty(200),context:nonempty(1000)},['value','unit','label','context']),style:en(CARD_STYLES),appearance:cardAppearanceSchema,icon:en(SEMANTIC_ICONS),accent:color,templateComponentId:nonempty(200),box},['id','kind','title','body','claimIds']);
+export const cardItemSchema = obj({label:nonempty(200),value:{oneOf:[nonempty(160),num(-1e12,1e12)]},unit:str(100),detail:str(800)},['label']);
+export const cardSchema = obj({id,kind:en(['question','method','setting','result','boundary','hypothesis']),title:nonempty(300),body:str(2600),emphasis:arr(nonempty(180),4,1),claimIds:ids,metric:obj({value:nonempty(100),unit:nonempty(100),label:nonempty(200),context:nonempty(1000)},['value','unit','label','context']),style:en(CARD_STYLES),preset:en(CARD_PRESET_IDS),items:arr(cardItemSchema,6,1),badge:nonempty(24),note:str(1200),appearance:cardAppearanceSchema,icon:en(SEMANTIC_ICONS),accent:color,templateComponentId:nonempty(200),box},['id','kind','title','body','claimIds']);
 const nodeSchema = obj({id,label:nonempty(220),detail:str(600),kind:en(['question','method','setting','result','boundary','hypothesis']),box},['id','label']);
 const edgeSchema = obj({from:id,to:id,label:str(180),kind:en(['flow','feedback','association'])},['from','to']);
 const diagramSchema = obj({rows:arr(arr(id,4,1),4,1),rowLabels:arr(nonempty(120),4,1)},['rows']);
@@ -82,8 +84,10 @@ export const toolSchemas = {
  academic_ppt_check:obj({...base},['projectPath']),
  academic_ppt_template:obj({filePath:nonempty(3000),outputPath:nonempty(3000),render:bool,fontDirectories:arr(nonempty(3000),4,1)},['filePath']),
  academic_ppt_reference:obj({templateId:id,includeExamples:bool,category:en(['paper','method','experiment','results','figure','synthesis','limitations','plan']),figure:figureQuerySchema}),
+ academic_ppt_cards:obj({presetId:en(CARD_PRESET_IDS),family:en(CARD_FAMILIES.map(f=>typeof f==='string'?f:f.id)),purpose:nonempty(200),limit:integer(1,36)}),
+ academic_ppt_prepare:obj({requestPath:nonempty(3000),outputPath:nonempty(3000)},['requestPath']),
  academic_ppt_render:obj({...base,...revision,fontDirectories:arr(nonempty(3000),4,1)},['projectPath','expectedRevision']),
- academic_ppt_contract:obj({topic:en(['brief','paper','claim','asset','slide','design','assessment'])},['topic']),
+ academic_ppt_contract:obj({topic:en(['brief','paper','claim','asset','slide','design','assessment','preparation'])},['topic']),
  academic_ppt_review:obj({...base,...revision,pptxSha256:{type:'string',pattern:'^[a-f0-9]{64}$'},reviewer:en(['human','vision-model']),basis:en(['html-preview','pptx-render']),reviewedSlides:arr(id,120,1),result:en(['passed','needs-fix']),notes:nonempty(6000),observations:{...arr(assessmentSchema,120,1),description:'当前 academic 工程必填：每个 reviewedSlides ID 恰好一条，逐页填写 contentCheck、legibilityCheck 与 issue。仅未启用 academic 质量档案的旧工程兼容省略。'}},['projectPath','expectedRevision','pptxSha256','reviewer','basis','reviewedSlides','result','notes'])
 };
 const ajv = new Ajv({allErrors:true,strict:true});
@@ -111,6 +115,10 @@ export function assertProject(p) {
  for(const key of ['papers','claims','assets','slides'])unique(p[key].map(x=>x.id),key);
  for(const asset of p.assets){const v=asset.viewport;if(v&&(v.x+v.w>1+1e-9||v.y+v.h>1+1e-9))throw new Error('INVALID_VIEWPORT: source crop extends beyond the original image');}
  for(const slide of p.slides){
+  for(const card of slide.cards){
+   if(!card.preset&&['items','badge','note'].some(key=>card[key]!==undefined))throw new Error('CARD_PRESET_REQUIRED: structured items, badge and note require card.preset so content cannot disappear');
+   if(card.preset&&card.templateComponentId)throw new Error('CARD_DESIGN_CONFLICT: choose card.preset or templateComponentId, not both');
+  }
   for(const card of slide.cards)if(card.emphasis?.some(text=>!card.body.includes(text)))throw new Error('INVALID_EMPHASIS: every emphasis phrase must occur in its card body');
   for(const key of ['cards','nodes','drawings','plots','contentChecks'])unique((slide[key]??[]).map(x=>x.id),key+' on '+slide.id);
   unique(slide.referenceIds??[],'referenceIds on '+slide.id);

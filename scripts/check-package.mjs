@@ -6,13 +6,25 @@ import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {readBundledSkill,buildAcademicTools} from '../src/index.mjs';
 import {REFERENCE_TEMPLATES,REFERENCE_CATEGORIES} from '../src/reference-catalog.mjs';
+import {CARD_PRESETS} from '../src/card-catalog.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
 assert.equal(packageJson.name,'dsh-academic-ppt');
 assert.equal(packageJson.dsh.bundle.patch,'./cordis.patch.yml');
 const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
-const tools=buildAcademicTools();assert.equal(tools.length,14);
+const tools=buildAcademicTools();assert.equal(tools.length,16);
+const cardRoot=join(root,'skills/dsh-academic-ppt/references/card-library');
+const cardManifest=JSON.parse(await readFile(join(cardRoot,'manifest.json'),'utf8'));
+assert.equal(cardManifest.count,36);
+assert.deepEqual(cardManifest.cards.map(c=>c.id),CARD_PRESETS.map(c=>c.id));
+assert.deepEqual(JSON.parse(await readFile(join(cardRoot,'catalog.json'),'utf8')),CARD_PRESETS);
+for(const card of cardManifest.cards){
+ const digest=createHash('sha256').update(await readFile(join(cardRoot,card.svg))).digest('hex');
+ assert.equal(digest,card.sha256,'native card preview digest '+card.id);
+}
+const cardGallery=await readFile(join(cardRoot,'index.html'),'utf8');
+assert.equal((cardGallery.match(/<article data-family=/g)||[]).length,36);
 const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
@@ -46,4 +58,4 @@ for(const path of markdown){
 for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');

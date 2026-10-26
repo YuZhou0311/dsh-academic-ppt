@@ -1,19 +1,19 @@
 # 安装与首次使用
 
-本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十四个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
+本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十六个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-本次候选版本为 **v0.7.0-rc.7**，从 [改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+本次候选版本为 **v0.7.0-rc.8**，从 [改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
-安装本次 rc.7，请克隆改进分支：
+安装本次 rc.8，请克隆改进分支：
 
 ```sh
 git clone --branch feat/academic-story-and-style --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
-rc.7 增加完整逐页设计稿和正向设计工作坊，按观看场景选择信息层级，核对实际画面是否兑现内容与关系；完整多面板图按实际可读性审阅。保留已有叙事、学术色板与证据约束。研究见 [PPT_SKILL_RESEARCH_V07_RC7.md](PPT_SKILL_RESEARCH_V07_RC7.md)，验证见 [VALIDATION_V07_RC7.md](VALIDATION_V07_RC7.md)。历史示例保留其原版本身份。
+rc.8 新增36款原生卡片、一次性模板偏好确认和宿主生图参考准备流程。无模板或无生图工具时继续现有方式。具体用法见 [卡片与参考流程](CARD_LIBRARY_V07_RC8.md)，验证见 [本轮验证](VALIDATION_V07_RC8.md)。历史示例保留其原版本身份。
 
 插件位于本仓库根目录。完整文件夹应包含 `package.json`、`package-lock.json`、`cordis.patch.yml`、`src/`、`skills/` 和 `bin/`。
 
@@ -35,10 +35,10 @@ v0.5 封存示例的实际渲染使用 **Noto Sans CJK SC Regular/Bold**。可�
 
 ### 直接使用安装包
 
-也可以在本次源码根目录运行 `npm pack --ignore-scripts` 得到 `dsh-academic-ppt-0.7.0-rc.7.tgz`，再将压缩包的完整路径交给插件管理：
+也可以在本次源码根目录运行 `npm pack --ignore-scripts` 得到 `dsh-academic-ppt-0.7.0-rc.8.tgz`，再将压缩包的完整路径交给插件管理：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0-rc.7.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.7.0-rc.8.tgz"
 ```
 
 自行打包不改变其候选版本身份；尚无 npm 公共 registry 包。
@@ -73,7 +73,7 @@ dsh web
 
 ### 更新已安装的 file: 包
 
-退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:brief/design/slide)，检查是否含 narrative、academicPalettes、visualPlan.contentLayers、heading.inheritChrome 和 card.appearance.layout，并确认 study/portfolio 两个工具可见，避免把旧安装副本当作本轮版本。
+退出对应 DSH 应用，准备好目标版本源码或新的 `.tgz`，再用真实路径重新执行上面的 `dsh plugin --profile ... add "file:..."`，启用并重启对应 profile。随后在新会话中确认技能与工具可见。分别查询 contract(topic:brief/design/slide)，检查是否含 narrative、academicPalettes、visualPlan.contentLayers、heading.inheritChrome 和 card.appearance.layout，并确认 prepare/cards/study/portfolio 四个工具可见，cards查询返回36种预设，contract(preparation)可读取准备请求，避免把旧安装副本当作本轮版本。
 
 仅修改仓库、运行测试或生成安装包，不会替你更新正在运行的 DSH。本文提供安装步骤，不表示已在你的电脑上完成安装或验收。
 
@@ -89,6 +89,8 @@ dsh web
 | `academic_ppt_contract` | 按主题取得精确字段、批次限额与提交说明 |
 | `academic_ppt_record` | 从 recordsPath 指定的工作区 JSON 文件登记来源、论点、图与页面 |
 | `academic_ppt_context` | 获取下一阶段的精简上下文 |
+| `academic_ppt_prepare` | 规划一次模板提问、缓存模板审阅和按真实宿主能力生成卡片参考提示 |
+| `academic_ppt_cards` | 按用途查询36种原生卡片，返回尺寸、槽位、示例与预览路径 |
 | `academic_ppt_template` | 按需研究参考模板，返回候选设计变量、结构依据及可选实际页面/概览 |
 | `academic_ppt_study` | 生成实际候选 SVG/PPTX 和可选真实预览，不改原工程 |
 | `academic_ppt_portfolio` | 比较明确指定的工程结构与封面，提供实际复核页对 |
@@ -104,13 +106,13 @@ dsh web
 
 首次提示词可以直接复制：
 
-> 使用 dsh-academic-ppt，依据提供的真实论文和数据制作12分钟正式学术汇报，兼顾现场讲解和会后复读。先读材料与参考正文，建立整稿论证，再在design-plan.md写出每页的任务、实际可见内容与来源、信息关系、表达载体、层级和前后衔接。根据这些内容自主设计多个区域及其内部关系，保留能核对的条件、读数、方法和解释，不预设栏数或卡片数。按参考与观看场景设置章节、页题、题签、正文、标签和来源的层级。学习参考的组织方法，依据当前材料重新创作。先完成内容完整的困难正文候选，查看连续页后扩展全稿；封面保持简洁并有明确的题名与信息关系。实际查看最终PPTX每页，对照逐页设计稿和参考，修复具体差距后交付可编辑文件、讲稿和可恢复工程。
+> 使用 dsh-academic-ppt，依据提供的真实论文和数据制作12分钟正式学术汇报，兼顾现场讲解和会后复读。如果本会话尚未明确，先问我是否有希望参考的PPT模板；没有就继续。按汇报内容从36款原生卡片选择适合的表达，若宿主已有生图接口，先生成卡片参考并看图，再原生重建。先读材料与参考正文，建立整稿论证，再在design-plan.md写出每页的任务、实际可见内容与来源、信息关系、表达载体、层级和前后衔接。根据这些内容自主设计多个区域及其内部关系，保留能核对的条件、读数、方法和解释，不预设栏数或卡片数。按参考与观看场景设置章节、页题、题签、正文、标签和来源的层级。学习参考的组织方法，依据当前材料重新创作。先完成内容完整的困难正文候选，查看连续页后扩展全稿；封面保持简洁并有明确的题名与信息关系。实际查看最终PPTX每页，对照逐页设计稿和参考，修复具体差距后交付可编辑文件、讲稿和可恢复工程。
 
-上述流程针对 v0.7.0-rc.7 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，正文证据页严重空洞需修复，不能切换 balanced 或增加装饰来绕过；封面、目录和章节页的有意留白只提醒看图判断。确实需要疏朗风格时在初始化中明确选择 balanced。
+上述流程针对 v0.7.0-rc.8 能力。`design.mode` 控制工作指引与设计提醒，布局仍由宿主模型撰写。没有参考时默认 `content-led`；参考视觉语言用 `reference-guided`；只有明确要求沿用版式时使用 `template-faithful`。新工程默认 `density:compact`，正文证据页严重空洞需修复，不能切换 balanced 或增加装饰来绕过；封面、目录和章节页的有意留白只提醒看图判断。确实需要疏朗风格时在初始化中明确选择 balanced。
 
 ## 4. 命令行使用
 
-在 CLI 中用 `<命令> --help` 查看该命令的顶层字段与必要条件，用 `<命令> --schema` 取得其完整 JSON Schema；均不需要 --args，也不与执行参数混用。contract 只查询 brief / paper / claim / asset / slide / design / assessment 七类记录，不接受 init、build、render 等命令名。DSH 界面已提供工具参数，CLI 查询是同源的发现入口。
+在 CLI 中用 `<命令> --help` 查看该命令的顶层字段与必要条件，用 `<命令> --schema` 取得其完整 JSON Schema；均不需要 --args，也不与执行参数混用。contract 查询 preparation / brief / paper / claim / asset / slide / design / assessment 八类契约，不接受 init、build、render 等命令名。DSH 界面已提供工具参数，CLI 查询是同源的发现入口。
 
 所有命令使用同一套工具参数校验。DSH 注册使用其支持的 JSON Schema 子集，字符长度、数组数量等限制写入说明，并在执行入口用完整 Ajv 规则再次校验。参数保存在 UTF-8 JSON 文件中，避免在 shell 中拼接长文本、引号和论文内容。
 

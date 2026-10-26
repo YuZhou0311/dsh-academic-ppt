@@ -3,8 +3,20 @@ import {
   assessmentSchema, capabilitiesSchema, assertToolArgs,
 } from './schema.mjs'
 import { ACADEMIC_PALETTES, DEFAULT_ACADEMIC_PALETTE_ID } from './academic-palette.mjs'
+import { preparationRequestSchema } from './design-intake.mjs'
 
 const contracts = {
+  preparation: {
+    schema:preparationRequestSchema, recordKey:'request',
+    notes:[
+      '先按已知会话填写模板选择与实际宿主能力。template.status=unasked只产生待提问题，不代表已经询问；已给文件用provided+localPaths，明确没有用none，实际问过但无回复用unanswered；后两种不再询问。选择稍后提供用awaiting-upload，先继续现有流程。',
+      'PPTX必须是本工作区明确提供的文件。prepare核实路径与格式并返回academic_ppt_template调用计划，尚未解析或查看页面；按现有工具渲染并看实际代表页。旧.ppt先转换为.pptx，不能伪称已支持解析。',
+      '提取并实际看过模板后，填写template.review.profilePaths与visualObservations，可补renderReferences。prepare验证profile存在、结构标识和来源摘要与当前PPTX一致后继续参考设计，不重复要求提取；观察仍是宿主记录，不是插件独立视觉验证。',
+      'imageGeneration.availability由宿主工具清单或实际能力决定，source记依据；available须填实际toolName。cards填本次标题、正文、指标槽位、内容状态和来源说明，工具据此生成提示。该工具不读取密钥、不自行调用模型；宿主负责按真实工具契约调用。',
+      '成功生图并实际查看后才能写status=generated、resultReferences与visualObservations；失败记failed及原因，用户拒绝记declined。unknown/unavailable/failed/declined均继续内置卡片库。引用和看图记录是宿主声明，不冒充插件独立视觉验证。',
+      '从academic_ppt_cards按用途选择36种原生卡片；生成图只指导构图，最终以原始内容重建可编辑文字、数据与形状。outputPath可保存独立准备记录，已有不同内容会拒绝覆盖，使用新文件名保存下一次选择。',
+    ],
+  },
   brief: {
     schema: briefSchema, recordKey: 'brief',
     notes: ['保留用户指定的篇数、全文条件和期刊门槛；助手自己的选文目标与用户约束应分开说明。', 'qualityProfile=academic 用于学术内容门槛；genre 选择实际报告类型，requirePaperIntro 只按报告任务设置。', '整稿先登记narrative.throughline说明贯穿问题与论证路线，narrative.sections用2–8个{id,title,question}记录各节要回答的问题。章节不是论文目录的机械搬运，顺序由研究关系决定。随后以slide.sectionId关联章节，目录/分节可由同一份路线派生；不自动增加页面或编造结论。短报告可以简化导航。'],
@@ -49,7 +61,9 @@ export async function toolContract({ topic, signal } = {}) {
   const contract = structuredClone(contracts[topic])
   return {
     ok: true, topic, ...contract,
-    submission: topic === 'assessment'
+    submission: topic === 'preparation'
+      ? {tool:'academic_ppt_prepare',transport:'requestPath',maxBytes:1024*1024,root:'{ "topic": "本次汇报主题", "template": { "status": "unasked" } }',note:'准备请求是单独的UTF-8 JSON对象，不是recordsPath批次，不加入project.json。outputPath可保存本次计划；宿主实际完成提问或生图后更新请求状态并另存下一份计划。'}
+      : topic === 'assessment'
       ? { tool: 'academic_ppt_review', field: 'observations' }
       : { tool: 'academic_ppt_record', transport: 'recordsPath', maxBytes: 1024 * 1024, root: `{ "${contract.recordKey}": ${contract.maxItems ? '[records]' : '{record}'} }`, note: '将本批内容写为工作区UTF-8 JSON文件，工具参数只传projectPath、expectedRevision与recordsPath；文件内不放身份或路径路由参数。' },
   }

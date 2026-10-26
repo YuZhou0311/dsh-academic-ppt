@@ -4,11 +4,11 @@
 
 适用于论文精读、文献综述、研究进展、开题、学位答辩和项目汇报。研究问题、原始证据、解释边界和验证方案保存在可恢复工程中；文字、机制图、表格与支持的图表使用原生对象，论文原图独立保留。
 
-当前候选版本为 **v0.7.0-rc.7，renderer 13**。这轮将参考经验落实到完整逐页设计稿、按稿建页与实际画面核对，区分短讲和答辩复读，补充正向设计案例；同时解除完整多面板图的数量限制，按实际可读性审阅。页面由当前会话模型设计；插件提供真实 SVG/PPTX 候选、可编辑对象和可解释的检查，不承诺一条提示词自动获得原创设计。
+当前候选版本为 **v0.7.0-rc.8，renderer 14**。新增36种可查询、可预览、可编辑的学术信息卡，按内容选择内部结构；开始新汇报时确认是否参考用户上传的PPT模板，并在宿主有生图工具时优先按实际内容生成卡片参考。无模板或无生图工具时继续现有流程。保留整稿叙事、完整逐页设计稿、多面板证据和原生对象检查。
 
-[本次改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)提供 rc.7 源码；[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)保留旧稳定包和历史成稿。本轮接续 rc.6；用户指出成稿仍缺乏足够的页内层次与设计细节，研究与取舍见[公开 PPT Skill 与制作方法](docs/PPT_SKILL_RESEARCH_V07_RC7.md)。尚未发布 npm。插件使用宿主已有模型，不另行调用付费模型或管理 DeepSeek 密钥；可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
+[本次改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)提供 rc.8 源码；[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)保留旧稳定包和历史成稿。尚未发布 npm。页面设计和可选生图调用由当前宿主模型执行，插件提供准备计划、原生渲染与检查；不保存模型密钥，不内建外部模型网络请求，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
 
-[安装与升级](docs/INSTALL.md) · [公开 Skill 研究与逐页方法](docs/PPT_SKILL_RESEARCH_V07_RC7.md) · [本轮验证](docs/VALIDATION_V07_RC7.md) · [版本说明](docs/RELEASE_NOTES.md) · [学术执行技能](skills/dsh-academic-ppt/SKILL.md) · [历史设计依据](docs/DESIGN_REFERENCES.md)
+[安装与升级](docs/INSTALL.md) · [36款卡片图册](skills/dsh-academic-ppt/references/card-library/index.html) · [卡片与参考流程](docs/CARD_LIBRARY_V07_RC8.md) · [本轮验证](docs/VALIDATION_V07_RC8.md) · [公开 Skill 研究](docs/PPT_SKILL_RESEARCH_V07_RC7.md) · [版本说明](docs/RELEASE_NOTES.md)
 
 ## 本次改进的目标与具体能力
 
@@ -26,16 +26,41 @@
 | 专业标题与阅读层级 | `heading` 自定位置与完整题名断行；`inheritChrome:true` 保留当前章节带/线，冲突明确报错。依据参考与观看场景在契约范围内设置题名、模块题签、正文、数据、标签和来源层级，检查最终字级 |
 | 完整多面板证据 | 保留需要共同比较的完整面板；按实际标签、共同尺度和任务检查，不因面板数超过三个就强制裁切或拆页 |
 | 必要条件保全 | `contentChecks` 检查正文中的指定条件与数字，讲稿和脚注不算；保留正负号、科学计数与单位大小写 |
-| 原生小卡片与层次 | `card.appearance.layout` 支持普通堆叠、表头带与侧题签；新工程默认细描边、小圆角与无阴影，表面可改为浅底或开放注释。结构按语义选择，不随机换皮肤 |
+| 36款原生信息卡 | `academic_ppt_cards` 按用途/家族查询，`card.preset` 选择几何与内容关系；`items` 保留分组指标、条件或步骤，所有文字与形状均可编辑。旧 appearance 继续兼容 |
+| 用户模板入口 | `academic_ppt_prepare` 规划一次模板提问；已提供/已拒绝/无回复不重复问。PPTX解析与代表页实际渲染复用既有工具，已审阅profile与原文件摘要绑定；旧PPT需转换 |
+| 内容化生图参考 | 宿主有已核实的生图工具时，prepare按主题、听众、真实卡片内容与配色返回分批提示；宿主实际调用和看图后，以原始内容重建可编辑卡片。无接口/失败/拒绝回退原生库 |
 | 面板与卡片分别设计 | `panel.surface` 控制区域分组，卡片控制局部解释；按关系选择浅底、边界、题签或开放标注，避免机械阵列与多重套框 |
 | 独立封面、结尾与页角 | 封面可用 `custom + boxes` 自主分配题名/身份/视觉区，也可选 `split/editorial`；`closing` 支持主判断、证据卡与讨论问题。`slide.chrome` 可逐页调整或删除无用品牌字、章节、页脚与标题线 |
 | 检查大块空疏 | 正文/结尾继续执行 compact 门槛。封面、目录与章节页的留白改为视觉提醒，避免为了填空而加图。背景、卡框、图标不能刷正文占幅，科学图内部留白不处罚 |
 | 检查稿内与跨稿同质化 | 自由区域近似骨架与等权文字块提醒帮助定位重复页；`portfolio` 比较明确指定的不同工程。换色、换字、改数据值或微调坐标不算新构图，合理同尺度比较可保留 |
 | 保留学术约束 | 事实、推断、方案分别登记，来源、单位、比较条件与结论边界仍需核对；构图自由不授权新增实验结果 |
 
-当前逐页方法与公开 Skill 取舍见 [rc.7研究](docs/PPT_SKILL_RESEARCH_V07_RC7.md)，既有组合字段见 [多层构图](docs/PAGE_COMPOSITION_V07_RC6.md)，叙事与色板见 [学术叙事与设计](docs/ACADEMIC_STORY_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。实际试用与验证边界以 [本轮记录](docs/VALIDATION_V07_RC7.md) 为准。
+当前逐页方法与公开 Skill 取舍见 [rc.7研究](docs/PPT_SKILL_RESEARCH_V07_RC7.md)，既有组合字段见 [多层构图](docs/PAGE_COMPOSITION_V07_RC6.md)，叙事与色板见 [学术叙事与设计](docs/ACADEMIC_STORY_DESIGN.md)，执行时按需读取 contract。历史机制参考与取舍见 [设计来源](docs/DESIGN_REFERENCES.md)；这些参考不是实际效果证明。卡片与准备流程见 [rc.8说明](docs/CARD_LIBRARY_V07_RC8.md)，实际验证范围见 [rc.8记录](docs/VALIDATION_V07_RC8.md)。
 
-## rc.7 实际试作：完整逐页设计到9页成稿
+## 36款信息卡：可浏览、可查询、可编辑
+
+[打开离线图册](skills/dsh-academic-ppt/references/card-library/index.html)，按用途筛选并展开具体槽位。图册由当前卡片渲染器生成，随包提供36张单卡SVG和结构示例。网页在本地浏览器打开后可使用筛选；GitHub文件页显示源码。
+
+| 家族 | 六种内容组织 |
+| --- | --- |
+| 问题与背景 | 悬签、开放括线、侧签、双线定义、折角札记、编号议题 |
+| 方法与流程 | 标题带、步骤阶梯、输入输出、公式释义、协议行、侧带算法 |
+| 证据与解释 | 结论依据、来源脚注、证据追踪、配对比较、观察解释分层、注释叠页 |
+| 指标与读数 | 读数旁注、双读数、并列指标、基线对照、目标参照、数值台账 |
+| 条件与限制 | 切角边界、缺口题带、假设登记、范围对照、风险响应、条件核对 |
+| 阶段与决策 | 编号阶段、路径节点、里程碑、条件分支、状态分栏、行动交接 |
+
+36款是候选库容量，不要求一份报告使用36张卡片。按照内容关系选择，与图表和开放文字组合，保留同类任务的一致表达。库中示例与数值仅演示设计，不能当作当前研究证据。
+
+重建图册及18页原生PPTX：
+
+```sh
+node scripts/build-card-library.mjs --deck-output .test-output/card-atlas
+```
+
+支持 `--render --font-dir /absolute/font/directory` 生成实际PPTX页面；需要已安装可选渲染引擎。
+
+## 历史 rc.7 实际试作：完整逐页设计到9页成稿
 
 本轮从原始教学协议和逐件 CSV 制作8页主讲、1页来源附录，先比较完整正文和封面候选，再查看连续页面并完成全稿。正文组织了分布与统计表、不同摘要的共尺度区间、终点说明与生存曲线、证据缺口与设计流程等关系；根据看图反馈修正局部论点、标注、单位和重复归纳。
 

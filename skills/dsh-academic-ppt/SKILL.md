@@ -1,6 +1,6 @@
 ---
 name: dsh-academic-ppt
-description: 依据真实论文与研究材料制作可编辑学术PPT，适用于精读、综述、进展、组会、开题、答辩和学术论坛。先研究材料与参考，再写内容完整的逐页设计稿，按研究关系设计图表、文字层级、区域组合和章节导航，实际渲染并核对每页设计是否兑现。
+description: 依据真实研究材料制作可编辑学术PPT，适用于精读、综述、进展、组会、开题和答辩。支持询问与学习用户PPT模板、36种原生信息卡选择、宿主生图卡片参考；先写完整逐页设计稿，再组织证据、标题、区域与章节，实际渲染核对。
 ---
 
 # 正式学术汇报
@@ -16,7 +16,9 @@ description: 依据真实论文与研究材料制作可编辑学术PPT，适用�
 
 ## 1. 盘点输入与阅读场景
 
-核对本次工作区的材料、参考和旧稿。新项目调用`academic_ppt_init`；继续工程先用一次`academic_ppt_context`读取当前阶段和相关记录。首次写某类记录查`academic_ppt_contract({topic})`，topic为brief / paper / claim / asset / slide / design / assessment；CLI参数用相应命令的`--help`或`--schema`查询。宿主视觉能力不明确时读[deepseek.md](references/deepseek.md)。
+核对本次工作区的材料、参考和旧稿。新项目调用`academic_ppt_init`；继续工程先用一次`academic_ppt_context`读取当前阶段和相关记录。首次写某类记录查`academic_ppt_contract({topic})`，topic为brief / paper / claim / asset / slide / design / assessment / preparation；CLI参数用相应命令的`--help`或`--schema`查询。宿主视觉能力不明确时读[deepseek.md](references/deepseek.md)。
+
+新建汇报且参考意向未说明时，只问一次：“这次有希望参考设计的 PPT/PPTX 模板吗？可以上传；没有的话，我按当前学术设计流程继续。”提供“上传 PPT 参考 / 使用当前流程”选项。已有明确选择或文件时不重复问；无回答按当前流程继续，不把上传模板设成阻断条件。已有截图也可作为视觉参考，不强索 PPT。准备记录与分支见[template-learning.md](references/template-learning.md)。本次只是插件维护或局部改稿时，不为流程另问模板。
 
 按任务设置`brief.genre`和真实约束。未要求论文数量时`targetPaperCount:0`表示不附加篇数门槛；仅逐篇导读任务开启`requirePaperIntro`。完整题名和书目保留，正文可以围绕问题组织。
 
@@ -38,15 +40,17 @@ description: 依据真实论文与研究材料制作可编辑学术PPT，适用�
 
 ## 4. 学习参考，写出完整逐页设计稿
 
-有参考先读[template-learning.md](references/template-learning.md)，取得实际全稿概览，精看不同正文类型、密集页和相邻段落。PPTX用template与真实渲染，PDF/截图按相应格式查看。记录看过的页与可迁移组织方式；通常用reference-guided，明确沿用版式才用template-faithful。无参考用content-led，48页内置库只按需参考。
+有参考先读[template-learning.md](references/template-learning.md)，取得实际全稿概览，精看不同正文类型、密集页和相邻段落。PPTX用template与真实渲染，PDF/截图按相应格式查看。将实际profile与看图观察回填准备请求的`template.review`，匹配当前文件时复用，模板改变才重新提取。记录看过的页与可迁移组织方式；通常用reference-guided，明确沿用版式才用template-faithful。无参考用content-led，48页内置库只按需参考。
 
 读[visual-decision.md](references/visual-decision.md)，在工作区建立`design-plan.md`或等价可读文件。每页绘制前写出：任务与前后承接、完整可见文字和必要条件、图表/素材及来源位置、语义关系、载体与区域组合、文字层级和阅读路径、缺项与补充范围。数据可引用已核对的文件及行列；只有“展示结果”等标签不算完整设计。困难类型可读[page-design-workshop.md](references/page-design-workshop.md)中的原创教学案例，案例数字和正文不得进入本次研究。
+
+需要独立信息卡时，先读[card-design.md](references/card-design.md)，按内容关系从36种原生卡片中选择候选。宿主确有生图工具且用户未拒绝时，优先按本稿真实内容生成卡片设计参考，查看后提炼层级与分组，再原生重建；没有接口、无法调用或生成失败时直接用卡片库和现行流程。`academic_ppt_prepare`只返回计划和提示词，调用宿主生图工具与看图必须实际完成。
 
 按[design.md](references/design.md)确定学术色板、颜色职责、字体角色和封面题名关系。主色与数据变量色各有用途；图文及普通解释形成中间层次。先依据参考与阅读场景选择受支持的projection和system，再排版；28/24/18px只是现有默认，不能机械成为所有新稿的共同字号。不得在失败后降低阅读要求或把重要内容改成note绕过检查。
 
 ## 5. 从设计稿建页与比较候选
 
-直接从逐页设计稿建页：核对内容，选择表达载体，决定比较/包含/先后/解释怎样被看见，安排层级与阅读路径，最后写坐标。按[composition.md](references/composition.md)使用rows或regions及原生drawings；两种区域模式择一。共享大区域可包含不同局部关系，卡片按需承担独立分组，组件细节见[component-grammar.md](references/component-grammar.md)。
+直接从逐页设计稿建页：核对内容，选择表达载体，决定比较/包含/先后/解释怎样被看见，安排层级与阅读路径，最后写坐标。按[composition.md](references/composition.md)使用rows或regions及原生drawings；两种区域模式择一。共享大区域可包含不同局部关系，卡片按需承担独立分组；通过`academic_ppt_cards`查询结构、内容槽位与尺寸，使用`card.preset`和已核对的内容构建。36款是可选局部表达，不是每份报告的数量指标；同一比较组保持一致，不随机轮换。卡片流程见[card-design.md](references/card-design.md)，其他组件见[component-grammar.md](references/component-grammar.md)。
 
 组合页的`visualPlan`记录主关系、入口/主区域、readingOrder和适配理由，按需用contentLayers对应真实对象。`primaryPanelId`可指组合入口，不要求唯一大图。工具摘要不替代完整设计稿；修改设计时同步相关内容，不能在成稿后补理由冒充事前设计。
 

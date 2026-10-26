@@ -15,7 +15,7 @@ import { compareProjectStructures } from './portfolio.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'line',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=13;
+const RENDERER_VERSION=14;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -36,7 +36,7 @@ export async function createProject(options={}){
  const a=argsFor('academic_ppt_init',options),dir=await safePath(options.cwd,a.projectDir);
  await ensureNewDir(dir);const path=join(dir,'project.json');const p=initial(a.title,a.brief,a.design,a.capabilities);
  assertProject(p);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
- return {ok:true,projectPath:path,revision:0,counts:counts(p),nextActions:['先盘点原文图、表、方法结构及必须入画面的条件，明确研究问题。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
+ return {ok:true,projectPath:path,revision:0,counts:counts(p),nextActions:['若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。真实有宿主生图工具时先按本次内容生成卡片参考，无接口则继续原生流程。','先盘点原文图、表、方法结构及必须入画面的条件，明确研究问题。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
 }
 export async function updateRecords(options={}){
  let a=argsFor('academic_ppt_record',options);
@@ -187,7 +187,7 @@ export async function contextProject(options={}){
   design:[`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
    '阅读references/visual-decision.md；从contract(design)的academicPalettes选择合适学术色板，用direction说明依据，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
    '用academic_ppt_study实际绘制2个封面和2个困难证据页候选（SVG与原生PPTX），可render:true查看真实画面。与参考和论文原图并列选择，不以方案名称代替设计。',
-   '局部浅底、边界、题签和卡片按研究关系设计；card.appearance.layout可用stacked、banded或side-label表达实际不同的题签与内容关系。无需每段套框，也不要求完全去框。空区诊断只定位可审阅问题，不能靠装饰或巨字刷占幅。'],
+   '需要信息卡时用academic_ppt_cards按用途查询36种原生配方，选定card.preset并填写items等真实内容；标题、单位和边界都必须可见。与图表、表格、开放文字组合，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
   storyboard:['先用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','逐页写argument、内容覆盖与简短visualPlan，再用composition.rows/regions或drawings组织证据；不必选择referenceTemplateId。',
    '先盘点本页证据、解释、条件和方法关系，再分配区域。visualPlan.contentLayers可用role、panelIds和summary记录实际信息层，不规定层数或分栏；上下、主辅、跨栏和单一主载体均按内容选择。用contentChecks登记必须可见的关键条件，不能只留在notes。',
    'heading与cover自定题名位置和语义断行；heading.inheritChrome:true可保留章节带与身份层，作者题名box须避开保留区，不静默挪动或缩字。颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',
@@ -229,7 +229,7 @@ function preservedScene(before,after,prefixes){
 export async function editProject(options={}){
  const a=argsFor('academic_ppt_edit',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const next=clone(state.p),seen=new Set(),prefixes=[];
  for(const change of a.changes){const slide=next.slides.find(s=>s.id===change.slideId);if(!slide)throw new Error('UNKNOWN_SLIDE: '+change.slideId);const key=change.slideId+'/'+(change.cardId??'');if(seen.has(key))throw new Error('DUPLICATE_TARGET');seen.add(key);
-  if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');if(slide.composition&&(change.patch.templateComponentId||change.patch.style&&!['plain','compact'].includes(change.patch.style)))throw new Error('COMPOSITION_CARD_STYLE: 组合页用appearance设计独立卡片表面，旧style仅支持plain/compact。');const allowed=new Set(['style','accent','templateComponentId','appearance','icon']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, accent, templateComponentId, appearance or icon may change; words, values, box and other objects remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
+  if(a.scope==='card-style'){if(change.removeFields?.length)throw new Error('CARD_STYLE_SCOPE: removeFields 仅限 slide-content');if(!change.cardId)throw new Error('CARD_ID_REQUIRED');const card=slide.cards.find(c=>c.id===change.cardId);if(!card)throw new Error('UNKNOWN_CARD');if(slide.composition&&(change.patch.templateComponentId||change.patch.style&&!['plain','compact'].includes(change.patch.style)))throw new Error('COMPOSITION_CARD_STYLE: 组合页用appearance设计独立卡片表面，旧style仅支持plain/compact。');const allowed=new Set(['style','preset','accent','templateComponentId','appearance','icon']);if(!Object.keys(change.patch).length||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('CARD_STYLE_SCOPE: only style, preset, accent, templateComponentId, appearance or icon may change; words, values, box and other objects remain locked');Object.assign(card,change.patch);prefixes.push(cardPrefix(slide.id,card.id));}
   else{if(change.cardId)throw new Error('SLIDE_CONTENT_SCOPE: patch the slide; for style-only edits use card-style');const allowed=new Set(['title','kicker','subtitle','takeaway','notes','seconds','paperIds','claimIds','figureIds','cards','nodes','edges','chart','table','layout','referenceTemplateId','panelTitles','figureBoxes','cover','closing','chrome','argument','visualPlan','composition','section','sectionId','transition','agenda','diagram','plot','plots','drawings','heading','referenceIds','contentChecks']);if((!Object.keys(change.patch).length&&!change.removeFields?.length)||Object.keys(change.patch).some(k=>!allowed.has(k)))throw new Error('INVALID_SLIDE_PATCH');for(const field of change.removeFields??[]){if(Object.hasOwn(change.patch,field))throw new Error('CONFLICTING_SLIDE_PATCH: 不能同时删除和设置 '+field);delete slide[field];}Object.assign(slide,change.patch);}
  }
  assertProject(next);let preservation;
