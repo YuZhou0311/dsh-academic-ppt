@@ -70,12 +70,12 @@ const coreExecutors = {
     if (presetId) {
       const preset=getCardPreset(presetId)
       if (!preset) throw new Error('UNKNOWN_CARD_PRESET: '+presetId)
-      return {ok:true,preset:structuredClone(preset),galleryPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['将preset.id写入card.preset，依据当前内容填写title/body/items/metric/badge/note及claimIds；示例不是研究事实。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
+      return {ok:true,preset:structuredClone(preset),galleryPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['先判断配方是否适合本次内容；适合时将preset.id写入card.preset，并填写真实title/body/items/metric/badge/note及claimIds。示例仅用于理解设计，不是必须照搬的外观或研究事实。','在用户明确约束内自主调整design.palette与design.colorRoles、card.accent、card.box和appearance.padding/radius/elevation；保持全稿色义、正文可读与比较尺度一致。','需要不同内部比例、题签位置、分区或局部底色/文字色时，用drawings与composition.regions重建；appearance.layout/surface/accent不覆盖preset。已有布局或内容改动使用slide-content，card-style保持内容与外框锁定。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
     }
     const matches=listCardPresets({family,purpose,limit:36,includeExamples:false})
     const presets=matches.slice(0,limit??36).map(({id,name,family,purpose,dimensions})=>({id,name,family,purpose,dimensions}))
     return {ok:true,totalCount:CARD_PRESETS.length,matchedCount:matches.length,count:presets.length,families:structuredClone(CARD_FAMILIES),presets,galleryPath,
-      instructions:['按内容关系选候选，再用presetId读取完整配方；同一页可组合不同卡片与开放文字、图表或表格。','名称筛选只匹配用途文本；没有匹配时查看family或全部索引，不把“无匹配”误报为不支持该研究领域。']}
+      instructions:['按内容关系研究候选，再用presetId读取配方；配色、尺寸和内容分组应服务本稿，参考无需照搬。需要新的内部组织时可用drawings与composition.regions；同一页可组合卡片、开放文字、图表或表格。','名称筛选只匹配用途文本；没有匹配时查看family或全部索引，不把“无匹配”误报为不支持该研究领域。']}
   },
 }
 
@@ -212,6 +212,15 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_prepare') {
     lines.push(`下一步：${clip(data.nextAction,160)}`)
     if(data.planPath)lines.push(`设计准备记录：${clip(data.planPath,3000)}`)
+    if(data.designAdaptation){
+      const a=data.designAdaptation
+      lines.push(`卡片适配：${a.mode}；配色策略 ${a.colorPolicy.mode}`)
+      lines.push(a.colorPolicy.instruction)
+      for(const route of a.routes??[])lines.push(`设计路径 ${route.mode}：${route.instruction}`)
+      for(const instruction of a.instructions??[])lines.push(instruction)
+      if(a.decisionRecord)lines.push(a.decisionRecord)
+    }
+    if(data.nativeFallback?.selection)lines.push(`原生设计：${data.nativeFallback.selection}`)
     if(data.template?.question)lines.push(`待提问（尚未实际询问）：${JSON.stringify(data.template.question)}`)
     for(const instruction of data.template?.instructions??[])lines.push(clip(instruction,1600))
     for(const file of data.template?.files??[])lines.push(`模板文件：${JSON.stringify(file)}`)

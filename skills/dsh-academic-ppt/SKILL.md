@@ -1,6 +1,6 @@
 ---
 name: dsh-academic-ppt
-description: 依据真实研究材料制作可编辑学术PPT，适用于精读、综述、进展、组会、开题和答辩。支持询问与学习用户PPT模板、36种原生信息卡选择、宿主生图卡片参考；先写完整逐页设计稿，再组织证据、标题、区域与章节，实际渲染核对。
+description: 依据真实研究材料制作可编辑学术PPT，适用于精读、综述、进展、组会、开题和答辩。支持询问与学习用户PPT模板、自主配色与内容适配的36种原生信息卡、宿主生图参考；先写完整逐页设计稿，再组织证据、标题、区域与章节，实际渲染核对。
 ---
 
 # 正式学术汇报
@@ -44,13 +44,13 @@ description: 依据真实研究材料制作可编辑学术PPT，适用于精读�
 
 读[visual-decision.md](references/visual-decision.md)，在工作区建立`design-plan.md`或等价可读文件。每页绘制前写出：任务与前后承接、完整可见文字和必要条件、图表/素材及来源位置、语义关系、载体与区域组合、文字层级和阅读路径、缺项与补充范围。数据可引用已核对的文件及行列；只有“展示结果”等标签不算完整设计。困难类型可读[page-design-workshop.md](references/page-design-workshop.md)中的原创教学案例，案例数字和正文不得进入本次研究。
 
-需要独立信息卡时，先读[card-design.md](references/card-design.md)，按内容关系从36种原生卡片中选择候选。宿主确有生图工具且用户未拒绝时，优先按本稿真实内容生成卡片设计参考，查看后提炼层级与分组，再原生重建；没有接口、无法调用或生成失败时直接用卡片库和现行流程。`academic_ppt_prepare`只返回计划和提示词，调用宿主生图工具与看图必须实际完成。
+需要独立信息卡时，先读[card-design.md](references/card-design.md)，把36种卡片与上传参考作为可组合的设计语法。先判断读者任务与信息关系，再选择候选，按本稿内容自主调整配色、比例、题签与分区；需要时用原生drawings重组，不止替换示例文字。保留合适的结构，不为制造差异强制变形。宿主确有生图工具且用户未拒绝时，优先按本稿真实内容生成卡片设计参考，查看后提炼层级与分组，再原生重建；没有接口、无法调用或生成失败时继续原生流程。`academic_ppt_prepare`只返回计划和提示词，调用宿主生图工具与看图必须实际完成。
 
 按[design.md](references/design.md)确定学术色板、颜色职责、字体角色和封面题名关系。主色与数据变量色各有用途；图文及普通解释形成中间层次。先依据参考与阅读场景选择受支持的projection和system，再排版；28/24/18px只是现有默认，不能机械成为所有新稿的共同字号。不得在失败后降低阅读要求或把重要内容改成note绕过检查。
 
 ## 5. 从设计稿建页与比较候选
 
-直接从逐页设计稿建页：核对内容，选择表达载体，决定比较/包含/先后/解释怎样被看见，安排层级与阅读路径，最后写坐标。按[composition.md](references/composition.md)使用rows或regions及原生drawings；两种区域模式择一。共享大区域可包含不同局部关系，卡片按需承担独立分组；通过`academic_ppt_cards`查询结构、内容槽位与尺寸，使用`card.preset`和已核对的内容构建。36款是可选局部表达，不是每份报告的数量指标；同一比较组保持一致，不随机轮换。卡片流程见[card-design.md](references/card-design.md)，其他组件见[component-grammar.md](references/component-grammar.md)。
+直接从逐页设计稿建页：核对内容，选择表达载体，决定比较/包含/先后/解释怎样被看见，安排层级与阅读路径，最后写坐标。按[composition.md](references/composition.md)使用rows或regions及原生drawings；两种区域模式择一。共享大区域可包含不同局部关系，卡片按需承担独立分组；通过`academic_ppt_cards`查询结构、内容槽位与尺寸，使用适配的`card.preset`或原生重组承载已核对内容。36款是可选局部表达，不是数量指标或构图上限；同一比较组保持一致，不随机轮换。将颜色与结构适配理由简记在`design.direction`、组合页的`visualPlan.rationale`或设计工作文件，不放进正式画面。卡片流程见[card-design.md](references/card-design.md)，其他组件见[component-grammar.md](references/component-grammar.md)。
 
 组合页的`visualPlan`记录主关系、入口/主区域、readingOrder和适配理由，按需用contentLayers对应真实对象。`primaryPanelId`可指组合入口，不要求唯一大图。工具摘要不替代完整设计稿；修改设计时同步相关内容，不能在成稿后补理由冒充事前设计。
 

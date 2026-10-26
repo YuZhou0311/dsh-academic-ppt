@@ -1,4 +1,4 @@
 interface:
   display_name: "正式学术汇报 PPT"
-  short_description: "学习用户PPT参考，按内容选原生卡片与生图参考，完成逐页设计和可编辑学术汇报"
-  default_prompt: "使用 $dsh-academic-ppt，先确认参考模板意向，依据真实材料写完整逐页设计稿，按需要选择36款原生信息卡；宿主生图可用时先生成内容相关卡片参考，再自主组织可编辑图文并核对最终PPTX。"
+  short_description: "学习参考并自主调整学术配色、卡片结构与信息分区，完成内容驱动的可编辑PPT"
+  default_prompt: "使用 $dsh-academic-ppt，先确认参考模板意向，依据真实材料写逐页设计稿，把36款卡片与模板作为可组合参考，自主调整配色、比例和信息分区；宿主生图可用时先探索内容相关设计，再用原生对象完成并核对最终PPTX。"

@@ -30,6 +30,20 @@
 
 `preset`拥有内部几何；它不继承旧 `cardDefaults`，也不叠加 `style` 或模板组件。仅以 `appearance.padding/radius/elevation` 微调兼容细节，以 `card.accent`设置强调色。旧卡片没有 `preset` 时仍走原路径；新增结构字段要求同时提供 `preset`。`card-style`编辑可更换预设，但文字、指标、单位、注释和非目标对象保持锁定。
 
+### 参考后的自主适配
+
+卡片库提供可组合的设计起点。Agent须先判断本次题名长度、信息量、指标与限定的对应关系，再决定保留、合并、拆分或重排区块；不把示例槽位当作内容上限，也不要求每张卡为求不同而变形。
+
+- 配色：自主编辑`design.palette`，用`design.colorRoles`保持全稿色义，`card.accent`承担局部强调。参考图已有颜色不自动固定本稿配色。
+- 尺寸和留白：按完整内容调整卡片`box`、组合区域与受支持的`appearance`字段，不为了沿用示例比例删条件或缩小正文。
+- 内部结构：需要不同列宽、题签位置、信息分区或单卡底色/文字色时，用原生`drawings`与`composition.regions`重新设计。预设内部recipe固定，不能用不支持的参数覆盖。
+
+准备工具在所有分支返回`designAdaptation`，并将两条设计路径、配色策略和原生回退说明写入宿主可见文本。生图提示同步说明`preferredPresets`只是候选灵感，可按当前内容重新安排比例和分区。
+
+准备请求可用`paletteMode:"adaptive"`（默认）将`palette`作为可修改的候选色；只有用户明确固定这些颜色时使用`paletteMode:"fixed"`，并同时提供`palette`。颜色调整需保持文字对比、比较尺度和真实图表色义。白字band/notch标题需深色强调；浅色题签配深字可用原生绘制，当前没有任意自定义颜色的自动修复保证。
+
+将重要适配理由简记在`design.direction`或`visualPlan.rationale`。例如两个终点有不同分母时，分别保留读数与解释，将共同前提放到共享条件区；这由实际信息关系决定，而不是照着参考的卡数与位置填字。
+
 ## 2. 模板问题只在意向未知时提出
 
 先用 `academic_ppt_contract({topic:"preparation"})` 获取完整准备请求。将请求保存为工作区JSON，再调用：

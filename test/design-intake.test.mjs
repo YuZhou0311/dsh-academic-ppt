@@ -87,6 +87,45 @@ test('available host image generation receives exact report content and a native
   assert.match(rendered,/尚未执行/);assert.ok(rendered.includes(card.body));
 });
 
+test('reference colors and preferred presets remain adaptable without changing authored content',async t=>{
+  const {prepare}=await fixture(t);
+  const request={...report,template:{status:'none'},imageGeneration:host,palette:['#294A63','#42766B'],cards:[{...card,preferredPresets:['research-tab'],items:[{label:'观测差值',value:0,unit:'kg m⁻²',detail:'仅用于方案示例，不构成性能结论。'}]}]};
+  const original=structuredClone(request),result=await prepare(request);
+  assert.deepEqual(request,original,'reference preparation must not rewrite authored content or candidate colors');
+  assert.equal(result.designAdaptation.mode,'content-adaptive');
+  assert.equal(result.designAdaptation.colorPolicy.mode,'adaptive');
+  assert.deepEqual(result.designAdaptation.colorPolicy.candidateColors,request.palette);
+  assert.match(result.imageGeneration.prompt,/允许.*调整色相、明度、饱和度和占比/);
+  assert.match(result.imageGeneration.prompt,/preferredPresets只表示候选灵感/);
+  assert.match(result.imageGeneration.prompt,/合并、拆分或重排区块/);
+  for(const text of ['kg m⁻²','仅用于方案示例，不构成性能结论。','"value": 0','research-tab'])assert.ok(result.imageGeneration.prompt.includes(text),text);
+});
+
+test('an explicitly fixed palette is honored and requires the actual colors',async t=>{
+  const {prepare}=await fixture(t),palette=['#2D4654','#79506B'];
+  const result=await prepare({...report,template:{status:'none'},imageGeneration:host,cards:[card],palette,paletteMode:'fixed'});
+  assert.equal(result.designAdaptation.colorPolicy.mode,'fixed');
+  assert.deepEqual(result.designAdaptation.colorPolicy.candidateColors,palette);
+  assert.match(result.imageGeneration.prompt,/保留.*用户明确固定的颜色/);
+  assert.doesNotMatch(result.imageGeneration.prompt,/允许.*调整色相、明度、饱和度和占比/);
+  await assert.rejects(prepare({...report,paletteMode:'fixed'}),/paletteMode=fixed requires/);
+  await assert.rejects(prepare({...report,palette,paletteMode:'copy-template'}),/INVALID_PREPARATION/);
+});
+
+test('all reference branches expose actionable adaptation and native reconstruction to the host',async t=>{
+  const {cwd,requestPath,prepare}=await fixture(t),tool=buildAcademicTools().find(value=>value.name==='academic_ppt_prepare');
+  const variants=[undefined,{availability:'unknown',source:'Synthetic unknown capability.'},{availability:'unavailable',source:'Synthetic unavailable capability.'},
+    {...host,status:'failed',failureReason:'Synthetic service failure.'},{...host,status:'declined'},
+    {...host,status:'generated',resultReferences:['synthetic-card-reference'],visualObservations:'Synthetic observation for contract testing; not actual visual approval.'}];
+  for(const imageGeneration of variants){
+    await prepare({...report,template:{status:'none'},cards:[card],...(imageGeneration?{imageGeneration}:{})});
+    const result=await tool.execute({requestPath},{agent:{session:{header:{cwd}}}});
+    const rendered=tool.output.render({},result).map(part=>part.text??'').join('\n');
+    assert.deepEqual(result.designAdaptation.routes.map(route=>route.mode),['adapt-preset','compose-native']);
+    for(const expected of ['adaptive','drawings','composition.regions','card.accent','design.direction','白字','原生设计：',result.nativeFallback.selection])assert.ok(rendered.includes(expected),expected);
+  }
+});
+
 test('unknown and unavailable generation use native cards; available without content requests content first',async t=>{
   const {prepare}=await fixture(t);
   for(const availability of ['unknown','unavailable']){
@@ -173,6 +212,11 @@ test('native card discovery exposes actual recipes and a useful compact context 
   const selected=await tools.get('academic_ppt_cards').execute({presetId:all.presets[0].id});
   assert.equal(selected.preset.example.preset,selected.preset.id);
   assert.ok(selected.preset.contentContract);assert.ok(selected.preset.recipe);
+  for(const result of [all,selected]){
+    const rendered=formatToolResult('academic_ppt_cards',result);
+    for(const expected of ['drawings','composition.regions'])assert.ok(rendered.includes(expected),expected);
+  }
+  assert.match(selected.instructions.join(' '),/先判断配方是否适合/);
   const filtered=await tools.get('academic_ppt_cards').execute({family:'method',limit:2});
   assert.equal(filtered.presets.length,2);assert.ok(filtered.presets.every(p=>p.family==='method'));
   const summary=formatToolResult('academic_ppt_context',{records:[{collection:'slides',record:{id:'S1',title:'Synthetic context',cards:[{id:'C1',title:'Reading',body:'Explanation',preset:'metric-pair',badge:'A',items:[{label:'Example',value:0,unit:'m',detail:'Synthetic detail'}],note:'Synthetic limitation'}]}}]});

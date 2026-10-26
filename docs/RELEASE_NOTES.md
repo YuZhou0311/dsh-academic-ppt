@@ -3,6 +3,7 @@
 renderer 升为14，schemaVersion 仍为1。旧工程保持内容与显式设计兼容；旧导出需重新构建与审阅。
 
 - 新增36种原生卡片，6个家族各6种；不仅区分外框，还区分标题、指标、证据、步骤和条件的内部组织。通过`academic_ppt_cards`查询用途、尺寸、完整内容槽位和真实预览。
+- 强化内容适配：cards查询、prepare宿主文本与生图提示都说明预设是设计起点，允许重新配色、调整尺寸及用drawings/regions重组内部结构。新增可选paletteMode，默认adaptive，仅用户明确固定颜色时用fixed并提供palette；所有分支返回designAdaptation，不以换字换色替代内容设计。
 - `card.preset/items/badge/note`进入严格契约；全部内容参与真实测量、上下文和学术检查。无preset时禁止挂载会被旧布局丢弃的新字段。`card-style`可换预设，数值、单位、文字和非目标对象仍锁定。
 - 随包附36张SVG与离线可筛选图册；`scripts/build-card-library.mjs`从同一渲染器重建，并可导出18页原生可编辑PPTX。
 - 新增`academic_ppt_prepare`。意向未知时规划一次模板问题，明确已提供、没有、稍后上传和已问无回答的不同状态。上传和实际提问由宿主完成；PPTX走既有解析与代表页真实渲染。

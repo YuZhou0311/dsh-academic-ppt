@@ -14,7 +14,9 @@ const contracts = {
       '提取并实际看过模板后，填写template.review.profilePaths与visualObservations，可补renderReferences。prepare验证profile存在、结构标识和来源摘要与当前PPTX一致后继续参考设计，不重复要求提取；观察仍是宿主记录，不是插件独立视觉验证。',
       'imageGeneration.availability由宿主工具清单或实际能力决定，source记依据；available须填实际toolName。cards填本次标题、正文、指标槽位、内容状态和来源说明，工具据此生成提示。该工具不读取密钥、不自行调用模型；宿主负责按真实工具契约调用。',
       '成功生图并实际查看后才能写status=generated、resultReferences与visualObservations；失败记failed及原因，用户拒绝记declined。unknown/unavailable/failed/declined均继续内置卡片库。引用和看图记录是宿主声明，不冒充插件独立视觉验证。',
-      '从academic_ppt_cards按用途选择36种原生卡片；生成图只指导构图，最终以原始内容重建可编辑文字、数据与形状。outputPath可保存独立准备记录，已有不同内容会拒绝覆盖，使用新文件名保存下一次选择。',
+      'paletteMode默认adaptive，palette为可修改的候选色；允许根据当前内容改变参考色的色相、明暗、饱和度及占比，保持全稿色义与文字对比。只有用户明确固定配色时使用fixed，并同时提供palette。',
+      '阅读返回的designAdaptation：36款配方与preferredPresets是设计起点。配方合适时调整全稿色板、card.accent/box和appearance.padding/radius/elevation；需要改变内部列宽、题签或分区时使用drawings与composition.regions，不用appearance.layout/surface/accent假装覆盖preset。',
+      '根据实际内容保留、合并、拆分或重排区块；不只换字照搬，不为凑原创强制改变每张卡。生成图只指导设计，最终以原始内容重建可编辑文字、数据与形状。outputPath可保存独立准备记录，已有不同内容会拒绝覆盖，使用新文件名保存下一次选择。',
     ],
   },
   brief: {
