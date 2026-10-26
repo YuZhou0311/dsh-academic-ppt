@@ -1,0 +1,53 @@
+name: Build release packages
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-packages-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.19.0
+          cache: npm
+      - name: Check tag and package version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          node --input-type=module -e 'import fs from "node:fs"; const p=JSON.parse(fs.readFileSync("package.json")); if(process.env.RELEASE_TAG !== `v${p.version}`) throw new Error("Release tag must match package.json version");'
+      - run: npm ci --ignore-scripts --omit=optional
+      - run: npm test
+      - run: npm run check
+      - name: Build the five release assets from the tagged commit
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: npm run release:build -- --tag "$RELEASE_TAG"
+      - name: Upload the verified release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="${RELEASE_TAG#v}"
+          gh release upload "$RELEASE_TAG" \
+            "dist/$RELEASE_TAG/dsh-academic-ppt-$version.tgz" \
+            "dist/$RELEASE_TAG/dsh-academic-ppt-$version-source.zip" \
+            "dist/$RELEASE_TAG/RELEASE_NOTES.md" \
+            "dist/$RELEASE_TAG/release-manifest.json" \
+            "dist/$RELEASE_TAG/SHA256SUMS" \
+            --repo "$GITHUB_REPOSITORY" --clobber

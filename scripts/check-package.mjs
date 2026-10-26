@@ -12,6 +12,14 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
 assert.equal(packageJson.name,'dsh-academic-ppt');
 assert.equal(packageJson.dsh.bundle.patch,'./cordis.patch.yml');
+const lockText=await readFile(join(root,'package-lock.json'),'utf8').catch(error=>{if(error.code==='ENOENT')return null;throw error;});
+if(lockText){
+ const lock=JSON.parse(lockText);
+ assert.equal(lock.name,packageJson.name);
+ assert.equal(lock.version,packageJson.version,'root lock version must match package version');
+ assert.equal(lock.packages[''].version,packageJson.version,'package lock version must match package version');
+ assert.deepEqual(lock.packages[''].engines,packageJson.engines,'package lock host compatibility must match package metadata');
+}
 const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
 const tools=buildAcademicTools();assert.equal(tools.length,16);
 const cardRoot=join(root,'skills/dsh-academic-ppt/references/card-library');
@@ -25,7 +33,7 @@ for(const card of cardManifest.cards){
 }
 const cardGallery=await readFile(join(cardRoot,'index.html'),'utf8');
 assert.equal((cardGallery.match(/<article data-family=/g)||[]).length,36);
-const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','scripts/build-demo.mjs'];
+const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
 const templateRoot=join(root,'skills/dsh-academic-ppt/references/templates');

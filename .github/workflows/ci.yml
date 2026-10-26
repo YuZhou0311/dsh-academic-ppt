@@ -23,3 +23,32 @@ jobs:
       - run: npm test
       - run: npm run check
       - run: npm pack --dry-run --ignore-scripts
+
+  dsh-host:
+    name: DSH Host (${{ matrix.dsh }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        dsh: [0.2.1-rc.2, 0.2.1-rc.3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+      - run: npm ci --ignore-scripts --omit=optional
+      - name: Install the official Host services in an isolated test directory
+        env:
+          DSH_TEST_VERSION: ${{ matrix.dsh }}
+        run: |
+          npm install --prefix .test-output/dsh-runtime --ignore-scripts --omit=optional --no-audit --no-fund \
+            "@deepseek-ai/dsh-tools@$DSH_TEST_VERSION" \
+            "@deepseek-ai/dsh-skill@$DSH_TEST_VERSION" \
+            "@deepseek-ai/dsh-system-prompt@$DSH_TEST_VERSION" \
+            "@deepseek-ai/dsh-app-boot@$DSH_TEST_VERSION" \
+            @deepseek-ai/cordis@4.0.5
+      - name: Exercise actual tool and skill registration, execution and cleanup
+        env:
+          DSH_TEST_VERSION: ${{ matrix.dsh }}
+        run: node scripts/check-dsh-compat.mjs --runtime-dir .test-output/dsh-runtime --output ".test-output/dsh-compat-$DSH_TEST_VERSION.json"

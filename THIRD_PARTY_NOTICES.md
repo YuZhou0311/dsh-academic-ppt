@@ -13,7 +13,7 @@
 
 ## 2. 运行时依赖
 
-源码根目录的具体版本与完整传递依赖以 [package-lock.json](package-lock.json) 为准。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承本次根工程的审计结果，详见[安装说明](docs/INSTALL.md#5-实际能力边界)。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
+源码根目录的具体版本与完整传递依赖以 [package-lock.json](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.8.0/package-lock.json) 为准。安装包不附带根锁文件，源码归档包含该文件。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承根工程的审计结果。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
 
 | 依赖 | 固定版本 | 许可 / 来源 |
 | --- | --- | --- |
