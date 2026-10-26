@@ -21,7 +21,7 @@ function run(t, args, cwd) {
   return result;
 }
 
-test('global CLI help exposes command discovery and the seven actual contract topics', async t => {
+test('global CLI help exposes command discovery and preparation among the current contract topics', async t => {
   const cwd = await workspace(t), result = run(t, ['--help'], cwd); if (!result) return;
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /^  dsh-academic-ppt <命令> --help$/m);
@@ -30,7 +30,7 @@ test('global CLI help exposes command discovery and the seven actual contract to
   assert.equal(manifest.bin['dsh-academic-ppt'],'bin/academic-ppt.mjs');
   assert.doesNotMatch(result.stdout,/^  academic-ppt /m);
   const topics = toolSchemas.academic_ppt_contract.properties.topic.enum;
-  assert.equal(topics.length, 7);
+  assert.deepEqual(topics, ['brief', 'paper', 'claim', 'asset', 'slide', 'design', 'assessment', 'preparation']);
   assert.ok(result.stdout.includes(`topic 仅支持：${topics.join(' / ')}`));
   assert.match(result.stdout, /init、build、render.*--help.*--schema/);
   assert.deepEqual(await readdir(cwd), []);
