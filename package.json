@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.8.2",
-  "description": "DeepSeek Harness学术汇报插件：分阶段设计协商、主动查证与论文取图、48款卡片含12款图片嵌入式设计、学术叙事和可编辑PPTX。",
+  "version": "0.8.3",
+  "description": "DeepSeek Harness学术汇报插件：设计协商、查证取图、48款原生卡片与20款编辑式局部参考卡片、学术叙事和可编辑PPTX。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {
@@ -31,7 +31,8 @@
     "check": "node scripts/check-package.mjs",
     "references": "node scripts/build-references.mjs",
     "cards": "node scripts/build-card-library.mjs",
-    "release:build": "node scripts/build-release.mjs"
+    "release:build": "node scripts/build-release.mjs",
+    "cards:editorial": "node scripts/build-editorial-cards.mjs skills/dsh-academic-ppt/references/editorial-v083"
   },
   "dsh": {
     "bundle": {

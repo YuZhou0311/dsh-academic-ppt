@@ -40,6 +40,26 @@ assert.equal(createHash('sha256').update(figureBytes).digest('hex'),figureDeck.s
 assert.equal(Object.keys(unzipSync(figureBytes)).filter(name=>/^ppt\/slides\/slide\d+\.xml$/.test(name)).length,figureDeck.slideCount,'native image-card reference slide count');
 const cardGallery=await readFile(join(cardRoot,'index.html'),'utf8');
 assert.equal((cardGallery.match(/<article data-family=/g)||[]).length,CARD_PRESETS.length);
+// v0.8.3 separate visual reference components, not additional preset API IDs.
+const editorialRoot=join(root,'skills/dsh-academic-ppt/references/editorial-v083');
+const editorialCatalog=JSON.parse(await readFile(join(editorialRoot,'catalog.json'),'utf8'));
+assert.equal(editorialCatalog.version,'0.8.3');
+assert.equal(editorialCatalog.cards.length,20);
+assert.deepEqual(editorialCatalog.cards.map(x=>x.id),Array.from({length:20},(_,i)=>'C'+String(i+1).padStart(2,'0')));
+for(const card of editorialCatalog.cards){
+  assert.equal(card.componentOnly,true,'editorial visual reference must be component-only: '+card.id);
+  const svg=await readFile(join(editorialRoot,'cards',card.id+'.svg'),'utf8');
+  assert.match(svg,/<svg\b/,'SVG preview missing '+card.id);
+  assert.match(svg,/局部信息卡参考/,'component-only disclosure missing '+card.id);
+}
+const editorialIndex=await readFile(join(editorialRoot,'index.html'),'utf8');
+assert.equal((editorialIndex.match(/<article data-label=/g)||[]).length,20);
+const editorialDeck=unzipSync(await readFile(join(editorialRoot,'editorial-card-components-20.pptx')));
+const editorialSlidePaths=Object.keys(editorialDeck).filter(name=>/^ppt\/slides\/slide\d+\.xml$/.test(name));
+assert.equal(editorialSlidePaths.length,5,'editorial atlas must contain four cards per slide');
+const editorialXml=editorialSlidePaths.map(name=>Buffer.from(editorialDeck[name]).toString('utf8')).join('');
+assert.ok((editorialXml.match(/<p:sp>/g)||[]).length>=200,'editable native card furniture missing');
+assert.ok((editorialXml.match(/<p:pic>/g)||[]).length>=20,'figure placeholder slots missing');
 const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);

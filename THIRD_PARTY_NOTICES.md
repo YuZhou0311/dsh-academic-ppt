@@ -80,3 +80,7 @@ S04 使用的 `examples/assets/author-pla_plot.png` 为作者在官方 [vios-s/P
 - [Anthropic 官方 PPTX skill](https://github.com/anthropics/skills/blob/main/skills/pptx/SKILL.md)：整稿观察、按内容安排版式与检查实际输出。该项目有其自身许可，本插件没有重新分发其脚本或资产。
 
 DSH 公开协议与安装机制的固定来源见 [兼容说明](docs/DSH_COMPATIBILITY.md) 和 [安装说明](docs/INSTALL.md)。
+
+## 6. v0.8.3 编辑式局部卡片
+
+`skills/dsh-academic-ppt/references/editorial-v083/` 内的20款卡片由本项目根据生图概念探索重新使用 PowerPoint 原生文字、图形和独立的合成图位制作，均是**设计示意而不是研究材料**。图册未使用用户上传的论文图片、商业PPT模板或真实遥感观测数据；任何曲线、地图、遥感纹理均为本项目确定性生成的合成占位图。设计参考图不构成科学出处，使用者应自行取得并核验论文原图、图例和许可。原有第三方科研示例授权范围不因此改变。

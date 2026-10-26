@@ -4,9 +4,9 @@
 
 适用于论文精读、文献综述、研究进展、组会、开题和答辩。围绕具体研究问题组织故事线，让论文图、方法、比较条件和判断共同可见，并保留章节定位、来源与讲稿。
 
-**v0.8.2** · DSH Desktop / Web · 分阶段设计讨论 · 48 款信息卡 · 12 种图片嵌入式卡片 · 可编辑 PPTX
+**v0.8.3** · DSH Desktop / Web · 分阶段设计讨论 · 48 款信息卡 · 12 种图片嵌入式卡片 · 可编辑 PPTX
 
-[下载插件](https://github.com/YuZhou0311/dsh-academic-ppt/releases/latest) · [安装与升级](docs/INSTALL.md) · [完整卡片图册](skills/dsh-academic-ppt/references/card-library/index.html) · [发布说明](docs/RELEASE_NOTES.md) · [实际验收](docs/VALIDATION_V082.md)
+[获取最新正式安装包（当前 0.8.2）](https://github.com/YuZhou0311/dsh-academic-ppt/releases/latest) · [安装与升级](docs/INSTALL.md) · [完整卡片图册](skills/dsh-academic-ppt/references/card-library/index.html) · [发布说明](docs/RELEASE_NOTES.md) · [实际验收](docs/VALIDATION_V082.md)
 
 ## 实际汇报效果
 
@@ -43,6 +43,22 @@ Agent 会结合材料给出具体推荐，用少量相关问题逐步确定汇�
 论文原图保留为独立图片，可以开放展示，也可以嵌入图卡。题签、解释、读数、标注与布局保持可编辑；受支持的数据图、表格和方法关系可用原生对象表达。可编辑交付不要求把原始曲线、误差带或实验图改写成文字。
 
 来源记录会追踪候选图、选中资产与实际入稿页面。缺图、仅登记未上页、图过小和连续文字页会进入检查；确实没有适用原图时，记录具体依据并采用有来源的替代表达。
+
+## 0.8.3 · 可嵌入正文的编辑式学术卡片
+
+基于多轮生图设计探索，筛选并以原生 PowerPoint 图形、可编辑文字和独立图位**重建 20 款局部组件**。这是在原有 **48 款 API 预设**之外增加的*视觉参考库*，并非新增 20 个可直接调用的 `card.preset` ID。
+
+| 双图对照组件 | 总览与局部证据 |
+| --- | --- |
+| ![C01 双图证据卡](skills/dsh-academic-ppt/references/editorial-v083/cards/C01.svg) | ![C02 总览局部图卡](skills/dsh-academic-ppt/references/editorial-v083/cards/C02.svg) |
+
+| 成对指标图卡 | 二维比较矩阵 |
+| --- | --- |
+| ![C03 图表与读数](skills/dsh-academic-ppt/references/editorial-v083/cards/C03.svg) | ![C04 条件交叉矩阵](skills/dsh-academic-ppt/references/editorial-v083/cards/C04.svg) |
+
+[浏览全部 20 款卡片（离线图册）](skills/dsh-academic-ppt/references/editorial-v083/index.html) · [下载 5 页、每页 4 卡的可编辑 PPTX](skills/dsh-academic-ppt/references/editorial-v083/editorial-card-components-20.pptx) · [查看 v0.8.3 验证范围](docs/VALIDATION_V083.md)
+
+**只作为页面内部的卡片使用。** 图册中的单张卡片不是完整幻灯片的版式模板；Agent 应结合真实论文图的轴、图例、尺度和内容量缩放、重组，周围可同时存在开放证据区、方法流程或其他信息卡。所有图库影像与曲线都是**合成占位素材**，不能作为论文原图或研究结论使用。学到的是图位关系、短标题、共同条件、图注与边界的处理方式，不是复制截图或完整卡片图片。全稿视觉仍需按内容而非卡片数量来设计。
 
 ## 图片嵌入式卡片展示
 
@@ -103,7 +119,7 @@ Agent 会结合材料给出具体推荐，用少量相关问题逐步确定汇�
 
 ## 开始使用
 
-1. 从[发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/latest)取得插件安装包。
+1. 正式安装包目前在[发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/latest)（上一版 0.8.2）；0.8.3 的新卡片资源已进入 `main`，未单独发布 TGZ 前可从源码或本次更新包使用。
 2. 按[安装说明](docs/INSTALL.md)安装到正在使用的 DSH Desktop 或 Web 环境，并启用插件。
 3. 在新会话中加载 `dsh-academic-ppt` 技能，给出题目、材料或 DOI；听众、时长和模板可一起提供。
 
