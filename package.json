@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.8.0",
-  "description": "DeepSeek Harness学术汇报插件：36种原生信息卡、模板参考、生图参考规划、逐页学术设计与可编辑PPTX。",
+  "version": "0.8.1",
+  "description": "DeepSeek Harness学术汇报插件：主动查证与论文取图、图文证据编排、学术叙事和可编辑PPTX，附36种辅助信息卡。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {

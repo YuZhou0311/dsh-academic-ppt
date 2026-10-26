@@ -1,8 +1,8 @@
 # 安装与使用
 
-**dsh-academic-ppt 0.8.0** 为 DeepSeek Harness 提供学术汇报技能和 16 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。插件在 DSH Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。
+**dsh-academic-ppt 0.8.1** 为 DeepSeek Harness 提供学术汇报技能和 16 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。插件在 DSH Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。
 
-[下载 0.8.0](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.8.0) · [插件介绍与展示](../README.md) · [DSH 兼容性与验证](DSH_COMPATIBILITY.md)
+[下载 0.8.1](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.8.1) · [插件介绍与展示](../README.md) · [DSH 兼容性与验证](DSH_COMPATIBILITY.md)
 
 ## 选择安装方式
 
@@ -23,13 +23,13 @@
 3. 在包地址输入框粘贴完整安装包地址：
 
    ```text
-   https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.0/dsh-academic-ppt-0.8.0.tgz
+   https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.1/dsh-academic-ppt-0.8.1.tgz
    ```
 
-4. 核对名称为 `dsh-academic-ppt`、版本为 `0.8.0`，安装后选择「立即启用」。
+4. 核对名称为 `dsh-academic-ppt`、版本为 `0.8.1`，安装后选择「立即启用」。
 5. 按界面提示重启应用，在新会话中加载 `dsh-academic-ppt` 技能。
 
-如果应用无法访问 GitHub，可先下载 `.tgz`，在输入框填写该文件在 **DSH 所在电脑**上的绝对路径，例如 `C:/Users/your-name/Downloads/dsh-academic-ppt-0.8.0.tgz` 或 `/Users/your-name/Downloads/dsh-academic-ppt-0.8.0.tgz`。将用户名和目录换成实际值。插件尚未发布到 npm registry，请使用发布包地址或真实文件路径安装。
+如果应用无法访问 GitHub，可先下载 `.tgz`，在输入框填写该文件在 **DSH 所在电脑**上的绝对路径，例如 `C:/Users/your-name/Downloads/dsh-academic-ppt-0.8.1.tgz` 或 `/Users/your-name/Downloads/dsh-academic-ppt-0.8.1.tgz`。将用户名和目录换成实际值。插件尚未发布到 npm registry，请使用发布包地址或真实文件路径安装。
 
 ### 使用桌面自带命令
 
@@ -38,7 +38,7 @@
 先启动一次桌面应用以初始化 profile，再从应用菜单或托盘中**完全退出**；关闭窗口可能只是隐藏应用。退出后运行：
 
 ```sh
-dsh plugin --profile desktop add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.0/dsh-academic-ppt-0.8.0.tgz"
+dsh plugin --profile desktop add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.1/dsh-academic-ppt-0.8.1.tgz"
 ```
 
 重新打开桌面应用。**通过 npm/npx 单独安装的 DSH CLI 不能修改桌面端的 `desktop` profile**；桌面端使用应用内插件管理或桌面自带命令。桌面自带 pnpm，无需为这条安装路径另行配置全局 pnpm。
@@ -47,7 +47,7 @@ dsh plugin --profile desktop add "https://github.com/YuZhou0311/dsh-academic-ppt
 
 ### 从界面安装
 
-在 DSH 网页侧栏打开「插件 → 添加插件」，填入上面的 `0.8.0` 安装包地址，安装并启用。网页与桌面使用同一个插件包。
+在 DSH 网页侧栏打开「插件 → 添加插件」，填入上面的 `0.8.1` 安装包地址，安装并启用。网页与桌面使用同一个插件包。
 
 Web Host 在远程服务器运行时，本地路径指向**服务器上的文件**，不是访问网页的电脑上的文件。HTTPS 安装包地址由 Host 下载；使用本地 `.tgz` 时先把文件放到服务器，再填写绝对路径。
 
@@ -56,20 +56,20 @@ Web Host 在远程服务器运行时，本地路径指向**服务器上的文件
 使用运行 Web Host 的同一 DSH 安装、同一 `DSH_HOME` 和同一 profile。npm 版 DSH 的包管理依赖 PATH 中可用的 pnpm。准备 Node.js 和 pnpm 后运行：
 
 ```sh
-npx --yes @deepseek-ai/dsh@latest plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.0/dsh-academic-ppt-0.8.0.tgz"
+npx --yes @deepseek-ai/dsh@latest plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.1/dsh-academic-ppt-0.8.1.tgz"
 npx --yes @deepseek-ai/dsh@latest web
 ```
 
 已安装 `dsh` 命令时：
 
 ```sh
-dsh plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.0/dsh-academic-ppt-0.8.0.tgz"
+dsh plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.1/dsh-academic-ppt-0.8.1.tgz"
 dsh web
 ```
 
 `--profile` 放在 `add` 之前。自定义 profile 将 `web` 改为实际名称，再用 `dsh --profile <实际名称>` 启动。安装后重启已经运行的 Web 服务。
 
-固定本次核验的预览版时，将两个 `@latest` 都替换为 `@0.2.1-rc.3`；固定默认渠道版本用 `@0.2.1-rc.2`。插件仍安装 `0.8.0`。
+固定本次核验的预览版时，将两个 `@latest` 都替换为 `@0.2.1-rc.3`；固定默认渠道版本用 `@0.2.1-rc.2`。插件仍安装 `0.8.1`。
 
 ## 3. 升级与确认
 
@@ -77,7 +77,7 @@ dsh web
 
 使用 CLI 时，停止对应应用或 Web 服务后，用新包地址再次执行 `dsh plugin --profile <实际名称> add ...`，然后重启。桌面 profile 仍须使用桌面自带命令。
 
-在插件详情核对版本为 `0.8.0`，新建会话并发送：
+在插件详情核对版本为 `0.8.1`，新建会话并发送：
 
 > 请加载 dsh-academic-ppt 技能，查看学术卡片库和准备流程，确认可以使用。
 
@@ -97,18 +97,18 @@ dsh web
 
 | 文件 | 用途 |
 | --- | --- |
-| `dsh-academic-ppt-0.8.0.tgz` | DSH 安装包，直接交给插件管理器，无需解压 |
-| `dsh-academic-ppt-0.8.0-source.zip` | 含锁文件与测试的源码，可运行 `npm ci` 和 `npm test` |
+| `dsh-academic-ppt-0.8.1.tgz` | DSH 安装包，直接交给插件管理器，无需解压 |
+| `dsh-academic-ppt-0.8.1-source.zip` | 含锁文件与测试的源码，可运行 `npm ci` 和 `npm test` |
 | `SHA256SUMS` | 发布文件的 SHA-256 校验值 |
 | `release-manifest.json` | 包版本、源提交、文件大小和摘要 |
 | `RELEASE_NOTES.md` | 本版功能、安装入口与验证范围 |
 
-单包校验可用 `sha256sum dsh-academic-ppt-0.8.0.tgz`（Linux）、`shasum -a 256 dsh-academic-ppt-0.8.0.tgz`（macOS），或 PowerShell 的 `Get-FileHash .\dsh-academic-ppt-0.8.0.tgz -Algorithm SHA256`，与 `SHA256SUMS` 中同名文件的值比较。
+单包校验可用 `sha256sum dsh-academic-ppt-0.8.1.tgz`（Linux）、`shasum -a 256 dsh-academic-ppt-0.8.1.tgz`（macOS），或 PowerShell 的 `Get-FileHash .\dsh-academic-ppt-0.8.1.tgz -Algorithm SHA256`，与 `SHA256SUMS` 中同名文件的值比较。
 
 源码也可从发布标签获取：
 
 ```sh
-git clone --branch v0.8.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.8.1 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 npm test

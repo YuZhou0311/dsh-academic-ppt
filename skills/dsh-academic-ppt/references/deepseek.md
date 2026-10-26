@@ -8,6 +8,14 @@
 
 尽早核实并登记本次实际输入能力。`capabilities`可随init提供，也可通过recordsPath批次的根级字段登记；精确schema与记录规则见`contract(topic:assessment)`返回的`capabilityRecord`，CLI也可用`init --schema`或`record --schema`查询。`imageInput`只接受supported / unsupported / unknown，`source`写实际provider或图像输入入口及核实依据。确实收到并看过图像时，可以记录具体入口与观察；“生成了PNG”“模型名称带视觉”或“为了让review通过”都不是依据。能力更新产生新修订，应在首次构建前完成；构建后才更新需重新构建、渲染和审查当前版本。
 
+## 主动检索、获取与查看是不同动作
+
+按当前宿主实际公布的工具查找搜索、网页读取、文件下载、PDF处理和图像查看入口，使用各自真实契约。官方[`web_search`与`web_fetch`](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/web/tool-web/README.md)用于发现来源和读取网页文本；`web_fetch`不提供PDF/图像二进制下载。工具存在也不保证后端可用，检查真实返回、错误和截断状态。
+
+用户未附全文或原图时，主动完成已授权研究所需的检索与获取，不先要求用户逐篇找图。检索得到来源后按[research.md](research.md)核对身份，用宿主可用的下载/文件能力保存从真实来源发现的原图或PDF，再按[figure-selection.md](figure-selection.md)查看图像和图注。命令工具受宿主权限控制；不能绕过限制、猜测凭据或调用未提供的模型接口。
+
+只有网页文本时，继续寻找该来源的合法全文/图像入口；只有本地PDF时，渲染或提取目标图后实际查看。下载与看图分别成功后才能登记相应状态。能力缺失、返回不支持格式或确实获取失败时保存具体缺口，说明需要的入口或材料；继续已核实内容，不能静默交付全篇文字卡并称已完成查证。
+
 ## 小而稳定的上下文
 
 常驻只需主SKILL、中心问题、硬要求、当前阶段、稳定ID和待解决项。按需contract读取一次某类schema；数据写本地JSON通过recordsPath提交。不要每轮重复论文全文、模板示例集、原始profile、整个project或图片base64。

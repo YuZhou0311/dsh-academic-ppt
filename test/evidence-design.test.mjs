@@ -7,6 +7,7 @@ import { contentCoverageReport, evidenceDesignReport } from '../src/evidence-des
 import { createProject, updateRecords, studyProject, portfolioProjects, evidenceIssues, slideClaimIds, slideAssetIds } from '../src/core.mjs';
 import { compareProjectStructures } from '../src/portfolio.mjs';
 import { buildAcademicTools, formatToolResult } from '../src/tools.mjs';
+import { buildScenes } from '../src/scene.mjs';
 import { fixtureDesign, brief, paper, claim, asset, slides } from './fixtures.mjs';
 
 const clone=structuredClone;
@@ -58,23 +59,108 @@ test('line breaks between distinct numbers never fuse a split ratio with the fol
 });
 
 test('quantitative carrier diagnostics do not count empty frames, isolated giant numbers or decorative images',()=>{
-  const p={slides:[{id:'s',argument:{role:'evidence'},claimIds:['C1']}],claims:[claim],assets:[{id:'decor',usage:'decorative'},{id:'locator',usage:'figure',reading:{purpose:'locator'}}]};
+  const p={papers:[paper],slides:[{id:'s',argument:{role:'evidence'},paperIds:['P1'],claimIds:['C1']}],claims:[claim],assets:[{id:'decor',usage:'decorative'},{id:'locator',usage:'figure',reading:{purpose:'locator'}}]};
   const report=evidenceDesignReport(p,scene([text('3/4'),{kind:'rect',role:'group',semantic:false},
     {kind:'image',assetId:'decor',w:600,h:400},{kind:'image',assetId:'locator',w:600,h:400},
     {kind:'chart',chart:{series:[]}},{kind:'table',table:{rows:[]}}]));
   assert.deepEqual(report.slides[0].visibleCarriers,[]);
   assert.equal(report.issues[0].code,'quantitative-evidence-text-only');
   assert.equal(report.issues[0].severity,'warning','an unfamiliar drawing is a review prompt, not a score');
-  const real=evidenceDesignReport(p,scene([{kind:'table',table:{rows:[['3/4']]}}]));
+  const real=evidenceDesignReport(p,scene([{kind:'table',table:{rows:[['3/4']],sourceClaimIds:['C1']}}]));
   assert.deepEqual(real.slides[0].visibleCarriers,['table']); assert.equal(real.issues.length,0);
 });
 
+test('a dated qualitative table cannot replace a quantitative result carried by a different claim',()=>{
+  const p={brief:{...clone(brief),visualEvidence:{mode:'source-led'}},design:clone(fixtureDesign),papers:[clone(paper)],
+    claims:[clone(claim),{...clone(claim),id:'C2',text:'Synthetic qualitative method history',metrics:[],dependsOn:['C1']}],assets:[],
+    slides:[{...clone(slides[1]),id:'s',layout:'results',figureIds:[],cards:[],
+      table:{columns:['Year','Method'],rows:[['2020','Method A']],sourceClaimIds:['C2']}}]};
+  const rendered=buildScenes(p);
+  assert.ok(rendered.pages[0].nodes.some(n=>n.kind==='table'),'exercise the native table renderer');
+  const report=evidenceDesignReport(p,rendered);
+  assert.deepEqual(report.slides[0].visibleCarriers,['table'],'a qualitative table is still a visible scientific table');
+  assert.deepEqual(report.slides[0].dataCarriers,[],'neither the year nor C2\'s quantitative premise qualifies the table');
+  assert.equal(report.issues.find(i=>i.code==='quantitative-evidence-text-only')?.severity,'error');
+  p.slides[0].table={columns:['Fixture count'],rows:[['3/4']],sourceClaimIds:['C1']};
+  const numeric=evidenceDesignReport(p,buildScenes(p));
+  assert.deepEqual(numeric.slides[0].dataCarriers,['table']);
+  assert.ok(!numeric.issues.some(i=>i.code==='quantitative-evidence-text-only'));
+});
+
+test('a numeric table needs its own reviewed quantitative claim and an existing visible source',async t=>{
+  for(const [label,patch] of [
+    ['missing-binding',p=>{p.slides[0].table.sourceClaimIds=[];}],
+    ['unknown-claim',p=>{p.slides[0].table.sourceClaimIds=['missing'];}],
+    ['qualitative-source',p=>{p.claims[1].metrics=[];}],
+    ['unknown-paper',p=>{p.claims[1].paperId='missing';}],
+    ['source-not-cited-on-slide',p=>{p.papers.push({...clone(paper),id:'P2'});p.claims[1].paperId='P2';}],
+    ['unverified-source-claim',p=>{p.claims[1].verified=false;}],
+  ])await t.test(label,()=>{
+    const p={brief:{visualEvidence:{mode:'source-led'}},papers:[clone(paper)],claims:[clone(claim),{...clone(claim),id:'C2'}],assets:[],
+      slides:[{id:'s',layout:'results',argument:{role:'evidence'},paperIds:['P1'],claimIds:['C1'],
+        table:{columns:['Fixture count'],rows:[['3/4']],sourceClaimIds:['C2']}}]};
+    patch(p);
+    const report=evidenceDesignReport(p,scene([{kind:'table',table:p.slides[0].table}]));
+    assert.deepEqual(report.slides[0].dataCarriers,[]);
+    assert.equal(report.issues.find(i=>i.code==='quantitative-evidence-text-only')?.severity,'error');
+  });
+});
+
 test('source figures and data marks are recognized from the actual scene and claim dependencies',()=>{
-  const p={slides:[{id:'s',argument:{role:'evidence'},claimIds:['I1']}],claims:[claim,{id:'I1',paperId:'P1',kind:'inference',dependsOn:['C1']}],assets:[{...asset,reading:{purpose:'evidence'}}]};
+  const p={papers:[paper],slides:[{id:'s',argument:{role:'evidence'},paperIds:['P1'],figureIds:['A1'],claimIds:['I1']}],claims:[claim,{id:'I1',paperId:'P1',kind:'inference',dependsOn:['C1']}],assets:[{...asset,reading:{purpose:'evidence',contentType:'plot',task:'read-values',verifiedBy:'human'}}]};
   const report=evidenceDesignReport(p,scene([{kind:'image',assetId:'A1',w:600,h:400},
-    {kind:'rect',role:'data'},{kind:'rect',role:'data'},text('3'),text('4')]));
+    {kind:'rect',role:'data',claimIds:['C1']},{kind:'rect',role:'data',claimIds:['C1']},text('3'),text('4')]));
   assert.deepEqual(report.slides[0].visibleCarriers,['source-figure','authored-data-marks']);
   assert.equal(report.slides[0].availableSourceFigures[0].id,'A1');
+});
+
+test('qualitative synthesis pages are audited and a text wall is visible across consecutive body pages',()=>{
+  const p={papers:[paper],claims:[{...claim,metrics:[]}],assets:[],slides:[
+    {id:'cover',layout:'cover'},...[1,2,3].map(i=>({id:'s'+i,layout:'synthesis',argument:{role:'synthesis'},paperIds:['P1'],claimIds:['C1']})),
+  ]};
+  const pages=p.slides.map(s=>({id:s.id,nodes:[text('可核对的文字说明'.repeat(55))]}));
+  const report=evidenceDesignReport(p,{pages});
+  assert.equal(report.summary.bodySlideCount,3);assert.equal(report.summary.textOnlySlideCount,3);
+  assert.equal(report.summary.sourceFigureCount,0);assert.equal(report.summary.longestTextOnlyRun,3);
+  assert.ok(report.issues.some(i=>i.code==='consecutive-text-only-pages'&&i.slideIds.length===3));
+  assert.equal(report.issues.filter(i=>i.code==='body-text-burden-review').length,3);
+});
+
+test('text cards and a relationship arrow cannot substitute for quantitative data',()=>{
+  const p={papers:[paper],claims:[claim],assets:[],slides:[{id:'s',layout:'results',argument:{role:'evidence'},paperIds:['P1'],claimIds:['C1']}]};
+  const report=evidenceDesignReport(p,scene([text('Input 3'),text('Output 4'),{kind:'line',role:'relationship',x:60,y:160,w:240,h:0}]));
+  assert.deepEqual(report.slides[0].visibleCarriers,['authored-relationship']);
+  assert.deepEqual(report.slides[0].dataCarriers,[]);
+  assert.ok(report.issues.some(i=>i.code==='quantitative-evidence-text-only'));
+  p.brief={visualEvidence:{mode:'source-led'}};
+  assert.equal(evidenceDesignReport(p,scene([text('Input 3'),text('Output 4'),{kind:'line',role:'relationship',x:60,y:160,w:240,h:0}])).issues.find(i=>i.code==='quantitative-evidence-text-only').severity,'error');
+  p.brief.visualEvidence.mode='flexible';
+  assert.equal(evidenceDesignReport(p,scene([text('Input 3'),text('Output 4'),{kind:'line',role:'relationship',x:60,y:160,w:240,h:0}])).issues.find(i=>i.code==='quantitative-evidence-text-only').severity,'warning');
+});
+
+test('only actual bound reviewed source figures count, including the drawing-image path',()=>{
+  const reviewed={purpose:'evidence',contentType:'plot',task:'read-values',verifiedBy:'vision-model'};
+  const variants=[
+    {...asset,id:'used',provenance:'source',reading:reviewed},
+    {...asset,id:'registered-only',reading:reviewed},
+    {...asset,id:'decor',usage:'decorative',reading:reviewed},
+    {...asset,id:'locator',reading:{...reviewed,purpose:'locator'}},
+    {...asset,id:'unchecked',reading:{...reviewed,verifiedBy:'unverified'}},
+    {...asset,id:'unrelated',paperId:'P2',reading:reviewed},
+    {...asset,id:'authored',provenance:'author-created',reading:{...reviewed,contentType:'diagram'}},
+    {...asset,id:'off-page',reading:reviewed},
+    {...asset,id:'hidden',reading:reviewed},
+  ];
+  const p={papers:[paper,{...paper,id:'P2'}],claims:[claim],assets:variants,slides:[{id:'s',layout:'academic',argument:{role:'evidence'},paperIds:['P1'],claimIds:['C1'],figureIds:variants.filter(a=>a.id!=='used').map(a=>a.id),
+    drawings:[{id:'drawing',elements:[{kind:'image',assetId:'used'}]}]}]};
+  const nodes=variants.filter(a=>a.id!=='registered-only').map(a=>({kind:'image',assetId:a.id,x:a.id==='off-page'?1400:50,y:140,w:a.id==='used'?140:500,h:a.id==='used'?90:300,...(a.id==='hidden'?{semantic:false}:{})}));
+  const report=evidenceDesignReport(p,scene(nodes)),slide=report.slides[0];
+  assert.deepEqual(slide.sourceFigureIds,['used']);assert.deepEqual(slide.authoredFigureIds,['authored']);
+  assert.equal(report.summary.sourceFigureCount,1);assert.equal(report.summary.sourceFigureSlideCount,1);
+  assert.ok(slide.excludedImages.some(a=>a.assetId==='unrelated'&&a.reason==='unbound-or-unrelated-source'));
+  assert.ok(report.issues.some(i=>i.code==='scientific-image-review-missing'));
+  assert.ok(report.issues.some(i=>i.code==='source-figure-thumbnail-review'&&i.assetIds.includes('used')));
+  assert.ok(!report.issues.some(i=>i.severity==='error'),'size heuristics never impose a universal quota');
 });
 
 test('new default projection policy remains attached on record updates while explicit legacy designs remain valid',async t=>{

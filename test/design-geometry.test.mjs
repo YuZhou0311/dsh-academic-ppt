@@ -113,6 +113,16 @@ test('normal gutters between large evidence objects are not treated as content v
   assert.ok(result.slides[0].contentCoverage > .95);
 });
 
+test('scattered short text still requests a density review when no single void reaches the old threshold', () => {
+  const nodes = Array.from({length:36}, (_,index) => text(`fragment-${index}`,48+(index%6)*196,132+Math.floor(index/6)*90,96));
+  const result = diagnose(nodes);
+  assert.ok(result.slides[0].largestUnallocatedFraction < .20);
+  assert.ok(result.slides[0].contentCoverage < .28);
+  assert.equal(result.slides[0].sparseContentDistribution,true);
+  assert.ok(result.issues.some(issue => issue.code==='sparse-content-distribution' && issue.severity==='warning'));
+  assert.equal(result.issues.some(issue => issue.severity==='error'),false);
+});
+
 test('sparse marks inside a native scientific plot retain the complete plot coordinate space', () => {
   const result = diagnose([
     text('data-plot/reading-note', 48, 132, 1184),

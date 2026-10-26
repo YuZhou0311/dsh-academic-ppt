@@ -68,6 +68,7 @@ export function academicIssues(project) {
 export function constraintRelaxations(before,after) {
   const fields=[];
   if(before.requireFullText&&!after.requireFullText)fields.push('requireFullText');
+  if(before.visualEvidence?.mode==='source-led'&&after.visualEvidence?.mode!=='source-led')fields.push('visualEvidence.mode');
   if((after.targetPaperCount??0)<(before.targetPaperCount??0))fields.push('targetPaperCount');
   if((after.impactFactorMin??0)<(before.impactFactorMin??0))fields.push('impactFactorMin');
   if(before.requirePaperIntro&&!after.requirePaperIntro)fields.push('requirePaperIntro');

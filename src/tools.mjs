@@ -31,13 +31,13 @@ export const TOOL_COMMANDS = Object.freeze({
 })
 
 const descriptions = {
-  academic_ppt_init: '创建学术汇报工程，记录研究问题、论证路线、分节问题、听众与证据要求；用学术色板、文字主导封面与可见导航组织报告。Create a revisioned academic presentation project.',
+  academic_ppt_init: '创建可恢复学术汇报工程，记录研究问题、听众与章节；默认source-led，先查证文献并取得原图，再设计页面。完整要求见contract(brief)。',
   academic_ppt_record: '从工作区 recordsPath 读取≤1MiB UTF-8 JSON批次，登记论文、论点、图资产或页面；参数只放工程文件路径与修订号。字段不清楚先用academic_ppt_contract按主题查询，先登记被引用记录。Read bounded record batches from a workspace JSON file.',
   academic_ppt_context: '按阶段读取工程的精简工作上下文与待解决项；不回传整篇论文或图片数据。Get compact stage context and stable IDs.',
   academic_ppt_build: '把工程生成原生可编辑 PPTX、HTML 与检查材料；保存新版本，不覆盖 Office 手工修改。Build editable artifacts; successful export is not visual approval.',
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
-  academic_ppt_check: '只读检查论文证据、整稿论证路线、章节一致性、内容占幅与产物摘要；封面与导航留白只作视觉提醒，正文证据门槛保留。静态检查不能代替逐页看最终 PPTX。Inspect evidence, actual content distribution and output integrity.',
+  academic_ppt_check: '检查来源查证、实际论文图使用、正文图文载体、留白、内容与产物摘要。source-led会阻断无原图或未用的已选图；静态检查不代替逐页看最终PPTX。',
   academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，学习主辅证据、邻接解释、分组、密度与层级，当前内容决定实际坐标；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
   academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
   academic_ppt_contract: '按preparation/brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
@@ -45,7 +45,7 @@ const descriptions = {
   academic_ppt_study: '从工作区candidatesPath读取≤1MiB UTF-8候选数组[{id,label,slide}]，每个slide字段见contract(slide)。提供2–6个真实候选，导出SVG、原生PPTX和并列HTML；render:true生成实际PPTX预览，不改原工程或批准。Compare concrete authored alternatives.',
   academic_ppt_portfolio: '只读比较明确提供的2–12份工程的主体结构和封面；换文字颜色或数据值不算结构改变，报告可并列的页对供实图复核，不提供原创性得分。Inspect supplied projects without scanning other files.',
   academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
-  academic_ppt_prepare: '读取requestPath（≤1MiB JSON，字段见contract(preparation)），规划一次模板询问及内容化卡片生图。已声明宿主生图工具可用则优先生成提示；缺失/失败/拒绝回退原生卡片。不自行提问、调用模型或读取密钥。Plan template and image-reference design.',
+  academic_ppt_prepare: '规划辅助卡片与模板，论文查证取图优先。读取requestPath（≤1MiB JSON，契约见preparation），返回一次模板提问与可用宿主生图计划；失败回退原生卡片。不自行提问、调用模型或读取密钥。',
   academic_ppt_cards: '按family/purpose查询36种原生学术卡片；presetId返回内容契约、尺寸、结构与示例。用于局部信息组合，非整页布局。Inspect editable card recipes.',
 }
 
@@ -110,6 +110,9 @@ export function registeredToolParameters(name) {
     required: name === 'academic_ppt_record' ? fields : name === 'academic_ppt_study' ? ['projectPath','expectedRevision','outputDir','candidatesPath'] : schema.required.filter(key => fields.includes(key)),
   } : schema
   const wire = dshWireSchema(selected)
+  // Keep the small initial choice visible; the conditional reason contract is
+  // fetched on demand and still enforced by Ajv at execution.
+  if(name==='academic_ppt_init')wire.properties.brief.properties.visualEvidence={type:'object',properties:{mode:{type:'string',enum:['source-led','flexible']},reason:{type:'string'}},required:['mode'],additionalProperties:false,description:'默认source-led；flexible须具体reason，完整约束见contract(brief)。'}
   // The exact 36-value enum is enforced at runtime and discoverable through cards;
   // do not repeat the entire catalogue in every model request.
   if(name==='academic_ppt_cards')wire.properties.presetId={type:'string',description:'本工具索引中返回的精确preset.id；运行时按完整枚举校验。'}
@@ -210,6 +213,7 @@ export function formatToolResult(name, result) {
     if (data.scope) lines.push(`导入边界：${clip(data.scope, 1800)}`)
   }
   if (name === 'academic_ppt_prepare') {
+    for(const instruction of data.researchPrerequisite?.instructions??[])lines.push(clip(instruction,1800))
     lines.push(`下一步：${clip(data.nextAction,160)}`)
     if(data.planPath)lines.push(`设计准备记录：${clip(data.planPath,3000)}`)
     if(data.designAdaptation){
@@ -296,6 +300,8 @@ export function formatToolResult(name, result) {
         const record = own(item.record)
         lines.push(`记录 ${clip(item.collection, 30)}/${clip(record.id, 80)}：${clip(record.title ?? record.text ?? record.caption, 1800)}`)
         for (const key of ['methodSummary', 'context', 'locator', 'version', 'figure', 'panel', 'cropNote']) if (record[key]) lines.push(`${key}：${clip(record[key], 1400)}`)
+        if (record.sourceCheck) lines.push(`来源核对记录（宿主执行）：${clip(JSON.stringify(record.sourceCheck),2400)}`)
+        if (record.figureReview) lines.push(`图源盘点：${clip(JSON.stringify(record.figureReview),3800)}`)
         if (record.reading?.status) lines.push(`阅读状态：${clip(record.reading.status, 40)}；来源：${clip(record.reading.source, 500)}；阅读笔记：${clip(record.reading.notes, 1400)}`)
         if (record.reading?.purpose) lines.push(`图片阅读：${clip(JSON.stringify(record.reading),2200)}`)
         if (record.argument) lines.push(`页面论证：${clip(JSON.stringify(record.argument),2400)}`)
@@ -319,6 +325,10 @@ export function formatToolResult(name, result) {
   for (const key of ['instructions', 'nextActions', 'pending']) {
     if (Array.isArray(data[key])) lines.push(...data[key].slice(0, 12).map(x => clip(typeof x === 'string' ? x : x.message ?? x.id ?? x.title, 650)))
   }
+  const visualEvidence = data.evidenceDesign ?? data.designDiagnostics?.evidenceDesign ?? data.quality?.designDiagnostics?.evidenceDesign
+  if(visualEvidence?.summary){const v=visualEvidence.summary;lines.push(`正文视觉载体：${v.bodySlideCount}页；论文原图${v.sourceFigureCount}幅/覆盖${v.sourceFigureSlideCount}页；科学图示${v.scientificVisualSlideCount}页；原生表${v.nativeTableSlideCount}页；纯文字${v.textOnlySlideCount}页，最长连续${v.longestTextOnlyRun}页。文字卡和装饰不算论文图。`)}
+  const research = data.researchEvidence ?? data.designDiagnostics?.researchEvidence ?? data.quality?.designDiagnostics?.researchEvidence
+  if(research?.summary){const r=research.summary;lines.push(`来源获取检查：策略${research.mode}；核心来源${r.coreSourceCount}篇，登记已查证${r.verifiedSourceCount}篇；选中原图${r.selectedSourceFigureCount}幅，实际入稿${r.usedSelectedSourceFigureCount}幅；阻断项${r.blockingIssues}。记录由宿主执行，插件不独立联网验真。`);if(r.selectedButUnusedAssetIds?.length)lines.push(`已选但未入稿：${r.selectedButUnusedAssetIds.join('、')}`)}
   const issues = Array.isArray(data.issues) ? data.issues : Array.isArray(data.quality?.issues) ? data.quality.issues : []
   if (issues.length) {
     lines.push(`检查事项：${issues.length}`)

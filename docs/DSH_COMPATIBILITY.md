@@ -1,6 +1,6 @@
 # DSH Desktop / Web 兼容性
 
-`dsh-academic-ppt 0.8.0` 使用 DSH 的 Host 插件接口，在桌面端和网页端提供同一套学术汇报技能与 16 个工具。两端使用同一个安装包；插件不依赖浏览器扩展或单独的 Electron 前端。
+`dsh-academic-ppt 0.8.1` 使用 DSH 的 Host 插件接口，在桌面端和网页端提供同一套学术汇报技能与 16 个工具。两端使用同一个安装包；插件不依赖浏览器扩展或单独的 Electron 前端。
 
 ## 支持范围
 
@@ -38,7 +38,7 @@ DSH 在安装和启动插件时检查 `engines.dsh`，其 SemVer 比较包括预
 需要终端操作时，先在桌面应用菜单通过 **Manage dsh Command…（管理 dsh 命令）** 安装或修复桌面随附命令。桌面应用至少启动一次后，使用「退出」完全关闭应用，再运行：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.8.0.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.8.1.tgz"
 ```
 
 随后重新打开桌面应用。只关闭窗口通常会隐藏应用，Host 仍在运行。**npm 安装的 `dsh` 不允许修改官方 Desktop 的受管 profile**；桌面随附命令才能管理它。官方桌面端与 Web 共用 Host / 插件管理接口，但各自维护独立的可执行依赖与插件启用状态。[官方桌面命令与安装归属](https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/apps/desktop/README.md#bundled-command-runtime)
@@ -50,7 +50,7 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.8.0.
 通过插件管理界面安装，或在 Host 上运行：
 
 ```sh
-npx @deepseek-ai/dsh@latest plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.8.0.tgz"
+npx @deepseek-ai/dsh@latest plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.8.1.tgz"
 npx @deepseek-ai/dsh@latest web
 ```
 
@@ -74,7 +74,7 @@ npm 版 CLI 的插件命令会调用 PATH 中的 pnpm；`--profile` 放在 `add`
 | 卸载与重新挂载不遗留工具或重复技能 | 通过 | 通过 |
 | 官方 app-boot 接受声明范围，并拒绝过早与 0.3 版本 | 通过 | 通过 |
 
-现有工具注册、规范 JSON 输出、会话目录与取消信号接口可以沿用；本版补充明确的宿主版本声明、正确的两端安装说明和可重复的真实 Host 测试。上游 `master` 的协议还在迭代，源码核对固定在 `22ddee3792402c3e70ec5f86a63c3e3e895a2f60`；它的未发布内部实现不等同于 npm rc.3。
+0.8.1 的来源查证与图源记录沿用现有工具注册、规范 JSON 输出、会话目录和取消信号接口；以上两套真实 Host 检查均针对当前插件版本复跑。上游 `master` 的协议还在迭代，源码核对固定在 `22ddee3792402c3e70ec5f86a63c3e3e895a2f60`；它的未发布内部实现不等同于 npm rc.3。
 
 这些结果覆盖插件安装门槛和共享 Host 的注册、调用及导出路径；没有运行付费模型会话、桌面/Web GUI 全流程或 PowerPoint/WPS 编辑验收。此处的单页草稿是软件测试输入，不作为学术设计展示。
 

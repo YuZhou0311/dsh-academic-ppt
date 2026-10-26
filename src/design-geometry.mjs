@@ -151,6 +151,10 @@ export function designGeometryReport(project, scenes) {
     const severeLimit = cover ? .50 : navigation ? .60 : references ? 1 : .25;
     const severe = allocation.emptyFraction >= severeLimit;
     const blocks = severe && compact && !cover && !navigation && !references;
+    // Small text fragments can split one large void into many smaller ones.
+    // Flag that distribution for review without imposing a universal density
+    // quota on legitimate scientific diagrams or the interior of source plots.
+    const sparseDistribution = !cover && !navigation && !references && content.occupiedFraction < .28 && allocation.emptyFraction < warningLimit;
     const report = {
       slideId: page.id, layout: slide.layout, density: project.design?.density || 'balanced',
       basis: 'scene-geometry-estimate-not-aesthetic-score', contentBox: roundedBox(area),
@@ -158,9 +162,12 @@ export function designGeometryReport(project, scenes) {
       largestEmptyContentBox: roundedBox(content.empty), largestEmptyContentFraction: rounded(content.emptyFraction),
       largestUnallocatedBox: roundedBox(allocation.empty), largestUnallocatedFraction: rounded(allocation.emptyFraction),
       grid: allocation.grid, warningThreshold: warningLimit, blockingThreshold: cover || navigation || references ? null : severeLimit,
-      status: allocation.emptyFraction >= warningLimit ? blocks ? 'needs-layout-fix' : 'needs-review' : 'no-large-void-detected',
+      sparseContentDistribution: sparseDistribution,
+      status: allocation.emptyFraction >= warningLimit ? blocks ? 'needs-layout-fix' : 'needs-review' : sparseDistribution ? 'needs-review' : 'no-large-void-detected',
     };
     slides.push(report);
+    if (sparseDistribution) issues.push({severity:'warning',code:'sparse-content-distribution',slideId:page.id,path:`slides.${page.id}`,contentCoverage:report.contentCoverage,basis:report.basis,
+      message:`正文内容约占 ${percent(content.occupiedFraction)}，零散短文字可能把大空区分割成小空区。查看实际页面：先补回遗漏的论文图、相关比较或方法结构，再压缩空卡片、调整图文邻接与区域尺寸；不靠分散短句、加外框或放大字体填空。此为复核信号，不是统一信息密度配额。`});
     if (allocation.emptyFraction >= warningLimit) {
       const box = report.largestUnallocatedBox;
       const suggestion = references

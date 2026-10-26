@@ -210,6 +210,7 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   const nextAction = template.nextAction === 'ask-template-once' || template.nextAction === 'inspect-template' ? template.nextAction : imageGeneration.nextAction;
   const plan = { ok:true,version:1,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
     nextAction,template,imageGeneration,designAdaptation:adaptationPlan(request),
+    researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划辅助卡片与模板，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图，再按图安排正文；卡片围绕图承担解释和条件。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
     nativeFallback:{ tool:'academic_ppt_cards',selection:'先按当前内容用途研究候选，再调整配色、尺寸和实际分组；配方不适合时用drawings与composition.regions重新设计。卡片可与开放文字、图表、表格和流程组合，不把整稿排成卡片墙。' },
     stateRecord:'准备请求记录用户选择和宿主实际能力。工具返回提问/调用计划不代表动作已执行；只有宿主实际完成后才能更新相应状态。',
   };
