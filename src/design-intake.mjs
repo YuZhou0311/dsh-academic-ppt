@@ -4,6 +4,7 @@ import { mkdir, open, rm, stat } from 'node:fs/promises';
 import { dirname, extname } from 'node:path';
 import { hash, readBounded, safePath } from './io.mjs';
 import { CARD_PRESET_IDS } from './card-catalog.mjs';
+import { consultationSchema, referenceStudySchema, designDialoguePlan, resolvedDesignPreferences } from './design-dialogue.mjs';
 
 const text = (maxLength = 1800) => ({ type:'string', minLength:1, maxLength, pattern:'\\S' });
 const enumeration = values => ({ type:'string', enum:values });
@@ -14,6 +15,7 @@ const item = object({ label:text(200), value:{oneOf:[text(160),{type:'number',mi
 /** Returned on demand by contract(preparation), not in every registered tool request. */
 export const preparationRequestSchema = object({
   topic:text(700), audience:text(300),
+  consultation:consultationSchema,referenceStudy:referenceStudySchema,
   template:object({
     status:enumeration(['unasked','awaiting-upload','provided','none','unanswered']),
     localPaths:array(text(3000),4),
@@ -44,6 +46,8 @@ const validate = new Ajv({ allErrors:true, strict:true }).compile(preparationReq
 const valid = request => {
   if (!validate(request)) throw new Error('INVALID_PREPARATION: '+validate.errors.slice(0,8).map(e=>`${e.instancePath || '/'} ${e.message}`).join('; '));
   if (new Set((request.cards || []).map(card=>card.id)).size !== (request.cards || []).length) throw new Error('INVALID_PREPARATION: card IDs must be unique.');
+  const topics=(request.consultation?.decisions||[]).map(decision=>decision.topic);
+  if(new Set(topics).size!==topics.length)throw new Error('INVALID_PREPARATION: each design topic needs one current decision.');
   if (request.paletteMode === 'fixed' && !request.palette) throw new Error('INVALID_PREPARATION: paletteMode=fixed requires the explicitly specified palette.');
   return request;
 };
@@ -51,12 +55,15 @@ const valid = request => {
 function adaptationPlan(request) {
   const mode=request.paletteMode || 'adaptive';
   const colors=request.palette ? [...request.palette] : [];
+  const resolvedPreferences=resolvedDesignPreferences(request.consultation);
+  const chosenPalette=resolvedPreferences.find(preference=>preference.topic==='palette');
   const colorInstruction=mode === 'fixed'
     ? `保留调用方声明由用户明确固定的颜色：${colors.join('、')}。在这些颜色及中性底色内安排角色与占比；若可读性冲突，说明冲突，不擅自改变固定颜色。`
     : (colors.length ? `候选色${colors.join('、')}是起点，允许依据本次内容调整色相、明度、饱和度和占比，也可选用更合适的学术配色。` : '根据本次内容、受众与信息角色自主确定学术配色；参考图与预设的颜色不自动成为本稿固定颜色。');
   return {
     mode:'content-adaptive',
-    colorPolicy:{mode,candidateColors:colors,instruction:colorInstruction},
+    resolvedPreferences,
+    colorPolicy:{mode,candidateColors:colors,instruction:(chosenPalette?`已确定配色方向：${chosenPalette.selected}。具体候选颜色和调整须遵循这个方向；如与明确固定的颜色冲突，先确认冲突，不自动覆盖选择。 `:'')+colorInstruction},
     routes:[
       {mode:'adapt-preset',instruction:'配方适合当前信息关系时使用card.preset；可通过design.palette与design.colorRoles确定全稿色义，以card.accent、card.box和appearance.padding/radius/elevation调整局部强调、尺寸与留白。'},
       {mode:'compose-native',instruction:'需要改变内部列宽、题签位置、信息分区或单卡整套底色/文字色时，借鉴设计原则，用drawings与composition.regions重建原生组件；preset的内部recipe不接受appearance.layout/surface/accent覆盖。'},
@@ -72,6 +79,7 @@ function adaptationPlan(request) {
 }
 
 function cardPrompt(request, cards) {
+  const adaptation=adaptationPlan(request);
   const content = cards.map(card=>({
     id:card.id, purpose:card.purpose, title:card.title, body:card.body,
     ...(card.items ? { items:card.items } : {}), ...(card.badge ? { badge:card.badge } : {}),
@@ -83,7 +91,8 @@ function cardPrompt(request, cards) {
     `为学术汇报《${request.topic}》生成小型信息卡的原创设计参考图。听众：${request.audience || '以本次汇报已知听众为准'}。`,
     `输出是卡片设计探索，不是整页PPT、UI应用或研究证据。本批${cards.length}个内容单元，每个探索2种不同组织方式，共${cards.length*2}张卡片。卡片编号对应输入id，保留适当间距，便于逐卡查看。`,
     '先理解内容，再安排标题、题签/编号、正文、成组指标、条件和边界说明。让结构匹配语义：对照用同轴/同序，指标保留单位与分母，限制与对应论断邻接。采用可在PowerPoint中重建的清晰几何、克制描边、明确层级、足够文字区域。',
-    adaptationPlan(request).colorPolicy.instruction+' 全稿统一颜色含义与主辅比例，保证文字与底色可读，不把每张卡片染成不同品牌色。',
+    adaptation.resolvedPreferences.length?'以下设计选择已经确认或明确委托并选定，应落实到本次参考；未确认提议不是约束，其他细节可按内容自主设计：\n'+JSON.stringify(adaptation.resolvedPreferences,null,2):'未提供逐项固定选择的部分，由作者根据当前材料与明确委托自主设计。',
+    adaptation.colorPolicy.instruction+' 全稿统一颜色含义与主辅比例，保证文字与底色可读，不把每张卡片染成不同品牌色。',
     request.visualGuidance ? `设计要求：${request.visualGuidance}` : '按实际用途选择浮签、带状标题、侧标、折角、分隔指标、证据行、条件清单等结构；不要只换颜色和边框。',
     request.template?.learningGoals?.length ? `从已查看的用户模板只学习这些原则：${request.template.learningGoals.join('；')}。重新组织当前内容，不复刻机构、旧文字、独特插画或整页构图。` : '参考可用的卡片库作为结构词汇，不照抄某一张参考图或强制整稿都用卡片。',
     'preferredPresets只表示候选灵感，不锁定框形、题签位置、分区数量和比例。根据当前文字量与信息关系保留、合并、拆分或重排区块；适合比较的同类内容保持一致，不为显得原创而强行变形。只换颜色不等于完成内容适配。',
@@ -206,13 +215,24 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   try { request = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes).replace(/^\uFEFF/,'')); }
   catch { throw new Error('INVALID_PREPARATION_JSON: requestPath must contain a UTF-8 JSON object.'); }
   valid(request);
-  const template = await templatePlan(request,cwd,signal), imageGeneration = generationPlan(request);
-  const nextAction = template.nextAction === 'ask-template-once' || template.nextAction === 'inspect-template' ? template.nextAction : imageGeneration.nextAction;
+  const consultation=request.consultation || {mode:'collaborative'};
+  const designDialogue=designDialoguePlan(consultation);
+  const template = await templatePlan(request,cwd,signal);
+  let imageGeneration = generationPlan(request);
+  if(!designDialogue.readyForFinalDesign&&imageGeneration.nextAction==='invoke-host-imagegen'){
+    const {prompt,batches,...pendingGeneration}=imageGeneration;
+    imageGeneration={...pendingGeneration,nextAction:'await-design-feedback',instructions:[
+      '先取得配色、形态、文字与层次偏好，再按这些选择生成内容相关的卡片参考；当前尚未调用生图。研究查证和取图可继续。',
+    ]};
+  }
+  const nextAction = !designDialogue.readyForFinalDesign ? 'ask-design-questions'
+    : template.nextAction === 'ask-template-once' || template.nextAction === 'inspect-template' ? template.nextAction : imageGeneration.nextAction;
   const plan = { ok:true,version:1,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
-    nextAction,template,imageGeneration,designAdaptation:adaptationPlan(request),
-    researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划辅助卡片与模板，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图，再按图安排正文；卡片围绕图承担解释和条件。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
-    nativeFallback:{ tool:'academic_ppt_cards',selection:'先按当前内容用途研究候选，再调整配色、尺寸和实际分组；配方不适合时用drawings与composition.regions重新设计。卡片可与开放文字、图表、表格和流程组合，不把整稿排成卡片墙。' },
-    stateRecord:'准备请求记录用户选择和宿主实际能力。工具返回提问/调用计划不代表动作已执行；只有宿主实际完成后才能更新相应状态。',
+    nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
+    designRecords:{consultation:structuredClone(consultation),...(request.referenceStudy?{referenceStudy:structuredClone(request.referenceStudy)}:{})},
+    researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划卡片与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
+    nativeFallback:{ tool:'academic_ppt_cards',selection:'先查询完整目录与figure家族，读取合适候选的presetId并实际查看SVG或figure-cards.pptx；记录referenceStudy的预览观察、选型及内容改造。论文图可以放入card.figureIds，与图内题签、读图提示和条件组成一体；配方不适合时用drawings与composition.regions重组，保持证据来源。卡片、开放大图、跨栏比较和上下组合按研究任务选择。' },
+    stateRecord:'准备请求记录用户选择和宿主实际能力。返回提问/调用计划不代表动作已执行，不能把刚提出的问题记为无回复；得到真实回答后才更新状态。designRecords是待登记值，需合并实际design并用record保存，prepare不修改工程。',
   };
   if (outputPath) {
     const destination = await safePath(cwd,outputPath);

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { unzipSync, strFromU8 } from 'fflate';
 import { buildScenes, measureTextWidth, wrapText } from '../src/scene.mjs';
 import { renderProject } from '../src/render.mjs';
+import { scientificWrappingIssues } from '../src/scientific-text.mjs';
 import { PNG } from './fixtures.mjs';
 
 const base = () => ({
@@ -141,4 +142,59 @@ test('native table cells do not cause false collisions, while a dense table rema
   assert.ok(crowded.issues.some(issue=>issue.code==='table-overflow-estimate'&&issue.severity==='error'));
   assert.deepEqual(table.table,p.slides[0].table);
   assert.equal(table.fontSize,23);
+});
+
+test('scientific numbers, units and scripted identifiers wrap as lossless semantic units',()=>{
+  for(const token of ['12.3%','87.7%','−1.2e−3 kg/ha','+2.5E+6','±0.3 °C','3.2 × 10⁻³ mol m−2 s−1','287.44 kg/ha','39 样方','17/20','0.6-0.8','R²','ρ_NDVI','R²=0.07','P < 0.05']){
+    const text=`前置 ${token} 后续`,width=Math.max(80,measureTextWidth(token,28)+2),lines=wrapText(text,width,28);
+    assert.equal(lines.join(''),text,token);
+    assert.ok(lines.some(line=>line.includes(token)),`must not split ${token}`);
+    assert.ok(lines.every(line=>measureTextWidth(line,28)<=width+.01),token);
+  }
+});
+
+test('an over-wide scientific unit is diagnosed rather than divided or scaled',()=>{
+  const text='观测 −1.2e−3 kg/ha，保留条件。',width=82,size=28,lines=wrapText(text,width,size);
+  assert.equal(lines.join(''),text);
+  assert.ok(lines.includes('−1.2e−3 kg/ha，'));
+  const issue=scientificWrappingIssues(text,lines,width,size,measureTextWidth).find(i=>i.code==='scientific-token-too-wide');
+  assert.equal(issue.severity,'error');assert.equal(issue.availableWidth,width);assert.ok(issue.requiredWidth>width);
+  assert.match(issue.token,/−1\.2e−3 kg\/ha/);
+  const ordinary='https://example.org/a-very-long-nonscientific-identifier';
+  const ordinaryLines=wrapText(ordinary,160,size);
+  assert.equal(ordinaryLines.join(''),ordinary);
+  assert.ok(ordinaryLines.every(line=>measureTextWidth(line,size)<=160+.01),'long prose and URLs retain their lossless fallback');
+});
+
+test('P11 narrow percentage cells require a wider column and keep the same SVG and native PPTX text',async()=>{
+  const p=base();p.design.system={header:'plain',bodySize:28};
+  p.slides=[slide({layout:'academic',title:'P11 数值列断行回归（排版测试）',
+    table:{columns:['口径项','条数','说明'],rows:[['命中总条目','73','严格过滤后'],['中国机构主导','9（12.3%）','第一作者国别 CN'],['国际机构主导','64（87.7%）','同一口径']],columnWeights:[1.4,1,2]},
+    composition:{regions:[{id:'counts',title:'',heading:'hidden',surface:'plain',padding:0,box:{x:60,y:176,w:592,h:430},table:true}]}})];
+  const before=structuredClone(p),out=await renderProject(p),table=out.scenes.pages[0].nodes.find(n=>n.kind==='table');
+  assert.equal(table.fontSize,28);assert.ok(Math.abs(table.colWidths[1]-134.5454545)<.00001);
+  assert.deepEqual(table.cellLines[2][1],['9','（12.3%）']);
+  assert.deepEqual(table.cellLines[3][1],['64','（87.7%）']);
+  const issues=out.issues.filter(i=>i.code==='scientific-token-too-wide');
+  assert.deepEqual(issues.map(i=>[i.row,i.column,i.token]),[[2,1,'（12.3%）'],[3,1,'（87.7%）']]);
+  assert.ok(issues.every(i=>i.severity==='error'&&Math.abs(i.availableWidth-99.1454545)<.00001));
+  const xml=strFromU8(unzipSync(out.pptx)['ppt/slides/slide1.xml']);
+  for(const token of ['（12.3%）','（87.7%）']){
+    assert.ok(xml.includes(`<a:t>${token}</a:t>`),'native text stores the complete percentage');
+    assert.ok(out.svgPages[0].svg.includes(token),'SVG uses the same intact unit');
+  }
+  assert.match(xml,/sz="2100"/);assert.doesNotMatch(xml,/<a:(?:normAutofit|spAutoFit)/);assert.deepEqual(p,before);
+  p.slides[0].table.columnWeights=[1.7,1.6,1.1];
+  const repaired=buildScenes(p),repairedTable=repaired.pages[0].nodes.find(n=>n.kind==='table');
+  assert.ok(!repaired.issues.some(i=>i.code==='scientific-token-too-wide'));
+  assert.equal(repairedTable.fontSize,28);assert.deepEqual(repairedTable.table.rows,before.slides[0].table.rows);
+  assert.deepEqual(repairedTable.cellLines[2][1],['9（12.3%）']);assert.deepEqual(repairedTable.cellLines[3][1],['64（87.7%）']);
+});
+
+test('short Chinese final lines and bad punctuation are review warnings without text edits',()=>{
+  const text='保留必要验证条件外推',lines=wrapText(text,8*24,24);
+  assert.equal(lines.join(''),text);
+  assert.ok(scientificWrappingIssues(text,lines,8*24,24,measureTextWidth).some(i=>i.code==='text-short-last-line'&&i.severity==='warning'));
+  const explicit='保留来源。\n，检查人工换行';
+  assert.ok(scientificWrappingIssues(explicit,wrapText(explicit,400,24),400,24,measureTextWidth).some(i=>i.code==='text-punctuation-break'&&i.severity==='warning'));
 });

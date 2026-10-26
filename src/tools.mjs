@@ -31,13 +31,13 @@ export const TOOL_COMMANDS = Object.freeze({
 })
 
 const descriptions = {
-  academic_ppt_init: '创建可恢复学术汇报工程，记录研究问题、听众与章节；默认source-led，先查证文献并取得原图，再设计页面。完整要求见contract(brief)。',
+  academic_ppt_init: '创建可恢复学术汇报工程，记录研究问题、听众与章节；默认source-led与分阶段设计协商。先讨论密度/故事线等偏好并查证取图，契约见brief/design。',
   academic_ppt_record: '从工作区 recordsPath 读取≤1MiB UTF-8 JSON批次，登记论文、论点、图资产或页面；参数只放工程文件路径与修订号。字段不清楚先用academic_ppt_contract按主题查询，先登记被引用记录。Read bounded record batches from a workspace JSON file.',
   academic_ppt_context: '按阶段读取工程的精简工作上下文与待解决项；不回传整篇论文或图片数据。Get compact stage context and stable IDs.',
   academic_ppt_build: '把工程生成原生可编辑 PPTX、HTML 与检查材料；保存新版本，不覆盖 Office 手工修改。Build editable artifacts; successful export is not visual approval.',
   academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
   academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
-  academic_ppt_check: '检查来源查证、实际论文图使用、正文图文载体、留白、内容与产物摘要。source-led会阻断无原图或未用的已选图；静态检查不代替逐页看最终PPTX。',
+  academic_ppt_check: '检查设计协商、参考学习、图源使用、文字与版面；静态通过不代替逐页看最终PPTX。',
   academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，学习主辅证据、邻接解释、分组、密度与层级，当前内容决定实际坐标；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
   academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
   academic_ppt_contract: '按preparation/brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
@@ -45,8 +45,8 @@ const descriptions = {
   academic_ppt_study: '从工作区candidatesPath读取≤1MiB UTF-8候选数组[{id,label,slide}]，每个slide字段见contract(slide)。提供2–6个真实候选，导出SVG、原生PPTX和并列HTML；render:true生成实际PPTX预览，不改原工程或批准。Compare concrete authored alternatives.',
   academic_ppt_portfolio: '只读比较明确提供的2–12份工程的主体结构和封面；换文字颜色或数据值不算结构改变，报告可并列的页对供实图复核，不提供原创性得分。Inspect supplied projects without scanning other files.',
   academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
-  academic_ppt_prepare: '规划辅助卡片与模板，论文查证取图优先。读取requestPath（≤1MiB JSON，契约见preparation），返回一次模板提问与可用宿主生图计划；失败回退原生卡片。不自行提问、调用模型或读取密钥。',
-  academic_ppt_cards: '按family/purpose查询36种原生学术卡片；presetId返回内容契约、尺寸、结构与示例。用于局部信息组合，非整页布局。Inspect editable card recipes.',
+  academic_ppt_prepare: '规划卡片与模板参考，论文查证取图优先。读取requestPath（≤1MiB JSON，契约见preparation），返回分阶段设计问题、模板提问与宿主生图计划；失败回退原生卡片。不自行提问、调用模型或读取密钥。',
+  academic_ppt_cards: '按family/purpose查询48种原生学术卡片（含12种嵌图卡）；presetId返回内容契约、尺寸、结构与示例。用于局部信息组合，非整页布局。Inspect editable card recipes.',
 }
 
 const coreExecutors = {
@@ -67,14 +67,15 @@ const coreExecutors = {
   academic_ppt_cards: async ({presetId,family,purpose,limit,signal}) => {
     signal?.throwIfAborted()
     const galleryPath=fileURLToPath(new URL('../skills/dsh-academic-ppt/references/card-library/index.html',import.meta.url))
+    const figureDeckPath=fileURLToPath(new URL('../skills/dsh-academic-ppt/references/card-library/figure-cards.pptx',import.meta.url))
     if (presetId) {
       const preset=getCardPreset(presetId)
       if (!preset) throw new Error('UNKNOWN_CARD_PRESET: '+presetId)
-      return {ok:true,preset:structuredClone(preset),galleryPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['先判断配方是否适合本次内容；适合时将preset.id写入card.preset，并填写真实title/body/items/metric/badge/note及claimIds。示例仅用于理解设计，不是必须照搬的外观或研究事实。','在用户明确约束内自主调整design.palette与design.colorRoles、card.accent、card.box和appearance.padding/radius/elevation；保持全稿色义、正文可读与比较尺度一致。','需要不同内部比例、题签位置、分区或局部底色/文字色时，用drawings与composition.regions重建；appearance.layout/surface/accent不覆盖preset。已有布局或内容改动使用slide-content，card-style保持内容与外框锁定。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
+      return {ok:true,preset:structuredClone(preset),galleryPath,figureDeckPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['先判断配方是否适合本次内容；适合时将preset.id写入card.preset，并填写真实title/body/items/metric/badge/note及claimIds。示例仅用于理解设计，不是必须照搬的外观或研究事实。','在用户明确约束内自主调整design.palette与design.colorRoles、card.accent、card.box和appearance.padding/radius/elevation；保持全稿色义、正文可读与比较尺度一致。','需要不同内部比例、题签位置、分区或局部底色/文字色时，用drawings与composition.regions重建；appearance.layout/surface/accent不覆盖preset。已有布局或内容改动使用slide-content，card-style保持内容与外框锁定。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
     }
-    const matches=listCardPresets({family,purpose,limit:36,includeExamples:false})
-    const presets=matches.slice(0,limit??36).map(({id,name,family,purpose,dimensions})=>({id,name,family,purpose,dimensions}))
-    return {ok:true,totalCount:CARD_PRESETS.length,matchedCount:matches.length,count:presets.length,families:structuredClone(CARD_FAMILIES),presets,galleryPath,
+    const matches=listCardPresets({family,purpose,limit:CARD_PRESETS.length,includeExamples:false})
+    const presets=matches.slice(0,limit??CARD_PRESETS.length).map(({id,name,family,purpose,dimensions})=>({id,name,family,purpose,dimensions}))
+    return {ok:true,totalCount:CARD_PRESETS.length,matchedCount:matches.length,count:presets.length,families:structuredClone(CARD_FAMILIES),presets,galleryPath,figureDeckPath,
       instructions:['按内容关系研究候选，再用presetId读取配方；配色、尺寸和内容分组应服务本稿，参考无需照搬。需要新的内部组织时可用drawings与composition.regions；同一页可组合卡片、开放文字、图表或表格。','名称筛选只匹配用途文本；没有匹配时查看family或全部索引，不把“无匹配”误报为不支持该研究领域。']}
   },
 }
@@ -113,7 +114,7 @@ export function registeredToolParameters(name) {
   // Keep the small initial choice visible; the conditional reason contract is
   // fetched on demand and still enforced by Ajv at execution.
   if(name==='academic_ppt_init')wire.properties.brief.properties.visualEvidence={type:'object',properties:{mode:{type:'string',enum:['source-led','flexible']},reason:{type:'string'}},required:['mode'],additionalProperties:false,description:'默认source-led；flexible须具体reason，完整约束见contract(brief)。'}
-  // The exact 36-value enum is enforced at runtime and discoverable through cards;
+  // The exact preset enum is enforced at runtime and discoverable through cards;
   // do not repeat the entire catalogue in every model request.
   if(name==='academic_ppt_cards')wire.properties.presetId={type:'string',description:'本工具索引中返回的精确preset.id；运行时按完整枚举校验。'}
   if (wire.properties.projectPath) wire.properties.projectPath.description = 'init返回的project.json文件路径，不是工程目录。 ' + (wire.properties.projectPath.description ?? '')
@@ -220,6 +221,7 @@ export function formatToolResult(name, result) {
       const a=data.designAdaptation
       lines.push(`卡片适配：${a.mode}；配色策略 ${a.colorPolicy.mode}`)
       lines.push(a.colorPolicy.instruction)
+      if(a.resolvedPreferences?.length)lines.push(`已采纳设计选择：${JSON.stringify(a.resolvedPreferences)}`)
       for(const route of a.routes??[])lines.push(`设计路径 ${route.mode}：${route.instruction}`)
       for(const instruction of a.instructions??[])lines.push(instruction)
       if(a.decisionRecord)lines.push(a.decisionRecord)
@@ -250,6 +252,7 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_cards') {
     if(data.galleryPath)lines.push(`本地图册：${clip(data.galleryPath,3000)}`)
     if(data.previewPath)lines.push(`单卡预览：${clip(data.previewPath,3000)}`)
+    if(data.figureDeckPath)lines.push(`12页嵌图卡原生参考：${clip(data.figureDeckPath,3000)}`)
     if(data.preset)lines.push(`卡片完整配方：${JSON.stringify(data.preset)}`)
     else{
       lines.push(`卡片预设：总计 ${data.totalCount}，匹配 ${data.matchedCount}，本次 ${data.count}。`)
@@ -311,6 +314,7 @@ export function formatToolResult(name, result) {
         if (Array.isArray(record.cards)) for(const c of record.cards.slice(0,8)) {
           lines.push(`卡片 ${clip(c.id,80)}（${clip(c.preset ?? c.style ?? c.kind,80)}）：${clip(c.title,150)}；${clip(c.body,450)}`)
           if(c.badge)lines.push(`卡片编号/标识：${clip(c.badge,80)}`)
+          if(c.figureIds?.length)lines.push(`卡内论文图：${c.figureIds.join('、')}；图区高度${c.mediaHeight??'按配方测量'}px`)
           if(Array.isArray(c.items))for(const item of c.items.slice(0,6))lines.push(`卡片分块 ${clip(item.label,200)}：${clip(item.value??'',100)} ${clip(item.unit??'',100)}；${clip(item.detail??'',500)}`)
           if(c.note)lines.push(`卡片限定/附注：${clip(c.note,800)}`)
         }
@@ -325,6 +329,15 @@ export function formatToolResult(name, result) {
   for (const key of ['instructions', 'nextActions', 'pending']) {
     if (Array.isArray(data[key])) lines.push(...data[key].slice(0, 12).map(x => clip(typeof x === 'string' ? x : x.message ?? x.id ?? x.title, 650)))
   }
+  const dialogue=data.designDialogue??data.designDiagnostics?.designDialogue??data.quality?.designDiagnostics?.designDialogue
+  if(dialogue){
+    lines.push(`设计协商：${dialogue.mode} / ${dialogue.stage}；待确认${(dialogue.pendingTopics??[]).join('、')||'无'}。提议不等于已询问或已确认。`)
+    for(const q of dialogue.questions??[])lines.push(`本轮待提问：${JSON.stringify(q)}`)
+    for(const instruction of dialogue.instructions??[])lines.push(instruction)
+    if(dialogue.referenceStudy)lines.push(`卡片参考学习：${dialogue.referenceStudy.status}；当前原生配方${dialogue.referenceStudy.usedPresets.join('、')||'无'}；嵌图卡${dialogue.referenceStudy.imageCardCount}张。`)
+  }
+  const layouts=data.layoutDiversity??data.designDiagnostics?.layoutDiversity??data.quality?.designDiagnostics?.layoutDiversity
+  if(layouts?.summary){const l=layouts.summary;lines.push(`实际构图复核：${l.visualSlideCount}张含图证正文，${l.reviewSignals}个重复骨架提醒；按证据关系检查，保持可比尺度的页面可以一致。`)}
   const visualEvidence = data.evidenceDesign ?? data.designDiagnostics?.evidenceDesign ?? data.quality?.designDiagnostics?.evidenceDesign
   if(visualEvidence?.summary){const v=visualEvidence.summary;lines.push(`正文视觉载体：${v.bodySlideCount}页；论文原图${v.sourceFigureCount}幅/覆盖${v.sourceFigureSlideCount}页；科学图示${v.scientificVisualSlideCount}页；原生表${v.nativeTableSlideCount}页；纯文字${v.textOnlySlideCount}页，最长连续${v.longestTextOnlyRun}页。文字卡和装饰不算论文图。`)}
   const research = data.researchEvidence ?? data.designDiagnostics?.researchEvidence ?? data.quality?.designDiagnostics?.researchEvidence

@@ -26,7 +26,7 @@ composition的surface、heading与padding控制外层表达；heading:hidden可�
 
 ## 原生绘制与既有卡片
 
-新卡片先按[card-design.md](card-design.md)中的内容关系查询`academic_ppt_cards`，从6族36款中选择`card.preset`。图册提供浮签、标题带、折角、编号、侧栏和不同读数、条件、对照、流程组织；样式数量不决定一页应放多少卡片。按工具详情填写实际题名、正文、条目和限定，不把示例事实带入研究。
+新卡片先按[card-design.md](card-design.md)中的内容关系查询`academic_ppt_cards`，实际查看适合本稿的预览，再从7族48款中选择或改造`card.preset`。图册提供浮签、标题带、折角、编号、侧栏和不同读数、条件、对照、流程组织，另有12种[图片嵌入式卡片](image-cards.md)。卡内论文图同样可以承载主证据；按实际图片比例与阅读大小决定独立开放大图、图卡或二者组合。样式数量不决定一页应放多少卡片。按工具详情填写实际题名、正文、条目和限定，不把示例事实带入研究。
 
 显式`preset`决定内部布局、表面和强调形态，不继承项目`cardDefaults`，旧`style`也不叠加。预设只接受`appearance.padding`、`radius`、`elevation`作为外观微调，`card.accent`控制实际强调色；不要另外提交`appearance.layout`、`surface`或`accent`，这些字段会被忽略并产生提醒。不要同时设置`templateComponentId`；模板组件与原生配方选择一种。已有记录没有`preset`时继续既有样式；用独立原生drawing自主设计时无需同时套一个preset。
 

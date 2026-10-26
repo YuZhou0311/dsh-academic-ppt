@@ -7,5 +7,5 @@ export function cardTextParts(card = {}) {
 }
 
 export function cardHasContent(card = {}) {
-  return cardTextParts({ ...card, title: '', badge: '' }).length > 0;
+  return cardTextParts({ ...card, title: '', badge: '' }).length > 0 || Array.isArray(card.figureIds) && card.figureIds.length > 0;
 }

@@ -5,7 +5,7 @@
     "family": "research",
     "purpose": "一个研究问题与简短语境",
     "useWhen": "一个研究问题与简短语境",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "double",
       "header": "tab",
@@ -57,7 +57,7 @@
     "family": "research",
     "purpose": "概念解释与适用语境",
     "useWhen": "概念解释与适用语境",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "bracket",
       "header": "plain",
@@ -118,7 +118,7 @@
     "family": "research",
     "purpose": "短主题标签与较长背景解释",
     "useWhen": "短主题标签与较长背景解释",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "rail",
       "header": "rail",
@@ -170,7 +170,7 @@
     "family": "research",
     "purpose": "定义、符号含义或工作口径",
     "useWhen": "定义、符号含义或工作口径",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ruled",
       "header": "rule",
@@ -235,7 +235,7 @@
     "family": "research",
     "purpose": "背景事实与需要保留的限定",
     "useWhen": "背景事实与需要保留的限定",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "fold",
       "header": "fold",
@@ -287,7 +287,7 @@
     "family": "research",
     "purpose": "一组研究议题中的有序节点",
     "useWhen": "一组研究议题中的有序节点",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "number",
@@ -345,7 +345,7 @@
     "family": "method",
     "purpose": "方法名称、核心操作和条件",
     "useWhen": "方法名称、核心操作和条件",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "band",
@@ -397,7 +397,7 @@
     "family": "method",
     "purpose": "严格有序的局部处理步骤",
     "useWhen": "严格有序的局部处理步骤",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "plain",
       "header": "rule",
@@ -462,7 +462,7 @@
     "family": "method",
     "purpose": "输入与输出的成对说明",
     "useWhen": "输入与输出的成对说明",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "plain",
@@ -523,7 +523,7 @@
     "family": "method",
     "purpose": "作者给定的公式及符号解释",
     "useWhen": "作者给定的公式及符号解释",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ruled",
       "header": "plain",
@@ -585,7 +585,7 @@
     "family": "method",
     "purpose": "名称与取值对齐的操作协议",
     "useWhen": "名称与取值对齐的操作协议",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "band",
@@ -650,7 +650,7 @@
     "family": "method",
     "purpose": "算法主题与分组操作",
     "useWhen": "算法主题与分组操作",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ribbon",
       "header": "plain",
@@ -711,7 +711,7 @@
     "family": "evidence",
     "purpose": "明确区分判断与支持证据",
     "useWhen": "明确区分判断与支持证据",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "band",
@@ -772,7 +772,7 @@
     "family": "evidence",
     "purpose": "一条观察与紧邻的来源限定",
     "useWhen": "一条观察与紧邻的来源限定",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "double-bottom",
       "header": "plain",
@@ -824,7 +824,7 @@
     "family": "evidence",
     "purpose": "来源、处理与结论之间的可追踪链",
     "useWhen": "来源、处理与结论之间的可追踪链",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "plain",
       "header": "tab",
@@ -889,7 +889,7 @@
     "family": "evidence",
     "purpose": "同一口径下的两组证据描述",
     "useWhen": "同一口径下的两组证据描述",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "rule",
@@ -951,7 +951,7 @@
     "family": "evidence",
     "purpose": "将测量观察与解释分开",
     "useWhen": "将测量观察与解释分开",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ruled",
       "header": "plain",
@@ -1012,7 +1012,7 @@
     "family": "evidence",
     "purpose": "多个相关证据注释并保留共同限定",
     "useWhen": "多个相关证据注释并保留共同限定",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "stacked",
       "header": "plain",
@@ -1074,7 +1074,7 @@
     "family": "metric",
     "purpose": "一个数值与同栏解释",
     "useWhen": "一个数值与同栏解释",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "plain",
@@ -1134,7 +1134,7 @@
     "family": "metric",
     "purpose": "两个单独统计的指标及各自含义",
     "useWhen": "两个单独统计的指标及各自含义",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "rule",
@@ -1200,7 +1200,7 @@
     "family": "metric",
     "purpose": "并排读数及独立的名称单位",
     "useWhen": "并排读数及独立的名称单位",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "plain",
       "header": "band",
@@ -1266,7 +1266,7 @@
     "family": "metric",
     "purpose": "主读数与明确的参照条目",
     "useWhen": "主读数与明确的参照条目",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "tab",
@@ -1332,7 +1332,7 @@
     "family": "metric",
     "purpose": "目标与观测并列且不代算差值",
     "useWhen": "目标与观测并列且不代算差值",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "cut",
       "header": "plain",
@@ -1398,7 +1398,7 @@
     "family": "metric",
     "purpose": "多个指标以名称数值解释对齐",
     "useWhen": "多个指标以名称数值解释对齐",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ruled",
       "header": "plain",
@@ -1464,7 +1464,7 @@
     "family": "boundary",
     "purpose": "一项明确限制及其适用范围",
     "useWhen": "一项明确限制及其适用范围",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "cut",
       "header": "rule",
@@ -1516,7 +1516,7 @@
     "family": "boundary",
     "purpose": "需要紧接正文阅读的风险提示",
     "useWhen": "需要紧接正文阅读的风险提示",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "notch",
@@ -1568,7 +1568,7 @@
     "family": "boundary",
     "purpose": "多个前提及其核验方法",
     "useWhen": "多个前提及其核验方法",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ruled",
       "header": "tab",
@@ -1629,7 +1629,7 @@
     "family": "boundary",
     "purpose": "明确写出覆盖和未覆盖的对象",
     "useWhen": "明确写出覆盖和未覆盖的对象",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "plain",
@@ -1690,7 +1690,7 @@
     "family": "boundary",
     "purpose": "风险与对应动作形成局部配对",
     "useWhen": "风险与对应动作形成局部配对",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "ribbon",
       "header": "plain",
@@ -1751,7 +1751,7 @@
     "family": "boundary",
     "purpose": "逐项列出约束及检查依据",
     "useWhen": "逐项列出约束及检查依据",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "rule",
@@ -1816,7 +1816,7 @@
     "family": "progress",
     "purpose": "当前阶段与产物的组合",
     "useWhen": "当前阶段与产物的组合",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "rail",
       "header": "number",
@@ -1869,7 +1869,7 @@
     "family": "progress",
     "purpose": "横向呈现少量有序阶段",
     "useWhen": "横向呈现少量有序阶段",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "plain",
       "header": "plain",
@@ -1934,7 +1934,7 @@
     "family": "progress",
     "purpose": "阶段时间与产物逐行对应",
     "useWhen": "阶段时间与产物逐行对应",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "band",
@@ -1995,7 +1995,7 @@
     "family": "progress",
     "purpose": "共同前提下的两种决策条件",
     "useWhen": "共同前提下的两种决策条件",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "plain",
       "header": "rule",
@@ -2056,7 +2056,7 @@
     "family": "progress",
     "purpose": "已完成与待完成任务明确分区",
     "useWhen": "已完成与待完成任务明确分区",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "outline",
       "header": "tab",
@@ -2117,7 +2117,7 @@
     "family": "progress",
     "purpose": "具体行动、交付物与触发条件",
     "useWhen": "具体行动、交付物与触发条件",
-    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "avoid": "内容关系不匹配时改用其他预设；需要图像证据时选图片卡片或独立图区域。",
     "recipe": {
       "frame": "double-bottom",
       "header": "number",
@@ -2171,6 +2171,893 @@
           "detail": "冻结模型和评价协议。"
         }
       ]
+    }
+  },
+  {
+    "id": "figure-caption",
+    "name": "上图下释证据卡",
+    "family": "figure",
+    "purpose": "一张主图与紧邻的观察解释",
+    "useWhen": "一张主图与紧邻的观察解释",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-caption",
+      "imageLayout": "caption"
+    },
+    "dimensions": {
+      "minimumWidth": 520,
+      "preferredWidth": 760,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-caption",
+      "kind": "result",
+      "preset": "figure-caption",
+      "claimIds": [],
+      "title": "图像与观察",
+      "body": "说明图中可见的关系及成立条件。",
+      "figureIds": [
+        "card-demo-a"
+      ],
+      "mediaHeight": 240,
+      "note": "结构示例，非研究结果。"
+    }
+  },
+  {
+    "id": "figure-observation",
+    "name": "图旁读图卡",
+    "family": "figure",
+    "purpose": "图在左侧，单组短解释在右侧",
+    "useWhen": "图在左侧，单组短解释在右侧",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-observation",
+      "imageLayout": "observation"
+    },
+    "dimensions": {
+      "minimumWidth": 720,
+      "preferredWidth": 1040,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-observation",
+      "kind": "result",
+      "preset": "figure-observation",
+      "claimIds": [],
+      "title": "图与就近解释",
+      "body": "先指出读图位置，再说明支持范围。",
+      "figureIds": [
+        "card-demo-b"
+      ],
+      "mediaHeight": 250,
+      "items": [
+        {
+          "label": "看哪里",
+          "detail": "保留关键区域与原始图例。"
+        }
+      ],
+      "note": "不覆盖图内标签。"
+    }
+  },
+  {
+    "id": "figure-reverse",
+    "name": "引导先读卡",
+    "family": "figure",
+    "purpose": "先读问题与条件，再查看右侧图",
+    "useWhen": "先读问题与条件，再查看右侧图",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-reverse",
+      "imageLayout": "reverse"
+    },
+    "dimensions": {
+      "minimumWidth": 720,
+      "preferredWidth": 1040,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-reverse",
+      "kind": "result",
+      "preset": "figure-reverse",
+      "claimIds": [],
+      "title": "问题引导读图",
+      "body": "先明确比较条件。",
+      "figureIds": [
+        "card-demo-a"
+      ],
+      "mediaHeight": 250,
+      "items": [
+        {
+          "label": "比较对象",
+          "detail": "保持同一观察口径。"
+        }
+      ],
+      "note": "结构示例，非研究结果。"
+    }
+  },
+  {
+    "id": "figure-pair",
+    "name": "双图对读卡",
+    "family": "figure",
+    "purpose": "同尺度并列两图，保留共同解释",
+    "useWhen": "同尺度并列两图，保留共同解释",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-pair",
+      "imageLayout": "pair"
+    },
+    "dimensions": {
+      "minimumWidth": 780,
+      "preferredWidth": 1100,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        2,
+        2
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-pair",
+      "kind": "result",
+      "preset": "figure-pair",
+      "claimIds": [],
+      "title": "同一口径下对读",
+      "body": "保留两图身份与共同尺度，再解释差别。",
+      "figureIds": [
+        "card-demo-a",
+        "card-demo-b"
+      ],
+      "mediaHeight": 240,
+      "note": "并列本身不证明因果。"
+    }
+  },
+  {
+    "id": "figure-stack",
+    "name": "逐图对应卡",
+    "family": "figure",
+    "purpose": "两幅图上下排列，每幅配一条短解释",
+    "useWhen": "两幅图上下排列，每幅配一条短解释",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-stack",
+      "imageLayout": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 760,
+      "preferredWidth": 1040,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        2,
+        2
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-stack",
+      "kind": "result",
+      "preset": "figure-stack",
+      "claimIds": [],
+      "title": "分层查看证据",
+      "body": "每条说明只对应相邻原图。",
+      "figureIds": [
+        "card-demo-a",
+        "card-demo-c"
+      ],
+      "mediaHeight": 290,
+      "items": [
+        {
+          "label": "整体结构",
+          "detail": "先识别研究对象。"
+        },
+        {
+          "label": "局部关系",
+          "detail": "再说明局部任务。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "figure-sequence",
+    "name": "三阶段图序卡",
+    "family": "figure",
+    "purpose": "按真实先后排列三幅图与阶段标签",
+    "useWhen": "按真实先后排列三幅图与阶段标签",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-sequence",
+      "imageLayout": "sequence"
+    },
+    "dimensions": {
+      "minimumWidth": 960,
+      "preferredWidth": 1120,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        3,
+        3
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        3,
+        3
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-sequence",
+      "kind": "result",
+      "preset": "figure-sequence",
+      "claimIds": [],
+      "title": "图像序列",
+      "body": "先后次序来自原文或实际采样。",
+      "figureIds": [
+        "card-demo-a",
+        "card-demo-c",
+        "card-demo-d"
+      ],
+      "mediaHeight": 200,
+      "items": [
+        {
+          "label": "输入"
+        },
+        {
+          "label": "处理"
+        },
+        {
+          "label": "输出"
+        }
+      ],
+      "note": "顺序不自动等于因果。"
+    }
+  },
+  {
+    "id": "figure-matrix",
+    "name": "四窗证据卡",
+    "family": "figure",
+    "purpose": "按两个明确维度组织四幅图",
+    "useWhen": "按两个明确维度组织四幅图",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-matrix",
+      "imageLayout": "matrix"
+    },
+    "dimensions": {
+      "minimumWidth": 980,
+      "preferredWidth": 1120,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        4,
+        4
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-matrix",
+      "kind": "result",
+      "preset": "figure-matrix",
+      "claimIds": [],
+      "title": "多条件证据窗",
+      "body": "行列条件须与每个面板对应。",
+      "figureIds": [
+        "card-demo-a",
+        "card-demo-b",
+        "card-demo-c",
+        "card-demo-d"
+      ],
+      "mediaHeight": 310,
+      "note": "完整保留各图的来源与尺度。"
+    }
+  },
+  {
+    "id": "figure-zoom",
+    "name": "总图局部对照卡",
+    "family": "figure",
+    "purpose": "完整图与另行核对的局部图对照",
+    "useWhen": "完整图与另行核对的局部图对照",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-zoom",
+      "imageLayout": "zoom"
+    },
+    "dimensions": {
+      "minimumWidth": 820,
+      "preferredWidth": 1100,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        2,
+        2
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-zoom",
+      "kind": "result",
+      "preset": "figure-zoom",
+      "claimIds": [],
+      "title": "总图与局部",
+      "body": "局部资产须有明确裁切位置与图号。",
+      "figureIds": [
+        "card-demo-b",
+        "card-demo-d"
+      ],
+      "mediaHeight": 240,
+      "note": "配方不自动裁出或生成局部。"
+    }
+  },
+  {
+    "id": "figure-overview-details",
+    "name": "总览双局部卡",
+    "family": "figure",
+    "purpose": "上方总览，下方两幅相关局部证据",
+    "useWhen": "上方总览，下方两幅相关局部证据",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-overview-details",
+      "imageLayout": "overview-details"
+    },
+    "dimensions": {
+      "minimumWidth": 980,
+      "preferredWidth": 1120,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        3,
+        3
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-overview-details",
+      "kind": "result",
+      "preset": "figure-overview-details",
+      "claimIds": [],
+      "title": "总览与两处细节",
+      "body": "两处局部分别回答不同问题。",
+      "figureIds": [
+        "card-demo-b",
+        "card-demo-a",
+        "card-demo-d"
+      ],
+      "mediaHeight": 310,
+      "note": "总览与局部都使用已核对资产。"
+    }
+  },
+  {
+    "id": "figure-margin-notes",
+    "name": "中图双侧注卡",
+    "family": "figure",
+    "purpose": "主图居中，两侧分别说明条件与解释",
+    "useWhen": "主图居中，两侧分别说明条件与解释",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-margin-notes",
+      "imageLayout": "margin-notes"
+    },
+    "dimensions": {
+      "minimumWidth": 980,
+      "preferredWidth": 1120,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-margin-notes",
+      "kind": "result",
+      "preset": "figure-margin-notes",
+      "claimIds": [],
+      "title": "条件、证据与解释",
+      "body": "主图保留完整数据区。",
+      "figureIds": [
+        "card-demo-c"
+      ],
+      "mediaHeight": 250,
+      "items": [
+        {
+          "label": "条件",
+          "detail": "指出比较前提。"
+        },
+        {
+          "label": "解释",
+          "detail": "只说明已支持关系。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "figure-metrics",
+    "name": "图证读数卡",
+    "family": "figure",
+    "purpose": "主图下方配成对数值及单位",
+    "useWhen": "主图下方配成对数值及单位",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-metrics",
+      "imageLayout": "metrics"
+    },
+    "dimensions": {
+      "minimumWidth": 720,
+      "preferredWidth": 1040,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-metrics",
+      "kind": "result",
+      "preset": "figure-metrics",
+      "claimIds": [],
+      "title": "图像与核对读数",
+      "body": "读数来自相邻图表及同一验证口径。",
+      "figureIds": [
+        "card-demo-a"
+      ],
+      "mediaHeight": 180,
+      "items": [
+        {
+          "label": "参考读数",
+          "detail": "填写来源单位与口径。"
+        },
+        {
+          "label": "比较读数",
+          "detail": "填写对应的完整条件。"
+        }
+      ],
+      "note": "示例无研究数值，不自动计算差值。"
+    }
+  },
+  {
+    "id": "figure-conditions",
+    "name": "条件环绕图卡",
+    "family": "figure",
+    "purpose": "图上方列操作条件，下方保留结论边界",
+    "useWhen": "图上方列操作条件，下方保留结论边界",
+    "avoid": "图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "figure-conditions",
+      "imageLayout": "conditions"
+    },
+    "dimensions": {
+      "minimumWidth": 720,
+      "preferredWidth": 1040,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body",
+        "figureIds"
+      ],
+      "optional": [
+        "mediaHeight",
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        1,
+        3
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。",
+      "figureCount": [
+        1,
+        1
+      ],
+      "mediaHeight": {
+        "min": 120,
+        "max": 520,
+        "meaning": "整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计"
+      }
+    },
+    "example": {
+      "id": "figure-conditions",
+      "kind": "result",
+      "preset": "figure-conditions",
+      "claimIds": [],
+      "title": "条件限定的图像证据",
+      "body": "先明确本图所处的研究条件。",
+      "figureIds": [
+        "card-demo-c"
+      ],
+      "mediaHeight": 210,
+      "items": [
+        {
+          "label": "对象",
+          "detail": "记录对象范围。"
+        },
+        {
+          "label": "条件",
+          "detail": "记录观察窗口。"
+        }
+      ],
+      "note": "边界：仅解释图中已经验证的条件。"
     }
   }
 ]

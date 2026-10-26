@@ -14,7 +14,7 @@ ET.register_namespace('xlink', 'http://www.w3.org/1999/xlink')
 CATALOG = {c['id']: c for c in json.loads((LIBRARY / 'manifest.json').read_text())['cards']}
 FAMILIES = {
     'research': '问题与背景', 'method': '方法与流程', 'evidence': '证据与解释',
-    'metric': '指标与读数', 'boundary': '条件与限制', 'progress': '阶段与决策',
+    'metric': '指标与读数', 'boundary': '条件与限制', 'progress': '阶段与决策', 'figure': '图片嵌入与解释',
 }
 
 
@@ -33,7 +33,7 @@ def label(x, y, content, size=22, weight=400, color='#4E5F6C'):
 
 def build(filename, heading, ids):
     rows = [ids[n:n + 2] for n in range(0, len(ids), 2)]
-    row_heights = [max(CATALOG[key]['height'] for key in row) + 78 for row in rows]
+    row_heights = [max(CATALOG[key]['height'] * min(1, 576 / CATALOG[key]['width']) for key in row) + 78 for row in rows]
     height = 148 + sum(row_heights) + 32
     root = element('svg', {
         'viewBox': f'0 0 1280 {height}', 'width': '1280', 'height': str(height),
@@ -41,7 +41,7 @@ def build(filename, heading, ids):
     })
     root.append(element('title', {'id': 'gallery-title'}, heading))
     root.append(element('desc', {'id': 'gallery-desc'},
-                        '从插件现有原生卡片 SVG 中选取六类代表结构。示例内容与数值仅用于展示组件，不是研究结果。'))
+                        '从插件现有原生卡片 SVG 中选取内容关系与图片编排结构。示例图像、内容与数值仅用于展示组件，不是研究结果。'))
     root.append(element('rect', {'width': '1280', 'height': str(height), 'fill': '#F8FAFB'}))
     root.append(label(40, 55, heading, 32, 700, '#203C50'))
     root.append(label(40, 92, '内容决定结构 · 学术配色可调整 · 文字与形状可编辑', 21))
@@ -52,6 +52,8 @@ def build(filename, heading, ids):
         for column, key in enumerate(row):
             card = CATALOG[key]
             x = 40 + column * 624
+            scale = min(1, 576 / card['width'])
+            display_height = card['height'] * scale
             root.append(label(x, y + 15, f"{FAMILIES[card['family']]}  /  {card['name']}", 21, 500))
             svg = ET.fromstring((LIBRARY / card['svg']).read_text())
             # Translate the original viewBox, retaining all native geometry.
@@ -66,7 +68,7 @@ def build(filename, heading, ids):
                 }):
                     svg.remove(child)
             root.append(element('rect', {'x': str(x), 'y': str(y + 32), 'width': '576',
-                                        'height': str(card['height']), 'fill': '#FFFFFF'}))
+                                        'height': str(display_height), 'fill': '#FFFFFF'}))
             identifiers = {node.attrib['id']: key + '--' + node.attrib['id']
                            for node in svg.iter() if 'id' in node.attrib}
             for node in svg.iter():
@@ -79,15 +81,15 @@ def build(filename, heading, ids):
             clip_id = key + '--showcase-clip'
             clip = element('clipPath', {'id': clip_id, 'clipPathUnits': 'userSpaceOnUse'})
             clip.append(element('rect', {'x': str(x), 'y': str(y + 32), 'width': '576',
-                                        'height': str(card['height'])}))
+                                        'height': str(display_height)}))
             root.append(clip)
             clipped = element('g', {'clip-path': f'url(#{clip_id})'})
-            drawing = element('g', {'transform': f'translate({x - view_x} {y + 32 - view_y})'})
+            drawing = element('g', {'transform': f'translate({x} {y + 32}) scale({scale}) translate({-view_x} {-view_y})'})
             drawing.extend(list(svg))
             clipped.append(drawing)
             root.append(clipped)
         y += row_height
-    root.append(label(40, height - 20, '组件示例；示例数值不代表研究结果。完整卡库包含 36 款，可按实际内容重新组合。', 17))
+    root.append(label(40, height - 20, '组件示例；示例数值不代表研究结果。完整卡库包含 48 款（含 12 款图片卡），可按实际内容重新组合。', 17))
     ET.ElementTree(root).write(OUTPUT / filename, encoding='utf-8', xml_declaration=True)
 
 
@@ -99,4 +101,8 @@ build('card-gallery-more.svg', '更多组件结构 · 按研究任务选择', [
     'research-bracket', 'method-ladder', 'evidence-compare', 'metric-ledger',
     'boundary-cut', 'progress-route',
 ])
-print('Built 2 showcase sheets from 12 shipped native card SVGs.')
+build('image-card-gallery.svg', '论文图片嵌入卡 · 六种证据组织', [
+    'figure-pair', 'figure-caption', 'figure-matrix', 'figure-overview-details',
+    'figure-margin-notes', 'figure-conditions',
+])
+print('Built 3 showcase sheets from 18 shipped native card SVGs.')

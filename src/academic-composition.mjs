@@ -139,7 +139,10 @@ function cardPlan(data, width, ctx) {
     metricH += 38 * 1.16 + 4;
     if (data.metric.label) metricH += ctx.lines(data.metric.label, width, ctx.bodySize) * ctx.bodySize * 1.18 + 4;
     if (data.metric.context) metricH += ctx.lines(data.metric.context, width, ctx.bodySize) * ctx.bodySize * 1.2 + 8;
-    if (ctx.lines(metric, width, 38, true) > 1) ctx.error('card-metric-width', `指标 ${data.id} 的数值与单位在当前列宽内不能保持一行；扩大面板或重排该指标，不能缩小指标字号。`, { cardId: data.id, requiredWidth: Math.ceil(ctx.measureTextWidth(metric, 38, { bold: true })), availableWidth: width });
+    // An over-wide scientific token deliberately stays on one line. Measure
+    // its width directly; line count cannot establish that a metric fits.
+    const metricWidth=ctx.measureTextWidth(metric,38,{bold:true});
+    if (metricWidth>width+1||/[\r\n]/.test(metric)) ctx.error('card-metric-width', `指标 ${data.id} 的数值与单位在当前列宽内不能保持一行；扩大面板或重排该指标，不能缩小指标字号。`, { cardId: data.id, requiredWidth: Math.ceil(metricWidth), availableWidth: width });
   }
   const body = Array.isArray(data.body) ? data.body.join('\n') : textOf(data.body);
   const emphasized = list(data.emphasis).length > 0;

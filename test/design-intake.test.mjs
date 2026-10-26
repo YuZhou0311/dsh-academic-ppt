@@ -15,7 +15,7 @@ async function fixture(t) {
   return {cwd,requestPath,prepare};
 }
 
-const report={topic:'观测误差的分解',audience:'方法研究组'};
+const report={topic:'观测误差的分解',audience:'方法研究组',consultation:{mode:'delegated',delegation:'Synthetic tests explicitly delegate preferences to isolate existing template and imagegen planning.'}};
 const card={id:'question',purpose:'研究问题',title:'尺度变化后的误差来源',body:'区分观测噪声与模型结构误差。',evidenceStatus:'proposal',items:[{label:'当前证据',detail:'尚待跨尺度检验。'}]};
 const host={availability:'available',source:'Synthetic test fixture declares a host tool; no actual service call.',toolName:'fixture_image_generator'};
 

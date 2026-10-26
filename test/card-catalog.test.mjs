@@ -5,10 +5,12 @@ import { CARD_FAMILIES, CARD_PRESETS, CARD_PRESET_IDS, getCardPreset, listCardPr
 import { measureCardSurface } from '../src/card-surface.mjs';
 import { DEFAULT_DESIGN, buildScenes, wrapText, measureTextWidth } from '../src/scene.mjs';
 import { renderProject } from '../src/render.mjs';
+import { cardDemoAssets } from '../scripts/card-demo-assets.mjs';
 
 const design={...structuredClone(DEFAULT_DESIGN),system:{preset:'academic-report',header:'rule',panel:'tint',titleSize:40,coverTitleSize:72,bodySize:24,panelTitleSize:26,captionSize:18,sectionSize:26}};
 const measure=(card,width)=>measureCardSurface(card,width,{design,system:design.system,wrapText,measureTextWidth});
-const projectFor=cards=>({title:'原创学术卡片目录',design:structuredClone(design),papers:[],claims:[],assets:[],slides:cards.map((card,i)=>({id:`p${i+1}`,layout:'synthesis',title:getCardPreset(card.preset)?.name||'测试',paperIds:[],claimIds:[],figureIds:[],cards:[card],seconds:30,notes:'结构演示，非研究结果。'}))});
+const demoAssets=cardDemoAssets();
+const projectFor=cards=>({title:'原创学术卡片目录',design:structuredClone(design),papers:[],claims:[],assets:structuredClone(demoAssets),slides:cards.map((card,i)=>({id:`p${i+1}`,layout:'synthesis',title:getCardPreset(card.preset)?.name||'测试',paperIds:[],claimIds:[],figureIds:[],cards:[card],seconds:30,notes:'结构演示，非研究结果。'}))});
 const exampleCards=()=>CARD_PRESETS.map(preset=>{
   const card=structuredClone(preset.example),w=preset.dimensions.preferredWidth;
   return {...card,box:{x:80,y:126,w,h:Math.ceil(measure(card,w).minimumH)}};
@@ -16,10 +18,10 @@ const exampleCards=()=>CARD_PRESETS.map(preset=>{
 const errors=page=>page.issues.filter(issue=>issue.severity==='error');
 const near=(a,b)=>Math.abs(a-b)<.01;
 
-test('36 recipes have distinct structural signatures and task-addressable complete examples',()=>{
-  assert.equal(CARD_PRESETS.length,36);assert.equal(new Set(CARD_PRESET_IDS).size,36);
-  assert.equal(new Set(CARD_PRESETS.map(p=>JSON.stringify(p.recipe))).size,36,'changing only a name or palette does not add a design');
-  for(const family of CARD_FAMILIES)assert.equal(CARD_PRESETS.filter(p=>p.family===family.id).length,6);
+test('48 recipes retain 36 text designs and add 12 distinct figure relationships',()=>{
+  assert.equal(CARD_PRESETS.length,48);assert.equal(new Set(CARD_PRESET_IDS).size,48);
+  assert.equal(new Set(CARD_PRESETS.map(p=>JSON.stringify(p.recipe))).size,48,'changing only a name or palette does not add a design');
+  for(const family of CARD_FAMILIES)assert.equal(CARD_PRESETS.filter(p=>p.family===family.id).length,family.id==='figure'?12:6);
   for(const preset of CARD_PRESETS){
     assert.equal(getCardPreset(preset.id),preset);assert.equal(preset.example.preset,preset.id);
     assert.ok(preset.example.title);assert.equal(typeof preset.example.body,'string');assert.ok(preset.purpose&&preset.avoid);
@@ -34,7 +36,7 @@ test('36 recipes have distinct structural signatures and task-addressable comple
 
 test('every catalog example fits measured bounds and exports as editable native objects',async()=>{
   const cards=exampleCards(),out=await renderProject(projectFor(cards)),zip=unzipSync(out.pptx);
-  assert.equal(out.scenes.pages.length,36);
+  assert.equal(out.scenes.pages.length,48);
   for(const [i,page]of out.scenes.pages.entries()){
     assert.deepEqual(errors(page),[],CARD_PRESETS[i].id);
     const card=cards[i],nodes=page.nodes.filter(n=>n.cardId===card.id);
@@ -44,13 +46,13 @@ test('every catalog example fits measured bounds and exports as editable native 
       for(const field of ['fill','stroke','color'])if(node[field]!==undefined)assert.match(node[field],/^(#[\da-f]{6}|none)$/i,`${card.id}: unresolved ${field}`);
     }
     const xml=strFromU8(zip[`ppt/slides/slide${i+1}.xml`]);
-    assert.equal((xml.match(/<p:pic>/g)||[]).length,0,card.id);
+    assert.equal((xml.match(/<p:pic>/g)||[]).length,card.figureIds?.length??0,card.id);
     assert.ok((xml.match(/<p:sp>/g)||[]).length>3,card.id);
   }
 });
 
 test('all authored fields, including zero values and rail badges, remain visible without text collisions',()=>{
-  for(const preset of CARD_PRESETS){
+  for(const preset of CARD_PRESETS.filter(preset=>preset.family!=='figure')){
     const card={id:preset.id,preset:preset.id,kind:'method',title:'完整题名',body:'完整正文',claimIds:[],badge:'D2',note:'完整限定',icon:'method',
       metric:{value:'12',unit:'kg',label:'指标名称',context:'指标条件'},
       items:[{label:'对象甲',value:0,unit:'m',detail:'对象甲解释'}]};
@@ -93,7 +95,7 @@ test('preset geometry overrides legacy defaults while honoring measured padding 
 test('default projection policy changes measured geometry without demoting necessary limitations',()=>{
   const strictDesign={...structuredClone(design),projection:{bodyMin:28,labelMin:24,noteMin:18}};
   for(const preset of CARD_PRESETS){
-    const card=structuredClone(preset.example),w=620;
+    const card=structuredClone(preset.example),w=preset.family==='figure'?preset.dimensions.preferredWidth:620;
     const m=measureCardSurface(card,w,{design:strictDesign,system:strictDesign.system,wrapText,measureTextWidth});
     card.box={x:80,y:120,w,h:Math.ceil(m.minimumH)};
     const project=projectFor([card]);project.design=strictDesign;

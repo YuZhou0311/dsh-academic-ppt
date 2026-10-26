@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {resolve,dirname,join,relative} from 'node:path';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
+import {unzipSync} from 'fflate';
 import {readBundledSkill,buildAcademicTools} from '../src/index.mjs';
 import {REFERENCE_TEMPLATES,REFERENCE_CATEGORIES} from '../src/reference-catalog.mjs';
 import {CARD_PRESETS} from '../src/card-catalog.mjs';
@@ -24,15 +25,21 @@ const skill=readBundledSkill();assert.equal(skill.name,packageJson.name);
 const tools=buildAcademicTools();assert.equal(tools.length,16);
 const cardRoot=join(root,'skills/dsh-academic-ppt/references/card-library');
 const cardManifest=JSON.parse(await readFile(join(cardRoot,'manifest.json'),'utf8'));
-assert.equal(cardManifest.count,36);
+assert.equal(cardManifest.count,CARD_PRESETS.length);
 assert.deepEqual(cardManifest.cards.map(c=>c.id),CARD_PRESETS.map(c=>c.id));
 assert.deepEqual(JSON.parse(await readFile(join(cardRoot,'catalog.json'),'utf8')),CARD_PRESETS);
 for(const card of cardManifest.cards){
  const digest=createHash('sha256').update(await readFile(join(cardRoot,card.svg))).digest('hex');
  assert.equal(digest,card.sha256,'native card preview digest '+card.id);
 }
+const figureDeck=cardManifest.figureDeck;
+assert.equal(figureDeck.slideCount,12);
+assert.equal(figureDeck.path,'figure-cards.pptx');
+const figureBytes=await readFile(join(cardRoot,figureDeck.path));
+assert.equal(createHash('sha256').update(figureBytes).digest('hex'),figureDeck.sha256,'image-card reference PPTX digest');
+assert.equal(Object.keys(unzipSync(figureBytes)).filter(name=>/^ppt\/slides\/slide\d+\.xml$/.test(name)).length,figureDeck.slideCount,'native image-card reference slide count');
 const cardGallery=await readFile(join(cardRoot,'index.html'),'utf8');
-assert.equal((cardGallery.match(/<article data-family=/g)||[]).length,36);
+assert.equal((cardGallery.match(/<article data-family=/g)||[]).length,CARD_PRESETS.length);
 const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
@@ -66,4 +73,4 @@ for(const path of markdown){
 for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:9,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');

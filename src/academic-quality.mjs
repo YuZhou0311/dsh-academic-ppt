@@ -29,7 +29,7 @@ export function academicIssues(project) {
   const assets=new Map(project.assets.map(a=>[a.id,a]));
   const ids=s=>[...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[]),...(s.drawings??[]).flatMap(d=>[...(d.claimIds??[]),...(d.elements??[]).flatMap(e=>e.claimIds??[])])])];
   const cited=new Set(project.slides.flatMap(s=>expandClaimIds(project.claims,ids(s))));
-  const used=new Set([...project.slides.flatMap(s=>[...s.paperIds,...s.figureIds.map(id=>assets.get(id)?.paperId)]),...[...cited].map(id=>claims.get(id)?.paperId)].filter(Boolean));
+  const used=new Set([...project.slides.flatMap(s=>[...s.paperIds,...[...s.figureIds,...(s.cards??[]).flatMap(card=>card.figureIds??[])].map(id=>assets.get(id)?.paperId)]),...[...cited].map(id=>claims.get(id)?.paperId)].filter(Boolean));
   for(const p of project.papers.filter(p=>used.has(p.id))) {
     const path='papers.'+p.id,a=p.analysis;
     if(!a) add('analysis-missing',path,'补充 analysis：研究问题、原有缺口、具体机制、验证设计、独立样本单位、对照、有效性边界与原文位置。');

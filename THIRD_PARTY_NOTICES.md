@@ -13,7 +13,7 @@
 
 ## 2. 运行时依赖
 
-源码根目录的具体版本与完整传递依赖以 [package-lock.json](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.8.1/package-lock.json) 为准。安装包不附带根锁文件，源码归档包含该文件。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承根工程的审计结果。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
+源码根目录的具体版本与完整传递依赖以 [package-lock.json](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.8.2/package-lock.json) 为准。安装包不附带根锁文件，源码归档包含该文件。该根工程通过 overrides 将 PptxGenJS 的传递依赖 image-size 固定为 2.0.4，以使用公开公告列出的修复版本；[公告](https://github.com/advisories/GHSA-5p2g-fcmc-qvqq)。这是源码安装的约束：插件作为依赖被 DSH profile 安装时，其 overrides 不会自动约束宿主的依赖树，不能直接继承根工程的审计结果。依赖由包管理器安装，保留所安装软件包中的 LICENSE/NOTICE。
 
 | 依赖 | 固定版本 | 许可 / 来源 |
 | --- | --- | --- |
@@ -54,10 +54,29 @@ S04 使用的 `examples/assets/author-pla_plot.png` 为作者在官方 [vios-s/P
 
 ## 4. 模板与字体
 
-本版本实际读取并渲染用户提供的两份学术 PPTX，共 39 页，依据其标题、图文分区和小题签结构改良版式。新制作的 48 页参考包、六组件示范页与教学图资产由本项目提供；源 PPTX、人物照片、机构标识和其原有研究图片不随包重新分发。具体观察见 [原模板研究](docs/USER_TEMPLATE_STUDY.md)。实际用户工程可以在本地继续使用其授权模板，按组件支持范围处理。
+### 0.8.2 前向验收公开页面
+
+`docs/showcase/v082-report-cover.png` 为本项目验收稿的原创题名页。`docs/showcase/v082-image-card.png` 为同一验收稿的第 6 页实际渲染，包含以下第三方论文材料：
+
+- Haizhu Pan, Zhongxin Chen, Allard de Wit, Jianqiang Ren (2019). *Joint Assimilation of Leaf Area Index and Soil Moisture from Sentinel-1 and Sentinel-2 Data into the WOFOST Model for Winter Wheat Yield Estimation*. **Sensors 19(14), 3161**. DOI [10.3390/s19143161](https://doi.org/10.3390/s19143161)。[出版方原文与许可](https://www.mdpi.com/1424-8220/19/14/3161)。
+- 使用 Fig. 5b 与 Fig. 5f，两者均为“仅同化 LAI”方案下的状态轨迹。论文许可为 [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)。
+- 改动：从完整 Fig. 5 中分别摘取 b/f 面板，保留各自坐标、单位、日期轴与数据曲线；等比缩放放入共同证据卡，依据原图转录共同图例，添加中文解释、图号、来源与适用条件。没有改写实验曲线或把两幅面板标成联合同化结果。
+- 原生卡片、题名及解释是本项目为报告设计的新增内容；论文图仍保留上述许可，不属于插件 MIT 代码。引用与重新排版不表示原作者认可本插件或验收结论。
+
+验收使用的其他全文、完整汇报文件和用户上传素材不包含在这两张公开展示图中，也未作为本次新增公开素材打包。
+
+插件内置的 48 页版式参考包、48 款原生卡片预览和 12 页图卡参考 PPTX 由本项目提供。图卡预览中的图片来自 [原创结构示意生成器](scripts/card-demo-assets.mjs)，用于展示图文关系，不含实验观测、真实数据或论文结论；这些示意与本项目代码采用 MIT 许可。
+
+用户提供的模板及其中的人物照片、机构标识和研究图片不随插件重新分发。用户工程可在授权范围内使用其模板；模板参考功能不改变源文件和媒体的许可。
 
 默认字体名为 `Noto Sans CJK SC`。字体不随插件源码分发；使用者可以安装 [Noto CJK 官方字体](https://github.com/notofonts/noto-cjk) 或指定已有合法字体。示例渲染测试使用官方 Noto Sans CJK SC Regular / Bold，遵循其 SIL Open Font License。字体文件未被改写或重命名为其他字体。
 
 ## 5. 方法论来源
 
-学术工作流源自同一用户此前的汇报制作和返工反馈，并以本次工程化设计继续完善。DeepSeek、DSH 协议与模型能力说明的官方出处、核对日期及适用边界列于 [docs/DESIGN.md](docs/DESIGN.md)。
+学术工作流结合研究汇报的来源追溯、图像阅读、叙事组织与实际渲染复核需求设计。文字与参考学习指导还阅读了以下原始资料，采用其一般方法，没有复制第三方模板、脚本或示例素材：
+
+- [Harvard Catalyst：科学汇报幻灯片](https://catalyst.harvard.edu/writing-communication-center/visualize-science/slides/)：视觉证据、标签与面向听众的表达。
+- [Microsoft：创建和展示有效演示文稿](https://support.microsoft.com/en-us/powerpoint/tips-for-creating-and-delivering-an-effective-presentation)：观看距离、字体、精简文字与最终环境复核。
+- [Anthropic 官方 PPTX skill](https://github.com/anthropics/skills/blob/main/skills/pptx/SKILL.md)：整稿观察、按内容安排版式与检查实际输出。该项目有其自身许可，本插件没有重新分发其脚本或资产。
+
+DSH 公开协议与安装机制的固定来源见 [兼容说明](docs/DSH_COMPATIBILITY.md) 和 [安装说明](docs/INSTALL.md)。

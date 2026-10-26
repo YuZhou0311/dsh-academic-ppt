@@ -13,6 +13,7 @@ import { renderNativeDrawing, drawingAssetIds, drawingClaimIds } from './native-
 import { renderAuthoredHeading } from './authored-heading.mjs';
 import { renderBibliography } from './free-composition.mjs';
 import { projectionIssues } from './projection-quality.mjs';
+import { scientificTextTokens, glueTextPunctuation, scientificWrappingIssues } from './scientific-text.mjs';
 import { resolveNarrativeSlide, renderNarrativeRoadmap, renderNarrativeSection } from './narrative.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
 export const LAYOUTS = Object.freeze(['cover', 'section', 'academic', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
@@ -112,31 +113,16 @@ export function measureTextWidth(value, size, { bold = false } = {}) {
 export function wrapText(value, width, size, options = {}) {
   const limit = Math.max(1, width);
   const lines = [];
-  const closing=/^[，。！？；：、）》〉」』】〕）］｝’”….,!?;:\])}%％]+$/u;
-  const opening=/^[（(［\[｛{《〈「『【〔‘“]+$/u;
   const units = token => measureTextWidth(token, size, options);
-  // Punctuation travels with the preceding lexical unit, and an opening
-  // bracket travels with the next one. No character is deleted or replaced.
-  // Long words are split only when that word cannot fit even on an empty line.
-  const gluePunctuation=tokens=>{
-    const out=[];let prefix='';
-    for(const token of tokens){
-      if (out.length && (/^[\p{Mark}\ufe00-\ufe0f\u200d]+$/u.test(token) || out.at(-1).endsWith('\u200d'))) { out[out.length - 1] += token; continue; }
-      if(opening.test(token)){prefix+=token;continue;}
-      const chunk=prefix+token;prefix='';
-      if(closing.test(token)&&out.length){
-        let from=out.length-1;while(from>0&&/^\s+$/u.test(out[from]))from--;
-        out.push(out.splice(from).join('')+chunk);
-      }else out.push(chunk);
-    }
-    if(prefix)out.push(prefix);
-    return out;
-  };
+  // Scientific values and identifiers move as complete units. If one cannot
+  // fit even on an empty line, preserve it; scene diagnostics require reflow.
+  // Ordinary long words/URLs can still split without deleting any character.
   for (const paragraph of asText(value).replace(/\r\n?/g, '\n').split('\n')) {
     if (!paragraph) { lines.push(''); continue; }
     let line = '', weight = 0;
-    const tokens=gluePunctuation(paragraph.match(/[A-Za-z0-9]+(?:[.'’:/+%−–-][A-Za-z0-9]+)*|\s+|[^A-Za-z0-9\s]/gu)||[]);
-    const fitted=tokens.flatMap(token=>units(token)<=limit? [token]:gluePunctuation(graphemes(token)).flatMap(part=>units(part)<=limit?[part]:graphemes(part)));
+    const tokens=glueTextPunctuation(scientificTextTokens(paragraph));
+    const fitted=tokens.flatMap(token=>token.atomic||units(token.text)<=limit? [token.text]:
+      glueTextPunctuation(graphemes(token.text).map(text=>({text,atomic:false}))).flatMap(part=>units(part.text)<=limit?[part.text]:graphemes(part.text)));
     for(const token of fitted){
       const tw=units(token);
       if(line&&weight+tw>limit+1e-9){lines.push(line);line='';weight=0;}
@@ -169,6 +155,7 @@ function pageBuilder(slide, index, total, design) {
     const lineHeight = more.lineHeight || 1.28;
     const needed = lines.length * fontSize * lineHeight;
     const lineWidths = lines.map(line => measureTextWidth(line,fontSize,metrics));
+    page.issues.push(...scientificWrappingIssues(content,lines,Math.max(1,box.w-(emphasis.length?fontSize*.22:0)),fontSize,measureTextWidth,metrics).map(issue=>({...issue,slideId:page.id,objectId:`${page.id}/${key}`})));
     if (needed > box.h + 2) page.issues.push({ severity: 'error', code: 'text-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, requiredHeight: Math.ceil(needed), availableHeight: box.h, message: `文字估计需要 ${Math.ceil(needed)} px，分配 ${box.h} px。保留文字与字号，扩大区域、调整布局或拆页后再构建。` });
     if (Math.max(...lineWidths) > box.w + 2) page.issues.push({ severity: 'error', code: 'text-width-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, message: `不可拆分字符宽度超过 ${box.w} px 的文字区域；扩大区域，不能裁掉原文。` });
     for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
@@ -247,7 +234,7 @@ function metricString(metric) {
 
 /** Draw a native card; text and frame remain independent editable objects. */
 function card(b, data, box, index, project, defaultStyle) {
-  if (renderCardSurface(b,data,box,index,project,{wrapText,measureTextWidth})) return {id:data.id,box,style:'surface'};
+  if (renderCardSurface(b,data,box,index,project,{wrapText,measureTextWidth,figure})) return {id:data.id,box,style:'surface'};
   const c = data || {}, id = asText(c.id || `card-${index + 1}`);
   const titleSize=b.system?.panelTitleSize??26,bodySize=b.system?.bodySize??24;
   const key = `card/${id}`, p = b.p, style = c.style || defaultStyle || KIND_STYLE[c.kind] || 'plain', semantic=semanticStyle(c.kind,p,{academic:b.design?.hasAcademicSystem});
@@ -568,6 +555,7 @@ function table(b, data, box, fontFamily) {
   // additional wrap. Keep a small conservative reserve inside the real cell
   // margins so caption placement does not depend on a near-boundary estimate.
   const cellLines=all.map((row,ri)=>row.map((value,i)=>wrapText(value,Math.max(1,colWidths[i]-padX*2-wrapReserve),fontSize,{bold:ri===0})));
+  for(const [ri,row] of all.entries())for(const [ci,value] of row.entries())b.page.issues.push(...scientificWrappingIssues(value,cellLines[ri][ci],Math.max(1,colWidths[ci]-padX*2-wrapReserve),fontSize,measureTextWidth,{bold:ri===0}).map(issue=>({...issue,slideId:b.page.id,objectId:`${b.page.id}/data-table`,row:ri,column:ci})));
   const rowHeights=cellLines.map(row=>Math.max(...row.map(lines=>lines.length))*fontSize*lineHeight+padY*2);
   const h=rowHeights.reduce((sum,value)=>sum+value,0),captionH=data.caption?wrapText(data.caption,box.w,captionSize).length*captionSize*1.24+7:0;
   b.region('data-table-region',{x:box.x,y:box.y,w:box.w,h:h+captionH},'table');
@@ -592,7 +580,7 @@ function references(b,project,slide,box) {
   }
   if(y>box.y+box.h+13)b.page.issues.push({severity:'error',code:'references-overflow-estimate',slideId:b.page.id,message:'完整参考文献信息超出区域；将书目拆成多页。'});
   if(selected.length===1&&y<box.y+box.h-90){
-    const p=selected[0],used=new Set(arr(project.slides).flatMap(s=>arr(s.figureIds))),assets=arr(project.assets).filter(a=>a.paperId===p.id&&used.has(a.id));
+    const p=selected[0],used=new Set(arr(project.slides).flatMap(s=>[...arr(s.figureIds),...arr(s.cards).flatMap(c=>arr(c.figureIds))])),assets=arr(project.assets).filter(a=>a.paperId===p.id&&used.has(a.id));
     const readingLabel={'full-text':'全文阅读范围：','abstract-only':'摘要阅读范围：','metadata-only':'书目/材料说明：'}[p.reading?.status]||'阅读记录：';
     const licenses=assets.length?['原图授权：',...assets.map(a=>[a.figure,a.panel,a.license].filter(Boolean).join(' · '))].join('\n'):'';
     const extra=[p.url,p.reading?.sections?.length?readingLabel+p.reading.sections.join(' · '):'',licenses].filter(Boolean).join('\n');

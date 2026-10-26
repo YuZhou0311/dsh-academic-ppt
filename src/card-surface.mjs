@@ -1,12 +1,13 @@
 /** Measured, editable card surfaces. Icons are semantic navigation, never evidence. */
 import { getCardPreset } from './card-catalog.mjs';
+import { measureImageCard, renderImageCard } from './image-card-surface.mjs';
 export const SEMANTIC_ICONS = Object.freeze(['question','method','evidence','comparison','boundary','hypothesis','satellite','leaf','water','model']);
 const plainStyles = new Set(['plain','compact','ruled']);
 const text = value => value === undefined || value === null ? '' : String(value);
 const metricText = metric => metric && [metric.value, metric.unit].filter(value => value !== undefined && value !== '').join(' ');
 
 export function resolveCardAppearance(card = {}, design = {}) {
-  if (card.preset) return { layout:'preset', surface:'outline', radius:6, padding:20, accent:'none', elevation:false,
+  if (card.preset) return { layout:'preset', surface:'outline', radius:design.cardDefaults?.radius??6, padding:20, accent:'none', elevation:design.cardDefaults?.elevation??false,
     ...Object.fromEntries(['radius','padding','elevation'].filter(key=>card.appearance?.[key]!==undefined).map(key=>[key,card.appearance[key]])) };
   const defaults = !card.style || plainStyles.has(card.style) ? design.cardDefaults : undefined;
   if (!card.appearance && !defaults && !card.icon) return null;
@@ -77,6 +78,7 @@ export function drawSemanticIcon(b, name, box, color, key, cardId) {
 }
 
 export function renderCardSurface(b, card, box, index, project, helpers) {
+  if(card.figureIds?.length&&getCardPreset(card.preset)?.family!=='figure')b.page.issues.push({severity:'error',code:'image-card-preset-required',slideId:b.page.id,cardId:card.id,message:'card.figureIds需要图片嵌入式配方；当前卡片不能显示这些原图，请选择figure家族preset。'});
   if(card.preset) return renderPresetCard(b,card,box,index,project,helpers);
   if(['items','badge','note'].some(field=>card[field]!==undefined))b.page.issues.push({severity:'error',code:'card-preset-required',slideId:b.page.id,cardId:card.id,message:'items、badge 和 note 需要明确的 card.preset；请选择卡片配方，避免新增内容被旧布局遗漏。'});
   const m = measureCardSurface(card, box.w, { ...helpers, design:b.design || project.design, system:b.system });
@@ -113,6 +115,7 @@ export function renderCardSurface(b, card, box, index, project, helpers) {
 function measurePresetCard(card, width, {design,system,wrapText,measureTextWidth}) {
   const preset=getCardPreset(card.preset),appearance=resolveCardAppearance(card,design);
   if(!preset)return {appearance,invalidPreset:true,minimumH:0,metricWidth:0,innerW:Math.max(1,width)};
+  if(preset.family==='figure')return measureImageCard(card,width,{design,system,wrapText,measureTextWidth,preset,appearance});
   const {frame,header,content}=preset.recipe,pad=appearance.padding;
   const labelMin=design.projection?.labelMin??0,bodyMin=design.projection?.bodyMin??0;
   const titleSize=Math.max(system.panelTitleSize??26,labelMin),bodySize=Math.max(system.bodySize??24,bodyMin);
@@ -352,6 +355,7 @@ function renderPresetCard(b,card,box,index,project,helpers){
   const m=measurePresetCard(card,box.w,{...helpers,design:b.design||project.design,system:b.system||{}}),id=String(card.id||`card-${index+1}`),key=`card/${id}`;
   if(m.invalidPreset){b.page.issues.push({severity:'error',code:'card-preset-unknown',slideId:b.page.id,cardId:id,message:`未知卡片预设 ${card.preset}；请从 academic_ppt_cards 返回的 ID 选择。`});return true;}
   if(card.templateComponentId)b.page.issues.push({severity:'error',code:'card-preset-template-conflict',slideId:b.page.id,cardId:id,message:'card.preset 与 templateComponentId 分别定义完整卡片结构，请只选择其中一种。'});
+  if(m.imageCard)return renderImageCard(b,card,box,index,project,helpers,m,{drawSemanticIcon});
   const {preset,appearance:a}=m,p=b.p,{frame,header}=preset.recipe;
   const accent=/^#[0-9a-f]{6}$/i.test(card.accent||'')?card.accent:(card.kind==='boundary'?p.secondary:p.accent);
   const colors={...p,accent,white:'#FFFFFF',none:'none'};

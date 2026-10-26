@@ -338,6 +338,10 @@ test('all metric qualifications survive compact panel text and impossible metric
   const crowded = recording(p, slide).page;
   assert.ok(errors(crowded).some(issue => issue.code === 'composition-card-metric-width'));
   assert.ok(hasPayload(crowded, `${slide.cards[0].metric.value} 项`));
+  const blocked=buildScenes(p).pages[0],metricNode=find(blocked,'/card/metric/metric');
+  assert.equal(metricNode.lines.length,1,'an atomic over-wide value stays intact, so its width gate must not depend on line count');
+  assert.equal(metricNode.fontSize,38);
+  assert.ok(errors(blocked).some(issue=>issue.code==='scientific-token-too-wide'));
 });
 
 test('invalid ratios, unsupported fields and too many semantic panels cannot pass silently', () => {

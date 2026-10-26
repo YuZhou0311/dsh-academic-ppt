@@ -75,7 +75,7 @@ export function isScientificBodySlide(slide) {
   const researchDrawing=list(slide.drawings).some(d => list(d.claimIds).length ||
     list(d.elements).some(e => list(e.claimIds).length || e.kind==='image'&&list(slide.paperIds).length));
   if (slide.closing) return researchDrawing;
-  return Boolean(roots(slide).some(Boolean) || list(slide.figureIds).length ||
+  return Boolean(roots(slide).some(Boolean) || list(slide.figureIds).length || list(slide.cards).some(card=>list(card.figureIds).length) ||
     slide.chart || slide.table || slide.plot || list(slide.plots).length ||
     researchDrawing);
 }
@@ -98,7 +98,7 @@ function visibleNode(node, page) {
   return node.kind !== 'image';
 }
 function sourceBinding(slide, asset, knownPapers) {
-  const declared = new Set([...list(slide.figureIds),...list(slide.drawings).flatMap(d=>list(d.elements).filter(e=>e.kind==='image').map(e=>e.assetId))]);
+  const declared = new Set([...list(slide.figureIds),...list(slide.cards).flatMap(card=>list(card.figureIds)),...list(slide.drawings).flatMap(d=>list(d.elements).filter(e=>e.kind==='image').map(e=>e.assetId))]);
   return declared.has(asset.id) && knownPapers.has(asset.paperId) && list(slide.paperIds).includes(asset.paperId);
 }
 function unionArea(boxes) {

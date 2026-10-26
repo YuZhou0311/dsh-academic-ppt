@@ -8,7 +8,7 @@ export const ACADEMIC_SYSTEM_ENUMS = freeze({
   header: ['band', 'rule', 'plain'], cover: ['framed', 'project', 'minimal', 'split', 'editorial'], panel: ['band', 'tint', 'line'],
 });
 export const ACADEMIC_SYSTEM_RANGES = freeze({
-  titleSize: [32, 44], coverTitleSize: [60, 100], bodySize: [22, 28],
+  titleSize: [32, 44], coverTitleSize: [60, 100], bodySize: [22, 40],
   panelTitleSize: [24, 32], captionSize: [16, 22], sectionSize: [24, 34],
 });
 export const LEGACY_ACADEMIC_SYSTEM = freeze({

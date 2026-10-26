@@ -72,10 +72,11 @@ try {
   checks.push('register sixteen tools and discover/load the packaged skill')
 
   const cards = await successful('academic_ppt_cards', {})
-  assert.equal(cards.totalCount, 36)
+  assert.equal(cards.totalCount, 48)
+  assert.ok(cards.presets.some(card => card.family === 'figure'))
   const contract = await successful('academic_ppt_contract', { topic: 'preparation' })
   assert.ok(JSON.stringify(contract).includes('paletteMode'))
-  checks.push('query all 36 cards and the full preparation contract through the host pipeline')
+  checks.push('query all 48 cards including scientific image cards and the full preparation contract through the host pipeline')
 
   const created = await successful('academic_ppt_init', { projectDir: 'talk', title: 'DSH compatibility fixture' })
   assert.equal(created.projectPath, join(workspace, 'talk', 'project.json'))

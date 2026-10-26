@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
-  "count": 36,
+  "count": 48,
   "families": [
     "research",
     "method",
     "evidence",
     "metric",
     "boundary",
-    "progress"
+    "progress",
+    "figure"
   ],
   "note": "Original native card recipes. Example content is illustrative and must be replaced with verified report content.",
   "cards": [
@@ -36,7 +37,7 @@
       "svg": "cards/research-label-rail.svg",
       "width": 576,
       "height": 176,
-      "sha256": "1a4c8590814fb5138c1b803a324ffb9f4aa3d6f5dc8428f39a800137fe697b14"
+      "sha256": "53d1badf63319c9b0d0bd4d15700eb52a903e5a70760446560b50aeabb2b0c46"
     },
     {
       "id": "research-rule",
@@ -63,7 +64,7 @@
       "svg": "cards/research-index.svg",
       "width": 576,
       "height": 248,
-      "sha256": "6bdb13bf5083556c97c905514d6fe9fac0f2a6a135459a46a5fea613efe9c788"
+      "sha256": "07f1ef1bb931e749382c9af5474eda985aa930b78044b689f92dad5ce46f45da"
     },
     {
       "id": "method-band",
@@ -72,7 +73,7 @@
       "svg": "cards/method-band.svg",
       "width": 576,
       "height": 215,
-      "sha256": "b03bed31545705ba69f13ec502daa4f541d9fdf1dcd58df9f95274aad3d8a8a7"
+      "sha256": "e03d06439fe7f10b8269f5dee5da1e5155908a4ae3d047faf0819a9d91c442df"
     },
     {
       "id": "method-ladder",
@@ -90,7 +91,7 @@
       "svg": "cards/method-io.svg",
       "width": 576,
       "height": 279,
-      "sha256": "95f49a10502ba247689a93beba7c2233b018161f12f4442e821dee8bb753e37d"
+      "sha256": "ff77c090df4a9f11a0f38f5cb79228fc4671a6970fbc15c57ab7616aa6bce202"
     },
     {
       "id": "method-equation",
@@ -108,7 +109,7 @@
       "svg": "cards/method-protocol.svg",
       "width": 576,
       "height": 296,
-      "sha256": "31ffd2ca7370a5761f3b7fd9e7cdc2fa0f33e07038d3ea38795af20b50d17863"
+      "sha256": "4817013216d8c5eeaf1903bee87e113f37d9e7b5b3d2096bc3a950158da2b23b"
     },
     {
       "id": "method-ribbon",
@@ -117,7 +118,7 @@
       "svg": "cards/method-ribbon.svg",
       "width": 576,
       "height": 312,
-      "sha256": "76a1bbf134615ccc4ccc2798a682aa4306b0e2b03b720953b0e463325f4c83e3"
+      "sha256": "a52fd3188c614bb44a7756f9d3035c55c0fc0349f9003c99c59c8140afeb8d80"
     },
     {
       "id": "evidence-claim-proof",
@@ -126,7 +127,7 @@
       "svg": "cards/evidence-claim-proof.svg",
       "width": 576,
       "height": 275,
-      "sha256": "e8713fe274881618829507cc5369d94655507ee2b6973a09eef76f4747892cfa"
+      "sha256": "05fcfac04446d02e75b3418d92e70d75c9f804d3b2ad1c0165c53d9350d184b2"
     },
     {
       "id": "evidence-source-footer",
@@ -135,7 +136,7 @@
       "svg": "cards/evidence-source-footer.svg",
       "width": 576,
       "height": 195,
-      "sha256": "6cab32a4df8cff905335c7b274a3021158df6d11c18f5f6bc5dea9b6f499221b"
+      "sha256": "4de6e94b3b12dc8a366ad40e442869f11a6d8c69d353026198293e96d596b773"
     },
     {
       "id": "evidence-trace",
@@ -153,7 +154,7 @@
       "svg": "cards/evidence-compare.svg",
       "width": 576,
       "height": 285,
-      "sha256": "bc23efd68e208c693279a35c346824e64a3f99f09cf376a23941cc9f223d8e32"
+      "sha256": "9c237bb9c4ea405fa85e05e755320ea6c90e6ee484743cad3ed761616be6f88f"
     },
     {
       "id": "evidence-interpretation",
@@ -180,7 +181,7 @@
       "svg": "cards/metric-aside.svg",
       "width": 576,
       "height": 283,
-      "sha256": "a2ab5cd32835ca7f42c36656838cbc897df86f52162649771ddcf27c839c39c3"
+      "sha256": "4e245fa8432479b87e89f16d7c71365506ded9168eaf002ce1b33906e50b1ead"
     },
     {
       "id": "metric-dual",
@@ -189,7 +190,7 @@
       "svg": "cards/metric-dual.svg",
       "width": 576,
       "height": 377,
-      "sha256": "1799f9317716619ca6c7be5b0e91727da994b28fa0c4ca61f718f57c667ffc94"
+      "sha256": "2e3206678e19a8097056e184350565fbb3eeec9c5693e56576b113d2f7840900"
     },
     {
       "id": "metric-pair",
@@ -207,7 +208,7 @@
       "svg": "cards/metric-baseline.svg",
       "width": 576,
       "height": 409,
-      "sha256": "aa7fad43939f54b50744a103371d4f85bc3bc50d36f74bc47484b670b4ca4974"
+      "sha256": "aa597c10157916c7fbba6913d930cc18350b86483ac9f8c6e49365fb9dbd85e0"
     },
     {
       "id": "metric-target",
@@ -243,7 +244,7 @@
       "svg": "cards/boundary-notch.svg",
       "width": 576,
       "height": 223,
-      "sha256": "ce75a0382cb0bb0922d8442cb5e0f1806566fd675beff895f450cbc964c1e6c9"
+      "sha256": "1dae988d13a70c91b0cf40f5c5097e976256fed417b9ca6499c3b495dab50bcc"
     },
     {
       "id": "boundary-assumptions",
@@ -261,7 +262,7 @@
       "svg": "cards/boundary-scope.svg",
       "width": 576,
       "height": 250,
-      "sha256": "9bbd52f2de63c285e84ad8b7bcb532b310ff3d7ac2c4d0df037a2fab58975cd9"
+      "sha256": "d65518fef492e5c71e721b361bee68f3e2feaf882145bf28b2ea58dff6c3e24a"
     },
     {
       "id": "boundary-response",
@@ -270,7 +271,7 @@
       "svg": "cards/boundary-response.svg",
       "width": 576,
       "height": 250,
-      "sha256": "f93a84e27acd17468d83a3d3a854ab2c9a73201fadf86ab00de56e4974193c44"
+      "sha256": "b3636286b9fba159f8b000159099a217afa41876922338f70f4a360f99d559de"
     },
     {
       "id": "boundary-checks",
@@ -279,7 +280,7 @@
       "svg": "cards/boundary-checks.svg",
       "width": 576,
       "height": 396,
-      "sha256": "5a4d79a5cb87131dfb028bfea4a8175295814fb7c96551251e6ddb2307c47ec0"
+      "sha256": "8a203a911b57f9e6819447aed476e6987641f7bdc5bf93e803bf8c49f43c0402"
     },
     {
       "id": "progress-rail",
@@ -288,7 +289,7 @@
       "svg": "cards/progress-rail.svg",
       "width": 576,
       "height": 211,
-      "sha256": "b31883fb290271e829bf01a0db79530171d83e71c87965fd33dc6ef360339108"
+      "sha256": "e335643779da6037308cda2ddb8e0a005352cd668e1552cbc099601815bfd88b"
     },
     {
       "id": "progress-route",
@@ -306,7 +307,7 @@
       "svg": "cards/progress-milestones.svg",
       "width": 576,
       "height": 332,
-      "sha256": "0020d8f591801006165a8ba39fd4ca8d708902bc7fe3e3f89a6a9acdf0371187"
+      "sha256": "577d484770294bc9ef5bba2d7b99c908c386d23dd2bf8c0bc5eb5ac740c8fc73"
     },
     {
       "id": "progress-decision",
@@ -324,7 +325,7 @@
       "svg": "cards/progress-status.svg",
       "width": 576,
       "height": 248,
-      "sha256": "28d9ba0317a3df974bf4a0eaf3b9734cfd289dc5bbe7d2d0cdeab839fed1d583"
+      "sha256": "6bce2ad01ff233ddf26996fbe9176d232ded998825558e9e7073d9abf3ef62a6"
     },
     {
       "id": "progress-action",
@@ -333,7 +334,121 @@
       "svg": "cards/progress-action.svg",
       "width": 576,
       "height": 327,
-      "sha256": "565ea1546279aa521a93cea0643aebdc44073b8fa239f968a897aff15f137da3"
+      "sha256": "a2f61857a573d4696349891f3de676d4d8193275ab03dada01898ca2a8eb498a"
+    },
+    {
+      "id": "figure-caption",
+      "name": "上图下释证据卡",
+      "family": "figure",
+      "svg": "cards/figure-caption.svg",
+      "width": 1136,
+      "height": 444,
+      "sha256": "09362926558dcd9d24760dd083b2436792716668c1d0bf68c08d24d2fcdbde87"
+    },
+    {
+      "id": "figure-observation",
+      "name": "图旁读图卡",
+      "family": "figure",
+      "svg": "cards/figure-observation.svg",
+      "width": 1136,
+      "height": 410,
+      "sha256": "e2102a2fd3aca65c6e9991524ed2a02179bdce57a91430e913902c2e44289aa2"
+    },
+    {
+      "id": "figure-reverse",
+      "name": "引导先读卡",
+      "family": "figure",
+      "svg": "cards/figure-reverse.svg",
+      "width": 1136,
+      "height": 410,
+      "sha256": "db2b888876da14d2253524f4bb193d0fa4f7b36f55c719eb86e909ff571a392b"
+    },
+    {
+      "id": "figure-pair",
+      "name": "双图对读卡",
+      "family": "figure",
+      "svg": "cards/figure-pair.svg",
+      "width": 1136,
+      "height": 444,
+      "sha256": "8c2c11bec4e93ce70003265e44ee2f7c121d412f8103c3c4284a45cb143f3950"
+    },
+    {
+      "id": "figure-stack",
+      "name": "逐图对应卡",
+      "family": "figure",
+      "svg": "cards/figure-stack.svg",
+      "width": 1136,
+      "height": 454,
+      "sha256": "38edf496a3a4eebb2844c589693b91b947f6d128b19d4186bd8069f739cee6c4"
+    },
+    {
+      "id": "figure-sequence",
+      "name": "三阶段图序卡",
+      "family": "figure",
+      "svg": "cards/figure-sequence.svg",
+      "width": 1136,
+      "height": 452,
+      "sha256": "1702d4bf088b6a182861c3a36c52b9a6d439400ed6ada4dfbf8eaf787efc87b9"
+    },
+    {
+      "id": "figure-matrix",
+      "name": "四窗证据卡",
+      "family": "figure",
+      "svg": "cards/figure-matrix.svg",
+      "width": 1136,
+      "height": 514,
+      "sha256": "36db91459e425c35d849b8df5eb40282c75fe2986d9f9647c3343fb8923782da"
+    },
+    {
+      "id": "figure-zoom",
+      "name": "总图局部对照卡",
+      "family": "figure",
+      "svg": "cards/figure-zoom.svg",
+      "width": 1136,
+      "height": 444,
+      "sha256": "b05a5dc7b7c0798b48cc6a3c599b9ce12dd0b0fe1217f1af55066570973685ef"
+    },
+    {
+      "id": "figure-overview-details",
+      "name": "总览双局部卡",
+      "family": "figure",
+      "svg": "cards/figure-overview-details.svg",
+      "width": 1136,
+      "height": 514,
+      "sha256": "ae5aa938b3e1d5959472cb91846b6e900744742c2ebe7b527e504e00a7bede37"
+    },
+    {
+      "id": "figure-margin-notes",
+      "name": "中图双侧注卡",
+      "family": "figure",
+      "svg": "cards/figure-margin-notes.svg",
+      "width": 1136,
+      "height": 414,
+      "sha256": "e033debbb8afb88bca90237baf7cfa73a14b0cd5b11c51b2feb7b3836f79cfad"
+    },
+    {
+      "id": "figure-metrics",
+      "name": "图证读数卡",
+      "family": "figure",
+      "svg": "cards/figure-metrics.svg",
+      "width": 1136,
+      "height": 468,
+      "sha256": "efb0f88eeebba848a305ddeebbcd491400a2e1a8a8beffa4d1888ab1025e712f"
+    },
+    {
+      "id": "figure-conditions",
+      "name": "条件环绕图卡",
+      "family": "figure",
+      "svg": "cards/figure-conditions.svg",
+      "width": 1136,
+      "height": 514,
+      "sha256": "9cfebc43b938956015c229fdf803d4984d8de1b60b681534469cfbea78400750"
     }
-  ]
+  ],
+  "figureDeck": {
+    "path": "figure-cards.pptx",
+    "sha256": "2dfcf81480c7207d67cb66221cb2bf8ae02ec6b68dacbc3aba5b8a8ce72e5560",
+    "slideCount": 12,
+    "scope": "original schematic design references; not research evidence"
+  }
 }
