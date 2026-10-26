@@ -1,0 +1,208 @@
+{
+  "identity": "教学模拟数据；不对应真实实验、机构、项目或论文",
+  "sources": {
+    "protocol_path": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/sources/protocol.md",
+    "protocol_sha256": "791f46c143bfa272986a39d1cec6ed22829ee7891c24f57073740c045e67cec9",
+    "csv_path": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/sources/fatigue.csv",
+    "csv_sha256": "a31ee0b6094b69b080499cb00f524223eb15e902ff581a8c644e4a205b73de06"
+  },
+  "definitions": {
+    "unit": "cycles",
+    "sd": "sample standard deviation; denominator n - 1",
+    "runout": "administrative right censoring at 500000 cycles; not an observed failure",
+    "observed_time_mean": "Mean of cycles_observed. With only a common administrative cutoff at 500000, this is the empirical mean of min(T, 500000), not the unrestricted mean failure lifetime."
+  },
+  "record_count": 48,
+  "unique_specimen_ids": 48,
+  "endpoint_counts": {
+    "failed": 46,
+    "runout": 2
+  },
+  "group_summaries": [
+    {
+      "batch": "A",
+      "process": "conventional",
+      "stress_MPa": 200,
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "mean_observed_cycles": 236265.91666666666,
+      "sample_sd_observed_cycles": 91667.12726387037,
+      "median_observed_cycles": 221791.0,
+      "min_observed_cycles": 125176,
+      "max_observed_cycles": 429340,
+      "sum_observed_cycles": 2835191
+    },
+    {
+      "batch": "B",
+      "process": "conventional",
+      "stress_MPa": 200,
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "mean_observed_cycles": 303682.8333333333,
+      "sample_sd_observed_cycles": 30977.28122301402,
+      "median_observed_cycles": 309945.0,
+      "min_observed_cycles": 233869,
+      "max_observed_cycles": 349955,
+      "sum_observed_cycles": 3644194
+    },
+    {
+      "batch": "B",
+      "process": "modified",
+      "stress_MPa": 200,
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "mean_observed_cycles": 329305.0833333333,
+      "sample_sd_observed_cycles": 56622.71262160431,
+      "median_observed_cycles": 317262.0,
+      "min_observed_cycles": 243382,
+      "max_observed_cycles": 451032,
+      "sum_observed_cycles": 3951661
+    },
+    {
+      "batch": "C",
+      "process": "modified",
+      "stress_MPa": 180,
+      "n": 12,
+      "failed": 10,
+      "runout": 2,
+      "mean_observed_cycles": 434824.3333333333,
+      "sample_sd_observed_cycles": 43686.73798832554,
+      "median_observed_cycles": 428180.5,
+      "min_observed_cycles": 384329,
+      "max_observed_cycles": 500000,
+      "sum_observed_cycles": 5217892
+    }
+  ],
+  "runout_records": [
+    {
+      "specimen_id": "C-mod-02",
+      "batch": "C",
+      "process": "modified",
+      "cycles_observed": 500000,
+      "endpoint": "runout",
+      "stress_MPa": 180
+    },
+    {
+      "specimen_id": "C-mod-08",
+      "batch": "C",
+      "process": "modified",
+      "cycles_observed": 500000,
+      "endpoint": "runout",
+      "stress_MPa": 180
+    }
+  ],
+  "pooled_observed_time_summaries_not_causal": {
+    "all_stresses": {
+      "processes": {
+        "conventional": {
+          "n": 24,
+          "failed": 24,
+          "runout": 0,
+          "mean_observed_cycles": 269974.375,
+          "sample_sd_observed_cycles": 75255.28720920689,
+          "median_observed_cycles": 297471.0,
+          "min_observed_cycles": 125176,
+          "max_observed_cycles": 429340,
+          "sum_observed_cycles": 6479385
+        },
+        "modified": {
+          "n": 24,
+          "failed": 22,
+          "runout": 2,
+          "mean_observed_cycles": 382064.7083333333,
+          "sample_sd_observed_cycles": 73148.79475097268,
+          "median_observed_cycles": 385447.0,
+          "min_observed_cycles": 243382,
+          "max_observed_cycles": 500000,
+          "sum_observed_cycles": 9169553
+        }
+      },
+      "modified_minus_conventional_observed_mean_cycles": 112090.33333333331,
+      "relative_observed_mean_difference_percent": 41.518878720742784,
+      "causal_interpretation": false
+    },
+    "200_MPa_only": {
+      "processes": {
+        "conventional": {
+          "n": 24,
+          "failed": 24,
+          "runout": 0,
+          "mean_observed_cycles": 269974.375,
+          "sample_sd_observed_cycles": 75255.28720920689,
+          "median_observed_cycles": 297471.0,
+          "min_observed_cycles": 125176,
+          "max_observed_cycles": 429340,
+          "sum_observed_cycles": 6479385
+        },
+        "modified": {
+          "n": 12,
+          "failed": 12,
+          "runout": 0,
+          "mean_observed_cycles": 329305.0833333333,
+          "sample_sd_observed_cycles": 56622.71262160431,
+          "median_observed_cycles": 317262.0,
+          "min_observed_cycles": 243382,
+          "max_observed_cycles": 451032,
+          "sum_observed_cycles": 3951661
+        }
+      },
+      "modified_minus_conventional_observed_mean_cycles": 59330.708333333314,
+      "relative_observed_mean_difference_percent": 21.976422145002953,
+      "causal_interpretation": false
+    }
+  },
+  "conventional_A_B_comparison_at_200_MPa": {
+    "A": {
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "mean_observed_cycles": 236265.91666666666,
+      "sample_sd_observed_cycles": 91667.12726387037,
+      "median_observed_cycles": 221791.0,
+      "min_observed_cycles": 125176,
+      "max_observed_cycles": 429340,
+      "sum_observed_cycles": 2835191
+    },
+    "B": {
+      "n": 12,
+      "failed": 12,
+      "runout": 0,
+      "mean_observed_cycles": 303682.8333333333,
+      "sample_sd_observed_cycles": 30977.28122301402,
+      "median_observed_cycles": 309945.0,
+      "min_observed_cycles": 233869,
+      "max_observed_cycles": 349955,
+      "sum_observed_cycles": 3644194
+    },
+    "B_minus_A_mean_cycles": 67416.91666666666,
+    "relative_to_A_percent": 28.534338603642574,
+    "interpretation": "Descriptive batch-associated difference; no random cross-batch allocation."
+  },
+  "B_200_MPa_Welch_mean_difference_interval": {
+    "contrast": "modified minus conventional",
+    "n_conventional": 12,
+    "n_modified": 12,
+    "sample_variance_conventional": 959591951.969697,
+    "sample_variance_modified": 3206131584.628788,
+    "mean_difference_cycles": 25622.25,
+    "relative_mean_difference_percent": 8.437174310698058,
+    "standard_error_cycles": 18631.790790202474,
+    "welch_satterthwaite_df": 17.043226299976308,
+    "alpha_two_sided": 0.05,
+    "t_critical": 2.109408027109416,
+    "half_width_cycles": 39302.049052276394,
+    "confidence_interval_cycles": [
+      -13679.799052276394,
+      64924.299052276394
+    ],
+    "limitations": [
+      "Both groups have 12 independent specimens and all observed failures; no censoring in B.",
+      "Approximate raw-scale mean inference under distributional and sampling assumptions.",
+      "No randomized process allocation; the interval does not quantify confounding or selection bias.",
+      "A confidence interval containing zero establishes neither equality nor a useful benefit."
+    ]
+  }
+}

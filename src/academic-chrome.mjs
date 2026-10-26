@@ -21,23 +21,50 @@ function logo(b, project, box, key) {
   b.add('image',key,{x:box.x+(box.w-w)/2,y:box.y+(box.h-h)/2,w,h,assetId:id,data:asset.data,alt:asset.caption,fit:'contain'});
 }
 
-export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
-  const s=b.system,p=b.p,chrome=resolveChrome(project.design,slide),section=chrome.showSection===false?null:slide.section;
+function headerIdentity(b, project, slide, measureTextWidth) {
+  const chrome=resolveChrome(project.design,slide),section=chrome.showSection===false?null:slide.section;
   const brand=chrome.showBrand===false?null:{...project.design?.branding,...(chrome.brandLabel!==undefined?{label:chrome.brandLabel}:{})};
-  const headerStyle=chrome.header||s.header,bottomLimit=contentBottom(chrome),brandSize=autoSize(b,'label',22),kickerSize=autoSize(b,'body',s.captionSize+2);
-  const label=section?[section.number,section.title].filter(Boolean).join('  '):'';
+  const label=section?[section.number,section.title].filter(Boolean).join('  '):'',brandSize=autoSize(b,'label',22);
+  const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,brandSize,{bold:true})+4):0,logoW=brand?.logoAssetId?48:0;
+  return {chrome,brand,label,brandSize,brandW,logoW,right:brandW||logoW?1232-brandW-logoW-26:1232,style:chrome.header||b.system.header};
+}
+
+function paintHeaderIdentity(b,project,info,band) {
+  const {label,brand,brandSize,brandW,logoW,right}=info,boxes=[];
+  if(label){const box={x:48,y:band?10:14,w:right-48,h:band?40:36};boxes.push(box);b.text('section-label',label,box,b.system.sectionSize,{bold:true,color:band?'#FFFFFF':b.p.accent,lineHeight:1.1,role:'section-label'});}
+  if(brand?.label){const box={x:1232-brandW,y:band?14:18,w:brandW,h:Math.max(band?29:28,brandSize*1.1)};boxes.push(box);b.text('brand-label',brand.label,box,brandSize,{color:band?'#FFFFFF':b.p.accent,bold:true,lineHeight:1.1,role:'identity'});}
+  if(brand?.logoAssetId){const box={x:1232-brandW-logoW-8,y:band?7:8,w:40,h:40};boxes.push(box);logo(b,project,box,'header-logo');}
+  return boxes;
+}
+
+/** Opt-in chrome for an authored title. Nothing moves the author's title box. */
+export function academicAuthoredChrome(b,project,slide,{measureTextWidth}) {
+  const info=headerIdentity(b,project,slide,measureTextWidth),hasIdentity=Boolean(info.label||info.brand?.label||info.brand?.logoAssetId);
+  if(info.style==='band'){
+    if(hasIdentity){
+      const band={x:0,y:0,w:1280,h:54};
+      b.rect('academic-header-band',band,b.p.accent,'none');paintHeaderIdentity(b,project,info,true);
+      return {style:info.style,reservedBoxes:[band],bottom:54};
+    }
+    // With no chapter or identity, the author's title itself occupies the band.
+    const box=slide.heading.box,y=Math.max(0,box.y-9),band={x:0,y,w:1280,h:box.y+box.h+9-y};
+    b.rect('academic-header-band',band,b.p.accent,'none');
+    return {style:info.style,reservedBoxes:[],bottom:band.y+band.h,titleColor:'#FFFFFF'};
+  }
+  const boxes=hasIdentity?paintHeaderIdentity(b,project,info,false):[];
+  return {style:info.style,reservedBoxes:boxes,bottom:Math.max(0,...boxes.map(box=>box.y+box.h))};
+}
+
+export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
+  const s=b.system,p=b.p,info=headerIdentity(b,project,slide,measureTextWidth),{chrome,brand,label,right}=info;
+  const headerStyle=info.style,bottomLimit=contentBottom(chrome),kickerSize=autoSize(b,'body',s.captionSize+2);
   let top=20;
   if(headerStyle==='band'){
-    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,brandSize,{bold:true})+4):0;
-    const logoW=brand?.logoAssetId?48:0;
-    const right=brandW||logoW?1232-brandW-logoW-26:1232;
     const titleInBand=!label,titleH=titleInBand?wrapText(slide.title,right-48,s.titleSize,{bold:true}).length*s.titleSize*1.13:0;
     const bh=titleInBand?Math.max(60,titleH+18):54;
     b.rect('academic-header-band',{x:0,y:0,w:1280,h:bh},p.accent,'none');
-    if(label)b.text('section-label',label,{x:48,y:10,w:right-48,h:40},s.sectionSize,{bold:true,color:'#FFFFFF',lineHeight:1.1,role:'section-label'});
+    paintHeaderIdentity(b,project,info,true);
     if(titleInBand)b.text('title',slide.title,{x:48,y:9,w:right-48,h:titleH},s.titleSize,{bold:true,color:'#FFFFFF',lineHeight:1.13,role:'title'});
-    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:14,w:brandW,h:Math.max(29,brandSize*1.1)},brandSize,{color:'#FFFFFF',bold:true,lineHeight:1.1,role:'identity'});
-    if(brand?.logoAssetId)logo(b,project,{x:1232-brandW-logoW-8,y:7,w:40,h:40},'header-logo');
     if(titleInBand){
       let y=bh+18;
       if(slide.kicker){const h=wrapText(slide.kicker,1184,kickerSize).length*kickerSize*1.2;b.text('kicker',slide.kicker,{x:48,y,w:1184,h},kickerSize,{color:p.muted,lineHeight:1.2,role:'subtitle'});y+=h+14;}
@@ -45,10 +72,7 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
     }
     top=70;
   } else if(label||brand?.label||brand?.logoAssetId){
-    const brandW=brand?.label?Math.min(360,measureTextWidth(brand.label,brandSize,{bold:true})+4):0,logoW=brand?.logoAssetId?48:0;
-    if(label)b.text('section-label',label,{x:48,y:14,w:1184-brandW-logoW-(brandW||logoW?26:0),h:36},s.sectionSize,{bold:true,color:p.accent,lineHeight:1.1,role:'section-label'});
-    if(brand?.label)b.text('brand-label',brand.label,{x:1232-brandW,y:18,w:brandW,h:Math.max(28,brandSize*1.1)},brandSize,{color:p.accent,bold:true,lineHeight:1.1,role:'identity'});
-    if(brand?.logoAssetId)logo(b,project,{x:1232-brandW-logoW-8,y:8,w:40,h:40},'header-logo');
+    paintHeaderIdentity(b,project,info,false);
     top=58;
   }
   const titleH=wrapText(slide.title,1184,s.titleSize,{bold:true}).length*s.titleSize*1.13;
@@ -61,7 +85,7 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
   }
   const y=bottom+10;
   if(headerStyle!=='plain')b.line('header-rule',48,y,1232,y,p.line,{strokeWidth:1});
-  if(headerStyle==='rule')b.line('header-accent',48,y,172,y,p.accent,{strokeWidth:3});
+  if(headerStyle==='rule')b.line('header-accent',48,y,172,y,p.accent,{strokeWidth:1.6});
   const gap=headerStyle==='plain'?10:16;
   const contentBox={x:48,y:y+gap,w:1184,h:bottomLimit-y-gap};
   if(contentBox.h<360)fail(b,'academic-header-too-tall','章节与标题挤占过多正文空间；去掉重复副题，或在不丢失研究含义的前提下精简标题。');
@@ -96,7 +120,7 @@ export function academicCover(b, project, slide, {wrapText}) {
     b.rect('cover-base',{x:0,y:590,w:1280,h:130},p.accent,'none');
     b.line('cover-identity-rule',84,132,1196,132,p.line,{strokeWidth:1.2});
   }else{
-    b.line('cover-identity-rule',558,130,722,130,p.accent,{strokeWidth:4});
+    b.line('cover-identity-rule',590,130,690,130,p.accent,{strokeWidth:1.6});
     if(occasion)b.text('cover-occasion',occasion,{x:64,y:52,w:1152,h:60},26,{color:p.muted,align:'center',lineHeight:1.2,role:'cover-occasion'});
   }
   const titleH=wrapText(title,w,size,{bold:true}).length*size*1.16;
@@ -104,7 +128,7 @@ export function academicCover(b, project, slide, {wrapText}) {
   const groupH=titleH+(subH?subH+24:0),groupTop=style==='project'?165:154,groupLimit=style==='project'?500:504;
   const y=groupTop+Math.max(0,(groupLimit-groupTop-groupH)/2);
   b.text('title',title,{x,y,w,h:titleH},size,{bold:true,color:style==='framed'?p.ink:p.accent,align,lineHeight:1.16,role:'cover-title'});
-  if(subH)b.text('subtitle',slide.subtitle,{x,y:y+titleH+24,w,h:subH},subSize,{color:p.accent,align,lineHeight:1.22,role:'cover-subtitle'});
+  if(subH)b.text('subtitle',slide.subtitle,{x,y:y+titleH+24,w,h:subH},subSize,{color:style==='minimal'?p.ink:p.accent,align,lineHeight:1.22,role:'cover-subtitle'});
   if(y+groupH>groupLimit+2)fail(b,'cover-title-metadata-overlap','完整题名和副题超出封面研究主题区；使用语义换行、减少重复副题，或调整 design.system.coverTitleSize（不可小于60px）。');
   const metaSize=24;
   if(style==='project'){
@@ -116,7 +140,7 @@ export function academicCover(b, project, slide, {wrapText}) {
     const heights=info.map(value=>wrapText(value,metaW,metaSize).length*metaSize*1.2);
     let my=style==='minimal'?560:566;
     for(let i=0;i<info.length;i++){
-      b.text(i===0&&data.presenter?'cover-presenter':'cover-affiliation',info[i],{x:metaX,y:my,w:metaW,h:heights[i]},metaSize,{color:p.accent,align:'center',lineHeight:1.2,role:'cover-metadata'});my+=heights[i]+8;
+      b.text(i===0&&data.presenter?'cover-presenter':'cover-affiliation',info[i],{x:metaX,y:my,w:metaW,h:heights[i]},metaSize,{color:style==='minimal'?p.ink:p.accent,align:'center',lineHeight:1.2,role:'cover-metadata'});my+=heights[i]+8;
     }
     if(data.date)b.text('cover-date',data.date,{x:64,y:666,w:1152,h:30},22,{color:p.muted,align:'center',lineHeight:1.2,role:'cover-metadata'});
     if(my>656)fail(b,'cover-metadata-overflow','封面责任主体超过身份区；精简重复身份表述，保留真实机构和署名。');
@@ -174,26 +198,29 @@ function customCover(b,project,slide,{wrapText}) {
 }
 
 function modernCover(b, project, slide, {wrapText}, style) {
-  const data=slide.cover||{},s=b.system,p=b.p,title=exactTitle(b,slide),split=style==='split';
+  const data=slide.cover||{},s=b.system,p=b.p,title=exactTitle(b,slide),split=style==='split',hasVisual=Boolean(data.assetId||data.icon);
   const titleBox=split?{x:64,y:150,w:650,h:366}:{x:64,y:116,w:1112,h:260};
+  const detailW=split?650:hasVisual?740:1112;
   const occasion=[...new Set([data.occasion,slide.kicker].filter(Boolean))].join(' · ');
-  if(split)b.rect('cover-visual-field',{x:758,y:70,w:458,h:580},p.tint,'none',{radius:18,role:'decoration',semantic:false});
-  else b.rect('cover-editorial-field',{x:842,y:0,w:438,h:720},p.tint,'none',{role:'decoration',semantic:false});
+  // A media region must have a semantic occupant. Text-only editorial covers
+  // reclaim the width instead of drawing an empty, brand-like side panel.
+  if(split&&hasVisual)b.rect('cover-visual-field',{x:758,y:70,w:458,h:580},p.tint,'none',{radius:4,role:'decoration',semantic:false});
+  else if(hasVisual)b.rect('cover-editorial-field',{x:848,y:364,w:384,h:302},p.tint,'none',{radius:4,role:'decoration',semantic:false});
   if(occasion)b.text('cover-occasion',occasion,{x:64,y:50,w:split?650:1112,h:56},24,{color:p.muted,lineHeight:1.16,role:'cover-occasion'});
   const titleH=wrapText(title,titleBox.w,s.coverTitleSize,{bold:true}).length*s.coverTitleSize*1.12;
   b.text('title',title,{...titleBox,h:titleH},s.coverTitleSize,{bold:true,color:p.accent,lineHeight:1.12,role:'cover-title'});
   let bottom=titleBox.y+titleH;
-  if(slide.subtitle){const size=autoSize(b,'body',28),h=wrapText(slide.subtitle,split?650:740,size).length*size*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:split?650:740,h},size,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
+  if(slide.subtitle){const size=autoSize(b,'body',28),h=wrapText(slide.subtitle,detailW,size).length*size*1.22;b.text('subtitle',slide.subtitle,{x:64,y:bottom+22,w:detailW,h},size,{color:p.ink,lineHeight:1.22,role:'cover-subtitle'});bottom+=22+h;}
   if(bottom>(split?530:450))fail(b,'cover-title-metadata-overlap','当前封面的完整题名与副题超出主题区；按语义换行，调整封面变体或去掉重复副题。');
   const visual=split?{x:782,y:102,w:410,h:516}:{x:872,y:376,w:344,h:274};
-  if(data.assetId||data.icon)contextVisual(b,project,data,visual,'cover-context',wrapText);
+  if(hasVisual)contextVisual(b,project,data,visual,'cover-context',wrapText);
   else if(data.visualCaption)fail(b,'context-caption-without-visual','visualCaption需要对应的assetId或icon。');
   else if(split)fail(b,'cover-visual-missing','split封面需要登记的语境图片或有语义用途的icon；无媒体时改用editorial/framed等文字主导构图。');
   const metadata=[['cover-presenter',data.presenter],['cover-affiliation',data.affiliation],['cover-date',data.date]].filter(([,value])=>value);
   let y=split?558:530;
-  for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,split?650:740,size).length*size*1.2;b.text(key,value,{x:64,y,w:split?650:740,h},size,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
+  for(const [key,value]of metadata){const size=autoSize(b,'note',22),h=wrapText(value,detailW,size).length*size*1.2;b.text(key,value,{x:64,y,w:detailW,h},size,{color:key==='cover-date'?p.muted:p.ink,lineHeight:1.2,role:'cover-metadata'});y+=h+10;}
   if(y>700)fail(b,'cover-metadata-overflow','封面责任主体超过页面；保留真实身份并精简重复表述。');
-  b.rect('cover-accent',{x:64,y:(split?538:502),w:Math.min(180,titleBox.w*.3),h:4},p.accent,'none',{role:'decoration',semantic:false});
+  b.line('cover-accent',64,split?538:502,164,split?538:502,p.accent,{strokeWidth:1.6,role:'decoration',semantic:false});
 }
 
 export function academicClosing(b,project,slide,{wrapText,measureTextWidth,card,contentBox}) {

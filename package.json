@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.7.0-rc.4",
-  "description": "DeepSeek Harness学术汇报插件：参考证据组织、自由原生构图、真实设计候选、跨稿结构复核与可编辑PPTX。",
+  "version": "0.7.0-rc.8",
+  "description": "DeepSeek Harness学术汇报插件：36种原生信息卡、模板参考、生图参考规划、逐页学术设计与可编辑PPTX。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {
@@ -29,7 +29,8 @@
     "test": "node --test --test-concurrency=2 test/*.test.mjs",
     "demo": "node scripts/build-demo.mjs",
     "check": "node scripts/check-package.mjs",
-    "references": "node scripts/build-references.mjs"
+    "references": "node scripts/build-references.mjs",
+    "cards": "node scripts/build-card-library.mjs"
   },
   "dsh": {
     "bundle": {

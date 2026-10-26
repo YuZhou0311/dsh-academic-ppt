@@ -143,21 +143,22 @@ export function designGeometryReport(project, scenes) {
     const area = contentArea(page, slide); if (!validBox(area)) continue;
     const boxes = semanticBoxes(project, page, slide, area), content = gridReport(boxes.content, area);
     const allocation = boxes.context.length ? gridReport([...boxes.content, ...boxes.context], area) : content;
-    const cover = slide.layout === 'cover', navigation = slide.layout === 'section', references = slide.layout === 'references';
+    const cover = slide.layout === 'cover', navigation = ['section','roadmap'].includes(slide.layout), references = slide.layout === 'references';
     const warningLimit = cover ? .28 : navigation ? .34 : references ? .28 : .20;
-    // Deliberately simple engineering gates: a continuous unused quarter of
-    // the body, or half of a cover. These are review policy, not universal
-    // aesthetic laws; rendering and future evidence should refine the policy.
+    // Title and navigation pages deliberately use whitespace to establish
+    // hierarchy. They receive a visual-review reminder, never pressure to add
+    // an unrelated image. The compact evidence-page gate remains unchanged.
     const severeLimit = cover ? .50 : navigation ? .60 : references ? 1 : .25;
     const severe = allocation.emptyFraction >= severeLimit;
+    const blocks = severe && compact && !cover && !navigation && !references;
     const report = {
       slideId: page.id, layout: slide.layout, density: project.design?.density || 'balanced',
       basis: 'scene-geometry-estimate-not-aesthetic-score', contentBox: roundedBox(area),
       contentCoverage: rounded(content.occupiedFraction), contextVisualCoverage: rounded(Math.max(0, allocation.occupiedFraction - content.occupiedFraction)),
       largestEmptyContentBox: roundedBox(content.empty), largestEmptyContentFraction: rounded(content.emptyFraction),
       largestUnallocatedBox: roundedBox(allocation.empty), largestUnallocatedFraction: rounded(allocation.emptyFraction),
-      grid: allocation.grid, warningThreshold: warningLimit, blockingThreshold: severeLimit,
-      status: allocation.emptyFraction >= warningLimit ? severe && compact && !references ? 'needs-layout-fix' : 'needs-review' : 'no-large-void-detected',
+      grid: allocation.grid, warningThreshold: warningLimit, blockingThreshold: cover || navigation || references ? null : severeLimit,
+      status: allocation.emptyFraction >= warningLimit ? blocks ? 'needs-layout-fix' : 'needs-review' : 'no-large-void-detected',
     };
     slides.push(report);
     if (allocation.emptyFraction >= warningLimit) {
@@ -165,9 +166,11 @@ export function designGeometryReport(project, scenes) {
       const suggestion = references
         ? '检查能否合并参考页或重新分配书目；保留完整题名与可读字号。'
         : cover
-          ? '重新安排题名、真实身份及与题材有关的封面视觉；不要用底色或无关图标冒充内容。'
-          : '扩大主证据、把解读移到证据旁、重排卡片或合并本页；不要缩字、补写无依据观点、拉大卡框或增加装饰来刷占幅。';
-      issues.push({ severity: severe && compact && !references ? 'error' : 'warning', code: severe && compact && !references ? 'large-unused-region' : 'unused-region-review', slideId: page.id, path: `slides.${page.id}`, box, emptyFraction: report.largestUnallocatedFraction, contentCoverage: report.contentCoverage, basis: report.basis,
+          ? '查看题名、真实身份和留白是否形成清晰层级；文字主导的封面可以保持留白，无需增加图片或装饰。'
+          : navigation
+            ? '查看目录或章节页是否清楚交代位置与问题；有意留白可以保留，不为占幅增加卡片或装饰。'
+            : '先核对遗漏的证据、条件、比较与解释，重组相关区域或合并重复页面，再按可读性调整证据尺寸；不要缩字掩盖问题，也不要用巨字、无依据观点、空卡框或装饰来刷占幅。';
+      issues.push({ severity: blocks ? 'error' : 'warning', code: blocks ? 'large-unused-region' : 'unused-region-review', slideId: page.id, path: `slides.${page.id}`, box, emptyFraction: report.largestUnallocatedFraction, contentCoverage: report.contentCoverage, basis: report.basis,
         message: `${location(box, area)}有约 ${percent(allocation.emptyFraction)} 的连续未使用内容区（${Math.round(box.w)}×${Math.round(box.h)} px）。${suggestion}此值是几何诊断，不能代替真实渲染检查。` });
     }
   }

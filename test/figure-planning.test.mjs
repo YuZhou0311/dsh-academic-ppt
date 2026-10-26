@@ -10,12 +10,31 @@ import {brief,paper,claim,asset,slides} from './fixtures.mjs';
 const dense={width:685,height:1181,reading:{purpose:'evidence',contentType:'dense-multipanel',task:'read-values',panelCount:5,minLabelPx:6,requiredElements:['x axis','legend','units'],verifiedBy:'human'}};
 const specimen={id:'A',usage:'figure',...dense};
 
-test('dense source is rejected as reading evidence without inventing or mutating a crop',async()=>{
+test('dense source with unreadable labels remains rejected without inventing or mutating a crop',async()=>{
  const original=structuredClone(dense),advice=await referenceLayouts({category:'figure',figure:dense});
  assert.equal(advice.count,3);assert.equal(advice.figureAdvice.status,'select-panel-or-change-layout');
- assert.ok(advice.figureAdvice.candidates.every(c=>c.issues.some(i=>i.code==='figure-panel-selection-required')));
+ assert.ok(advice.figureAdvice.candidates.every(c=>c.issues.some(i=>i.code==='figure-label-too-small'&&i.severity==='error')));
+ assert.ok(advice.figureAdvice.candidates.every(c=>c.issues.some(i=>i.code==='figure-multipanel-review'&&i.severity==='warning')));
  assert.deepEqual(dense,original);assert.equal(dense.viewport,undefined);
  const text=formatToolResult('academic_ppt_reference',advice);assert.match(text,/图片适配/);assert.match(text,/关键标签/);
+});
+
+test('a complete readable four-panel comparison is reviewed rather than blocked by its panel count',()=>{
+ const figure={id:'four-panels',usage:'figure',width:1200,height:600,reading:{purpose:'evidence',contentType:'dense-multipanel',task:'compare-panels',panelCount:4,minLabelPx:24,requiredElements:['common scale','panel labels','legend'],verifiedBy:'human'}};
+ const original=structuredClone(figure),result=assessFigurePlacement(figure,{x:40,y:140,w:960,h:480});
+ assert.equal(result.geometry.cropped,false);
+ assert.ok(result.projectedLabelPx>=18);
+ assert.equal(result.status,'estimated');
+ assert.ok(!result.issues.some(i=>i.severity==='error'));
+ assert.ok(result.issues.some(i=>i.code==='figure-multipanel-review'&&i.severity==='warning'));
+ assert.deepEqual(figure,original);
+
+ const unchecked={...figure,reading:{...figure.reading,verifiedBy:'unverified'}};
+ delete unchecked.reading.minLabelPx;
+ const pending=assessFigurePlacement(unchecked,{x:40,y:140,w:960,h:480});
+ assert.equal(pending.status,'unverified');
+ assert.ok(pending.issues.some(i=>i.code==='figure-reading-unverified'));
+ assert.ok(pending.issues.some(i=>i.code==='figure-label-measurement-missing'));
 });
 
 test('projection checks measure content after contain-fit, not container width or pixel count alone',()=>{

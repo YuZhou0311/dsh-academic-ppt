@@ -31,8 +31,10 @@ export function assessFigurePlacement(asset, box, context = {}) {
   const locator=reading?.purpose==='locator';
   const projectedLabelPx=finitePositive(reading?.minLabelPx)?reading.minLabelPx*geometry.scale:null;
   if(locator&&reading.task!=='overview')add('error','locator-task-mismatch','定位图仅支持 overview；读数、面板比较或过程解释需要可读的证据图。');
-  if(reading?.contentType==='dense-multipanel'&&!locator&&reading.task!=='overview'&&(!geometry.cropped||(reading.panelCount||0)>3)){
-    add('error','figure-panel-selection-required','密集多面板原图承担主要证据：先核对并选择相关独立面板，或拆为连续页面。不能仅缩小整图。');
+  if(reading?.contentType==='dense-multipanel'&&!locator&&reading.task!=='overview'){
+    // Panel count and an uncropped source do not establish illegibility. Keep
+    // the measured label checks below, and require review of the actual task.
+    add('warning','figure-multipanel-review','按本页读数或比较任务，核对所需面板、共同尺度、图例和关键标签是否能同时辨认。完整多面板可以保留；是否选择局部或拆页由实际可读性与科学上下文决定，不由面板数量或是否裁切决定。');
   }
   if(!locator&&projectedLabelPx!==null&&projectedLabelPx<FIGURE_LABEL_FLOOR_PX){
     add('error','figure-label-too-small',`关键标签投影高度估计只有 ${round(projectedLabelPx)} px，低于本插件 ${FIGURE_LABEL_FLOOR_PX} px 预检底线；扩大证据面板、换页型或寻找出版方放大图。`);

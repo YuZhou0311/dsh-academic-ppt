@@ -1,5 +1,6 @@
 /** Completeness and provenance gates. These cannot establish scientific truth. */
 import {readFileSync} from 'node:fs';
+import {cardTextParts} from './card-content.mjs';
 
 const normalize = text => String(text ?? '').normalize('NFKC').replace(/[\s\p{P}\p{S}]/gu,'').toLowerCase();
 const substantive = text => normalize(text).length >= 14;
@@ -16,7 +17,7 @@ function demonstrationProse() {
   // Compare against the shipped examples, not a topic-specific blacklist.
   const data=JSON.parse(readFileSync(new URL('../skills/dsh-academic-ppt/references/templates/slide-records.json',import.meta.url),'utf8'));
   templateProse=[...new Set((data.slides??[]).flatMap(s=>[
-    s.subtitle,s.takeaway,...(s.cards??[]).flatMap(c=>[c.title,c.body]),
+    s.subtitle,s.takeaway,...(s.cards??[]).flatMap(cardTextParts),
   ]).map(normalize).filter(s=>s.length>=28))];
   return templateProse;
 }
@@ -56,7 +57,7 @@ export function academicIssues(project) {
       if(!ids(s).length) add('slide-without-evidence',path,'正文页需要实际证据链，不能只由介绍卡片构成。');
       if(s.argument&&['synthesis','proposal'].includes(s.argument.role)&&!ids(s).some(id=>claims.get(id)?.kind!=='reported')) add('synthesis-without-reasoning',path,'综合或方案页需可追溯的 inference/proposal，不只罗列作者结论。');
     }
-    const prose=[s.title,s.subtitle,s.takeaway,s.composition?.lead,s.composition?.conclusion?.text,...(s.composition?.rows??[]).flatMap(r=>r.panels.map(p=>p.title)),...(s.composition?.regions??[]).map(p=>p.title),...(s.heading?.lines??[]),...(s.drawings??[]).flatMap(d=>d.elements.filter(e=>e.kind==='text').map(e=>e.text)),...(s.cards??[]).flatMap(c=>[c.title,c.body])].filter(Boolean);
+    const prose=[s.title,s.subtitle,s.takeaway,s.composition?.lead,s.composition?.conclusion?.text,...(s.composition?.rows??[]).flatMap(r=>r.panels.map(p=>p.title)),...(s.composition?.regions??[]).map(p=>p.title),...(s.heading?.lines??[]),...(s.drawings??[]).flatMap(d=>d.elements.filter(e=>e.kind==='text').map(e=>e.text)),...(s.cards??[]).flatMap(cardTextParts)].filter(Boolean);
     if(prose.some(text=>demonstrationProse().some(sample=>normalize(text).includes(sample)))) add('template-text-reused',path,'页上含内置版式示例的长段原文。模板只提供形式，重新根据当前证据写论证。');
     if(prose.some(text=>/\[(?:待填|待补|TODO|INSERT)[^\]]*\]|<[^>]*(?:待填|YOUR TITLE)[^>]*>/i.test(text))) add('unfilled-placeholder',path,'正式页仍含明确占位符，补齐真实内容或移除不必要项。');
   }

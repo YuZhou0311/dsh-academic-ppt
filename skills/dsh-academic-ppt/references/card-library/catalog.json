@@ -1,0 +1,2176 @@
+[
+  {
+    "id": "research-tab",
+    "name": "悬签问题卡",
+    "family": "research",
+    "purpose": "一个研究问题与简短语境",
+    "useWhen": "一个研究问题与简短语境",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "double",
+      "header": "tab",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-tab",
+      "kind": "question",
+      "preset": "research-tab",
+      "claimIds": [],
+      "title": "研究问题",
+      "body": "空间分辨率改变后，\n如何区分观测误差与过程误差？",
+      "note": "先区分误差来源，再确定验证对象。"
+    }
+  },
+  {
+    "id": "research-bracket",
+    "name": "开放括线卡",
+    "family": "research",
+    "purpose": "概念解释与适用语境",
+    "useWhen": "概念解释与适用语境",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "bracket",
+      "header": "plain",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-bracket",
+      "kind": "question",
+      "preset": "research-bracket",
+      "claimIds": [],
+      "title": "尺度一致性",
+      "body": "观测尺度与模型网格需要明确映射。",
+      "items": [
+        {
+          "label": "空间支持",
+          "detail": "说明点、样方或像元。"
+        },
+        {
+          "label": "时间支持",
+          "detail": "说明瞬时值或时段平均。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "research-label-rail",
+    "name": "侧签语境卡",
+    "family": "research",
+    "purpose": "短主题标签与较长背景解释",
+    "useWhen": "短主题标签与较长背景解释",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "rail",
+      "header": "rail",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 400,
+      "preferredWidth": 500,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-label-rail",
+      "kind": "question",
+      "preset": "research-label-rail",
+      "claimIds": [],
+      "title": "研究语境",
+      "body": "同一变量在不同观测平台上可能代表不同的空间与时间支持。",
+      "note": "比较前记录测量定义。"
+    }
+  },
+  {
+    "id": "research-rule",
+    "name": "双线定义卡",
+    "family": "research",
+    "purpose": "定义、符号含义或工作口径",
+    "useWhen": "定义、符号含义或工作口径",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ruled",
+      "header": "rule",
+      "content": "ledger"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-rule",
+      "kind": "question",
+      "preset": "research-rule",
+      "claimIds": [],
+      "title": "变量口径",
+      "body": "输入、状态与输出采用一致命名。",
+      "items": [
+        {
+          "label": "输入",
+          "detail": "外部驱动与观测。"
+        },
+        {
+          "label": "状态",
+          "detail": "模型内部演化量。"
+        },
+        {
+          "label": "输出",
+          "detail": "模型计算的观测对应量。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "research-fold",
+    "name": "折角背景札记",
+    "family": "research",
+    "purpose": "背景事实与需要保留的限定",
+    "useWhen": "背景事实与需要保留的限定",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "fold",
+      "header": "fold",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-fold",
+      "kind": "question",
+      "preset": "research-fold",
+      "claimIds": [],
+      "title": "背景观察",
+      "body": "高频观测补充时间变化信息，覆盖范围仍受采样条件限制。",
+      "note": "观测频率不等于独立样本数。"
+    }
+  },
+  {
+    "id": "research-index",
+    "name": "编号议题卡",
+    "family": "research",
+    "purpose": "一组研究议题中的有序节点",
+    "useWhen": "一组研究议题中的有序节点",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "number",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "research-index",
+      "kind": "question",
+      "preset": "research-index",
+      "claimIds": [],
+      "title": "误差归因",
+      "badge": "02",
+      "body": "比较同一验证集上不同误差来源的贡献。",
+      "items": [
+        {
+          "label": "分析对象",
+          "detail": "保持样本与评价窗口一致。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "method-band",
+    "name": "标题带方法卡",
+    "family": "method",
+    "purpose": "方法名称、核心操作和条件",
+    "useWhen": "方法名称、核心操作和条件",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "band",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-band",
+      "kind": "method",
+      "preset": "method-band",
+      "claimIds": [],
+      "title": "状态更新",
+      "body": "先进行过程预测，再依据观测可信度修正状态。",
+      "note": "记录更新前后的同一状态变量。"
+    }
+  },
+  {
+    "id": "method-ladder",
+    "name": "步骤阶梯卡",
+    "family": "method",
+    "purpose": "严格有序的局部处理步骤",
+    "useWhen": "严格有序的局部处理步骤",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "plain",
+      "header": "rule",
+      "content": "steps"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-ladder",
+      "kind": "method",
+      "preset": "method-ladder",
+      "claimIds": [],
+      "title": "数据对齐",
+      "body": "每一步保留原始记录标识。",
+      "items": [
+        {
+          "label": "校验时间",
+          "detail": "统一时区与时间窗。"
+        },
+        {
+          "label": "匹配位置",
+          "detail": "记录空间匹配方式。"
+        },
+        {
+          "label": "输出样本",
+          "detail": "保留缺测标记。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "method-io",
+    "name": "输入输出对照卡",
+    "family": "method",
+    "purpose": "输入与输出的成对说明",
+    "useWhen": "输入与输出的成对说明",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "io"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 520,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-io",
+      "kind": "method",
+      "preset": "method-io",
+      "claimIds": [],
+      "title": "接口约定",
+      "body": "输入输出以同一批次标识关联。",
+      "items": [
+        {
+          "label": "输入",
+          "detail": "驱动序列\n初始状态"
+        },
+        {
+          "label": "输出",
+          "detail": "预测状态\n不确定性"
+        }
+      ]
+    }
+  },
+  {
+    "id": "method-equation",
+    "name": "公式释义卡",
+    "family": "method",
+    "purpose": "作者给定的公式及符号解释",
+    "useWhen": "作者给定的公式及符号解释",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ruled",
+      "header": "plain",
+      "content": "formula"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        1,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-equation",
+      "kind": "method",
+      "preset": "method-equation",
+      "claimIds": [],
+      "title": "残差定义",
+      "body": "e = y − ŷ",
+      "items": [
+        {
+          "label": "y",
+          "detail": "观测值。"
+        },
+        {
+          "label": "ŷ",
+          "detail": "同一时间点的预测值。"
+        }
+      ],
+      "note": "符号由作者提供，不自动生成模型。"
+    }
+  },
+  {
+    "id": "method-protocol",
+    "name": "实验协议卡",
+    "family": "method",
+    "purpose": "名称与取值对齐的操作协议",
+    "useWhen": "名称与取值对齐的操作协议",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "band",
+      "content": "ledger"
+    },
+    "dimensions": {
+      "minimumWidth": 380,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-protocol",
+      "kind": "method",
+      "preset": "method-protocol",
+      "claimIds": [],
+      "title": "验证协议",
+      "body": "划分规则先于模型评价确定。",
+      "items": [
+        {
+          "label": "划分单位",
+          "detail": "按地块留出。"
+        },
+        {
+          "label": "拟合范围",
+          "detail": "仅使用训练集。"
+        },
+        {
+          "label": "评价窗口",
+          "detail": "保留完整目标时段。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "method-ribbon",
+    "name": "侧带算法卡",
+    "family": "method",
+    "purpose": "算法主题与分组操作",
+    "useWhen": "算法主题与分组操作",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ribbon",
+      "header": "plain",
+      "content": "numbered"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "method-ribbon",
+      "kind": "method",
+      "preset": "method-ribbon",
+      "claimIds": [],
+      "title": "迭代校准",
+      "body": "每轮采用相同停止规则。",
+      "items": [
+        {
+          "label": "候选生成",
+          "detail": "在可行参数域内搜索。"
+        },
+        {
+          "label": "误差评估",
+          "detail": "按预先约定的损失比较。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "evidence-claim-proof",
+    "name": "结论依据卡",
+    "family": "evidence",
+    "purpose": "明确区分判断与支持证据",
+    "useWhen": "明确区分判断与支持证据",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "band",
+      "content": "claim-proof"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-claim-proof",
+      "kind": "result",
+      "preset": "evidence-claim-proof",
+      "claimIds": [],
+      "title": "结论与依据",
+      "body": "结果需要与评价条件一起解释。",
+      "items": [
+        {
+          "label": "观察",
+          "detail": "同一验证集中的残差结构。"
+        },
+        {
+          "label": "支持范围",
+          "detail": "仅覆盖已测条件。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "evidence-source-footer",
+    "name": "来源脚注卡",
+    "family": "evidence",
+    "purpose": "一条观察与紧邻的来源限定",
+    "useWhen": "一条观察与紧邻的来源限定",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "double-bottom",
+      "header": "plain",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-source-footer",
+      "kind": "result",
+      "preset": "evidence-source-footer",
+      "claimIds": [],
+      "title": "观测记录",
+      "body": "多个时点的测量应保留样本身份与时间顺序。",
+      "note": "来源字段填写真实数据版本与定位信息。"
+    }
+  },
+  {
+    "id": "evidence-trace",
+    "name": "证据追踪卡",
+    "family": "evidence",
+    "purpose": "来源、处理与结论之间的可追踪链",
+    "useWhen": "来源、处理与结论之间的可追踪链",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "plain",
+      "header": "tab",
+      "content": "trace"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-trace",
+      "kind": "result",
+      "preset": "evidence-trace",
+      "claimIds": [],
+      "title": "证据追踪",
+      "body": "每一段说明对应的资料。",
+      "items": [
+        {
+          "label": "原始记录",
+          "detail": "观测值与质量标记。"
+        },
+        {
+          "label": "处理结果",
+          "detail": "对齐后的样本集合。"
+        },
+        {
+          "label": "解释",
+          "detail": "仅基于保留的样本。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "evidence-compare",
+    "name": "配对比较卡",
+    "family": "evidence",
+    "purpose": "同一口径下的两组证据描述",
+    "useWhen": "同一口径下的两组证据描述",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "rule",
+      "content": "comparison"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 520,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-compare",
+      "kind": "result",
+      "preset": "evidence-compare",
+      "claimIds": [],
+      "title": "口径比较",
+      "body": "采用相同样本定义后再比较。",
+      "items": [
+        {
+          "label": "参考方法",
+          "detail": "固定评价窗口。"
+        },
+        {
+          "label": "候选方法",
+          "detail": "复用同一评价窗口。"
+        }
+      ],
+      "note": "卡片不自动宣告方法优劣。"
+    }
+  },
+  {
+    "id": "evidence-interpretation",
+    "name": "观察解释分层卡",
+    "family": "evidence",
+    "purpose": "将测量观察与解释分开",
+    "useWhen": "将测量观察与解释分开",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ruled",
+      "header": "plain",
+      "content": "layered"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        4
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-interpretation",
+      "kind": "result",
+      "preset": "evidence-interpretation",
+      "claimIds": [],
+      "title": "现象与解释",
+      "body": "解释仍需独立检验。",
+      "items": [
+        {
+          "label": "观察",
+          "detail": "残差随环境条件变化。"
+        },
+        {
+          "label": "可能解释",
+          "detail": "当前模型缺少对应响应项。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "evidence-notes",
+    "name": "证据注释叠页卡",
+    "family": "evidence",
+    "purpose": "多个相关证据注释并保留共同限定",
+    "useWhen": "多个相关证据注释并保留共同限定",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "stacked",
+      "header": "plain",
+      "content": "annotations"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "evidence-notes",
+      "kind": "result",
+      "preset": "evidence-notes",
+      "claimIds": [],
+      "title": "证据注释",
+      "body": "各条注释对应不同分析层级。",
+      "items": [
+        {
+          "label": "样本",
+          "detail": "记录覆盖与缺失。"
+        },
+        {
+          "label": "指标",
+          "detail": "保留计算口径。"
+        }
+      ],
+      "note": "共同限定：同一数据版本。"
+    }
+  },
+  {
+    "id": "metric-aside",
+    "name": "读数旁注卡",
+    "family": "metric",
+    "purpose": "一个数值与同栏解释",
+    "useWhen": "一个数值与同栏解释",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "metric-aside"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        1,
+        1
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-aside",
+      "kind": "result",
+      "preset": "metric-aside",
+      "claimIds": [],
+      "title": "验证读数",
+      "body": "该读数用于演示卡片结构。",
+      "items": [
+        {
+          "label": "RMSE",
+          "value": "0.32",
+          "unit": "m²/m²",
+          "detail": "应注明变量与验证集。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "metric-dual",
+    "name": "双指标纵列卡",
+    "family": "metric",
+    "purpose": "两个单独统计的指标及各自含义",
+    "useWhen": "两个单独统计的指标及各自含义",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "rule",
+      "content": "metric-rows"
+    },
+    "dimensions": {
+      "minimumWidth": 400,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-dual",
+      "kind": "result",
+      "preset": "metric-dual",
+      "claimIds": [],
+      "title": "两项评价",
+      "body": "指标分别计算，保留各自口径。",
+      "items": [
+        {
+          "label": "样本数量",
+          "value": "24",
+          "unit": "个",
+          "detail": "独立验证样本。"
+        },
+        {
+          "label": "观测时点",
+          "value": "6",
+          "unit": "次",
+          "detail": "评价窗口内测量。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "metric-pair",
+    "name": "双指标并列卡",
+    "family": "metric",
+    "purpose": "并排读数及独立的名称单位",
+    "useWhen": "并排读数及独立的名称单位",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "plain",
+      "header": "band",
+      "content": "metric-columns"
+    },
+    "dimensions": {
+      "minimumWidth": 460,
+      "preferredWidth": 560,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-pair",
+      "kind": "result",
+      "preset": "metric-pair",
+      "claimIds": [],
+      "title": "成对读数",
+      "body": "只展示作者给出的数值。",
+      "items": [
+        {
+          "label": "参考误差",
+          "value": "0.42",
+          "unit": "m²/m²",
+          "detail": "同一验证集。"
+        },
+        {
+          "label": "候选误差",
+          "value": "0.35",
+          "unit": "m²/m²",
+          "detail": "同一验证集。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "metric-baseline",
+    "name": "读数参照卡",
+    "family": "metric",
+    "purpose": "主读数与明确的参照条目",
+    "useWhen": "主读数与明确的参照条目",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "tab",
+      "content": "baseline"
+    },
+    "dimensions": {
+      "minimumWidth": 400,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-baseline",
+      "kind": "result",
+      "preset": "metric-baseline",
+      "claimIds": [],
+      "title": "读数与参照",
+      "body": "参照来源必须与当前读数一起保留。",
+      "items": [
+        {
+          "label": "当前值",
+          "value": "0.35",
+          "unit": "m²/m²",
+          "detail": "当前验证口径。"
+        },
+        {
+          "label": "参照值",
+          "value": "0.42",
+          "unit": "m²/m²",
+          "detail": "相同评价窗口。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "metric-target",
+    "name": "目标实测对读卡",
+    "family": "metric",
+    "purpose": "目标与观测并列且不代算差值",
+    "useWhen": "目标与观测并列且不代算差值",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "cut",
+      "header": "plain",
+      "content": "target"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-target",
+      "kind": "result",
+      "preset": "metric-target",
+      "claimIds": [],
+      "title": "目标与观测",
+      "body": "达标条件需由作者明确给出。",
+      "items": [
+        {
+          "label": "预定上限",
+          "value": "0.50",
+          "unit": "m²/m²",
+          "detail": "判断条件。"
+        },
+        {
+          "label": "观测结果",
+          "value": "0.35",
+          "unit": "m²/m²",
+          "detail": "对应测量。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "metric-ledger",
+    "name": "指标台账卡",
+    "family": "metric",
+    "purpose": "多个指标以名称数值解释对齐",
+    "useWhen": "多个指标以名称数值解释对齐",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ruled",
+      "header": "plain",
+      "content": "value-ledger"
+    },
+    "dimensions": {
+      "minimumWidth": 430,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "metric-ledger",
+      "kind": "result",
+      "preset": "metric-ledger",
+      "claimIds": [],
+      "title": "指标台账",
+      "body": "所有数值均保留名称与单位。",
+      "items": [
+        {
+          "label": "RMSE",
+          "value": "0.35",
+          "unit": "m²/m²",
+          "detail": "验证误差。"
+        },
+        {
+          "label": "样本量",
+          "value": "24",
+          "unit": "个",
+          "detail": "独立样本。"
+        }
+      ],
+      "note": "演示数值，非研究结果。"
+    }
+  },
+  {
+    "id": "boundary-cut",
+    "name": "切角边界卡",
+    "family": "boundary",
+    "purpose": "一项明确限制及其适用范围",
+    "useWhen": "一项明确限制及其适用范围",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "cut",
+      "header": "rule",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-cut",
+      "kind": "boundary",
+      "preset": "boundary-cut",
+      "claimIds": [],
+      "title": "适用边界",
+      "body": "当前验证仅覆盖已观测环境。\n跨地点结论仍需外部检验。",
+      "note": "边界与主结论同时出现。"
+    }
+  },
+  {
+    "id": "boundary-notch",
+    "name": "引出警示卡",
+    "family": "boundary",
+    "purpose": "需要紧接正文阅读的风险提示",
+    "useWhen": "需要紧接正文阅读的风险提示",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "notch",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-notch",
+      "kind": "boundary",
+      "preset": "boundary-notch",
+      "claimIds": [],
+      "title": "数据泄漏风险",
+      "body": "若用验证集拟合预处理参数，评价可能失真。",
+      "note": "只在训练集上估计预处理参数。"
+    }
+  },
+  {
+    "id": "boundary-assumptions",
+    "name": "假设登记卡",
+    "family": "boundary",
+    "purpose": "多个前提及其核验方法",
+    "useWhen": "多个前提及其核验方法",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ruled",
+      "header": "tab",
+      "content": "register"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-assumptions",
+      "kind": "boundary",
+      "preset": "boundary-assumptions",
+      "claimIds": [],
+      "title": "工作假设",
+      "body": "假设不是已验证的事实。",
+      "items": [
+        {
+          "label": "测量一致",
+          "detail": "核验设备与标定记录。"
+        },
+        {
+          "label": "样本独立",
+          "detail": "核验采样与重复关系。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "boundary-scope",
+    "name": "覆盖范围对照卡",
+    "family": "boundary",
+    "purpose": "明确写出覆盖和未覆盖的对象",
+    "useWhen": "明确写出覆盖和未覆盖的对象",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "plain",
+      "content": "scope"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 520,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-scope",
+      "kind": "boundary",
+      "preset": "boundary-scope",
+      "claimIds": [],
+      "title": "评价覆盖",
+      "body": "两侧均为作者界定的范围。",
+      "items": [
+        {
+          "label": "已覆盖",
+          "detail": "本季已采样地块。"
+        },
+        {
+          "label": "未覆盖",
+          "detail": "跨年与未采样土壤。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "boundary-response",
+    "name": "风险应对卡",
+    "family": "boundary",
+    "purpose": "风险与对应动作形成局部配对",
+    "useWhen": "风险与对应动作形成局部配对",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "ribbon",
+      "header": "plain",
+      "content": "response"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 520,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-response",
+      "kind": "boundary",
+      "preset": "boundary-response",
+      "claimIds": [],
+      "title": "风险与应对",
+      "body": "应对方案仍需执行验证。",
+      "items": [
+        {
+          "label": "风险",
+          "detail": "空间外推误差增大。"
+        },
+        {
+          "label": "应对",
+          "detail": "增加独立地点验证。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "boundary-checks",
+    "name": "条件核对卡",
+    "family": "boundary",
+    "purpose": "逐项列出约束及检查依据",
+    "useWhen": "逐项列出约束及检查依据",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "rule",
+      "content": "checks"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "boundary-checks",
+      "kind": "boundary",
+      "preset": "boundary-checks",
+      "claimIds": [],
+      "title": "条件核对",
+      "body": "列表只描述条件，不自动标记通过。",
+      "items": [
+        {
+          "label": "时间窗",
+          "detail": "比较时段一致。"
+        },
+        {
+          "label": "单位",
+          "detail": "换算方式已记录。"
+        },
+        {
+          "label": "缺失值",
+          "detail": "处理规则可追踪。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "progress-rail",
+    "name": "编号阶段卡",
+    "family": "progress",
+    "purpose": "当前阶段与产物的组合",
+    "useWhen": "当前阶段与产物的组合",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "rail",
+      "header": "number",
+      "content": "stack"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        0,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-rail",
+      "kind": "method",
+      "preset": "progress-rail",
+      "claimIds": [],
+      "title": "验证准备",
+      "badge": "03",
+      "body": "冻结数据划分与评价指标，形成可复现协议。",
+      "note": "阶段完成后再开展模型比较。"
+    }
+  },
+  {
+    "id": "progress-route",
+    "name": "阶段路线卡",
+    "family": "progress",
+    "purpose": "横向呈现少量有序阶段",
+    "useWhen": "横向呈现少量有序阶段",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "plain",
+      "header": "plain",
+      "content": "route"
+    },
+    "dimensions": {
+      "minimumWidth": 480,
+      "preferredWidth": 600,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        3
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-route",
+      "kind": "method",
+      "preset": "progress-route",
+      "claimIds": [],
+      "title": "工作路线",
+      "body": "阶段衔接保留明确产物。",
+      "items": [
+        {
+          "label": "准备",
+          "detail": "固定数据。"
+        },
+        {
+          "label": "检验",
+          "detail": "比较结果。"
+        },
+        {
+          "label": "复核",
+          "detail": "记录边界。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "progress-milestones",
+    "name": "里程碑清单卡",
+    "family": "progress",
+    "purpose": "阶段时间与产物逐行对应",
+    "useWhen": "阶段时间与产物逐行对应",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "band",
+      "content": "milestones"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-milestones",
+      "kind": "method",
+      "preset": "progress-milestones",
+      "claimIds": [],
+      "title": "阶段产物",
+      "body": "节点以实际产物定义。",
+      "items": [
+        {
+          "label": "第一阶段",
+          "detail": "数据清单与质控记录。"
+        },
+        {
+          "label": "第二阶段",
+          "detail": "独立验证与误差分析。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "progress-decision",
+    "name": "条件分支卡",
+    "family": "progress",
+    "purpose": "共同前提下的两种决策条件",
+    "useWhen": "共同前提下的两种决策条件",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "plain",
+      "header": "rule",
+      "content": "decision"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-decision",
+      "kind": "method",
+      "preset": "progress-decision",
+      "claimIds": [],
+      "title": "后续选择",
+      "body": "按预先约定的检验规则决定。",
+      "items": [
+        {
+          "label": "条件满足",
+          "detail": "进入外部验证。"
+        },
+        {
+          "label": "条件未满足",
+          "detail": "检查数据与结构误差。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "progress-status",
+    "name": "完成待办分栏卡",
+    "family": "progress",
+    "purpose": "已完成与待完成任务明确分区",
+    "useWhen": "已完成与待完成任务明确分区",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "outline",
+      "header": "tab",
+      "content": "status"
+    },
+    "dimensions": {
+      "minimumWidth": 420,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        2,
+        2
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-status",
+      "kind": "method",
+      "preset": "progress-status",
+      "claimIds": [],
+      "title": "当前进展",
+      "body": "完成状态由作者确认。",
+      "items": [
+        {
+          "label": "已完成",
+          "detail": "数据整理与质控。"
+        },
+        {
+          "label": "待完成",
+          "detail": "跨地点独立检验。"
+        }
+      ]
+    }
+  },
+  {
+    "id": "progress-action",
+    "name": "下一步行动卡",
+    "family": "progress",
+    "purpose": "具体行动、交付物与触发条件",
+    "useWhen": "具体行动、交付物与触发条件",
+    "avoid": "内容关系不匹配时改用其他预设；完整证据图表仍放在独立区域。",
+    "recipe": {
+      "frame": "double-bottom",
+      "header": "number",
+      "content": "action"
+    },
+    "dimensions": {
+      "minimumWidth": 340,
+      "preferredWidth": 440,
+      "height": "按完整内容测量，不按固定小框裁切",
+      "units": "px on 1280×720 canvas"
+    },
+    "contentContract": {
+      "required": [
+        "title",
+        "body"
+      ],
+      "optional": [
+        "items",
+        "metric",
+        "badge",
+        "note",
+        "icon"
+      ],
+      "itemCount": [
+        1,
+        6
+      ],
+      "itemFields": [
+        "label",
+        "value",
+        "unit",
+        "detail"
+      ],
+      "note": "items 为作者提供的内容槽位；不推断数值、差值、达标或因果关系。示例仅演示结构。"
+    },
+    "example": {
+      "id": "progress-action",
+      "kind": "method",
+      "preset": "progress-action",
+      "claimIds": [],
+      "title": "下一步验证",
+      "badge": "04",
+      "body": "在保留地块上复核误差结构。",
+      "items": [
+        {
+          "label": "产物",
+          "detail": "误差分布与异常记录。"
+        },
+        {
+          "label": "前提",
+          "detail": "冻结模型和评价协议。"
+        }
+      ]
+    }
+  }
+]

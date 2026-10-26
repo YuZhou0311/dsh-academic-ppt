@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-25",
+  "reviewer": "main-session-agent",
+  "scope": "Single host-agent forward trial of v0.7.0-rc.5; not a DeepSeek endpoint or DSH GUI acceptance test.",
+  "final_revision": 9,
+  "final_pptx_sha256": "49940596e688a01b1e23099665a40a58a127002d7c7a041f86edefbb6812ad94",
+  "page_count": 8,
+  "visual_review": {
+    "basis": "actual LibreOffice WASM PPTX renders, not SVG proxies",
+    "initial_review": "Viewed all eight r4 pages and read the full exported notes.",
+    "revision_review": "Viewed r7 pages 3, 5 and 8 after unit wrapping, common scale and source-path corrections; confirmed the other five pages were byte-identical to the already viewed pages.",
+    "final_review": "Viewed r9 pages 2 and 4 after tightening the allocation-reporting wording; confirmed the other six pages were byte-identical to r7.",
+    "result": "No remaining blocking issue found within the inspected content and rendering scope."
+  },
+  "content_findings": [
+    "The visible route proceeds from comparison conditions to within-batch evidence and limitations, then to a proposed next experiment; chapter labels and spoken transitions agree.",
+    "The 48-record structure, 46 failures and two right-censored records agree with the independent calculation from the raw inputs.",
+    "B-batch difference 25622.25 cycles and Welch interval [-13679.80, 64924.30] cycles agree with the independent calculation; positive estimate and zero-crossing interval are not promoted to causal effectiveness or equivalence.",
+    "The protocol explicitly excludes randomized cross-batch allocation; within-B random allocation is unreported. Final slides and notes preserve that distinction.",
+    "The next-batch design remains a proposal. No mechanism measurement, useful-effect threshold, sample size or completed experiment is fabricated."
+  ],
+  "visual_findings": [
+    "The original text-led cover, consistent low-saturation colors, visible fine borders and restrained source treatment establish a formal academic hierarchy.",
+    "Raw observation marks, uncertainty intervals, a censoring timeline, an experiment flow and a decision table use distinct structures appropriate to the evidence.",
+    "No missing Chinese glyph, text clipping or text overlap was observed on the inspected final pages."
+  ],
+  "retained_warnings": [
+    "The scope section is covered by the sample matrix on a combined roadmap page; the automated body-page classification does not count that layout as section content.",
+    "Cover whitespace was reviewed and retained for title hierarchy.",
+    "Reference-page whitespace was reviewed and retained to separate bibliography and analysis definitions."
+  ],
+  "reconstruction": "The author completed a fresh all-phase run and reported eight byte-identical PNGs. The main session checked the final verification manifest, copied artifact identity and changed-page comparison.",
+  "limitations": [
+    "All data are synthetic teaching material.",
+    "Eight minutes is an allocated time budget, not a live rehearsal.",
+    "PowerPoint/WPS GUI, the user's DSH session, physical projection and cross-model reliability were not tested.",
+    "Automatic checks and a single reviewed example do not establish general scientific correctness or aesthetic success."
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "projectPath": "/workspace/scratch/421d8d880beb/dsh-academic-ppt/.test-output/forward-rc5/report/project/project.json",
+  "expectedRevision": 9,
+  "pptxSha256": "49940596e688a01b1e23099665a40a58a127002d7c7a041f86edefbb6812ad94",
+  "reviewer": "vision-model",
+  "basis": "pptx-render",
+  "reviewedSlides": [
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8"
+  ],
+  "result": "passed",
+  "notes": "实际逐页查看当前r9同一PPTX哈希的全部8张PNG及全稿概览；没有仅复用r7的视觉批准。最后窄修正把随机分配状态准确写成“未报告随机分配”，对应讲稿与证据同步；数值、布局和结论不变。未发现剩余缺字、裁切、文字重叠、轴单位缺失或箭头误配。只记录本次静态视觉核对，不等于独立科学认证；未进行PowerPoint/WPS用户宿主验证或真人排练。",
+  "observations": [
+    {
+      "slideId": "s1",
+      "contentCheck": "最终题名完整，明确48件记录、教学模拟身份、资料版本1与2026-10-20；没有报告人或机构占位。",
+      "legibilityCheck": "实际PNG中两行左对齐题名、范围副题和下方元信息清楚；无裁切或缺字，右下留白服务题名层级。",
+      "issue": ""
+    },
+    {
+      "slideId": "s2",
+      "contentCheck": "最终矩阵显示A常规12/B两工艺各12/C改性12，200/180 MPa及C两件runout准确；正文将随机分配状态明确写为“未报告随机分配”，没有把信息缺失变成已知不存在。",
+      "legibilityCheck": "B行浅底细框与其他行可区分，三节问题路线有独立区域；标题、表头和终点标签不相撞。",
+      "issue": ""
+    },
+    {
+      "slideId": "s3",
+      "contentCheck": "最终图保留48件原始观察，C两件50万为两枚空心点及右箭头；23.63/30.37万均值和6.74万描述差正确。",
+      "legibilityCheck": "批次/工艺与200 MPa或180 MPa各占一行，修复了单位拆行；0至50万刻度、各12件及右侧不可归因解释可读。",
+      "issue": ""
+    },
+    {
+      "slideId": "s4",
+      "contentCheck": "24个B批观测、全部failed、均值与样本SD、差值2.56万及Welch95%区间[-1.37,6.49]万均与复算相符；关键边界收紧为“未报告随机分配”。",
+      "legibilityCheck": "实际零线位于区间内部，端帽和点估计分明；±、负号、万循环单位与随机分配未报告/非等效限定清楚。",
+      "issue": ""
+    },
+    {
+      "slideId": "s5",
+      "contentCheck": "C-mod-12的48.25万失效及C-mod-02/08的50万runout身份准确；未把停止时间当作失败；因果、尾部、机制边界分别可见。",
+      "legibilityCheck": "最终补有0/25/50共同刻度与“循环数（万）”轴名；实心失效、空心删失与右箭头可辨，图文无交叠。",
+      "issue": ""
+    },
+    {
+      "slideId": "s6",
+      "contentCheck": "图中明确待检验且尚未开展；同批200 MPa、1:1随机分配、两工艺共用失效/50万终点、RMST差与δ/精度规划均可见。",
+      "legibilityCheck": "输入、分配、两条工艺路径和共同终点的箭头连接正确且不穿文字；各节点细边与下方解释有清晰层级。",
+      "issue": ""
+    },
+    {
+      "slideId": "s7",
+      "contentCheck": "区间方向三分支加前提不成立第四分支完整，L/U/Δ含义清楚；不把跨零当等效，并回应当前效应未确立。",
+      "legibilityCheck": "L>0、U<0、L≤0≤U与Δ/δ字形正确；三行表格、前提失效框和最终回答均可读，无遮挡。",
+      "issue": ""
+    },
+    {
+      "slideId": "s8",
+      "contentCheck": "两份完整来源题名、未署名说明、版本/日期和sources相对路径均保留；SD的n−1分母、原尺度Welch、删失与模拟身份一致。",
+      "legibilityCheck": "相对路径缩短后元信息无截断；书目和分析口径分区清楚，留白允许来源页快速检索，中文与符号正常。",
+      "issue": ""
+    }
+  ]
+}

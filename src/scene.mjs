@@ -13,6 +13,7 @@ import { renderNativeDrawing, drawingAssetIds, drawingClaimIds } from './native-
 import { renderAuthoredHeading } from './authored-heading.mjs';
 import { renderBibliography } from './free-composition.mjs';
 import { projectionIssues } from './projection-quality.mjs';
+import { resolveNarrativeSlide, renderNarrativeRoadmap, renderNarrativeSection } from './narrative.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
 export const LAYOUTS = Object.freeze(['cover', 'section', 'academic', 'roadmap', 'paper', 'figure-focus', 'figure-split', 'comparison', 'method', 'results', 'synthesis', 'proposal', 'closing', 'references']);
 export const CARD_STYLES = Object.freeze(['plain', 'ruled', 'compact', 'academic-panel', 'academic-tab', 'academic-side', 'open-frame', 'floating-tab', 'split-label', 'paper-shadow', 'title-band', 'stacked-corner', 'ledger', 'dashed-note']);
@@ -696,7 +697,7 @@ function inspectLayout(b) {
 }
 
 export function buildScenes(project) {
-  const design = resolveDesign(project.design), slides = arr(project.slides);
+  const design = resolveDesign(project.design), slides = arr(project.slides).map(slide => resolveNarrativeSlide(project, slide));
   const pages = slides.map((slide, index) => {
     const b = pageBuilder(slide, index, slides.length, design), cards = arr(slide.cards), figures = arr(slide.figureIds);
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});
@@ -726,8 +727,12 @@ export function buildScenes(project) {
     else if(slide.layout==='cover'){
       if(design.hasAcademicSystem||['split','editorial','custom'].includes(slide.cover?.variant)||slide.cover?.boxes||slide.cover?.align||slide.cover?.assetId||slide.cover?.icon||slide.cover?.visualCaption)academicCover(b,project,slide,{wrapText,measureTextWidth});else cover(b,slide);
     }
-    else if(slide.layout==='section')academicSection(b,project,slide,{wrapText,measureTextWidth});
+    else if(slide.layout==='section'){
+      if(project.brief?.narrative||slide.agenda?.items?.some(item=>item.question))renderNarrativeSection(b,project,slide,{wrapText});
+      else academicSection(b,project,slide,{wrapText,measureTextWidth});
+    }
     else if(slide.layout==='closing'&&slide.closing)academicClosing(b,project,slide,{wrapText,measureTextWidth,card,contentBox});
+    else if(slide.layout==='roadmap'&&slide.agenda&&!slide.composition)renderNarrativeRoadmap(b,project,slide,{wrapText,contentBox});
     else if(slide.composition)renderAcademicComposition(b,project,slide,{card,figure,table,diagram,plot:scientificPlot,wrapText,measureTextWidth,clone,design,contentBox});
     else if(slide.layout==='academic'&&!slide.drawings?.length)b.page.issues.push({severity:'error',code:'academic-composition-missing',slideId:b.page.id,message:'academic 页需 composition.rows、composition.regions 或明确定位的drawings；不能退化为默认介绍卡。'});
     else if(ref)referenceLayout(b,project,slide,ref);
@@ -791,6 +796,7 @@ export function buildScenes(project) {
       renderNativeDrawing(b,project,drawing,box,{wrapText});
     }
     footerSources(b,project,slide);
+    if(slide.transition)b.page.notes+='\n\n衔接下一页\n'+slide.transition;
     const noteIds=new Set(arr(slide.paperIds)),noteClaims=new Set([...arr(slide.claimIds),...cards.flatMap(c=>arr(c.claimIds)),...drawingClaimIds(slide)]);
     for(const claim of arr(project.claims))if(noteClaims.has(claim.id)&&claim.paperId)noteIds.add(claim.paperId);
     for(const asset of arr(project.assets))if([...figures,...drawingAssetIds(slide)].includes(asset.id)&&asset.paperId)noteIds.add(asset.paperId);
