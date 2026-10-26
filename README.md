@@ -6,7 +6,7 @@
 
 当前候选版本为 **v0.7.0-rc.8，renderer 14**。新增36种可查询、可预览、可编辑的学术信息卡，按内容选择内部结构；开始新汇报时确认是否参考用户上传的PPT模板，并在宿主有生图工具时优先按实际内容生成卡片参考。无模板或无生图工具时继续现有流程。保留整稿叙事、完整逐页设计稿、多面板证据和原生对象检查。
 
-[本次改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)提供 rc.8 源码；[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)保留旧稳定包和历史成稿。尚未发布 npm。页面设计和可选生图调用由当前宿主模型执行，插件提供准备计划、原生渲染与检查；不保存模型密钥，不内建外部模型网络请求，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
+[main 分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/main)统一提供 rc.8 源码；[v0.6.0 发布页](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.6.0)保留旧稳定包和历史成稿。尚未发布 npm。页面设计和可选生图调用由当前宿主模型执行，插件提供准备计划、原生渲染与检查；不保存模型密钥，不内建外部模型网络请求，可与 [dsh-ppt](https://github.com/STARDUSTLC666/dsh-ppt) 共存。
 
 [安装与升级](docs/INSTALL.md) · [36款卡片图册](skills/dsh-academic-ppt/references/card-library/index.html) · [卡片与参考流程](docs/CARD_LIBRARY_V07_RC8.md) · [本轮验证](docs/VALIDATION_V07_RC8.md) · [公开 Skill 研究](docs/PPT_SKILL_RESEARCH_V07_RC7.md) · [版本说明](docs/RELEASE_NOTES.md)
 
@@ -179,10 +179,10 @@ node scripts/build-card-library.mjs --deck-output .test-output/card-atlas
 
 ## 安装与首次使用
 
-需要 Node **`^22.19.0 || >=24.0.0`**。本轮 rc.6 从改进分支取得；安装与更新见[安装说明](docs/INSTALL.md)：
+需要 Node **`^22.19.0 || >=24.0.0`**。当前 rc.8 从 main 分支取得；安装与更新见[安装说明](docs/INSTALL.md)：
 
 ```sh
-git clone --branch feat/academic-story-and-style --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch main --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 node bin/academic-ppt.mjs --help

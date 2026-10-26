@@ -2,14 +2,14 @@
 
 本项目是 **DeepSeek Harness（DSH）的本地插件包**，提供学术汇报技能与十六个确定性工具。材料分析与页面构图由当前 DSH 会话的模型完成；插件负责记录、可编辑渲染与检查，不保存 DeepSeek 密钥，也不另行发起模型请求。
 
-本次候选版本为 **v0.7.0-rc.8**，从 [改进分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/feat/academic-story-and-style)取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
+当前候选版本为 **v0.7.0-rc.8**，从 [main 分支](https://github.com/YuZhou0311/dsh-academic-ppt/tree/main)统一取得源码；旧稳定版 v0.6.0 保留在原发布页。本地实际版本以 package.json 为准。**尚未发布 npm，不要直接用裸包名从公共 registry 安装。**
 
 ## 1. 准备本地包
 
-安装本次 rc.8，请克隆改进分支：
+安装当前 rc.8，请克隆 main 分支：
 
 ```sh
-git clone --branch feat/academic-story-and-style --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch main --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 ```
 
