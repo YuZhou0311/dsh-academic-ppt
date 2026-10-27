@@ -33,7 +33,8 @@
     "cards": "node scripts/build-card-library.mjs",
     "release:build": "node scripts/build-release.mjs",
     "cards:editorial": "node scripts/build-editorial-cards.mjs skills/dsh-academic-ppt/references/editorial-v083",
-    "layouts": "node scripts/build-page-recipes.mjs"
+    "layouts": "node scripts/build-page-recipes.mjs",
+    "frames": "node scripts/build-frame-studies.mjs"
   },
   "dsh": {
     "bundle": {

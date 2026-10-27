@@ -1,6 +1,7 @@
 /** Figure-bearing cards keep scientific images separate from editable furniture.
  * Slots reserve the full figure renderer, including its provenance caption.
  * No card clips an image, generates an inset or infers any research value. */
+import { cardFramePaint, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
 const list=value=>Array.isArray(value)?value:[];
 const text=value=>value===undefined||value===null?'':String(value);
 const clamp=(n,lo,hi)=>Math.min(hi,Math.max(lo,n));
@@ -129,16 +130,19 @@ export function renderImageCard(b,card,box,index,project,helpers,m,{drawSemantic
   const colors={...p,accent,none:'none'},color=value=>colors[value]||value;
   const decor={role:'card-decoration',semantic:false,cardPreset:preset.id};
   b.region(key,box,'card');
-  b.rect(`${key}/surface`,box,p.paper,p.line,{radius:a.radius,strokeWidth:1.2,...decor,role:'card-surface',
-    ...(a.elevation?{shadow:{color:'#20334A',opacity:.08,blur:3,offset:2,angle:90}}:{})},id);
+  const framePaint=cardFramePaint(a,{fill:p.paper,stroke:p.line,strokeWidth:1.2});
+  if(frameHasPaint(framePaint))b.rect(`${key}/surface`,box,framePaint.fill,framePaint.stroke,{...decor,...framePaint,radius:a.radius,role:'card-surface'},id);
+  else if(framePaint.shadow)reportInvisibleCardShadow(b,id);
   for(const d of m.decorations){
     if(d.kind==='rect')b.rect(`${key}/${d.key}`,{x:box.x+d.x,y:box.y+d.y,w:d.w,h:d.h},color(d.fill),color(d.stroke),decor,id);
     else b.line(`${key}/${d.key}`,box.x+d.x,box.y+d.y,box.x+d.x+d.w,box.y+d.y,color(d.stroke),{...decor,strokeWidth:1.15},id);
   }
-  if(m.iconBox)drawSemanticIcon(b,card.icon,{...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y},accent,`${key}/icon`,id);
+  const readable=(r,c)=>a.fill===undefined?c:readableCardColor(b,r,c);
+  if(m.iconBox){const r={...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y};drawSemanticIcon(b,card.icon,r,readable(r,accent),`${key}/icon`,id);}
   for(const t of m.elements){
     const {key:suffix,value,x,y,w,h,size,...more}=t;
-    b.text(`${key}/${suffix}`,value,{x:box.x+x,y:box.y+y,w,h},size,{...more,color:color(more.color),cardPreset:preset.id,emphasisColor:accent},id);
+    const r={x:box.x+x,y:box.y+y,w,h};
+    b.text(`${key}/${suffix}`,value,r,size,{...more,color:readable(r,color(more.color)),cardPreset:preset.id,emphasisColor:readable(r,accent)},id);
   }
   // Reuse the same provenance-aware scientific figure renderer as stand-alone
   // source figures. Binding cardId keeps local edits and previews complete.
@@ -155,7 +159,7 @@ export function renderImageCard(b,card,box,index,project,helpers,m,{drawSemantic
     add:(kind,k,props)=>b.add(kind,k,{...props,cardPreset:preset.id},id),
     rect:(k,r,fill,stroke,more={})=>b.rect(k,r,fill,stroke,{...more,cardPreset:preset.id},id),
     line:(k,x1,y1,x2,y2,c,more={})=>b.line(k,x1,y1,x2,y2,c,{...more,cardPreset:preset.id},id),
-    text:(k,v,r,size,more={})=>b.text(k,v,r,size,{...more,cardPreset:preset.id},id),
+    text:(k,v,r,size,more={})=>b.text(k,v,r,size,{...more,color:readable(r,more.color??p.ink),...(more.emphasisColor?{emphasisColor:readable(r,more.emphasisColor)}:{}),cardPreset:preset.id},id),
   };
   for(const image of m.images){
     const region={x:box.x+image.x,y:box.y+image.y,w:image.w,h:image.h};
@@ -171,6 +175,6 @@ export function renderImageCard(b,card,box,index,project,helpers,m,{drawSemantic
   if(box.w<preset.dimensions.minimumWidth)b.page.issues.push({severity:'warning',code:'card-preset-width-review',slideId:b.page.id,cardId:id,message:`${preset.name}建议至少${preset.dimensions.minimumWidth}px宽；实际检查原图标签、图例与说明，不为多放卡片缩小证据。`});
   const [itemLo,itemHi]=preset.contentContract.itemCount,itemCount=list(card.items).length;
   if(itemCount<itemLo||itemCount>itemHi)b.page.issues.push({severity:'warning',code:'card-preset-content-review',slideId:b.page.id,cardId:id,message:`${preset.name}适合${itemLo}–${itemHi}个解释条目，当前${itemCount}个。已保留完整内容，确认对应关系。`});
-  if(card.appearance&&['layout','surface','accent'].some(k=>card.appearance[k]!==undefined))b.page.issues.push({severity:'warning',code:'card-preset-appearance-review',slideId:b.page.id,cardId:id,message:'图片卡片由preset决定图文结构；appearance支持圆角、内边距和层次，配色用card.accent。外框不裁切科学图。'});
+  if(card.appearance&&['layout','surface','accent'].some(k=>card.appearance[k]!==undefined))b.page.issues.push({severity:'warning',code:'card-preset-appearance-review',slideId:b.page.id,cardId:id,message:'图片卡片由 preset 决定图文结构；appearance.layout/surface/accent 不覆盖预设。外表面支持 fill/stroke/strokeWidth/dash/shadow、radius 和 padding，题签强调色使用 card.accent。外框不裁切科学图。'});
   return true;
 }

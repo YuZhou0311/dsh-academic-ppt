@@ -78,7 +78,26 @@ for(const path of pagePaths){
  assert.equal((xml.match(/<p:pic>/g)||[]).length,0,'whole-page studies use original native objects '+path);
 }
 for(const name of ['index.html','montage.png'])assert.ok((await stat(join(pageRoot,name))).isFile(),'whole-page reference '+name);
-const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs'];
+// Original visual details supplement the existing card library, not new preset IDs.
+const frameRoot=join(root,'skills/dsh-academic-ppt/references/frame-studies');
+const frameCatalog=JSON.parse(await readFile(join(frameRoot,'catalog.json'),'utf8'));
+const frameReview=JSON.parse(await readFile(join(frameRoot,'render-review.json'),'utf8'));
+assert.deepEqual(frameCatalog.pages.map(page=>page.id),['frame-boundaries','frame-depth','frame-titles','frame-nesting']);
+assert.deepEqual(frameReview.reviewedPageIds,frameCatalog.pages.map(page=>page.id));
+assert.equal(frameReview.view,'pptx-render');assert.equal(frameReview.slideCount,4);assert.equal(frameReview.nativeSceneErrors,0);
+for(const page of frameCatalog.pages){
+ assert.equal(createHash('sha256').update(await readFile(join(frameRoot,page.svg))).digest('hex'),page.sha256,'frame study SVG digest '+page.id);
+}
+const frameBytes=await readFile(join(frameRoot,frameCatalog.pptx.path));
+const frameHash=createHash('sha256').update(frameBytes).digest('hex');
+assert.equal(frameHash,frameCatalog.pptx.sha256,'frame study PPTX digest');assert.equal(frameHash,frameReview.sha256,'frame study rendered version');
+const frameZip=unzipSync(frameBytes),frameSlides=Object.keys(frameZip).filter(path=>/^ppt\/slides\/slide\d+\.xml$/.test(path));
+assert.equal(frameSlides.length,4);
+const frameXml=frameSlides.map(path=>Buffer.from(frameZip[path]).toString('utf8')).join('');
+assert.equal((frameXml.match(/<p:pic>/g)||[]).length,0,'frame studies must remain native original objects');
+for(const expression of [/<a:noFill\/>/,/<a:prstDash val="dash"\/>/,/<a:outerShdw\b/])assert.match(frameXml,expression,'native frame paint missing');
+for(const name of ['index.html','montage.png'])assert.ok((await stat(join(frameRoot,name))).isFile(),'frame study '+name);
+const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs','scripts/build-frame-studies.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
 const templateRoot=join(root,'skills/dsh-academic-ppt/references/templates');
@@ -108,7 +127,7 @@ for(const path of markdown){
   await stat(resolved).catch(()=>{throw new Error(`Broken link in ${relative(root,path)}: ${target}`)});links++;
  }
 }
-for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery','workflow-v090','storyboard-v090','page-recipes']){
+for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery','workflow-v090','storyboard-v090','page-recipes','academic-visual-language']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,frameStudySlides:frameSlides.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');

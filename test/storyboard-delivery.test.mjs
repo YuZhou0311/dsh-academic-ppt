@@ -49,7 +49,13 @@ function fixtures() {
   const design={...structuredClone(DEFAULT_DESIGN),density:'balanced',fontFamily:'DejaVu Sans',
     system:{...DEFAULT_DESIGN.system,header:'plain'},
     consultation:{mode:'delegated',delegation:TEST_ONLY+' The fixture explicitly simulates delegated design.'},
-    referenceStudy:{status:'not-applicable',reason:TEST_ONLY+' Native drawings and one original source raster are used; there are no card components.'}};
+    referenceStudy:{status:'reviewed',componentStudies:[{source:'user-template',
+      referenceId:'Original software-test reference / page 1 / annotation group',previewPath:'sources/original-frame-study.svg',
+      frame:TEST_ONLY+' Fixture describes a pale fill, thin solid outline, no dashed border and no shadow.',
+      titleTreatment:TEST_ONLY+' Fixture describes an open left-aligned title above the outline.',
+      spacing:TEST_ONLY+' Fixture describes 16 px inner margins and 24 px between title and frame.',
+      adaptation:TEST_ONLY+' The authored protocol/result/limits pages keep open native text and use no preset, so the fixture frame itself is intentionally not copied.'}],
+      paletteRationale:TEST_ONLY+' Dark blue text and a neutral pale surface retain the synthetic raster color hierarchy without adding categorical meanings.'}};
   const brief={centralQuestion:'Can a fixed synthetic signal retain its identity through an authored report?',
     audience:'Software regression test authors',talkMinutes:5,targetPaperCount:1,requireFullText:true,
     requirePaperIntro:false,genre:'research-progress',qualityProfile:'academic',visualEvidence:{mode:'source-led'}};
@@ -142,6 +148,7 @@ function fixtures() {
 async function author(t,{all=false,plan=true,includeReferences=true,mutate}={}) {
   const cwd=await workspace(t),f=fixtures(); mutate?.(f);
   await mkdir(join(cwd,'sources')); await writeFile(join(cwd,f.asset.path),originalImage());
+  await writeFile(join(cwd,'sources/original-frame-study.svg'),'<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200"><title>Original software-test component fixture; no human or vision review</title><text x="16" y="28" fill="#315B7A">Software-test annotation group</text><rect x="16" y="52" width="368" height="132" fill="#F4F7FA" stroke="#315B7A" stroke-width="1"/><text x="32" y="84" fill="#315B7A">Original fixture content</text></svg>');
   const created=await api(cwd,'init',{projectDir:'project',title:'Original synthetic workflow fixture',brief:f.brief,
     capabilities:f.capabilities??{imageInput:'supported',source:TEST_ONLY+' Capability is a software-test input.'}});
   const projectPath=created.projectPath;

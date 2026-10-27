@@ -41,7 +41,7 @@ jobs:
       - name: Exercise pilot, actual render, review and final delivery without renderer skips
         env:
           DSH_REQUIRE_REAL_RENDER: '1'
-        run: node --test test/storyboard-delivery.test.mjs test/figure-readability-regression.test.mjs
+        run: node --test test/storyboard-delivery.test.mjs test/figure-readability-regression.test.mjs test/card-frame.test.mjs
 
   dsh-host:
     name: DSH Host (${{ matrix.dsh }})

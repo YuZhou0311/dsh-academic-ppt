@@ -23,12 +23,16 @@ DSH 工具从16个增加到19个：`academic_ppt_plan`、`academic_ppt_layouts`�
 | --- | --- | --- |
 | 草稿也名为 `report.pptx` | 草稿命名 `preview-not-for-delivery.pptx` | 自动化应读取返回的 `files.pptx`，不要硬编码旧路径。 |
 | 各主题依次询问 | 新工程默认 `checkpoints`，成套方向讨论 | 一次真实回答可映射多个旧 topic，已有偏好和委托不重问。 |
-| 非预设设计也要求卡片目录学习 | 可以记录 `pageRecipeIds` 或 `templateReferences` | 仍需真实预览、观察和适配；实际使用 card preset 时保留对应目录记录。 |
+| 参考学习主要记录目录ID与概括观察 | 新checkpoints整稿要求`componentStudies`与`paletteRationale`，来源可以是原48卡、20组件或可定位页码的用户模板 | 先看相关组件再自主设计；只填整页recipe不足以完成细读，不要求实际采用preset或凑款数。旧记录保持兼容提醒。 |
 | 图像放入大框即可看似完成 | 报告真正 `imageBox`、缩放和标签高度 | 读数/比较的小图且标签未测会阻断，overview与可读的小图仍可使用。 |
 | 计划容易在恢复中丢失 | 故事板独立核对实际资产、论点和必要主视图文字 | 删除 `visualPlan` 或 `drawings` 不能自动删除原科学要求。 |
 | 导出文件可直接当成最终成果 | `deliver` 单独核验当前文件、渲染、逐页审查、计划与样张 | 有错误、草稿、旧哈希或未完成审查时不创建最终包。 |
 
 `build(mode=review)` 仍可以为检查和样张生成文件。它表示“待审查的导出”，最终可用状态以 `check.verification.readyForDelivery` 和 `deliver` 为准。
+
+组件细读在计划或实际页数达到六页时触发，三页样张属于十页计划也需要先完成。每条记录注明真实参考、源页/组件、预览、边框、题签、间距与本稿适配；配色理由解释主次和颜色职责。新建工程与prepare缺省使用checkpoints，更新委托或回答不会意外丢掉已有交互模式。直接读取没有该字段的旧工程仍保持旧语义。
+
+卡片外观增加真正无填充、实线/虚线/点线、独立描边与完整阴影参数；旧字段继续兼容。参照[视觉细节指南](../skills/dsh-academic-ppt/references/academic-visual-language.md)选择有作用的边界，不把升级理解为所有文字都必须套框。
 
 ## 样张确认的范围
 

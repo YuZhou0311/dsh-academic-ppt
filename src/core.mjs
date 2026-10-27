@@ -11,7 +11,7 @@ import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-qu
 import {designIssues,designGeometryReport} from './design-quality.mjs';
 import { evidenceDesignReport, contentCoverageReport } from './evidence-design.mjs';
 import { researchEvidenceReport } from './research-evidence.mjs';
-import { designDialogueReport, designDialoguePlan, designDecisionResolved } from './design-dialogue.mjs';
+import { designDialogueReport, designDialoguePlan, designDecisionResolved, withConsultationInteraction } from './design-dialogue.mjs';
 import { layoutDiversityReport } from './layout-diversity.mjs';
 import { writeDesignStudy } from './design-study.mjs';
 import { compareProjectStructures } from './portfolio.mjs';
@@ -22,13 +22,17 @@ export {PAGE_RECIPES,PAGE_RECIPE_IDS,getPageRecipe,listPageRecipes,recommendPage
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'line',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=16;
+const RENDERER_VERSION=17;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
 function snapshot(p){const c=clone(contentOf(p));c.assets=c.assets.map(({data,...a})=>a);return c;}
 function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
-function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(design.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:{mode:'content-led',density:'compact',consultation:{mode:'collaborative',interaction:'checkpoints'},cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)},capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
+function initial(title,brief,design,capabilities){
+ const initialDesign={mode:'content-led',density:'compact',cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)};
+ initialDesign.consultation=withConsultationInteraction(initialDesign.consultation,'checkpoints');
+ return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(design.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:initialDesign,capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};
+}
 async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
 async function saveMutation(state,next,signal,{undo=false}={}){
@@ -43,7 +47,7 @@ export async function createProject(options={}){
  const a=argsFor('academic_ppt_init',options),dir=await safePath(options.cwd,a.projectDir);
  await ensureNewDir(dir);const path=join(dir,'project.json');const p=initial(a.title,a.brief,a.design,a.capabilities);
  assertProject(p);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
- return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.0先读workflow-v090.md：故事线与科学取舍、真实样张方向、最终使用三个关键节点。一次完整方向选择可落实多个设计topic，已有选择/委托不重复问。六页以上整稿用plan记录问题、证据、边界、承接与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
+ return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.0先读workflow-v090.md：故事线与科学取舍、真实样张方向、最终使用三个关键节点。一次完整方向选择可落实多个设计topic，已有选择/委托不重复问。六页以上整稿用plan记录问题、证据、边界、承接与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','先看原48款卡片与20款编辑式参考中适合本稿的实际候选，并细读已提供用户模板的具体页/组件，再自主设计。referenceStudy.componentStudies记录填充/线型/虚线/阴影、题签、间距和本稿改造，paletteRationale说明配色依据；不用preset或只用drawings也不能以pageRecipeIds代替学习。已有充分模板细读可沿用，不重复打卡无关目录。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
 }
 export async function updateRecords(options={}){
  let a=argsFor('academic_ppt_record',options);
@@ -73,6 +77,7 @@ export async function updateRecords(options={}){
   if(state.p.design.density==='compact'&&a.design.density==='balanced'&&!initialDensityChoice)throw new Error('DENSITY_REQUIREMENT_RELAXATION: 不能通过降低内容占幅要求消除大空区。调整实际内容与构图；仅在用户改变设计要求后另建工程。');
   const retained=Object.fromEntries(['mode','density','cardDefaults','chrome','direction','projection','colorRoles','consultation','referenceStudy'].filter(key=>Object.hasOwn(state.p.design,key)).map(key=>[key,clone(state.p.design[key])]));
   next.design={...retained,...a.design};
+  if(a.design.consultation)next.design.consultation=withConsultationInteraction(a.design.consultation,state.p.design.consultation?.interaction);
   if(a.design.density&&a.design.density!==state.p.design.density)next.densityChoicePending=false;
  }
  if(state.p.brief.qualityProfile==='academic')next.brief.qualityProfile='academic';
@@ -205,10 +210,10 @@ export async function contextProject(options={}){
  const nextActions={
   research:['使用实际宿主搜索工具核对题名、DOI、年份与发表版本，取得全文及图片后登记paper.sourceCheck和figureReview。搜索摘要、网页纯文本或verified:true均不证明已取得并看过原图。保留实际URL/本地路径、图号、图注和获取失败原因。','有参考时先看实际页面中的主辅证据、邻接解释和局部分组；没有参考文件则明确记录依据，不声称已看。'],
   evidence:['先处理researchEvidence列出的来源查证、图源盘点及已选图未上页问题。取得并实看原图后登记asset.reading、figureIds、card.figureIds或drawing.image，按图安排解释和条件；图片必须在实际导出scene中可见，不能仅登记asset或补文字卡。','核对reported/inference/proposal及推理前提。把关键结果、比较条件和边界分配到真实可见载体。','检查是否只摘了漂亮的单个数字而丢失分布、对照、时间变化和负结果；按问题修复，不为构图补造结果。'],
-  design:['先查看designDialogue中的待确认项和参考学习缺口；沿用已有反馈或明确委托。先按研究关系查看整页语法或用户模板的实际预览；需要局部卡片再查对应预览。记录内容适配后，用真实困难样张确定完整方向。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
+  design:['先查看designDialogue中的待确认项和参考学习缺口；沿用已有反馈或明确委托。先看原48款卡片与20款编辑式参考中的相关实际候选，以及已提供模板的具体组件；记录frame、titleTreatment、spacing、adaptation和paletteRationale，再按研究关系设计整页。实际或故事板计划达到六页的新checkpoints稿，在样张阶段就需要这些记录，不能只填pageRecipeIds。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
    '阅读references/visual-decision.md；从contract(design)的academicPalettes选择合适学术色板，用direction说明依据，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
    '已有方向或明确委托直接沿用。若完整方向仍有实质分歧，或困难样张暴露具体风险，用academic_ppt_study按同一真实内容比较必要的候选，render:true查看实际画面。把比较集中于样张阶段，不为每页制作备选，也不重复询问已经决定的事项。',
-   '需要信息卡时用academic_ppt_cards按用途查询48种原生配方（含12种嵌图卡），选定card.preset并填写items等真实内容；标题、单位和边界都必须可见。与图表、表格、开放文字组合，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
+   '用academic_ppt_cards查询48种原生配方（含12种嵌图卡），20款编辑式参考见references/editorial-v083/index.html（C01–C20）。看图学习与是否采用preset无关；已充分细读用户模板可直接沿用，不强迫无关目录打卡。需要信息卡时再按内容采用或用drawings重组，标题、单位和边界必须可见，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
   storyboard:['六页及以上整稿先用academic_ppt_plan提交证据故事板，逐页写问题、判断、推理、边界、必须可见条件和承接，标出最难页与连续三页。已确认方向直接沿用；不能把资料易得性当作改题授权。','用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','先把已取得的原图、数据图和机制示意分配到对应页，写清看哪里、比较什么及成立条件，再写argument、内容覆盖与visualPlan，并用composition.rows/regions或drawings组合图文；不必选择referenceTemplateId。',
    '先盘点本页证据、解释、条件和方法关系，再分配区域。visualPlan.contentLayers可用role、panelIds和summary记录实际信息层，不规定层数或分栏；上下、主辅、跨栏和单一主载体均按内容选择。用contentChecks登记必须可见的关键条件，不能只留在notes。',
    'heading与cover自定题名位置和语义断行；heading.inheritChrome:true可保留章节带与身份层，作者题名box须避开保留区，不静默挪动或缩字。颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',

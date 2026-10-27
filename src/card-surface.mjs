@@ -1,6 +1,7 @@
 /** Measured, editable card surfaces. Icons are semantic navigation, never evidence. */
 import { getCardPreset } from './card-catalog.mjs';
 import { measureImageCard, renderImageCard } from './image-card-surface.mjs';
+import { CARD_FRAME_FIELDS, cardFramePaint, cardFrameStroke, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
 export const SEMANTIC_ICONS = Object.freeze(['question','method','evidence','comparison','boundary','hypothesis','satellite','leaf','water','model']);
 const plainStyles = new Set(['plain','compact','ruled']);
 const text = value => value === undefined || value === null ? '' : String(value);
@@ -8,7 +9,8 @@ const metricText = metric => metric && [metric.value, metric.unit].filter(value 
 
 export function resolveCardAppearance(card = {}, design = {}) {
   if (card.preset) return { layout:'preset', surface:'outline', radius:design.cardDefaults?.radius??6, padding:20, accent:'none', elevation:design.cardDefaults?.elevation??false,
-    ...Object.fromEntries(['radius','padding','elevation'].filter(key=>card.appearance?.[key]!==undefined).map(key=>[key,card.appearance[key]])) };
+    ...Object.fromEntries(CARD_FRAME_FIELDS.filter(key=>design.cardDefaults?.[key]!==undefined).map(key=>[key,design.cardDefaults[key]])),
+    ...Object.fromEntries(['radius','padding','elevation',...CARD_FRAME_FIELDS].filter(key=>card.appearance?.[key]!==undefined).map(key=>[key,card.appearance[key]])) };
   const defaults = !card.style || plainStyles.has(card.style) ? design.cardDefaults : undefined;
   if (!card.appearance && !defaults && !card.icon) return null;
   return { layout:'stacked', surface:'outline', radius:4, padding:16, accent:'none', elevation:false, ...defaults, ...card.appearance };
@@ -85,26 +87,33 @@ export function renderCardSurface(b, card, box, index, project, helpers) {
   if (!m) return false;
   const id = String(card.id || `card-${index+1}`), key=`card/${id}`, p=b.p, a=m.appearance;
   const accent=/^#[0-9a-f]{6}$/i.test(card.accent||'')?card.accent:(card.kind==='boundary'?p.secondary:p.accent);
-  const solid=a.surface==='solid', ink=solid?'#FFFFFF':p.ink, muted=solid?'#FFFFFF':p.muted, color=solid?'#FFFFFF':accent;
+  const solid=a.surface==='solid'&&a.fill!=='none', ink=solid?'#FFFFFF':p.ink, muted=solid?'#FFFFFF':p.muted, color=solid?'#FFFFFF':accent;
   const surfaceFill=solid?accent:a.surface==='tint'?p.tint:a.surface==='plain'?'none':p.paper;
   const stroke=a.surface==='plain'?'none':a.surface==='solid'?accent:p.line;
-  if(a.surface!=='plain') b.rect(`${key}/surface`,box,surfaceFill,stroke,{radius:a.radius,strokeWidth:1.2,role:'card-surface',semantic:false,...(a.elevation?{shadow:{color:'#20334A',opacity:.1,blur:3,offset:2,angle:90}}:{})},id);
+  const framePaint=cardFramePaint(a,{fill:surfaceFill,stroke,strokeWidth:1.2},{elevationOpacity:.1});
+  if(frameHasPaint(framePaint))b.rect(`${key}/surface`,box,framePaint.fill,framePaint.stroke,{...framePaint,radius:a.radius,role:'card-surface',semantic:false},id);
+  else if(framePaint.shadow)reportInvisibleCardShadow(b,id);
   const banded=a.layout==='banded',side=a.layout==='side-label';
-  const titleColor=banded||side&&solid?'#FFFFFF':color;
+  const titlePreferred=banded||side&&solid?'#FFFFFF':color;
   if(m.headerBox){
     const header={x:box.x+m.headerBox.x,y:box.y+m.headerBox.y,w:m.headerBox.w,h:side?box.h:m.headerBox.h};
     const fill=solid?p.ink:banded?accent:p.tint;
     b.rect(`${key}/heading-surface`,header,fill,'none',{role:'group',semantic:false},id);
     if(side)b.line(`${key}/heading-divider`,header.x+header.w,header.y,header.x+header.w,header.y+header.h,solid?'#FFFFFF':p.line,{strokeWidth:1.2,role:'decoration',semantic:false},id);
   }
+  const readable=(r,c)=>a.fill===undefined?c:readableCardColor(b,r,c);
+  const titleBox={...m.titleBox,x:box.x+m.titleBox.x,y:box.y+m.titleBox.y},titleColor=readable(titleBox,titlePreferred);
   if(a.accent!=='none') {
     const inset=Math.max(4,a.radius*.55), bar=a.accent==='top'?{x:box.x+inset,y:box.y+4,w:box.w-inset*2,h:3}:{x:box.x+4,y:box.y+inset,w:3,h:box.h-inset*2};
     b.rect(`${key}/accent`,bar,color,'none',{radius:1.5,role:'decoration',semantic:false},id);
   }
   b.region(key,box,'card');
   if(m.iconBox)drawSemanticIcon(b,card.icon,{...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y},titleColor,`${key}/icon`,id);
-  b.text(`${key}/title`,card.title,{...m.titleBox,x:box.x+m.titleBox.x,y:box.y+m.titleBox.y},m.titleSize,{bold:true,color:titleColor,lineHeight:1.15,role:'card-title'},id);
-  for(const row of m.rows)b.text(`${key}/${row.key}`,row.value,{x:box.x+row.x,y:box.y+row.y,w:row.w,h:row.h},row.size,{bold:row.bold,color:row.color==='accent'?color:row.color==='muted'?muted:ink,lineHeight:row.lineHeight,role:row.key,emphasis:row.emphasis,emphasisColor:color},id);
+  b.text(`${key}/title`,card.title,titleBox,m.titleSize,{bold:true,color:titleColor,lineHeight:1.15,role:'card-title'},id);
+  for(const row of m.rows){
+    const r={x:box.x+row.x,y:box.y+row.y,w:row.w,h:row.h};
+    b.text(`${key}/${row.key}`,row.value,r,row.size,{bold:row.bold,color:readable(r,row.color==='accent'?color:row.color==='muted'?muted:ink),lineHeight:row.lineHeight,role:row.key,emphasis:row.emphasis,emphasisColor:readable(r,color)},id);
+  }
   if(m.minimumH>box.h+2)b.page.issues.push({severity:'error',code:'card-surface-overflow',slideId:b.page.id,cardId:id,requiredHeight:Math.ceil(m.minimumH),availableHeight:box.h,message:'卡片内边距、图标、完整文字与指标超出卡片高度；扩大卡片或调整内容分组，不能裁掉正文。'});
   if(m.metricWidth>m.innerW+2)b.page.issues.push({severity:'error',code:'card-metric-width',slideId:b.page.id,cardId:id,message:'指标数值和单位在卡片内无法保持一行；扩大卡片或重排。'});
   return true;
@@ -364,28 +373,45 @@ function renderPresetCard(b,card,box,index,project,helpers){
   const rect=(suffix,x,y,w,h,fill='paper',stroke='line',more={})=>b.rect(`${key}/${suffix}`,{x:box.x+x,y:box.y+y,w,h},color(fill),color(stroke),{...decor,strokeWidth:1.25,...more},id);
   const line=(suffix,x,y,w,h=0,stroke='line',more={})=>b.line(`${key}/${suffix}`,box.x+x,box.y+y,box.x+x+w,box.y+y+h,color(stroke),{...decor,strokeWidth:1.25,...more},id);
   const base=m.baseY,h=box.h-base;
-  const surfaceExtra={radius:a.radius,role:'card-surface',...(a.elevation?{shadow:{color:'#20334A',opacity:.08,blur:3,offset:2,angle:90}}:{})};
-  if(['outline','rail','double-bottom'].includes(frame))rect('surface',0,base,box.w,h,'paper','line',surfaceExtra);
+  const surfaceExtra={radius:a.radius,role:'card-surface'};
+  const frameRect=(suffix,x,y,w,h,fill='paper',stroke='line',more={},options={})=>{
+    const paint=cardFramePaint(a,{fill:color(fill),stroke:color(stroke),strokeWidth:more.strokeWidth??1.25},options);
+    if(frameHasPaint(paint))rect(suffix,x,y,w,h,paint.fill,paint.stroke,{...more,...paint});
+    else if(paint.shadow)reportInvisibleCardShadow(b,id);
+    return paint;
+  };
+  const frameLine=(suffix,x,y,w,h=0,stroke='line',more={})=>{
+    const paint=cardFrameStroke(a,color(stroke),more.strokeWidth??1.25);
+    if(paint.stroke!=='none')line(suffix,x,y,w,h,paint.stroke,{...more,...paint});
+  };
+  if(['outline','rail','double-bottom'].includes(frame))frameRect('surface',0,base,box.w,h,'paper','line',surfaceExtra);
   else if(frame==='double'){
-    rect('surface',0,base,box.w-5,h-5,'paper','accent',{...surfaceExtra,radius:2});
-    rect('double-frame',5,base+5,box.w-5,h-5,'none','accent',{radius:2,strokeWidth:.8});
+    frameRect('surface',0,base,box.w-5,h-5,'paper','accent',{...surfaceExtra,radius:2});
+    frameRect('double-frame',5,base+5,box.w-5,h-5,'none','accent',{radius:2,strokeWidth:.8},{fill:false,shadow:false});
   }else if(frame==='stacked'){
-    rect('stack-back',7,base+7,box.w-7,h-7,'tint','line',{radius:4});
-    rect('surface',0,base,box.w-7,h-7,'paper','line',{...surfaceExtra,radius:4});
+    frameRect('stack-back',7,base+7,box.w-7,h-7,'tint','line',{radius:4},{shadow:false});
+    frameRect('surface',0,base,box.w-7,h-7,'paper','line',{...surfaceExtra,radius:4});
   }else if(frame==='ribbon'){
-    rect('surface',8,base,box.w-8,h,'paper','line',surfaceExtra);rect('ribbon',0,base,8,h,'accent','none');
+    frameRect('surface',8,base,box.w-8,h,'paper','line',surfaceExtra);rect('ribbon',0,base,8,h,'accent','none');
   }else if(frame==='ruled'){
-    line('surface-top',0,base,box.w,0,'accent',{strokeWidth:1.6});line('surface-bottom',0,box.h,box.w,0,'accent',{strokeWidth:1.6});
+    if(a.fill&&a.fill!=='none')frameRect('surface',0,base,box.w,h,'none','none',surfaceExtra,{stroke:false});
+    else if(a.shadow)reportInvisibleCardShadow(b,id);
+    frameLine('surface-top',0,base,box.w,0,'accent',{strokeWidth:1.6});frameLine('surface-bottom',0,box.h,box.w,0,'accent',{strokeWidth:1.6});
   }else if(frame==='bracket'){
-    const l=Math.min(38,box.w*.10);line('bracket-left',0,base,0,h,'accent');line('bracket-left-top',0,base,l,0,'accent');line('bracket-left-bottom',0,box.h,l,0,'accent');
-    line('bracket-right',box.w,base,0,h,'accent');line('bracket-right-top',box.w-l,base,l,0,'accent');line('bracket-right-bottom',box.w-l,box.h,l,0,'accent');
+    if(a.fill&&a.fill!=='none')frameRect('surface',0,base,box.w,h,'none','none',surfaceExtra,{stroke:false});
+    else if(a.shadow)reportInvisibleCardShadow(b,id);
+    const l=Math.min(38,box.w*.10);frameLine('bracket-left',0,base,0,h,'accent');frameLine('bracket-left-top',0,base,l,0,'accent');frameLine('bracket-left-bottom',0,box.h,l,0,'accent');
+    frameLine('bracket-right',box.w,base,0,h,'accent');frameLine('bracket-right-top',box.w-l,base,l,0,'accent');frameLine('bracket-right-bottom',box.w-l,box.h,l,0,'accent');
   }else if(frame==='fold'||frame==='cut'){
-    const cut=26;
-    rect('surface-fill-left',0,base,box.w-cut,h,'paper','none');rect('surface-fill-right',box.w-cut,base+cut,cut,h-cut,'paper','none');
-    line('surface-top',0,base,box.w-cut,0,'accent');line('surface-cut',box.w-cut,base,cut,cut,'accent');line('surface-right',box.w,base+cut,0,h-cut,'accent');line('surface-bottom',0,box.h,box.w,0,'accent');line('surface-left',0,base,0,h,'accent');
-    if(frame==='fold'){line('fold-left',box.w-cut,base,0,cut,'line');line('fold-bottom',box.w-cut,base+cut,cut,0,'line');}
+    const cut=Math.min(26,box.w,h);
+    // The diagonal and its inner triangle belong to one closed, editable
+    // silhouette. One fill and one shadow must cover the complete contour.
+    frameRect('surface',0,base,box.w,h,'paper','accent',{role:'card-surface',cornerCut:cut});
+    if(frame==='fold'){frameLine('fold-left',box.w-cut,base,0,cut,'line');frameLine('fold-bottom',box.w-cut,base+cut,cut,0,'line');}
+  }else if(frame==='plain'){
+    frameRect('surface',0,base,box.w,h,'none','none',surfaceExtra);
   }
-  if(frame==='double-bottom')line('lower-rule',8,box.h-5,box.w-16,0,'accent',{strokeWidth:2.5});
+  if(frame==='double-bottom')frameLine('lower-rule',8,box.h-5,box.w-16,0,'accent',{strokeWidth:2.5});
   if(frame==='rail'&&header!=='rail')rect('stage-rail',0,base,5,h,'accent','none');
   if(header==='rail'){
     rect('heading-surface',0,0,m.headerBox.w,box.h,'tint','none');line('heading-divider',m.headerBox.w,0,0,box.h,'line');
@@ -406,10 +432,12 @@ function renderPresetCard(b,card,box,index,project,helpers){
     else line(suffix,x,y,w,h,stroke,rest);
   }
   b.region(key,box,'card');
-  if(m.iconBox)drawSemanticIcon(b,card.icon,{...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y},['band','notch'].includes(header)?'#FFFFFF':accent,`${key}/icon`,id);
+  const readable=(r,c)=>a.fill===undefined?c:readableCardColor(b,r,c);
+  if(m.iconBox){const r={...m.iconBox,x:box.x+m.iconBox.x,y:box.y+m.iconBox.y};drawSemanticIcon(b,card.icon,r,readable(r,['band','notch'].includes(header)?'#FFFFFF':accent),`${key}/icon`,id);}
   for(const t of m.elements){
     const {key:suffix,value,x,y,w,h,size,...more}=t;
-    b.text(`${key}/${suffix}`,value,{x:box.x+x,y:box.y+y,w,h},size,{...more,color:color(more.color),emphasisColor:accent,cardPreset:preset.id},id);
+    const r={x:box.x+x,y:box.y+y,w,h};
+    b.text(`${key}/${suffix}`,value,r,size,{...more,color:readable(r,color(more.color)),emphasisColor:readable(r,accent),cardPreset:preset.id},id);
   }
   if(m.minimumH>box.h+2)b.page.issues.push({severity:'error',code:'card-surface-overflow',slideId:b.page.id,cardId:id,requiredHeight:Math.ceil(m.minimumH),availableHeight:box.h,message:'卡片预设中的完整标题、正文、条目、数值与限定超出高度；扩大区域、重组内容或更换预设，不能缩字或裁掉内容。'});
   if(m.metricWidth>m.innerW+2)b.page.issues.push({severity:'error',code:'card-metric-width',slideId:b.page.id,cardId:id,message:'指标数值与单位超过可用宽度；扩大卡片或改为带独立单位槽位的 items。'});
@@ -417,6 +445,6 @@ function renderPresetCard(b,card,box,index,project,helpers){
   if(box.w<preset.dimensions.minimumWidth)b.page.issues.push({severity:'warning',code:'card-preset-width-review',slideId:b.page.id,cardId:id,message:`${preset.name}建议至少 ${preset.dimensions.minimumWidth} px 宽；检查完整文字与阅读关系，不能为凑卡片数量缩字。`});
   const count=Array.isArray(card.items)?card.items.length:0,[lo,hi]=preset.contentContract.itemCount;
   if(count<lo||count>hi)b.page.issues.push({severity:'warning',code:'card-preset-content-review',slideId:b.page.id,cardId:id,message:`${preset.name}适合 ${lo}–${hi} 个条目，当前 ${count} 个；已保留全部内容，需确认此预设是否适合实际关系。`});
-  if(card.appearance&&['layout','surface','accent'].some(k=>card.appearance[k]!==undefined))b.page.issues.push({severity:'warning',code:'card-preset-appearance-review',slideId:b.page.id,cardId:id,message:'card.preset 决定卡片结构与表面；appearance.layout/surface/accent 不覆盖预设，颜色可用 card.accent，间距可用 appearance.padding。'});
+  if(card.appearance&&['layout','surface','accent'].some(k=>card.appearance[k]!==undefined))b.page.issues.push({severity:'warning',code:'card-preset-appearance-review',slideId:b.page.id,cardId:id,message:'card.preset 决定卡片几何和题签；appearance.layout/surface/accent 不覆盖预设。外表面使用 appearance.fill/stroke/strokeWidth/dash/shadow，题签强调色使用 card.accent，间距使用 appearance.padding。'});
   return true;
 }

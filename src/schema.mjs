@@ -33,7 +33,10 @@ export const narrativeSchema = obj({throughline:nonempty(1600),sections:arr(obj(
 export const briefSchema = obj({centralQuestion:str(1200),audience:str(200),talkMinutes:num(1,180),targetPaperCount:integer(0,50),requireFullText:bool,impactFactorMin:num(0,1000),genre:en(['literature-review','paper-reading','research-progress','proposal','defense']),qualityProfile:en(['academic']),requirePaperIntro:bool,visualEvidence:visualEvidenceSchema,narrative:narrativeSchema},['centralQuestion','audience','talkMinutes','targetPaperCount','requireFullText']);
 export const capabilitiesSchema = obj({imageInput:en(['supported','unsupported','unknown']),source:nonempty(1000),verifiedAt:str(100)},['imageInput','source']);
 export const academicSystemSchema = obj({preset:en(['academic-defense','academic-report','plain']),header:en(['band','rule','plain']),cover:en(['framed','project','minimal','split','editorial']),panel:en(['band','tint','line']),titleSize:num(32,44),coverTitleSize:num(60,100),bodySize:num(22,40),panelTitleSize:num(24,32),captionSize:num(16,22),sectionSize:num(24,34)});
-export const cardAppearanceSchema = obj({layout:en(['stacked','banded','side-label']),surface:en(['outline','tint','solid','plain']),radius:num(0,18),padding:num(12,24),accent:en(['left','top','none']),elevation:bool});
+export const outerShadowSchema = obj({color,opacity:num(0,.4),blur:num(0,32),offset:num(0,24),angle:num(0,359)},['color','opacity','blur','offset','angle']);
+const frameColor = {type:'string',pattern:'^(?:#[0-9a-fA-F]{6}|none)$'};
+const frameShadow = {oneOf:[{const:false},outerShadowSchema]};
+export const cardAppearanceSchema = obj({layout:en(['stacked','banded','side-label']),surface:en(['outline','tint','solid','plain']),radius:num(0,18),padding:num(12,24),accent:en(['left','top','none']),elevation:bool,fill:frameColor,stroke:frameColor,strokeWidth:num(.1,6),dash:en(['solid','dash','dot']),shadow:frameShadow});
 export const chromeSchema = obj({header:en(['band','rule','plain']),showBrand:bool,showSection:bool,showPageNumber:bool,showFooter:bool,showSources:bool,showTopRule:bool,brandLabel:str(140)});
 export const projectionSchema = obj({bodyMin:num(22,40),labelMin:num(18,36),noteMin:num(14,24)},['bodyMin','labelMin','noteMin']);
 export const designDirectionSchema = obj({premise:nonempty(1600),visualGrammar:nonempty(1800),referenceLearning:str(1800),avoid:arr(nonempty(500),8)},['premise','visualGrammar']);
@@ -56,7 +59,7 @@ const edgeSchema = obj({from:id,to:id,label:str(180),kind:en(['flow','feedback',
 const diagramSchema = obj({rows:arr(arr(id,4,1),4,1),rowLabels:arr(nonempty(120),4,1)},['rows']);
 const drawingBase = {id,claimIds:ids};
 const drawingBox = {x:num(0,1280),y:num(0,720),w:num(.01,1280),h:num(.01,720)};
-const drawingPaint = {fill:{type:'string',pattern:'^(?:#[0-9a-fA-F]{6}|none)$'},stroke:{type:'string',pattern:'^(?:#[0-9a-fA-F]{6}|none)$'},strokeWidth:num(.1,20),dash:en(['dash','dot']),fillOpacity:num(0,1)};
+const drawingPaint = {fill:frameColor,stroke:frameColor,strokeWidth:num(.1,20),dash:en(['solid','dash','dot']),fillOpacity:num(0,1),shadow:frameShadow};
 export const drawingElementSchema = {oneOf:[
  obj({...drawingBase,kind:{const:'text'},...drawingBox,text:nonempty(6000),fontSize:num(8,120),role:en(['body','label','note','title']),bold:bool,color,align:en(['left','center','right']),lineHeight:num(1,1.8),emphasis:arr(nonempty(300),12)},['id','kind','x','y','w','h','text','fontSize','role']),
  obj({...drawingBase,kind:en(['rect','ellipse']),...drawingBox,...drawingPaint,radius:num(0,40),role:en(['group','data','decoration'])},['id','kind','x','y','w','h','role']),

@@ -2,6 +2,7 @@
 import PptxGenJS from 'pptxgenjs';
 import { unzipSync, zipSync, strFromU8, strToU8 } from 'fflate';
 import { buildScenes } from './scene.mjs';
+import { cutCornerPoints } from './card-frame.mjs';
 
 const esc = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const hex = value => /^#[a-f\d]{6}$/i.test(String(value)) ? value.slice(1) : '171C22';
@@ -29,6 +30,39 @@ function explicitCategoryLabelRotation(bytes) {
   for(const path of Object.keys(parts).filter(path=>/^ppt\/charts\/chart\d+\.xml$/.test(path))){
     const xml=strFromU8(parts[path]);
     const updated=xml.replace(/<c:catAx\b[^>]*>[\s\S]*?<\/c:catAx>/g,axis=>axis.replace(/(<c:txPr>\s*<a:bodyPr)\b(?![^>]*\brot=)/,'$1 rot="0"'));
+    if(updated!==xml){parts[path]=strToU8(updated);changed=true;}
+  }
+  return changed?Buffer.from(zipSync(parts,{level:6})):Buffer.from(bytes);
+}
+
+// PptxGenJS 4.0.1 substitutes truthy defaults for every zero shadow value and
+// rounds angles to whole degrees. Restore the exact scene values on that named
+// native shape; do not touch text, images, charts or unrelated effect lists.
+// Its line.type='none' also leaves an empty a:ln, which can inherit theme paint.
+function explicitNativeShapePaint(bytes,scenes) {
+  const parts=unzipSync(bytes);let changed=false;
+  for(const [i,page]of scenes.pages.entries()){
+    const shapes=new Map(page.nodes.filter(n=>['rect','ellipse'].includes(n.kind)&&(n.shadow||!n.stroke||n.stroke==='none')).map(n=>[esc(n.id).replaceAll('&#39;','&apos;'),n]));
+    if(!shapes.size)continue;
+    const path=`ppt/slides/slide${i+1}.xml`,xml=strFromU8(parts[path]),seen=new Set();
+    const updated=xml.replace(/<p:sp>[\s\S]*?<\/p:sp>/g,shape=>{
+      const name=shape.match(/<p:cNvPr\b[^>]*\bname="([^"]*)"/)?.[1],node=shapes.get(name);
+      if(!node)return shape;
+      seen.add(name);
+      return shape.replace(/<p:spPr>[\s\S]*?<\/p:spPr>/,properties=>{
+        if(!node.stroke||node.stroke==='none')properties=properties.replace(/<a:ln\b[^>]*>[\s\S]*?<\/a:ln>/,'<a:ln><a:noFill/></a:ln>');
+        if(node.shadow){
+          if(!/<a:outerShdw\b/.test(properties))throw new Error(`原生阴影未导出：${node.id}`);
+          const s=node.shadow,values={blurRad:Math.round((s.blur??2)*9525),dist:Math.round((s.offset??2)*9525),dir:Math.round((s.angle??45)*60000)};
+          properties=properties.replace(/<a:outerShdw\b[^>]*>[\s\S]*?<\/a:outerShdw>/,effect=>{
+            for(const [key,value]of Object.entries(values))effect=effect.replace(new RegExp(`\\b${key}="[^"]*"`),`${key}="${value}"`);
+            return effect.replace(/<a:alpha\b[^>]*\/>/,`<a:alpha val="${Math.round((s.opacity??.12)*100000)}"/>`);
+          });
+        }
+        return properties;
+      });
+    });
+    for(const [name,node]of shapes)if(!seen.has(name))throw new Error(`原生表面未定位：${node.id}`);
     if(updated!==xml){parts[path]=strToU8(updated);changed=true;}
   }
   return changed?Buffer.from(zipSync(parts,{level:6})):Buffer.from(bytes);
@@ -117,11 +151,15 @@ export function sceneToSvg(page) {
       let filter;
       if (n.shadow) {
         const sid = `shadow-${pagePrefix}-${i}`, angle = (n.shadow.angle ?? 45) * Math.PI / 180;
-        defs.push(svgEl('filter', { id: sid, x: '-40%', y: '-40%', width: '180%', height: '180%' }, svgEl('feDropShadow', { dx: (n.shadow.offset ?? 2) * Math.cos(angle), dy: (n.shadow.offset ?? 2) * Math.sin(angle), stdDeviation: n.shadow.blur || 2, 'flood-color': paint(n.shadow.color, '#223344'), 'flood-opacity': n.shadow.opacity ?? .12 })));
+        const dx=(n.shadow.offset??2)*Math.cos(angle),dy=(n.shadow.offset??2)*Math.sin(angle),blur=n.shadow.blur??2;
+        const spread=3*(Number.isFinite(blur)?Math.max(0,blur):2)+(Number.isFinite(n.strokeWidth)?n.strokeWidth:1)/2;
+        // Fixed percentage bounds clip authored blur on thin bands. Reserve
+        // the real offset and three blur radii in the same canvas units.
+        defs.push(svgEl('filter', { id:sid,filterUnits:'userSpaceOnUse',x:n.x-spread+Math.min(0,dx),y:n.y-spread+Math.min(0,dy),width:n.w+spread*2+Math.abs(dx),height:n.h+spread*2+Math.abs(dy) }, svgEl('feDropShadow', { dx,dy,stdDeviation:blur,'flood-color':paint(n.shadow.color,'#223344'),'flood-opacity':n.shadow.opacity??.12 })));
         filter = `url(#${sid})`;
       }
       const style = { fill: paint(n.fill), 'fill-opacity': n.fillOpacity ?? 1, stroke: paint(n.stroke), 'stroke-opacity': n.strokeOpacity ?? 1, 'stroke-width': n.strokeWidth || 1, ...(n.dash ? { 'stroke-dasharray': n.dash === 'dot' ? '2 4' : '7 5' } : {}), filter };
-      nodes.push(n.kind === 'ellipse' ? svgEl('ellipse', { ...attrs, cx: n.x + n.w / 2, cy: n.y + n.h / 2, rx: n.w / 2, ry: n.h / 2, ...style }) : svgEl('rect', { ...attrs, x: n.x, y: n.y, width: n.w, height: n.h, rx: n.radius || 0, ...style }));
+      nodes.push(n.cornerCut?svgEl('polygon',{...attrs,points:cutCornerPoints(n.w,n.h,n.cornerCut).map(p=>`${n.x+p.x},${n.y+p.y}`).join(' '),...style}):n.kind === 'ellipse' ? svgEl('ellipse', { ...attrs, cx: n.x + n.w / 2, cy: n.y + n.h / 2, rx: n.w / 2, ry: n.h / 2, ...style }) : svgEl('rect', { ...attrs, x: n.x, y: n.y, width: n.w, height: n.h, rx: n.radius || 0, ...style }));
     } else if (n.kind === 'line') {
       let marker;
       if (n.endArrow) {
@@ -175,10 +213,11 @@ async function nativePptx(project, scenes, signal) {
         slide.addText(value,{...base,fontFace:n.fontFamily,fontSize:n.fontSize*.75,color:hex(n.color),bold:!!n.bold,align:n.align||'left',valign:'top',margin:0,breakLine:false,lineSpacing:n.fontSize*.75*(n.lineHeight||1.28),paraSpaceAfter:0,paraSpaceBefore:0,fit:'none',wrap:false,lang:'zh-CN'});
       }
       else if (n.kind === 'rect' || n.kind === 'ellipse') {
-        const fill = n.fill && n.fill !== 'none' ? { color: hex(n.fill), transparency: (1 - (n.fillOpacity ?? 1)) * 100 } : { type: 'none', transparency: 100 };
-        const line = n.stroke && n.stroke !== 'none' ? { color: hex(n.stroke), transparency: (1 - (n.strokeOpacity ?? 1)) * 100, width: (n.strokeWidth || 1) * .75, dashType: n.dash === 'dot' ? 'sysDot' : n.dash ? 'dash' : 'solid' } : { color: 'FFFFFF', transparency: 100 };
-        const shadow = n.shadow ? { type: 'outer', color: hex(n.shadow.color || '#223344'), opacity: n.shadow.opacity ?? .12, blur: Math.max(.1, (n.shadow.blur || 2) * .75), offset: Math.max(.1, (n.shadow.offset || 2) * .75), angle: n.shadow.angle ?? 45 } : undefined;
-        slide.addShape(n.kind === 'ellipse' ? pptx.ShapeType.ellipse : n.radius ? pptx.ShapeType.roundRect : pptx.ShapeType.rect, { ...base, fill, line, ...(n.radius ? { rectRadius: n.drawingId ? inch(Math.min(n.radius,Math.min(n.w,n.h)/2)) : Math.min(.5, n.radius / Math.min(n.w, n.h)) } : {}), ...(shadow ? { shadow } : {}) });
+        // An omitted fill option emits a:noFill; {type:'none'} emits nothing.
+        const fill = n.fill && n.fill !== 'none' ? { color: hex(n.fill), transparency: (1 - (n.fillOpacity ?? 1)) * 100 } : undefined;
+        const line = n.stroke && n.stroke !== 'none' ? { color: hex(n.stroke), transparency: (1 - (n.strokeOpacity ?? 1)) * 100, width: (n.strokeWidth || 1) * .75, dashType: n.dash === 'dot' ? 'sysDot' : n.dash ? 'dash' : 'solid' } : { type:'none' };
+        const shadow = n.shadow ? { type: 'outer', color: hex(n.shadow.color || '#223344'), opacity: n.shadow.opacity ?? .12, blur: (n.shadow.blur ?? 2) * .75, offset: (n.shadow.offset ?? 2) * .75, angle: n.shadow.angle ?? 45 } : undefined;
+        slide.addShape(n.cornerCut?pptx.ShapeType.custGeom:n.kind === 'ellipse' ? pptx.ShapeType.ellipse : n.radius ? pptx.ShapeType.roundRect : pptx.ShapeType.rect, { ...base, fill, line,...(n.cornerCut?{points:[...cutCornerPoints(n.w,n.h,n.cornerCut).map(p=>({x:inch(p.x),y:inch(p.y)})),{close:true}]}:n.radius?{rectRadius:n.drawingId?inch(Math.min(n.radius,Math.min(n.w,n.h)/2)):Math.min(.5,n.radius/Math.min(n.w,n.h))}:{}), ...(shadow ? { shadow } : {}) });
       } else if (n.kind === 'line') slide.addShape(pptx.ShapeType.line, { x: inch(Math.min(n.x, n.x + n.w)), y: inch(Math.min(n.y, n.y + n.h)), w: inch(Math.abs(n.w)), h: inch(Math.abs(n.h)), flipH: n.w < 0, flipV: n.h < 0, objectName: n.id, line: { color: hex(n.stroke), width: (n.strokeWidth || 1) * .75, ...(n.dash ? { dashType: n.dash === 'dot' ? 'sysDot' : 'dash' } : {}), ...(n.endArrow ? { endArrowType: 'triangle' } : {}) } });
       else if (n.kind === 'image') {
         if(n.viewport){
@@ -204,7 +243,8 @@ async function nativePptx(project, scenes, signal) {
     slide.addNotes(page.notes || '');
   }
   abort(signal); const bytes = await pptx.write({ outputType: 'nodebuffer', compression: true }); abort(signal);
-  return scenes.pages.some(page=>page.nodes.some(n=>n.kind==='chart'))?explicitCategoryLabelRotation(bytes):Buffer.from(bytes);
+  const painted=explicitNativeShapePaint(bytes,scenes);
+  return scenes.pages.some(page=>page.nodes.some(n=>n.kind==='chart'))?explicitCategoryLabelRotation(painted):painted;
 }
 
 export async function renderProject(project, { signal } = {}) {

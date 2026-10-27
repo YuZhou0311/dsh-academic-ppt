@@ -69,7 +69,7 @@
 
 模板资产与科学证据分开管理。付费模板默认只在用户项目分析；不把原件、原图、Logo、受限字体、完整整页截图放入公开示例或插件。版本里的设计规则和示例应为独立编写。
 
-`referenceStudy.status:reviewed` 可由 `pageRecipeIds`、`templateReferences` 或卡片 `catalogIds` 提供依据；至少一种真实来源并保留 `previewPaths`、`observations`、`adaptations`。实际使用 preset 才补查对应卡片目录，不强制无关的组件学习。
+`referenceStudy.status:reviewed` 可保留 `pageRecipeIds`、`templateReferences` 或 `catalogIds` 中的真实来源，以及 `previewPaths`、`observations`、`adaptations`；详细组件记录也可独立承担其对应的来源、预览、观察与改造，不要求重复抄录。用 `componentStudies` 写明看过的具体框线、填充、题签、间距与适配，用 `paletteRationale` 说明色彩职责，见 [academic-visual-language.md](academic-visual-language.md)。先查看原48卡和20款局部参考中的相关候选，再决定是否采用；自主drawings不豁免组件细读。新 checkpoints 流程中计划或现有页数达到6页时，只有整页ID不能通过参考检查；旧工程局部编辑保持兼容。使用preset还须有对应已查看`catalogIds`或同ID的`card-library`细读记录，不设置组件采用配额。
 
 整页先定关系，局部再定组件：比较用共同尺度，流程用准确顺序，层次用包含或分区，机制用有证据的连接，空间问题用地图/位置，综合用条件矩阵或论证汇合。卡片只是承载局部文字和图的工具。
 

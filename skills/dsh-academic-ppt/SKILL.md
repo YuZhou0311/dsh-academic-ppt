@@ -57,7 +57,7 @@ description: 制作和改进可编辑的学术PPT，适用于论文精读、研�
 
 ## 4. 从参考提炼设计语法
 
-实际查看参考的全稿概览、不同内容页、困难密集页与相邻段落。记录可迁移的网格、层级、证据与解释的距离、阅读顺序和节奏，再为当前材料重新设计。
+实际查看参考的全稿概览、不同内容页、困难密集页与相邻段落，再放大正文细节。按 [academic-visual-language.md](references/academic-visual-language.md) 分辨无填充虚线框、白底实线与阴影、覆边题签、内部间距和颜色职责，记录具体页号与迁移方式；不能用几句风格形容词代替读图。
 
 付费模板留在用户项目中。公开插件与示例只保留原创抽象规则，不带出模板原件、Logo、原图、旧内容或受限字体。不能把“用了同配色”当作学会设计。
 
@@ -65,7 +65,9 @@ description: 制作和改进可编辑的学术PPT，适用于论文精读、研�
 
 先选整页的信息关系，再选局部组件。`academic_ppt_layouts` 查询32种整页语法；48款卡片和20款局部视觉参考属于另一层次，不能当作整页布局数量。
 
-`design.referenceStudy` 可记录 `pageRecipeIds` 或 `templateReferences`，保留真实 `previewPaths`、`observations` 与 `adaptations`，不强制卡片目录。实际使用 preset 时再读 [card-design.md](references/card-design.md) 与 [image-cards.md](references/image-cards.md)，查询并查看对应卡片，记录 `catalogIds`；不能为通过检查硬加卡。
+读 [card-design.md](references/card-design.md) 与 [image-cards.md](references/image-cards.md)，实际查看48卡与20款局部参考中适合本稿的候选，再决定采用、改造或开放排版。学习组件与采用 preset 分开，不因最后使用 drawings 而跳过学习，也不为通过检查硬加卡。
+
+`design.referenceStudy` 可保留真实 `previewPaths`、整页/模板来源、`observations` 与 `adaptations`，详细组件记录也可独立承担其对应信息；用 `componentStudies` 记录边框、填充、题签、间距与具体改造，用 `paletteRationale` 说明主色和强调色职责。新 checkpoints 六页及以上整稿（包括计划页）不能只填整页 recipe ID；实际使用的 preset 还须有已查看的 `catalogIds` 或同ID的 `card-library` 细读记录。
 
 ## 5. 用真实困难页面证明方向
 
@@ -95,7 +97,7 @@ description: 制作和改进可编辑的学术PPT，适用于论文精读、研�
 
 读 [delivery.md](references/delivery.md)。依次 check、build、render，查看最终 PPTX 的全稿概览、每页实际画面和相邻段落。代表页允许 draft，最终稿使用 review。
 
-重点核对：标题和关键限定是否完整；轴、图例和单位是否可读；图文是否对应；流程连线是否准确；正文是否被裁切；真实内容与故事板是否一致。
+重点核对：标题和关键限定是否完整；轴、图例和单位是否可读；图文是否对应；流程连线是否准确；正文是否被裁切；真实内容与故事板是否一致；参考中学到的边框、题签、层级和色义是否真正出现且适合本稿。
 
 发现问题写具体位置与修复动作，按科学含义、缺失证据、关系结构、可读性、细节的顺序修复。重排或分拆优先于缩小关键字体；不能将关键限定降为 note。
 

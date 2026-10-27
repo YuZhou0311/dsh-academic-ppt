@@ -6,7 +6,7 @@
 
 这个问题用于选择参考来源。用户选择当前流程或明确跳过时，继续查证、取图、按需参考学习和逐页设计；不因缺少模板暂停。等待模板回答或上传时也可先做研究。刚问出问题还没有收到答复，不得立刻记成“无回答”，未回答也不能冒充完整方向已确认；已有明确授权则继续，不为密度和配色重复提问。只处理实际收到的文件，不假设能访问用户电脑或历史附件。
 
-`design.referenceStudy.status:reviewed` 可以使用实际查看的 `templateReferences` 或整页语法 `pageRecipeIds` 作为参考依据，无需为了填表查询无关卡片。仍须提供真实 `previewPaths`、`observations` 和具体 `adaptations`。实际使用原生卡片 preset 时，另把已查询并查看的对应 ID 记录在 `catalogIds`；有模板不等于自动完成看图。
+`design.referenceStudy.status:reviewed` 可记录实际查看的 `templateReferences`、`pageRecipeIds` 或 `catalogIds`，并保留真实 `previewPaths`、`observations` 和 `adaptations`；详细组件记录也可独立提供对应来源、预览、观察和改造。同时按 [academic-visual-language.md](academic-visual-language.md) 填写 `componentStudies`：具体页/卡、框线与填充、题签、间距和本稿改造，以及 `paletteRationale`。整页结构学习和组件细读互相补充；采用自主drawings也不能省略组件学习。查看原48卡与20款局部参考中的相关候选，最终不强制采用preset。实际使用的preset须有已查看`catalogIds`或同ID的`card-library`细读记录，有模板不等于自动完成看图。
 
 先调用`academic_ppt_contract({"topic":"preparation"})`取得准备记录schema，再把本次汇报内容和已知选择写入本地JSON，调用`academic_ppt_prepare({requestPath,outputPath?})`。模板选择写在`template`记录中，沿用工具返回的状态与下一步；生成的准备文件可用于继续任务，不能每轮把用户已回答的状态重置成未知。工具提供分支计划，不会代替宿主提问、上传或下载文件。
 
@@ -28,7 +28,7 @@
 
 ## 取得实际观察
 
-参考为PPTX时，调用`academic_ppt_template({filePath,render:true})`并取得真实渲染；fontDirectories只传实际存在的目录。按本次学习范围查看全稿概览，逐页记录职责和主要信息组合，再精看方法、对照、综合、密集页及相邻段落。不同正文类型都应进入观察，不能只看封面、目录或某一张漂亮页。结构推断、字号统计与suggestedDesign帮助定位，不替代看图；图片内部标签、继承字体和复杂母版尤其需要实看。
+参考为PPTX时，调用`academic_ppt_template({filePath,render:true})`并取得真实渲染；fontDirectories只传实际存在的目录。按本次学习范围查看全稿概览，逐页记录职责和主要信息组合，再精看方法、对照、综合、密集页及相邻段落。另放大代表性组件，检查是否真noFill、实线/虚线如何区分范围、阴影落在哪一层、题签怎样覆边、文字与框的距离。不同正文类型都应进入观察，不能只看封面、目录或某一张漂亮页。结构推断、字号统计与suggestedDesign帮助定位，不替代看图；图片内部标签、继承字体和复杂母版尤其需要实看。
 
 完成实际提取和看图后，在准备请求的`template.review`中填写工具输出的`profilePaths`、真实`visualObservations`，以及可选`renderReferences`。`academic_ppt_prepare`核对每份profile与当前上传PPTX的hash；匹配时返回`continue-reference-guided`，不重复检查同一模板。模板改变时重新提取并看图，不沿用旧profile；由旧PPT转换后先把`localPaths`换成实际PPTX。hash匹配只证明profile对应文件，视觉观察仍由实际看图者负责。
 

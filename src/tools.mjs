@@ -35,25 +35,25 @@ export const TOOL_COMMANDS = Object.freeze({
 })
 
 const descriptions = {
-  academic_ppt_init: '创建可恢复学术工程。先确认问题与用途，查证取图，再用plan规划故事线和真实样张；学术完整性不可降级。',
-  academic_ppt_record: '读取recordsPath中的≤1MiB UTF-8 JSON批次，登记来源/论点/图像/页面。先查contract，引用记录先登记，批次内不放路由参数。',
-  academic_ppt_context: '读取当前阶段、阻断项及稳定ID；可选recordIds读取至多4条记录，不返回图片base64。',
-  academic_ppt_build: '导出当前可编辑PPTX与辅助文件。draft只供中间预览；review构建不等于验收，最终用deliver。',
-  academic_ppt_edit: '按稳定ID与修订号修改指定页。card-style仅改样式，保留文字和其他对象；slide-content允许内容/布局变更。',
+  academic_ppt_init: '创建可恢复学术工程；先查证取图，再用plan规划故事线和真实样张。完整流程见SKILL。',
+  academic_ppt_record: '从recordsPath登记≤1MiB UTF-8记录批次；先查contract并登记被引用记录。',
+  academic_ppt_context: '读取阶段、阻断项及稳定ID；recordIds最多4条，无图片base64。',
+  academic_ppt_build: '导出可编辑PPTX；draft仅预览，review仍须真实渲染和审查后deliver。',
+  academic_ppt_edit: '按稳定ID局部修改；card-style保留内容/其他对象，slide-content可改内容及布局。',
   academic_ppt_undo: '以新修订恢复上一工程快照，保留此前导出文件。',
-  academic_ppt_check: '检查证据、实际几何、图像可读性、故事板及当前审查；返回可交付状态和修复队列。',
-  academic_ppt_template: '研究明确提供的PPTX，提取设计变量和profile；render:true生成真实参考页。默认学习信息组织，旧内容/媒体不进入新研究。',
-  academic_ppt_reference: '可选查询48种旧版中性页型和图片几何建议；新稿优先按论证使用layouts与composition，不要求套模板。',
-  academic_ppt_contract: '按单一topic读取完整schema和提交说明；按需查询。',
-  academic_ppt_render: '实际渲染当前PPTX并记录哈希；无引擎时如实返回未验证。HTML/SVG不替代真实PPTX复核。',
-  academic_ppt_study: '比较candidatesPath中的2–6个{id,label,slide}候选（≤1MiB）。render:true生成实际画面；不修改工程或批准。',
-  academic_ppt_portfolio: '只读比较明确提供的2–12份工程结构，供真实画面对照；不扫描其他文件或给原创性评分。',
-  academic_ppt_review: '记录真正完成的逐页视觉观察并绑定当前PPTX哈希；问题记needs-fix，未看画面不得通过。',
-  academic_ppt_prepare: '读取≤1MiB requestPath，规划设计问题、模板和可选生图参考。由宿主执行提问/看图，不自行调用模型或读取密钥。',
-  academic_ppt_cards: '查询48种局部信息卡（含12种嵌图卡）的语义、容量与槽位；presetId读取完整配方，不能当整页模板。',
-  academic_ppt_plan: '读取或通过requestPath写故事板/登记真实样张确认。先查contract(storyboard)；六页以上最终交付须完成计划与样张。',
-  academic_ppt_layouts: '按论证关系查询32种整页语法、槽位、容量和适配理由；允许自创布局，不强凑多样性配额。',
-  academic_ppt_deliver: '核验当前review构建、真实渲染、全页审查与故事板，全部满足才生成可恢复交付包。无force或草稿降级。',
+  academic_ppt_check: '检查证据、几何、图像、故事板与当前审查，返回阻断项和可交付状态。',
+  academic_ppt_template: '提取所提供PPTX的设计变量；render:true供实看，旧内容/媒体不作新证据。',
+  academic_ppt_reference: '查询48种旧版页型/图片几何；新稿优先layouts与自主composition。',
+  academic_ppt_contract: '按topic查询完整schema、说明与提交方式。',
+  academic_ppt_render: '渲染当前PPTX并记录哈希；无引擎如实返回，HTML/SVG不代替实际渲染。',
+  academic_ppt_study: '比较candidatesPath中的2–6个真实候选；render:true供实看，不改工程或批准。',
+  academic_ppt_portfolio: '只读比较明确提供的2–12份工程结构；不扫描文件或给原创评分。',
+  academic_ppt_review: '逐页观察绑定当前PPTX哈希；问题记needs-fix，未看画面不得通过。',
+  academic_ppt_prepare: '用requestPath规划模板/组件学习与可选生图；详见preparation契约和references/academic-visual-language.md，不调用模型或读取密钥。',
+  academic_ppt_cards: '查询48种局部卡片（含12种嵌图卡）；presetId给完整配方，不能当整页模板。',
+  academic_ppt_plan: '用requestPath读写故事板/真实样张记录，先查contract(storyboard)；六页以上交付须完成。',
+  academic_ppt_layouts: '查询32种整页语法与槽位/适配范围，允许自创，不强凑多样性。',
+  academic_ppt_deliver: '核验当前review构建、真实渲染、全页审查和故事板后打包；无force或草稿降级。',
 }
 
 const coreExecutors = {
@@ -88,12 +88,12 @@ const coreExecutors = {
     if (presetId) {
       const preset=getCardPreset(presetId)
       if (!preset) throw new Error('UNKNOWN_CARD_PRESET: '+presetId)
-      return {ok:true,preset:structuredClone(preset),galleryPath,figureDeckPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['先判断配方是否适合本次内容；适合时将preset.id写入card.preset，并填写真实title/body/items/metric/badge/note及claimIds。示例仅用于理解设计，不是必须照搬的外观或研究事实。','在用户明确约束内自主调整design.palette与design.colorRoles、card.accent、card.box和appearance.padding/radius/elevation；保持全稿色义、正文可读与比较尺度一致。','需要不同内部比例、题签位置、分区或局部底色/文字色时，用drawings与composition.regions重建；appearance.layout/surface/accent不覆盖preset。已有布局或内容改动使用slide-content，card-style保持内容与外框锁定。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
+      return {ok:true,preset:structuredClone(preset),galleryPath,figureDeckPath,previewPath:fileURLToPath(new URL(`../skills/dsh-academic-ppt/references/card-library/cards/${preset.id}.svg`,import.meta.url)),instructions:['先判断配方是否适合本次内容；适合时将preset.id写入card.preset，并填写真实title/body/items/metric/badge/note及claimIds。示例仅用于理解设计，不是必须照搬的外观或研究事实。','在用户明确约束内自主调整design.palette与design.colorRoles、card.accent、card.box和appearance.padding/radius；保持全稿色义、正文可读与比较尺度一致。外框用appearance.fill/stroke（#RRGGBB或none）、strokeWidth、dash（solid/dash/dot）、shadow（false或{color,opacity,blur,offset,angle}）；elevation保留兼容。详见references/academic-visual-language.md。','需要不同内部比例、题签位置、分区或正文文字色时，用drawings与composition.regions重建；appearance.layout/surface/accent不覆盖preset的内部recipe，card.accent控制题签强调。已有布局或内容改动使用slide-content，card-style保持内容与box几何锁定。','先满足内容契约和建议宽度，再由完整内容测量高度。不可把超出框的内容裁掉或缩成不可读小字。']}
     }
     const matches=listCardPresets({family,purpose,limit:CARD_PRESETS.length,includeExamples:false})
     const presets=matches.slice(0,limit??CARD_PRESETS.length).map(({id,name,family,purpose,dimensions})=>({id,name,family,purpose,dimensions}))
     return {ok:true,totalCount:CARD_PRESETS.length,matchedCount:matches.length,count:presets.length,families:structuredClone(CARD_FAMILIES),presets,galleryPath,figureDeckPath,
-      instructions:['按内容关系研究候选，再用presetId读取配方；配色、尺寸和内容分组应服务本稿，参考无需照搬。需要新的内部组织时可用drawings与composition.regions；同一页可组合卡片、开放文字、图表或表格。','名称筛选只匹配用途文本；没有匹配时查看family或全部索引，不把“无匹配”误报为不支持该研究领域。']}
+      instructions:['按内容关系研究候选，再用presetId读取配方；配色、尺寸和内容分组应服务本稿，参考无需照搬。外框通过appearance.fill/stroke/strokeWidth/dash/shadow设计，题签强调用card.accent；字段与视觉原则见references/academic-visual-language.md。需要新的内部组织时可用drawings与composition.regions；同一页可组合卡片、开放文字、图表或表格。','名称筛选只匹配用途文本；没有匹配时查看family或全部索引，不把“无匹配”误报为不支持该研究领域。']}
   },
 }
 

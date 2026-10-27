@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,readFile,rm} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
-import {DESIGN_TOPICS,designDialoguePlan,designDialogueReport} from '../src/design-dialogue.mjs';
-import {createProject,updateRecords,buildProject,contextProject} from '../src/core.mjs';
+import {DESIGN_TOPICS,designDialoguePlan,designDialogueReport,componentStudyIssues} from '../src/design-dialogue.mjs';
+import {createProject,updateRecords,buildProject,contextProject,planProject} from '../src/core.mjs';
+import {assertToolArgs} from '../src/schema.mjs';
 import {prepareDesign} from '../src/design-intake.mjs';
 import {formatToolResult} from '../src/tools.mjs';
 import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
@@ -12,6 +13,23 @@ const response=topic=>({topic,status:'confirmed',selected:`Synthetic ${topic} ch
 const collaborative={mode:'collaborative',decisions:DESIGN_TOPICS.map(response)};
 const project=(consultation=collaborative,referenceStudy=fixtureDesign.referenceStudy)=>({design:{consultation,referenceStudy},slides:[{id:'s',cards:[]}]});
 async function fixture(t){const base=resolve('.test-output');await mkdir(base,{recursive:true});const cwd=await mkdtemp(join(base,'dialogue-'));t.after(()=>rm(cwd,{recursive:true,force:true}));return cwd;}
+
+// Original protocol descriptions, not observations of a real paid template or
+// attestations of human/vision review. They exercise record coverage only.
+const component=(patch={})=>({source:'user-template',referenceId:'Synthetic template / slide 3 / condition group',
+  previewPath:'synthetic-template-slide-3.png',
+  frame:'Software-test description: pale fill, thin solid outline, no dashed border and no shadow.',
+  titleTreatment:'Software-test description: attached title strip aligned with the first body line.',
+  spacing:'Software-test description: inner margin 24 px and 16 px between explanation rows.',
+  adaptation:'Software-test plan: redraw the group beside the synthetic evidence panel; preserve all conditions.',...patch});
+const detailedStudy=(components=[component()])=>({status:'reviewed',componentStudies:components,
+  paletteRationale:'Software-test description: dark text on a neutral pale field; the muted accent distinguishes conditions without competing with the source figure.'});
+const longProject=(study,{planned=6,actual=1,interaction='checkpoints'}={})=>{
+  const value=project({...collaborative,interaction},study);
+  value.slides=Array.from({length:actual},(_,i)=>({id:'synthetic-'+i,cards:[]}));
+  if(planned)value.storyboard={pages:Array.from({length:planned},(_,i)=>({slideId:'synthetic-'+i}))};
+  return value;
+};
 
 test('a new dialogue offers only the next related questions and preserves earlier responses',()=>{
   const first=designDialoguePlan();
@@ -63,11 +81,152 @@ test('reference learning needs real candidate identities and observations, while
   assert.equal(designDialogueReport(unreviewed).issues.filter(i=>i.severity==='error').length,0);
 });
 
-test('whole-page learning validates actual recipe identities without forcing a card preset',()=>{
+test('legacy whole-page records retain recipe validation and compatibility without forcing a card preset',()=>{
  const study={status:'reviewed',pageRecipeIds:['paired-comparison'],previewPaths:['synthetic-page-preview.png'],observations:'Synthetic review of shared scale, condition labels and paired evidence.',adaptations:['Adjust widths to the two actual evidence figures; retain common units.']};
  assert.equal(designDialogueReport(project(collaborative,study)).issues.filter(i=>i.severity==='error').length,0);
  study.pageRecipeIds=['made-up-page'];
  assert.ok(designDialogueReport(project(collaborative,study)).issues.some(i=>i.code==='page-reference-unknown-recipe'));
+});
+
+test('new whole-report planning cannot substitute page recipe names for component study, even before pilot slides exist',()=>{
+  const pageOnly={status:'reviewed',pageRecipeIds:['paired-comparison'],previewPaths:['synthetic-page-preview.png'],
+    observations:'Synthetic protocol description of paired evidence.',adaptations:['Keep the actual comparison scale.'],
+    paletteRationale:'Synthetic dark text and pale surface retain the declared comparison color roles.'};
+  for(const scope of [{planned:6,actual:0},{planned:6,actual:3},{planned:0,actual:6}]){
+    const report=designDialogueReport(longProject(pageOnly,scope));
+    assert.equal(report.referenceStudy.componentLearningRequired,true);
+    assert.equal(report.summary.nativeCardCount,0);
+    assert.ok(report.issues.some(issue=>issue.code==='component-reference-study-required'&&issue.severity==='error'));
+  }
+  const local=designDialogueReport(longProject(pageOnly,{planned:5,actual:1}));
+  assert.equal(local.referenceStudy.componentLearningRequired,false);
+  assert.equal(local.issues.filter(issue=>issue.severity==='error').length,0);
+  assert.ok(local.issues.some(issue=>issue.code==='component-reference-legacy'&&issue.severity==='warning'));
+});
+
+test('specific template, card-library and editorial studies support native composition without adopting presets',()=>{
+  const variants=[
+    [component()],
+    [component({referenceId:'Synthetic template slide 3 / outer frame'}),component({referenceId:'Synthetic template slide 3 / narrow title strip'})],
+    [component({source:'card-library',referenceId:'research-tab',previewPath:'synthetic-research-tab.svg'})],
+    [component({source:'editorial',referenceId:'C01',previewPath:'synthetic-C01.svg'}),component({source:'editorial',referenceId:'C20',previewPath:'synthetic-C20.svg'})],
+  ];
+  for(const studies of variants){
+    const report=designDialogueReport(longProject(detailedStudy(studies)));
+    assert.equal(report.issues.filter(issue=>issue.severity==='error').length,0,JSON.stringify(report.issues));
+    assert.equal(report.referenceStudy.componentStudyCount,studies.length);
+    assert.deepEqual(report.referenceStudy.usedPresets,[]);
+    assert.equal(report.referenceStudy.paletteRationaleRecorded,true);
+    assert.match(report.limits,/不独立验证/);
+  }
+  const usingPreset=longProject(detailedStudy([component({source:'card-library',referenceId:'research-tab'})]));
+  usingPreset.design.referenceStudy.selectedPresets=['research-tab'];
+  usingPreset.slides[0].cards=[{id:'synthetic-card',preset:'research-tab'}];
+  assert.equal(designDialogueReport(usingPreset).issues.filter(issue=>issue.severity==='error').length,0,
+    'A detailed study of the actual preset also supplies its inspected identity without a duplicate catalogIds entry.');
+});
+
+test('component identities, page locations, required detail fields and palette rationale remain inspectable',()=>{
+  const cases=[
+    [component({source:'card-library',referenceId:'made-up-card'}),'component-reference-unknown-card'],
+    [component({source:'editorial',referenceId:'C21'}),'component-reference-unknown-editorial'],
+    [component({source:'editorial',referenceId:'c01'}),'component-reference-unknown-editorial'],
+    [component({referenceId:'Synthetic template condition group',previewPath:'synthetic-template.png'}),'component-reference-template-page-missing'],
+    [component({referenceId:'Synthetic template condition group',previewPath:'synthetic-template.png',adaptation:'Software-test target: redraw this component on slide 4 of the new report.'}),'component-reference-template-page-missing'],
+    [component({referenceId:'Synthetic template condition group',previewPath:'synthetic-template.png',frame:'Software-test prose mentions page 7, but neither source locator identifies it.'}),'component-reference-template-page-missing'],
+    [component({frame:''}),'component-reference-study-incomplete'],
+  ];
+  for(const [record,code] of cases){
+    const report=designDialogueReport(longProject(detailedStudy([record])));
+    assert.ok(report.issues.some(issue=>issue.code===code&&issue.severity==='error'),code);
+  }
+  for(const referenceId of ['原始合成模板第7页条件框','Synthetic template / page 12 / heading','Synthetic template / p03 / margin']){
+    assert.deepEqual(componentStudyIssues(detailedStudy([component({referenceId,previewPath:'synthetic-preview.png'})])),[]);
+  }
+  assert.deepEqual(componentStudyIssues(detailedStudy([component({referenceId:'Synthetic template condition group',previewPath:'synthetic-template/slide-003.png'})])),[]);
+  const noPalette=detailedStudy();delete noPalette.paletteRationale;
+  assert.ok(designDialogueReport(longProject(noPalette)).issues.some(issue=>issue.code==='reference-palette-rationale-missing'&&issue.severity==='error'));
+  const args=study=>({projectPath:'synthetic-project.json',expectedRevision:0,design:{...fixtureDesign,referenceStudy:study}});
+  assert.doesNotThrow(()=>assertToolArgs('academic_ppt_record',args(detailedStudy())));
+  for(const field of ['source','referenceId','previewPath','frame','titleTreatment','spacing','adaptation']){
+    const missing=detailedStudy();delete missing.componentStudies[0][field];
+    assert.throws(()=>assertToolArgs('academic_ppt_record',args(missing)),/INVALID_INPUT/,field);
+  }
+  assert.throws(()=>assertToolArgs('academic_ppt_record',args(detailedStudy(Array.from({length:13},()=>component())))),/INVALID_INPUT/);
+});
+
+test('legacy detail omissions remain warnings and not-applicable cannot waive a complete new redesign',()=>{
+  const legacy=designDialogueReport(longProject(fixtureDesign.referenceStudy,{planned:6,actual:6,interaction:'topics'}));
+  assert.equal(legacy.issues.filter(issue=>issue.severity==='error').length,0);
+  assert.ok(legacy.issues.some(issue=>issue.code==='component-reference-legacy'&&issue.severity==='warning'));
+  assert.ok(legacy.issues.some(issue=>issue.code==='reference-palette-rationale-missing'&&issue.severity==='warning'));
+  const old=longProject(undefined,{planned:0,actual:6});delete old.design.consultation;delete old.design.referenceStudy;
+  assert.equal(designDialogueReport(old).issues.filter(issue=>issue.severity==='error').length,0);
+  const exception={status:'not-applicable',reason:'Synthetic local revision only: adjust the source figure on page 1; no other layout or component is redesigned.'};
+  assert.equal(designDialogueReport(longProject(exception,{planned:1,actual:1})).issues.filter(issue=>issue.severity==='error').length,0);
+  const redesign=designDialogueReport(longProject(exception,{planned:6,actual:1}));
+  assert.ok(redesign.issues.some(issue=>issue.code==='reference-study-exception-full-redesign'&&issue.severity==='error'));
+});
+
+test('new delegated create and record defaults enforce component learning for a short pilot of a longer report',async t=>{
+  const cwd=await fixture(t),design={...structuredClone(fixtureDesign),
+    consultation:{mode:'delegated',delegation:'Synthetic software fixture explicitly delegates design choices; no real user decision is claimed.'},
+    referenceStudy:{status:'reviewed',pageRecipeIds:['paired-comparison'],previewPaths:['synthetic-page-preview.png'],
+      observations:'Synthetic whole-page protocol description.',adaptations:['Keep the comparison source identity.']}};
+  const created=await createProject({cwd,projectDir:'planned-pilot',title:'Synthetic component-study workflow',brief,design});
+  assert.equal(JSON.parse(await readFile(created.projectPath,'utf8')).design.consultation.interaction,'checkpoints');
+  assert.equal(Object.hasOwn(design.consultation,'interaction'),false,'Initialization must not mutate the supplied design.');
+  const args={cwd,projectPath:created.projectPath};
+  await updateRecords({...args,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});
+  const storyboard={version:1,objective:'Synthetic longer-report planning gate',audienceTakeaway:'Only software behavior is tested.',
+    throughline:'A short pilot retains the full planned report scope.',decision:{status:'delegated',userResponse:'Synthetic protocol delegation only.'},
+    pages:[...slides,...['later-a','later-b','later-c'].map(id=>({...slides[0],id}))].map(slide=>({slideId:slide.id,title:slide.title,
+      role:slide.layout==='references'?'references':'evidence',question:'What does this synthetic page establish?',claimIds:slide.claimIds,assetIds:slide.figureIds,
+      warrant:'The deterministic fixture defines the expected content.',boundary:'This is not a real scientific or visual assessment.',
+      transition:'Continue the synthetic workflow.',seconds:slide.seconds,layoutFamily:'custom',layoutReason:'Keep the original synthetic test geometry.'}))};
+  const requestPath=join(cwd,'storyboard.json');await writeFile(requestPath,JSON.stringify({kind:'storyboard',storyboard}));
+  await planProject({...args,expectedRevision:1,requestPath});
+  const before=await buildProject({...args,expectedRevision:2,mode:'review'});
+  assert.equal(before.ok,false);assert.ok(before.issues.some(issue=>issue.code==='component-reference-study-required'));
+  const context=await contextProject({...args,stage:'design'});
+  assert.equal(context.designDialogue.referenceStudy.componentLearningRequired,true);
+  assert.match(context.nextActions.join(' '),/48.*20/);
+  assert.match(context.nextActions.join(' '),/不用|是否采用/);
+  await updateRecords({...args,expectedRevision:2,design});
+  const preserved=await buildProject({...args,expectedRevision:3,mode:'review'});
+  assert.equal(preserved.ok,false);assert.ok(preserved.issues.some(issue=>issue.code==='component-reference-study-required'));
+  assert.equal(JSON.parse(await readFile(created.projectPath,'utf8')).design.consultation.interaction,'checkpoints',
+    'A normal delegated consultation update must retain the authoring mode and its full-report learning gate.');
+  await updateRecords({...args,expectedRevision:3,design:{...design,referenceStudy:detailedStudy()}});
+  const after=await buildProject({...args,expectedRevision:4,mode:'review'});
+  assert.equal(after.ok,true,JSON.stringify(after.issues));
+  assert.equal((await contextProject({...args,stage:'design'})).designDialogue.referenceStudy.componentStudyCount,1);
+});
+
+test('explicit topics survive create and record while loading and updating a serialized legacy record never adds interaction',async t=>{
+  const cwd=await fixture(t);
+  for(const legacy of [false,true]){
+    const design={...structuredClone(fixtureDesign),consultation:{mode:'collaborative',interaction:'topics'}};
+    const created=await createProject({cwd,projectDir:legacy?'legacy':'topics',title:'Synthetic interaction compatibility fixture',brief,design});
+    const initial=JSON.parse(await readFile(created.projectPath,'utf8'));
+    assert.equal(initial.design.consultation.interaction,'topics');
+    if(legacy){
+      // Model a serialized older project. This is a software fixture, not an
+      // instruction to rewrite production projects or waive a new-deck gate.
+      delete initial.design.consultation.interaction;
+      await writeFile(created.projectPath,JSON.stringify(initial));
+    }
+    const bytes=await readFile(created.projectPath);
+    const context=await contextProject({cwd,projectPath:created.projectPath,stage:'design'});
+    assert.deepEqual(context.designDialogue.questions.map(question=>question.topic),['density','storyline']);
+    assert.deepEqual(await readFile(created.projectPath),bytes,'Read-only context must not upgrade a legacy file.');
+    const consultation={mode:'delegated',delegation:'Software-test-only delegation preserves the serialized interaction mode.'};
+    const recordsPath=join(cwd,legacy?'legacy-update.json':'topics-update.json');
+    await writeFile(recordsPath,JSON.stringify({design:{...design,consultation}}));
+    await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,recordsPath});
+    const saved=JSON.parse(await readFile(created.projectPath,'utf8'));
+    assert.deepEqual(saved.design.consultation,legacy?consultation:{...consultation,interaction:'topics'});
+  }
 });
 
 test('checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction',()=>{
@@ -98,12 +257,13 @@ test('initial density can follow an actual answer before building; omitted dialo
   const cwd=await fixture(t),created=await createProject({cwd,projectDir:'talk',title:'Synthetic dialogue workflow'});
   const before=JSON.parse(await readFile(created.projectPath,'utf8'));
   assert.equal(before.design.consultation.mode,'collaborative');
+  assert.equal(before.design.consultation.interaction,'checkpoints');
   const consultation={mode:'collaborative',decisions:[response('density')]};
   await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,design:{...fixtureDesign,density:'balanced',consultation}});
   const changed={...fixtureDesign};delete changed.consultation;delete changed.referenceStudy;
   await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:1,design:changed});
   const after=JSON.parse(await readFile(created.projectPath,'utf8'));
-  assert.deepEqual(after.design.consultation,consultation);assert.equal(after.design.density,'balanced');
+  assert.deepEqual(after.design.consultation,{...consultation,interaction:'checkpoints'});assert.equal(after.design.density,'balanced');
   assert.deepEqual(after.design.referenceStudy,fixtureDesign.referenceStudy);
   const unconfirmed=await createProject({cwd,projectDir:'unconfirmed',title:'Synthetic unconfirmed choice'});
   await assert.rejects(updateRecords({cwd,projectPath:unconfirmed.projectPath,expectedRevision:0,design:{...fixtureDesign,density:'balanced',consultation:{mode:'collaborative',decisions:[{topic:'density',status:'proposed',selected:'Less dense'}]}}}),/DENSITY_REQUIREMENT_RELAXATION/);
@@ -118,7 +278,8 @@ test('unanswered design topics block review construction while a labelled draft 
   assert.ok(review.issues.some(i=>i.code==='design-dialogue-pending'));
   const draft=await buildProject({...args,mode:'draft'});assert.equal(draft.ok,true);assert.equal(draft.status,'draft');
   const context=await contextProject({cwd,projectPath:created.projectPath});assert.equal(context.designDialogue.readyForFinalDesign,false);
-  assert.deepEqual(context.designDialogue.questions.map(q=>q.topic),['density','storyline']);
+  assert.equal(context.designDialogue.questions.length,1);
+  assert.deepEqual(context.designDialogue.questions[0].topics,['density','storyline','language']);
   await updateRecords({...args,design:{...design,consultation:collaborative}});
   const final=await buildProject({...args,expectedRevision:2,mode:'review'});assert.equal(final.ok,true,JSON.stringify(final.issues));
 });
@@ -135,7 +296,7 @@ test('a provisional density survives drafts and separately recorded answers unti
   await updateRecords({...args,expectedRevision:2,design:chosen});
   const state=JSON.parse(await readFile(created.projectPath,'utf8'));
   assert.equal(state.design.density,'balanced');assert.equal(state.densityChoicePending,false);
-  assert.deepEqual(state.design.consultation,consultation);
+  assert.deepEqual(state.design.consultation,{...consultation,interaction:'checkpoints'});
   await updateRecords({...args,expectedRevision:3,design:{...chosen,density:'compact'}});
   await assert.rejects(updateRecords({...args,expectedRevision:4,design:chosen}),/DENSITY_REQUIREMENT_RELAXATION/);
 });
