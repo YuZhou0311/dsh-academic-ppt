@@ -135,6 +135,15 @@ function location(box, area) {
   return box.w / area.w >= .7 ? vertical : `${x < .4 ? '左' : x > .6 ? '右' : ''}${vertical}`;
 }
 
+const reviewSceneCodes = new Set(['card-excess-whitespace','text-contrast-review','text-image-contrast-review']);
+const reviewMetricKeys = ['box','emptyFraction','contentCoverage','allocatedHeight','measuredHeight','unusedHeight','unusedFraction','contrast','minimum','foregrounds','backgrounds'];
+function reviewTarget(issue) {
+  const path = issue.path || `slides.${issue.slideId}${issue.cardId ? `.cards.${issue.cardId}` : ''}`;
+  const nodeId = issue.objectId || issue.nodeId;
+  const metrics = Object.fromEntries(reviewMetricKeys.filter(key => issue[key] !== undefined).map(key => [key, structuredClone(issue[key])]));
+  return { id:`${issue.code}:${path}${nodeId ? ':'+nodeId : ''}`, code:issue.code, path, ...(nodeId ? {nodeId} : {}), message:issue.message, ...(Object.keys(metrics).length ? {metrics} : {}) };
+}
+
 export function designGeometryReport(project, scenes) {
   const byId = new Map(list(project.slides).map(slide => [slide.id, slide])), issues = [], slides = [];
   const compact = project.design?.density === 'compact';
@@ -181,5 +190,16 @@ export function designGeometryReport(project, scenes) {
         message: `${location(box, area)}有约 ${percent(allocation.emptyFraction)} 的连续未使用内容区（${Math.round(box.w)}×${Math.round(box.h)} px）。${suggestion}此值是几何诊断，不能代替真实渲染检查。` });
     }
   }
-  return { basis: 'scene-geometry-estimate-not-aesthetic-score', notes: '忽略背景、卡框、图标与正文装饰。文本按估计行范围计算；原图、数据图表和统计图内部留白不作空洞。封面上下文图单独计可视占幅，不作为科学证据。', slides, issues };
+  // These stable, actionable targets must be answered against the rendered
+  // page. A passed summary alone cannot silently dispose of whitespace or
+  // contrast warnings. Errors stay blocking and cannot be waived here.
+  const reviewTargets = [];
+  for (const report of slides) {
+    const page = list(scenes?.pages).find(page => page.id === report.slideId);
+    const pending = [...issues.filter(issue => issue.slideId === report.slideId && issue.severity === 'warning'),
+      ...list(page?.issues).filter(issue => issue.severity === 'warning' && reviewSceneCodes.has(issue.code))];
+    report.reviewTargets = [...new Map(pending.map(issue => {const target=reviewTarget(issue);return [target.id,target];})).values()];
+    reviewTargets.push(...report.reviewTargets);
+  }
+  return { basis: 'scene-geometry-estimate-not-aesthetic-score', notes: '忽略背景、卡框、图标与正文装饰。文本按估计行范围计算；原图、数据图表和统计图内部留白不作空洞。封面上下文图单独计可视占幅，不作为科学证据。reviewTargets须对当前渲染逐项说明保留理由或返工；填色与外框不能消除空间警告。', slides, issues, reviewTargets };
 }

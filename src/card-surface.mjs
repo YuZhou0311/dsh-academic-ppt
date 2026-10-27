@@ -1,7 +1,7 @@
 /** Measured, editable card surfaces. Icons are semantic navigation, never evidence. */
 import { getCardPreset } from './card-catalog.mjs';
-import { measureImageCard, renderImageCard } from './image-card-surface.mjs';
-import { CARD_FRAME_FIELDS, cardFramePaint, cardFrameStroke, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
+import { measureImageCard, fitImageCardToHeight, renderImageCard } from './image-card-surface.mjs';
+import { CARD_FRAME_FIELDS, cardFramePaint, cardFrameStroke, fitCardSurfaceBox, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
 export const SEMANTIC_ICONS = Object.freeze(['question','method','evidence','comparison','boundary','hypothesis','satellite','leaf','water','model']);
 const plainStyles = new Set(['plain','compact','ruled']);
 const text = value => value === undefined || value === null ? '' : String(value);
@@ -85,6 +85,7 @@ export function renderCardSurface(b, card, box, index, project, helpers) {
   if(['items','badge','note'].some(field=>card[field]!==undefined))b.page.issues.push({severity:'error',code:'card-preset-required',slideId:b.page.id,cardId:card.id,message:'items、badge 和 note 需要明确的 card.preset；请选择卡片配方，避免新增内容被旧布局遗漏。'});
   const m = measureCardSurface(card, box.w, { ...helpers, design:b.design || project.design, system:b.system });
   if (!m) return false;
+  box=fitCardSurfaceBox(b,card,box,m);
   const id = String(card.id || `card-${index+1}`), key=`card/${id}`, p=b.p, a=m.appearance;
   const accent=/^#[0-9a-f]{6}$/i.test(card.accent||'')?card.accent:(card.kind==='boundary'?p.secondary:p.accent);
   const solid=a.surface==='solid'&&a.fill!=='none', ink=solid?'#FFFFFF':p.ink, muted=solid?'#FFFFFF':p.muted, color=solid?'#FFFFFF':accent;
@@ -361,10 +362,16 @@ function measurePresetCard(card, width, {design,system,wrapText,measureTextWidth
 }
 
 function renderPresetCard(b,card,box,index,project,helpers){
-  const m=measurePresetCard(card,box.w,{...helpers,design:b.design||project.design,system:b.system||{}}),id=String(card.id||`card-${index+1}`),key=`card/${id}`;
+  const options={...helpers,design:b.design||project.design,system:b.system||{}};
+  let m=measurePresetCard(card,box.w,options);
+  const id=String(card.id||`card-${index+1}`),key=`card/${id}`;
   if(m.invalidPreset){b.page.issues.push({severity:'error',code:'card-preset-unknown',slideId:b.page.id,cardId:id,message:`未知卡片预设 ${card.preset}；请从 academic_ppt_cards 返回的 ID 选择。`});return true;}
   if(card.templateComponentId)b.page.issues.push({severity:'error',code:'card-preset-template-conflict',slideId:b.page.id,cardId:id,message:'card.preset 与 templateComponentId 分别定义完整卡片结构，请只选择其中一种。'});
-  if(m.imageCard)return renderImageCard(b,card,box,index,project,helpers,m,{drawSemanticIcon});
+  if(m.imageCard){
+    m=fitImageCardToHeight(card,box,project,options,m);
+    return renderImageCard(b,card,box,index,project,helpers,m,{drawSemanticIcon});
+  }
+  box=fitCardSurfaceBox(b,card,box,m);
   const {preset,appearance:a}=m,p=b.p,{frame,header}=preset.recipe;
   const accent=/^#[0-9a-f]{6}$/i.test(card.accent||'')?card.accent:(card.kind==='boundary'?p.secondary:p.accent);
   const colors={...p,accent,white:'#FFFFFF',none:'none'};

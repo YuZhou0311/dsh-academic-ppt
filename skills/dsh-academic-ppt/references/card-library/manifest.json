@@ -55,7 +55,7 @@
       "svg": "cards/research-fold.svg",
       "width": 576,
       "height": 224,
-      "sha256": "8b7d8e8dedf7a89f373178f4c1f31547781385f3ce434ac586d2e63b884213fa"
+      "sha256": "26eec4bc2048b50ae3b9443ace828d8377089b9820d35c1397408debc7b33ff6"
     },
     {
       "id": "research-index",
@@ -217,7 +217,7 @@
       "svg": "cards/metric-target.svg",
       "width": 576,
       "height": 356,
-      "sha256": "085e840b1f09408e5427d888208318910604cba3cfa54d40173b31579e578b50"
+      "sha256": "0aea2f705ece515e99566c4a83f3d4db93c8410253cf74243f5f40693365128f"
     },
     {
       "id": "metric-ledger",
@@ -235,7 +235,7 @@
       "svg": "cards/boundary-cut.svg",
       "width": 576,
       "height": 229,
-      "sha256": "c24226645c894509d1485078dc9b46062fa3502c84a615eff2a7c11c29b3ec3b"
+      "sha256": "c187848613150926a83a84c9ba79a82cfe42cadb79e3ede7c5120734872c2db9"
     },
     {
       "id": "boundary-notch",
@@ -342,8 +342,8 @@
       "family": "figure",
       "svg": "cards/figure-caption.svg",
       "width": 1136,
-      "height": 444,
-      "sha256": "09362926558dcd9d24760dd083b2436792716668c1d0bf68c08d24d2fcdbde87"
+      "height": 528,
+      "sha256": "c2885c5feab460480fe269ec417bd796ce451cf169e71be07f9cbc7d9e0fbfa5"
     },
     {
       "id": "figure-observation",
@@ -351,8 +351,8 @@
       "family": "figure",
       "svg": "cards/figure-observation.svg",
       "width": 1136,
-      "height": 410,
-      "sha256": "e2102a2fd3aca65c6e9991524ed2a02179bdce57a91430e913902c2e44289aa2"
+      "height": 408,
+      "sha256": "7de24e31486cffaafe485d9139140ac3563a61c66df1ffd28f20c83a8f2d49fd"
     },
     {
       "id": "figure-reverse",
@@ -360,8 +360,8 @@
       "family": "figure",
       "svg": "cards/figure-reverse.svg",
       "width": 1136,
-      "height": 410,
-      "sha256": "db2b888876da14d2253524f4bb193d0fa4f7b36f55c719eb86e909ff571a392b"
+      "height": 408,
+      "sha256": "bfcf96bef0bc9bc7cd3fefe2160650cd3824ab1b44640c29e96a35d4e253a7dc"
     },
     {
       "id": "figure-pair",
@@ -369,8 +369,8 @@
       "family": "figure",
       "svg": "cards/figure-pair.svg",
       "width": 1136,
-      "height": 444,
-      "sha256": "8c2c11bec4e93ce70003265e44ee2f7c121d412f8103c3c4284a45cb143f3950"
+      "height": 405,
+      "sha256": "7797dd96ee6a549f54b12aa0b5be8acb1d94349bb95d8aa2edd3b3e3865e0a70"
     },
     {
       "id": "figure-stack",
@@ -378,8 +378,8 @@
       "family": "figure",
       "svg": "cards/figure-stack.svg",
       "width": 1136,
-      "height": 454,
-      "sha256": "38edf496a3a4eebb2844c589693b91b947f6d128b19d4186bd8069f739cee6c4"
+      "height": 528,
+      "sha256": "f03903970f312005d48b0e1450e19158d792d324251693dd5aef1b041f396aaf"
     },
     {
       "id": "figure-sequence",
@@ -387,8 +387,8 @@
       "family": "figure",
       "svg": "cards/figure-sequence.svg",
       "width": 1136,
-      "height": 452,
-      "sha256": "1702d4bf088b6a182861c3a36c52b9a6d439400ed6ada4dfbf8eaf787efc87b9"
+      "height": 418,
+      "sha256": "fc60ee9d9bebfcd00cb03fa03fb53253191c6f6e24318a29c42622cd97a58d25"
     },
     {
       "id": "figure-matrix",
@@ -396,8 +396,8 @@
       "family": "figure",
       "svg": "cards/figure-matrix.svg",
       "width": 1136,
-      "height": 514,
-      "sha256": "36db91459e425c35d849b8df5eb40282c75fe2986d9f9647c3343fb8923782da"
+      "height": 528,
+      "sha256": "f70469a325eeafe27797dd6fb81e1cb04ea2c1dd4b6dd5e1c801bef2bbdf07d0"
     },
     {
       "id": "figure-zoom",
@@ -405,8 +405,8 @@
       "family": "figure",
       "svg": "cards/figure-zoom.svg",
       "width": 1136,
-      "height": 444,
-      "sha256": "b05a5dc7b7c0798b48cc6a3c599b9ce12dd0b0fe1217f1af55066570973685ef"
+      "height": 460,
+      "sha256": "d6b0af3600a821455d32c7f313ff5ba4aea39ba5bf8a5aff3e62f801db14c923"
     },
     {
       "id": "figure-overview-details",
@@ -414,8 +414,8 @@
       "family": "figure",
       "svg": "cards/figure-overview-details.svg",
       "width": 1136,
-      "height": 514,
-      "sha256": "ae5aa938b3e1d5959472cb91846b6e900744742c2ebe7b527e504e00a7bede37"
+      "height": 528,
+      "sha256": "3dcfc77854c23bb7903a211b05bd66e62aa970504a0e62bfa547c2a07b844be0"
     },
     {
       "id": "figure-margin-notes",
@@ -423,8 +423,8 @@
       "family": "figure",
       "svg": "cards/figure-margin-notes.svg",
       "width": 1136,
-      "height": 414,
-      "sha256": "e033debbb8afb88bca90237baf7cfa73a14b0cd5b11c51b2feb7b3836f79cfad"
+      "height": 389,
+      "sha256": "1f4b97519cefef8b39a7df7ea594cf4b338613411e2aadd47e43d991a5b4a7b1"
     },
     {
       "id": "figure-metrics",
@@ -432,8 +432,8 @@
       "family": "figure",
       "svg": "cards/figure-metrics.svg",
       "width": 1136,
-      "height": 468,
-      "sha256": "efb0f88eeebba848a305ddeebbcd491400a2e1a8a8beffa4d1888ab1025e712f"
+      "height": 528,
+      "sha256": "77ee41c8f5a3ebde95751d08df95858756bcf5fba4a19d66e2a4c9d35976a2ba"
     },
     {
       "id": "figure-conditions",
@@ -441,13 +441,13 @@
       "family": "figure",
       "svg": "cards/figure-conditions.svg",
       "width": 1136,
-      "height": 514,
-      "sha256": "9cfebc43b938956015c229fdf803d4984d8de1b60b681534469cfbea78400750"
+      "height": 528,
+      "sha256": "b9f35a348b774c4dbf7c05388076e9c59854afd5712d8755bc8e5246677fca06"
     }
   ],
   "figureDeck": {
     "path": "figure-cards.pptx",
-    "sha256": "2dfcf81480c7207d67cb66221cb2bf8ae02ec6b68dacbc3aba5b8a8ce72e5560",
+    "sha256": "6e7b2b8b086a8d7ee6f1e284f5c716065ccd6b5a8172406e2b8998320519c222",
     "slideCount": 12,
     "scope": "original schematic design references; not research evidence"
   }

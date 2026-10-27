@@ -22,7 +22,12 @@ async function setup(t, { design } = {}) {
   const root = resolve('.test-output'); await mkdir(root, { recursive: true });
   const cwd = await mkdtemp(join(root, 'content-led-'));
   t.after(() => rm(cwd, { recursive: true, force: true }));
-  const created = await createProject({ cwd, projectDir: 'p', title: 'Content-led integration fixture', brief, design: { ...fixtureDesign, ...design, density: 'balanced' } });
+  const selectedDesign={...structuredClone(fixtureDesign),...design,density:'balanced'};
+  if(design?.mode==='reference-guided'){
+    await writeFile(join(cwd,'original-reference.svg'),'<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><title>Original source-path protocol fixture</title></svg>');
+    selectedDesign.consultation={...structuredClone(fixtureDesign.consultation),source:{status:'confirmed',mode:'reference-guided',templatePaths:['original-reference.svg'],userResponse:'Synthetic test fixture explicitly chooses the supplied original reference for design inference.'}};
+  }
+  const created = await createProject({ cwd, projectDir: 'p', title: 'Content-led integration fixture', brief, design: selectedDesign });
   const recordsPath = join(cwd, 'records.json');
   await writeFile(recordsPath, JSON.stringify({ papers: [paper], claims: [claim], slides: [slides[0], bodySlide(), slides[2]] }));
   await updateRecords({ cwd, projectPath: created.projectPath, expectedRevision: 0, recordsPath });
@@ -74,7 +79,7 @@ test('reference inference is an editable suggestion and older design records ret
   assert.equal(suggested.mode, 'reference-guided');
   const options = await setup(t, { design: suggested });
   assert.equal((await contextProject({ ...options, stage: 'design' })).designMode, 'reference-guided');
-  const oldDesign = structuredClone(fixtureDesign); delete oldDesign.mode;
+  const oldDesign = structuredClone(fixtureDesign); delete oldDesign.mode; delete oldDesign.consultation.source;
   const oldSlide = bodySlide(); delete oldSlide.visualPlan;
   await updateRecords({ ...options, expectedRevision: 1, design: oldDesign, slides: [oldSlide] });
   assert.equal((await contextProject({ ...options, stage: 'design' })).designMode, 'reference-guided', 'replacing tokens must preserve an already selected mode');
@@ -84,6 +89,7 @@ test('reference inference is an editable suggestion and older design records ret
   // to content-led even when callers supply their own font/palette tokens.
   const legacy = JSON.parse(await readFile(options.projectPath, 'utf8'));
   delete legacy.design.mode;
+  delete legacy.design.consultation.workflowVersion;delete legacy.design.consultation.source;
   await writeFile(options.projectPath, JSON.stringify(legacy));
   const old = await checkProject(options);
   assert.equal(old.summary.errors, 0);

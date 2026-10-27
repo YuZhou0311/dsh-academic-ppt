@@ -12,6 +12,7 @@ import { needsFreeComposition, renderFreeComposition } from './free-composition.
  */
 
 import { measureCardSurface } from './card-surface.mjs';
+import { fitImageCardToHeight } from './image-card-surface.mjs';
 import { measureScientificPlotMinimum } from './scientific-plot.mjs';
 import { measureAcademicDiagramMinimum, automaticDiagramRows } from './academic-diagram.mjs';
 
@@ -125,10 +126,13 @@ function figureAreaScore(candidate, area) {
 
 /** Exact compact/plain native-card flow, including authored metric qualifiers. */
 function cardPlan(data, width, ctx) {
-  const surface = measureCardSurface(data,width,{design:ctx.design,system:ctx.system,wrapText:ctx.wrapText,measureTextWidth:ctx.measureTextWidth});
+  const settings={design:ctx.design,system:ctx.system,wrapText:ctx.wrapText,measureTextWidth:ctx.measureTextWidth};
+  let surface = measureCardSurface(data,width,settings);
+  if(surface?.imageCard&&validBox(data.box))surface=fitImageCardToHeight(data,data.box,ctx.project,settings,surface);
+  else if(surface?.imageCard&&data.mediaHeight===undefined)surface=measureCardSurface({...data,mediaHeight:120},width,settings);
   if(surface) {
     if(surface.metricWidth>surface.innerW+1)ctx.error('card-metric-width','卡片指标的数值与单位在内边距区域不能保持一行；扩大面板或重排指标。',{cardId:data.id,requiredWidth:Math.ceil(surface.metricWidth),availableWidth:surface.innerW});
-    return {data,style:data.style||'compact',minimumH:surface.minimumH,surface:true};
+    return {data,style:data.style||'compact',minimumH:surface.minimumH,surface:true,elasticMedia:surface.imageCard&&data.mediaHeight===undefined};
   }
   const style = data.style === 'plain' ? 'plain' : 'compact';
   const titleH = ctx.lines(data.title, width, ctx.titleSize, true) * ctx.titleSize * 1.15;
@@ -303,7 +307,18 @@ function renderPanel(b, project, slide, panel, box, ctx) {
   const usableH = Math.max(required, flow.h);
   const mediaH = panel.artifact ? (panel.artifact.kind === 'table' ? artifactH : Math.max(artifactH, usableH - between - cardH)) : 0;
   let y = panel.artifact ? renderArtifact(b, project, slide, panel, { x: body.x, y: flow.y, w: body.w, h: mediaH }, ctx) + between : flow.y;
-  const remaining = Math.max(cardH, flow.y + usableH - y), heights = distribute(remaining - Math.max(0, automatic.length - 1) * GAPS.card, automatic.map(card => card.minimumH), automatic.map(() => 1));
+  // Text cards follow their measured content height. Equal-cell stretching
+  // creates empty frames without enlarging the text. Only unconstrained image
+  // cards can use additional height to make their actual source pixels larger.
+  const remaining = Math.max(cardH, flow.y + usableH - y),elastic=automatic.filter(card=>card.elasticMedia).length;
+  const extra=elastic?Math.max(0,remaining-cardH)/elastic:0;
+  const heights=automatic.map(card=>{
+    const height=card.minimumH+(card.elasticMedia?extra:0);
+    if(!card.elasticMedia)return height;
+    const settings={design:ctx.design,system:ctx.system,wrapText:ctx.wrapText,measureTextWidth:ctx.measureTextWidth};
+    const measured=measureCardSurface(card.data,body.w,settings);
+    return Math.min(height,fitImageCardToHeight(card.data,{w:body.w,h:height},project,settings,measured).minimumH);
+  });
   const drawCard = (item, cardBox) => {
     const data = { ...ctx.clone(item.data), style: item.style };
     if (data.templateComponentId) {
@@ -375,7 +390,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
   const panelStyle = system.panel || 'band';
   if (!['band', 'tint', 'line'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint 或 line。'); return; }
   const academicTables = b.design?.hasAcademicSystem ?? Boolean(project.design?.system || design.system);
-  const ctx = { design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: Math.max(academicTables ? bodySize : 23,design.projection?.labelMin??0), fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
+  const ctx = { project, design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: Math.max(academicTables ? bodySize : 23,design.projection?.labelMin??0), fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
   const unknown = (value, allowed, name) => { for (const key of Object.keys(value || {})) if (!allowed.includes(key)) error('unsupported-field', `${name}.${key} 没有可见排版规则；移除此字段或使用明确支持的内容字段。`, { field: `${name}.${key}` }); };
   unknown(composition, ['lead', 'rows', 'conclusion'], 'composition');
   if (composition.conclusion) unknown(composition.conclusion, ['label', 'text'], 'composition.conclusion');
@@ -469,7 +484,8 @@ export function renderAcademicComposition(b, project, slide, helpers) {
       const explicitSpan = explicitCards.length ? Math.max(...explicitCards.map(item => item.data.box.y + item.data.box.h)) - Math.min(...explicitCards.map(item => item.data.box.y)) : 0;
       const cardsH = flowCards.reduce((sum, item) => sum + item.minimumH, 0) + Math.max(0, flowCards.length - 1) * GAPS.card + explicitSpan + (explicitSpan && flowCards.length ? GAPS.inner : 0);
       const minimumH = headingH + GAPS.inner + GAPS.padBottom + (artifact?.minimumH || 0) + (artifact && selectedCards.length ? GAPS.inner : 0) + cardsH;
-      const result = { id, key, title, kind: panel.kind, surface, align: hasExplicitGeometry ? 'stretch' : align, x, w, headingH, cards: selectedCards, artifact, minimumH };
+      const contentSized=panel.align===undefined&&!artifact&&!hasExplicitGeometry&&!selectedCards.some(item=>item.elasticMedia);
+      const result = { id, key, title, kind: panel.kind, surface, align: hasExplicitGeometry ? 'stretch' : contentSized ? 'start' : align, x, w, headingH, cards: selectedCards, artifact, minimumH };
       x += w + GAPS.column;
       return result;
     });

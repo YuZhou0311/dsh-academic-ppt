@@ -10,9 +10,18 @@ const freeze = value => {
 const palette = (ink, accent, secondary, muted, line, tint, gold) => ({
   background:'#FFFFFF', paper:'#FFFFFF', ink, accent, secondary, muted, line, soft:tint, tint, gold,
 });
+const mix = (a, b, amount) => '#' + [1,3,5].map(i => Math.round(parseInt(a.slice(i,i+2),16)*(1-amount)+parseInt(b.slice(i,i+2),16)*amount).toString(16).padStart(2,'0')).join('').toUpperCase();
+// Keep all settings executable with the existing card/panel contract. Tone is
+// a semantic choice, not a mandate to paint every surface or recolor evidence.
+const surfaceOptions = p => [
+  { id:'partial-fill', use:'主证据组的深色题签，白底正文', panelSurface:'band', cardAppearance:{layout:'banded',surface:'outline',fill:p.paper,stroke:p.line} },
+  { id:'dark-anchor', use:'少量核心判断或章节锚点，白字', cardAppearance:{surface:'solid',fill:p.accent,stroke:p.accent,accent:'none'} },
+  { id:'tonal-group', use:'条件或比较组的中间色面，深字', cardAppearance:{surface:'tint',fill:mix(p.accent,p.paper,.78),stroke:p.line} },
+  { id:'open-evidence', use:'图表与辅助解释留在白底开放区域', panelSurface:'plain', cardAppearance:{surface:'plain',fill:'none',stroke:'none',accent:'none'} },
+];
 
 export const DEFAULT_ACADEMIC_PALETTE_ID = 'blue-slate';
-export const ACADEMIC_PALETTES = freeze({
+export const ACADEMIC_PALETTES = freeze(Object.fromEntries(Object.entries({
   'blue-slate': {
     id:'blue-slate', label:'深蓝与石墨',
     description:'白底、深蓝标题与石墨正文；适合需要清楚层级和克制强调的正式学术汇报。',
@@ -38,7 +47,7 @@ export const ACADEMIC_PALETTES = freeze({
     description:'接近中性的石墨主色与灰蓝辅助色；适合已有多彩图表、需要减少页面装饰干扰的报告。',
     palette:palette('#252A30','#3B4C5B','#506D7B','#59616A','#C1C9D0','#F2F4F6','#7B644C'),
   },
-});
+}).map(([id, entry]) => [id, {...entry, surfaceOptions:surfaceOptions(entry.palette)}])));
 export const ACADEMIC_PALETTE_IDS = Object.freeze(Object.keys(ACADEMIC_PALETTES));
 
 /** Return an isolated token map, so local tuning never changes another deck. */

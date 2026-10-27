@@ -177,3 +177,23 @@ test('the declared current contentBox is used after header furniture is removed'
   assert.deepEqual(report.slides[0].contentBox, s.pages[0].contentBox);
   assert.equal(report.issues.length, 0);
 });
+
+test('render review exposes stable located targets for card whitespace, page voids and contrast',()=>{
+  const s=scene([text('body',48,132,220)]);
+  s.pages[0].issues=[
+    {severity:'warning',code:'card-excess-whitespace',slideId:'s',cardId:'c',allocatedHeight:500,measuredHeight:160,unusedHeight:340,unusedFraction:.68,message:'Compress the empty card.'},
+    {severity:'warning',code:'text-contrast-review',slideId:'s',objectId:'s/card/c/body',contrast:3.7,minimum:4.5,message:'Review body contrast.'},
+    {severity:'error',code:'text-contrast-too-low',slideId:'s',objectId:'s/title',message:'Fix the title.'},
+  ];
+  const input=project('academic','balanced'),before=structuredClone(s),output=designGeometryReport(input,s);
+  assert.deepEqual(s,before,'diagnostics do not rewrite rendered scenes');
+  assert.deepEqual(output.reviewTargets,output.slides[0].reviewTargets);
+  const card=output.reviewTargets.find(t=>t.code==='card-excess-whitespace');
+  assert.equal(card.path,'slides.s.cards.c');
+  assert.equal(card.metrics.unusedFraction,.68);
+  assert.equal(card.id,'card-excess-whitespace:slides.s.cards.c');
+  assert.ok(output.reviewTargets.some(t=>t.nodeId==='s/card/c/body'&&t.metrics.contrast===3.7));
+  assert.ok(output.reviewTargets.some(t=>t.code==='unused-region-review'&&t.metrics.box));
+  assert.equal(output.reviewTargets.some(t=>t.code==='text-contrast-too-low'),false,'blocking errors cannot be accepted as intentional review exceptions');
+  assert.deepEqual(designGeometryReport(input,s).reviewTargets,output.reviewTargets,'unchanged content keeps stable review target ids');
+});

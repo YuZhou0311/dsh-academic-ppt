@@ -4,7 +4,7 @@ import { mkdir, open, rm, stat } from 'node:fs/promises';
 import { dirname, extname } from 'node:path';
 import { hash, readBounded, safePath } from './io.mjs';
 import { CARD_PRESET_IDS } from './card-catalog.mjs';
-import { consultationSchema, referenceStudySchema, componentStudyIssues, designDialoguePlan, resolvedDesignPreferences, withConsultationInteraction } from './design-dialogue.mjs';
+import { consultationSchema, referenceStudySchema, componentStudyIssues, designDialoguePlan, designSourceResolved, resolvedDesignPreferences, withConsultationInteraction } from './design-dialogue.mjs';
 
 const text = (maxLength = 1800) => ({ type:'string', minLength:1, maxLength, pattern:'\\S' });
 const enumeration = values => ({ type:'string', enum:values });
@@ -15,6 +15,7 @@ const item = object({ label:text(200), value:{oneOf:[text(160),{type:'number',mi
 /** Returned on demand by contract(preparation), not in every registered tool request. */
 export const preparationRequestSchema = object({
   topic:text(700), audience:text(300),
+  existingProject:{type:'boolean',description:'仅恢复已有工程的只读准备计划时设为true，并传入其实际consultation；保留旧工程的版本和交互模式。新准备缺省false，使用workflowVersion:2。'},
   consultation:consultationSchema,referenceStudy:referenceStudySchema,
   template:object({
     status:enumeration(['unasked','awaiting-upload','provided','none','unanswered']),
@@ -61,7 +62,7 @@ function adaptationPlan(request) {
   const chosenPalette=resolvedPreferences.find(preference=>preference.topic==='palette');
   const colorInstruction=mode === 'fixed'
     ? `保留调用方声明由用户明确固定的颜色：${colors.join('、')}。在这些颜色及中性底色内安排角色与占比；若可读性冲突，说明冲突，不擅自改变固定颜色。`
-    : (colors.length ? `候选色${colors.join('、')}是起点，允许依据本次内容调整色相、明度、饱和度和占比，也可选用更合适的学术配色。` : '根据本次内容、受众与信息角色自主确定学术配色；参考图与预设的颜色不自动成为本稿固定颜色。');
+    : (colors.length ? `候选色${colors.join('、')}是起点，允许依据本次内容调整色相、明度、饱和度和占比，也可选用更合适的学术配色。` : '根据本次内容、受众与信息角色提出学术配色候选；参考图与预设的颜色不自动成为本稿固定颜色。未授权的色彩方向须展示真实样张后讨论。');
   return {
     mode:'content-adaptive',
     resolvedPreferences,
@@ -76,6 +77,8 @@ function adaptationPlan(request) {
       '先确定实际文字量、条件、指标与信息关系，再决定保留、合并、拆分或重排哪些区块。卡片库、preferredPresets、用户模板和生成参考都是设计起点，不能只换字照搬，也不要求每张卡为了不同而强行变化。',
       '全稿保持颜色与研究对象、比较组、条件或边界的对应一致；同类比较使用一致视觉尺度。换色不能代替内容适配，也不能只靠颜色传达区别。',
       '按完整文字测量尺寸，保留数值、单位、分母、来源、限定和证据身份；不得为适配外观删条件、造数或缩小关键正文。',
+      '卡片参考不是固定尺寸成品。依据当前图文量重算card.box、内部列宽、题签和间距；短内容收紧容器或扩大关键图文，长内容扩容、重排或拆页。检查卡内底部空洞与相邻区失衡，不能只把预设整体搬上页面。',
+      '在真实样张中安排深色结构、白底证据区与局部填色的分工。适合强调的题签、结论区、比较栏可用深色或中等明度实色；克制不等于整稿都是浅色。保持科学图本来的颜色含义和文字对比。',
       '核对文字与底色的实际对比。band/notch预设标题为白字，需要足够深的强调色；浅色题签配深字时用原生绘制。当前不保证自动修复任意自定义颜色。',
     ],
     decisionRecord:'用design.referenceStudy.componentStudies记录source/referenceId/previewPath、frame（填充/线型/虚线/阴影）、titleTreatment、spacing和adaptation（本稿哪页如何改或为何不用），可补colorHierarchy；paletteRationale说明本稿配色与主辅层级。整页关系另记design.direction或slide.visualPlan.rationale。记录不能证明真的看图或审美通过，仍须查看实际参考和最终PPTX；制作记录不进入正式正文。',
@@ -95,7 +98,7 @@ function cardPrompt(request, cards) {
     `为学术汇报《${request.topic}》生成小型信息卡的原创设计参考图。听众：${request.audience || '以本次汇报已知听众为准'}。`,
     `输出是卡片设计探索，不是整页PPT、UI应用或研究证据。本批${cards.length}个内容单元，每个探索2种不同组织方式，共${cards.length*2}张卡片。卡片编号对应输入id，保留适当间距，便于逐卡查看。`,
     '先理解内容，再安排标题、题签/编号、正文、成组指标、条件和边界说明。让结构匹配语义：对照用同轴/同序，指标保留单位与分母，限制与对应论断邻接。采用可在PowerPoint中重建的清晰几何、克制描边、明确层级、足够文字区域。',
-    adaptation.resolvedPreferences.length?'以下设计选择已经确认或明确委托并选定，应落实到本次参考；未确认提议不是约束，其他细节可按内容自主设计：\n'+JSON.stringify(adaptation.resolvedPreferences,null,2):'未提供逐项固定选择的部分，由作者根据当前材料与明确委托自主设计。',
+    adaptation.resolvedPreferences.length?'以下设计选择已经确认或明确委托并选定，应落实到本次参考；未确认提议仅作为可撤销候选，展示后再取得回答：\n'+JSON.stringify(adaptation.resolvedPreferences,null,2):'未提供逐项固定选择的部分，只能依据当前材料制作可撤销候选；按明确委托范围自主决定，其余方向展示后等待真实用户选择。',
     adaptation.colorPolicy.instruction+' 全稿统一颜色含义与主辅比例，保证文字与底色可读，不把每张卡片染成不同品牌色。',
     request.visualGuidance ? `设计要求：${request.visualGuidance}` : '按实际用途选择浮签、带状标题、侧标、折角、分隔指标、证据行、条件清单等结构；不要只换颜色和边框。',
     request.template?.learningGoals?.length ? `从已查看的用户模板只学习这些原则：${request.template.learningGoals.join('；')}。重新组织当前内容，不复刻机构、旧文字、独特插画或整页构图。` : '参考可用的卡片库作为结构词汇，不照抄某一张参考图或强制整稿都用卡片。',
@@ -111,6 +114,10 @@ async function templatePlan(request, cwd, signal) {
   const paths = provided.localPaths || [];
   // An explicitly declined reference wins over leftover attachment paths.
   const status = paths.length && !['none','unanswered'].includes(provided.status) ? 'provided' : provided.status;
+  if(status==='unasked'&&request.consultation?.workflowVersion===2)return {
+    status,nextAction:'await-design-source',
+    instructions:['开场设计来源选择由designDialogue中的design_source提出并等待真实回答，保存在consultation.source；不另问重复的模板问题，也不把无回复当成默认原创。'],
+  };
   if (status === 'unasked') return {
     status, question:{
       id:'template_reference', text:'这次汇报是否有希望参考的 PPT/PPTX 模板？',
@@ -126,7 +133,9 @@ async function templatePlan(request, cwd, signal) {
   };
   if (['none','unanswered'].includes(status)) return {
     status, nextAction:'continue-native',
-    instructions:['已明确不使用模板或已询问但未获回复，继续当前逐页设计流程，不再次发出模板选择问题。'],
+    instructions:[request.consultation?.workflowVersion===2
+      ? '模板状态不替代设计来源的实际回答；以consultation.source中的真实选择为准。未回答时保留待讨论状态，明确选择默认原创后继续，不重复询问已保存的决定。'
+      : '已明确不使用模板或已询问但未获回复，继续当前逐页设计流程，不再次发出模板选择问题。'],
   };
   if (!paths.length) throw new Error('INVALID_PREPARATION: template.status=provided requires localPaths.');
   const files = [];
@@ -221,7 +230,14 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   try { request = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes).replace(/^\uFEFF/,'')); }
   catch { throw new Error('INVALID_PREPARATION_JSON: requestPath must contain a UTF-8 JSON object.'); }
   valid(request);
-  const consultation=withConsultationInteraction(request.consultation,'checkpoints');
+  const consultation=withConsultationInteraction(request.consultation,request.existingProject?undefined:'checkpoints');
+  if(!request.existingProject)consultation.workflowVersion=2;
+  let normalizedTemplate=request.template;
+  if(consultation.workflowVersion===2&&consultation.source?.status==='awaiting-upload')normalizedTemplate={...request.template,status:'awaiting-upload'};
+  else if(consultation.workflowVersion===2&&designSourceResolved(consultation))normalizedTemplate=consultation.source.mode==='content-led'
+    ? {...request.template,status:'none'}
+    : {...request.template,status:'provided',localPaths:[...consultation.source.templatePaths]};
+  request={...request,consultation,...(normalizedTemplate?{template:normalizedTemplate}:{})};
   const designDialogue=designDialoguePlan(consultation);
   const template = await templatePlan(request,cwd,signal);
   let imageGeneration = generationPlan(request);
@@ -231,12 +247,12 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   if(!designDialogue.readyForFinalDesign&&designDialogue.nextAction!=='prepare-pilot-candidates'&&imageGeneration.nextAction==='invoke-host-imagegen'){
     const {prompt,batches,...pendingGeneration}=imageGeneration;
     imageGeneration={...pendingGeneration,nextAction:'await-design-feedback',instructions:[
-      '先取得配色、形态、文字与层次偏好，再按这些选择生成内容相关的卡片参考；当前尚未调用生图。研究查证和取图可继续。',
+      '先完成当前设计来源或故事线讨论并等待真实回答；进入样张阶段后可以制作可撤销候选，展示后再确认配色、布局与风格。当前尚未调用生图，研究查证和取图可继续。',
     ]};
   }
-  const nextAction = designDialogue.nextAction === 'ask-design-questions' ? 'ask-design-questions'
+  const nextAction = !designDialogue.readyForFinalDesign&&designDialogue.nextAction!=='prepare-pilot-candidates' ? designDialogue.nextAction
     : template.nextAction === 'ask-template-once' || template.nextAction === 'inspect-template' ? template.nextAction : imageGeneration.nextAction;
-  const plan = { ok:true,version:1,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
+  const plan = { ok:true,version:2,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
     nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
     designRecords:{consultation:structuredClone(consultation),...(request.referenceStudy?{referenceStudy:structuredClone(request.referenceStudy)}:{})},
     researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划卡片与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},

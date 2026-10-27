@@ -6,7 +6,7 @@ import {createProject,updateRecords,buildProject,contextProject,checkProject,edi
 import {safePath,hash} from '../src/io.mjs';
 import {DEFAULT_DESIGN} from '../src/core.mjs';
 import {normalizeTemplateProfiles} from '../src/template-profile.mjs';
-import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,brief,paper,claim,asset,slides,syntheticObservations} from './fixtures.mjs';
 async function init(t){const base=resolve('.test-output');await mkdir(base,{recursive:true});const cwd=await mkdtemp(join(base,'core-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const p=await createProject({cwd,projectDir:'project',title:'Synthetic academic fixture',brief,design:fixtureDesign});return {cwd,projectPath:p.projectPath};}
 async function fill(t){const o=await init(t);await updateRecords({...o,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});return o;}
 async function state(o){return JSON.parse(await readFile(o.projectPath,'utf8'));}
@@ -46,7 +46,7 @@ test('externally edited PPTX is detected and a rebuild preserves the external fi
  const second=await buildProject({...o,expectedRevision:1});assert.notEqual(second.files.pptx,first.files.pptx);assert.equal(await readFile(first.files.pptx,'utf8'),'external Office edit fixture');
 });
 test('review records require actual capabilities and hash; HTML review cannot certify PPTX',async t=>{
- const o=await fill(t),built=await buildProject({...o,expectedRevision:1});const review={...o,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'vision-model',basis:'html-preview',reviewedSlides:['s1','s2','s3'],result:'passed',notes:'软件测试审查记录。',observations:['s1','s2','s3'].map(slideId=>({slideId,contentCheck:'测试来源身份与文字按fixture输入保持一致。',legibilityCheck:'此处仅验证审查协议，不是实际画面通过证明。',issue:''}))};
+ const o=await fill(t),built=await buildProject({...o,expectedRevision:1});const review={...o,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'vision-model',basis:'html-preview',reviewedSlides:['s1','s2','s3'],result:'passed',notes:'软件测试审查记录。',observations:syntheticObservations(await checkProject(o),['s1','s2','s3'])};
  await assert.rejects(recordReview(review),/VISION_UNVERIFIED/);
  await assert.rejects(recordReview({...review,reviewer:'human',basis:'pptx-render'}),/PPTX_RENDER_REQUIRED/);
  await recordReview({...review,reviewer:'human'});let checked=await checkProject(o);assert.equal(checked.verification.htmlVisual,'reported-passed');assert.equal(checked.verification.readyForDelivery,false);

@@ -26,7 +26,9 @@ test('each on-demand contract returns the complete schema without silently trunc
     assert.deepEqual(result.schema, expected)
     // The opt-in slide contract includes native drawings, regions and reading roles.
     // Keep the always-registered budget unchanged; never truncate the full authoring API.
-    assert.ok(Buffer.byteLength(JSON.stringify(result)) < (topic === 'slide' ? 36000 : 18000), topic)
+    // v0.9.1 adds explicit collaboration scope and usable tonal surface recipes
+    // only to this on-demand contract. The always-registered 18 KB gate remains.
+    assert.ok(Buffer.byteLength(JSON.stringify(result)) < (topic === 'slide' ? 36000 : topic === 'design' ? 26000 : 18000), topic)
     const rendered = formatToolResult(tool.name, result)
     assert.ok(rendered.includes(JSON.stringify(expected)), `${topic} schema was truncated`)
     result.schema.type = 'changed locally'

@@ -111,7 +111,7 @@ test('weighted panels preserve all authored text, evidence identities and full-w
   const frames = page.nodes.filter(node => node.role === 'panel-frame');
   assert.ok(Math.abs(frames[0].w / frames[1].w - 1.6) < 1e-9);
   assert.equal(frames[0].y, frames[1].y);
-  assert.equal(bottom(frames[0]), bottom(frames[1]));
+  assert.ok(bottom(frames[0])>bottom(frames[1]),'a short text boundary panel does not inherit the evidence panel\'s empty tail');
   assert.equal(find(page, '/composition/lead/frame').w, 1184);
   assert.equal(find(page, '/composition/conclusion/frame').w, 1184);
   assert.ok(bottom(find(page, '/composition/conclusion/frame')) <= 645 + 1);
@@ -374,13 +374,21 @@ test('composition allocates the shared full diagram-label minimum before reporti
   }
 });
 
-test('optional panel controls preserve the exact legacy scene when inherited and stretched', () => {
+test('explicit stretch preserves content and surface inheritance while opting into a taller frame', () => {
   for (const panelStyle of ['band', 'tint', 'line']) {
     const slide = authoredSlide({ cards: [authoredCard('a')], composition: { rows: [{ panels: [{ id: 'one', title: '原有分组规则', cardIds: ['a'] }] }] } });
     const p = project(slide); p.design.system.panel = panelStyle;
     const original = buildScenes(p).pages[0];
     Object.assign(slide.composition.rows[0].panels[0], { surface: 'inherit', align: 'stretch' });
-    assert.deepEqual(buildScenes(p).pages[0], original, `${panelStyle} must retain every legacy native object and coordinate`);
+    const stretched=buildScenes(p).pages[0];
+    const content=page=>page.nodes.filter(node=>!['panel-frame','panel-background'].includes(node.role)&&!node.id.endsWith('/composition/panel/one/bottom-rule'));
+    assert.deepEqual(content(stretched),content(original),`${panelStyle} retains all content, title furniture and coordinates`);
+    for(const before of original.nodes.filter(node=>['panel-frame','panel-background'].includes(node.role))){
+      const after=stretched.nodes.find(node=>node.id===before.id);
+      assert.ok(after.h>before.h+100,'only an explicit stretch keeps an otherwise empty tall panel');
+      assert.deepEqual({...after,h:before.h},before,'surface inheritance changes no other geometry or paint');
+    }
+    if(panelStyle==='line')assert.ok(stretched.nodes.find(node=>node.id.endsWith('/bottom-rule')).y>original.nodes.find(node=>node.id.endsWith('/bottom-rule')).y+100);
   }
 });
 

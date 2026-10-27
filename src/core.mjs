@@ -11,7 +11,7 @@ import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-qu
 import {designIssues,designGeometryReport} from './design-quality.mjs';
 import { evidenceDesignReport, contentCoverageReport } from './evidence-design.mjs';
 import { researchEvidenceReport } from './research-evidence.mjs';
-import { designDialogueReport, designDialoguePlan, designDecisionResolved, withConsultationInteraction } from './design-dialogue.mjs';
+import { designDialogueReport, designDialoguePlan, designDecisionResolved, designSourceResolved, withConsultationInteraction, finalReviewReport } from './design-dialogue.mjs';
 import { layoutDiversityReport } from './layout-diversity.mjs';
 import { writeDesignStudy } from './design-study.mjs';
 import { compareProjectStructures } from './portfolio.mjs';
@@ -21,8 +21,8 @@ import {PAGE_RECIPE_IDS} from './page-recipes.mjs';
 export {PAGE_RECIPES,PAGE_RECIPE_IDS,getPageRecipe,listPageRecipes,recommendPageRecipes,compilePageRecipe} from './page-recipes.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
-export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'line',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=17;
+export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'band',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
+const RENDERER_VERSION=18;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -33,16 +33,17 @@ function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
 // design remain protected.
 function decisionIndependentContent(p){
  const content=clone(contentOf(p));content.revision=0;
- const interaction=content.design.consultation?.interaction;
+ const {interaction,workflowVersion,source}=content.design.consultation??{};
  delete content.design.consultation;
- if(interaction!==undefined)content.design.consultation={interaction};
+ if(interaction!==undefined||workflowVersion!==undefined)content.design.consultation={...(interaction!==undefined?{interaction}:{}),...(workflowVersion!==undefined?{workflowVersion}:{}),...(source?{source:{mode:source.mode,templatePaths:source.templatePaths??[]}}:{})};
  if(content.storyboard)delete content.storyboard.decision;
  return stable(content);
 }
 function initial(title,brief,design,capabilities){
  const initialDesign={mode:'content-led',density:'compact',cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)};
  initialDesign.consultation=withConsultationInteraction(initialDesign.consultation,'checkpoints');
- return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(design.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:initialDesign,capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};
+ initialDesign.consultation.workflowVersion=2;
+ return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(initialDesign.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:initialDesign,capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};
 }
 async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
@@ -64,11 +65,30 @@ async function saveMutation(state,next,signal,{undo=false,preserveDecisionReview
   ...(keepArtifact?{preservedVerification:{pptxSha256:next.artifact.files.pptx.sha256,buildRevision:next.artifact.revision,basis:'checkpoint-decision-only; unchanged artifact and original review records'}}:{})};
 }
 function counts(p){return Object.fromEntries(fields.map(k=>[k,p[k].length]));}
+function mergedConsultation(previous,incoming){
+ if(!incoming)return clone(previous);
+ const topics=(incoming.decisions??[]).map(item=>item.topic);
+ if(new Set(topics).size!==topics.length)throw new Error('DUPLICATE_DESIGN_TOPIC: 同一批次每个设计主题只能有一个当前决定。');
+ if(previous?.workflowVersion!==2)return withConsultationInteraction(incoming,previous?.interaction);
+ const result={...clone(previous),...clone(incoming),workflowVersion:2};
+ if(incoming.decisions?.length){
+  const decisions=new Map((previous.decisions??[]).map(item=>[item.topic,item]));
+  for(const decision of incoming.decisions)decisions.set(decision.topic,decision);
+  result.decisions=[...decisions.values()];
+ }
+ return withConsultationInteraction(result,previous.interaction);
+}
 export async function createProject(options={}){
  const a=argsFor('academic_ppt_init',options),dir=await safePath(options.cwd,a.projectDir);
- await ensureNewDir(dir);const path=join(dir,'project.json');const p=initial(a.title,a.brief,a.design,a.capabilities);
- assertProject(p);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
- return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.0先读workflow-v090.md：故事线与科学取舍、真实样张方向、最终使用三个关键节点。一次完整方向选择可落实多个设计topic，已有选择/委托不重复问。六页以上整稿用plan记录问题、证据、边界、承接与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','先看原48款卡片与20款编辑式参考中适合本稿的实际候选，并细读已提供用户模板的具体页/组件，再自主设计。referenceStudy.componentStudies记录填充/线型/虚线/阴影、题签、间距和本稿改造，paletteRationale说明配色依据；不用preset或只用drawings也不能以pageRecipeIds代替学习。已有充分模板细读可沿用，不重复打卡无关目录。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
+ const path=join(dir,'project.json');const p=initial(a.title,a.brief,a.design,a.capabilities);
+ if(designSourceResolved(p.design.consultation)){
+  const source=p.design.consultation.source;
+  if(a.design?.mode&&a.design.mode!==source.mode)throw new Error('DESIGN_SOURCE_MODE_MISMATCH: design.mode 必须落实用户选择的设计来源方式。');
+  p.design.mode=source.mode;
+  for(const sourcePath of source.templatePaths??[]){const file=await safePath(options.cwd,sourcePath,{mustExist:true});if(!(await stat(file)).isFile())throw new Error('TEMPLATE_SOURCE_FILE_REQUIRED: 模板来源须为本项目中实际提供的文件。');}
+ }
+ assertProject(p);await ensureNewDir(dir);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
+ return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.1先读workflow-v091.md。新工程先询问默认原创或参考/套用用户模板，等待真实回答；再讨论故事线、实际样张的配色/布局/风格、最终成品审查。只复用具体已选事项或有范围的委托。六页以上用plan记录证据故事板与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','设计来源通过design.consultation.source保存；未回答不等于默认原创。已提供文件时明确学习语法还是保留版式，已选择但未上传时保留等待状态。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','先看原48款卡片与20款编辑式参考中适合本稿的实际候选，并细读已提供用户模板的具体页/组件，再自主设计。referenceStudy.componentStudies记录填充/线型/虚线/阴影、题签、间距和本稿改造，paletteRationale说明配色依据；不用preset或只用drawings也不能以pageRecipeIds代替学习。已有充分模板细读可沿用，不重复打卡无关目录。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
 }
 export async function updateRecords(options={}){
  let a=argsFor('academic_ppt_record',options);
@@ -94,11 +114,28 @@ export async function updateRecords(options={}){
  for(const key of ['brief','capabilities'])if(a[key])next[key]=a[key];
  if(a.design){
   // Drafts and separately recorded answers do not settle the provisional default.
-  const initialDensityChoice=state.p.densityChoicePending===true&&designDecisionResolved(a.design.consultation??state.p.design.consultation,'density');
+  const densityConsultation=mergedConsultation(state.p.design.consultation,a.design.consultation);
+  const initialDensityChoice=state.p.densityChoicePending===true&&designDecisionResolved(densityConsultation,'density');
   if(state.p.design.density==='compact'&&a.design.density==='balanced'&&!initialDensityChoice)throw new Error('DENSITY_REQUIREMENT_RELAXATION: 不能通过降低内容占幅要求消除大空区。调整实际内容与构图；仅在用户改变设计要求后另建工程。');
-  const retained=Object.fromEntries(['mode','density','cardDefaults','chrome','direction','projection','colorRoles','consultation','referenceStudy'].filter(key=>Object.hasOwn(state.p.design,key)).map(key=>[key,clone(state.p.design[key])]));
+  const retained=Object.fromEntries(['mode','density','cardDefaults','chrome','direction','projection','colorRoles','consultation','referenceStudy','system','branding','templateProfile'].filter(key=>Object.hasOwn(state.p.design,key)).map(key=>[key,clone(state.p.design[key])]));
   next.design={...retained,...a.design};
-  if(a.design.consultation)next.design.consultation=withConsultationInteraction(a.design.consultation,state.p.design.consultation?.interaction);
+  if(a.design.consultation){
+   next.design.consultation=densityConsultation;
+   if(state.p.design.consultation?.workflowVersion===2)next.design.consultation.workflowVersion=2;
+   // Recording another checkpoint must not erase the opening choice or its
+   // scope. A changed choice is explicit and remains subject to the same gate.
+   for(const key of ['source','delegationTopics','finalReview'])if(!Object.hasOwn(a.design.consultation,key)&&Object.hasOwn(state.p.design.consultation??{},key))next.design.consultation[key]=clone(state.p.design.consultation[key]);
+   const source=next.design.consultation.source;
+   if(next.design.consultation?.workflowVersion===2&&source&&designSourceResolved(next.design.consultation)){
+    if(a.design.mode&&a.design.mode!==source.mode)throw new Error('DESIGN_SOURCE_MODE_MISMATCH: design.mode 必须落实用户选择的设计来源方式。');
+    next.design.mode=source.mode;
+    const previousSource=state.p.design.consultation?.source;
+    const sourceChanged=!designSourceResolved(state.p.design.consultation)||source.mode!==previousSource?.mode||stable(source.templatePaths??[])!==stable(previousSource?.templatePaths??[]);
+    // Historical reference paths are provenance, not a renewed read request.
+    // A recovered project can record feedback without its old template file.
+    if(sourceChanged)for(const sourcePath of source.templatePaths??[]){const file=await safePath(options.cwd,sourcePath,{mustExist:true});if(!(await stat(file)).isFile())throw new Error('TEMPLATE_SOURCE_FILE_REQUIRED: 模板来源须为本项目中实际提供的文件。');}
+   }
+  }
   if(a.design.density&&a.design.density!==state.p.design.density)next.densityChoicePending=false;
  }
  if(state.p.brief.qualityProfile==='academic')next.brief.qualityProfile='academic';
@@ -215,24 +252,40 @@ async function renderReceiptCheck(p,cwd){
  if(!p.artifact?.render)return {status:'not-rendered'};
  try{const pptx=await safePath(cwd,p.artifact.files.pptx.path,{mustExist:true});const receipt=await safePath(cwd,p.artifact.render.receiptPath,{mustExist:true});const {readRenderReceipt}=await import('./vendor/dsh-ppt-render.mjs');return readRenderReceipt(pptx,receipt);}catch(e){return {status:'not-verified',message:e.message};}
 }
+function currentPilotDialogue(p,dialogue,artifact,render){
+ if(dialogue?.stage!=='pilot-direction'||!artifact.current||render.status!=='rendered'||render.missingFonts?.length)return dialogue;
+ const ids=p.storyboard?pilotSlideIds(p.storyboard):p.slides.length<6?p.slides.map(slide=>slide.id):[];
+ const reviews=(p.visualReviews??[]).filter(review=>review.pptxSha256===artifact.pptxSha256&&review.basis==='pptx-render');
+ if(!ids.length||ids.some(id=>!p.slides.some(slide=>slide.id===id)||reviews.findLast(review=>review.reviewedSlides.includes(id))?.result!=='passed'))return dialogue;
+ return {...dialogue,nextAction:'ask-pilot-direction',requiresUserResponse:true,questionTiming:'current-actual-pilot',
+  actualPilot:{slideIds:ids,pptxSha256:artifact.pptxSha256,previewPaths:p.artifact.render.pngPaths??[],contactSheetPaths:p.artifact.render.contactSheetPaths??[]},
+  instructions:['当前指定样张已实际渲染并登记逐页自查。现在展示这些真实画面，具体比较配色、深浅填色、排版布局、卡片尺度、留白、风格与密度，并提出返回的问题。',
+   '展示后结束本轮等待用户真实回答，不再重复制作同一批候选，也不能自填confirmed。收到反馈后按明确覆盖的主题保存选择，再登记pilot-review；局部反馈只修改受影响部分。']};
+}
 export async function checkProject(options={}){
  argsFor('academic_ppt_check',options);const {p,path}=await load(options);const {issues,designDiagnostics,scenes}=await scenesAndIssues(p);const artifact=await artifactCheck(p,options.cwd),render=await renderReceiptCheck(p,options.cwd);
+ designDiagnostics.designDialogue=currentPilotDialogue(p,designDiagnostics.designDialogue,artifact,render);
  const reviews=(p.visualReviews??[]).filter(r=>artifact.current&&r.pptxSha256===artifact.pptxSha256);
  const full=(basis)=>p.slides.every(s=>reviews.findLast(r=>r.basis===basis&&r.reviewedSlides.includes(s.id))?.result==='passed');
  const summary=statusSummary(issues),visual=artifact.current&&full('pptx-render')&&render.status==='rendered'?'reported-passed':'not-verified';
  const storyboard=storyboardReport(p,scenes,{final:true,recipeIds:new Set(PAGE_RECIPE_IDS)});
- const delivery=deliveryReadiness(p,{issues,artifact,render},storyboard);
- return {ok:summary.errors===0,projectPath:path,revision:p.revision,counts:counts(p),summary,issues,repairQueue:repairQueue(issues),designDiagnostics,storyboard,delivery,artifact,verification:{evidence:'records-checked-not-independently-verified',layout:'estimated',pptxRender:render.status,visual,htmlVisual:artifact.current&&full('html-preview')?'reported-passed':'not-verified',readyForDelivery:delivery.readyForDelivery},render,slides:p.slides.map(s=>({id:s.id,title:s.title,layout:s.layout,seconds:s.seconds})),note:'格式、引用链和内容分布诊断不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。'};
+ const renderReceiptSha256=render.status==='rendered'?hash(await readBounded(await safePath(options.cwd,p.artifact.render.receiptPath,{mustExist:true}))):undefined;
+ const finalReview=finalReviewReport(p,{pptxSha256:artifact.pptxSha256,renderReceiptSha256,
+  rendered:artifact.current&&render.status==='rendered'&&!render.missingFonts?.length,
+  reviewed:summary.errors===0&&full('pptx-render')&&p.artifact?.mode==='review'&&storyboard.ready});
+ const delivery=deliveryReadiness(p,{issues,artifact,render,finalReview},storyboard);
+ return {ok:summary.errors===0,projectPath:path,revision:p.revision,counts:counts(p),summary,issues,repairQueue:repairQueue(issues),designDiagnostics,reviewTargets:designDiagnostics.reviewTargets??[],storyboard,finalReview,delivery,artifact,verification:{evidence:'records-checked-not-independently-verified',layout:'estimated',pptxRender:render.status,visual,htmlVisual:artifact.current&&full('html-preview')?'reported-passed':'not-verified',readyForDelivery:delivery.readyForDelivery},render:{...render,...(renderReceiptSha256?{renderReceiptSha256}:{})},slides:p.slides.map(s=>({id:s.id,title:s.title,layout:s.layout,seconds:s.seconds})),note:'格式、引用链和内容分布诊断不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。'};
 }
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),evaluated=await scenesAndIssues(p),issues=evaluated.issues,summary=statusSummary(issues);
+ const finalState=p.artifact?await checkProject({cwd:options.cwd,projectPath:path,signal:options.signal}):null;
  let stage=a.stage??'auto';if(stage==='auto')stage=!p.slides.length?(!p.papers.length?'research':!p.claims.length?'evidence':'storyboard'):summary.errors?(issues.some(issue=>issue.severity==='error'&&/^(?:narrative|storyboard)-/.test(issue.code))?'storyboard':[...evaluated.designDiagnostics.issues,...evaluated.designDiagnostics.designDialogue.issues].some(issue=>issue.severity==='error')?'design':'evidence'):!p.artifact?'render':'review';
  const mode=p.design.mode??'legacy';
  const nextActions={
   research:['使用实际宿主搜索工具核对题名、DOI、年份与发表版本，取得全文及图片后登记paper.sourceCheck和figureReview。搜索摘要、网页纯文本或verified:true均不证明已取得并看过原图。保留实际URL/本地路径、图号、图注和获取失败原因。','有参考时先看实际页面中的主辅证据、邻接解释和局部分组；没有参考文件则明确记录依据，不声称已看。'],
   evidence:['先处理researchEvidence列出的来源查证、图源盘点及已选图未上页问题。取得并实看原图后登记asset.reading、figureIds、card.figureIds或drawing.image，按图安排解释和条件；图片必须在实际导出scene中可见，不能仅登记asset或补文字卡。','核对reported/inference/proposal及推理前提。把关键结果、比较条件和边界分配到真实可见载体。','检查是否只摘了漂亮的单个数字而丢失分布、对照、时间变化和负结果；按问题修复，不为构图补造结果。'],
   design:['先查看designDialogue中的待确认项和参考学习缺口；沿用已有反馈或明确委托。先看原48款卡片与20款编辑式参考中的相关实际候选，以及已提供模板的具体组件；记录frame、titleTreatment、spacing、adaptation和paletteRationale，再按研究关系设计整页。实际或故事板计划达到六页的新checkpoints稿，在样张阶段就需要这些记录，不能只填pageRecipeIds。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
-   '阅读references/visual-decision.md；从contract(design)的academicPalettes选择合适学术色板，用direction说明依据，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
+   '阅读references/visual-decision.md与space-and-tone.md；从contract(design).academicPalettes的surfaceOptions选择深色题签、局部填色、开放证据区，向用户展示真实配色/布局/风格样张，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
    '已有方向或明确委托直接沿用。若完整方向仍有实质分歧，或困难样张暴露具体风险，用academic_ppt_study按同一真实内容比较必要的候选，render:true查看实际画面。把比较集中于样张阶段，不为每页制作备选，也不重复询问已经决定的事项。',
    '用academic_ppt_cards查询48种原生配方（含12种嵌图卡），20款编辑式参考见references/editorial-v083/index.html（C01–C20）。看图学习与是否采用preset无关；已充分细读用户模板可直接沿用，不强迫无关目录打卡。需要信息卡时再按内容采用或用drawings重组，标题、单位和边界必须可见，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
   storyboard:['六页及以上整稿先用academic_ppt_plan提交证据故事板，逐页写问题、判断、推理、边界、必须可见条件和承接，标出最难页与连续三页。已确认方向直接沿用；不能把资料易得性当作改题授权。','用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','先把已取得的原图、数据图和机制示意分配到对应页，写清看哪里、比较什么及成立条件，再写argument、内容覆盖与visualPlan，并用composition.rows/regions或drawings组合图文；不必选择referenceTemplateId。',
@@ -246,7 +299,7 @@ export async function contextProject(options={}){
   delivery:['academic_ppt_check核对delivery.blockers及repairQueue，先修复未完成证据、故事板、样张与当前逐页审查；不把draft路径当成正式交付。','academic_ppt_deliver创建新目录，打包同一hash的可编辑PPTX、PDF/实际预览、讲稿、来源、故事板、审查记录和可重建工程。交付后说明实际验证范围与未测宿主。'],
  }[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
- return {ok:true,projectPath:path,revision:p.revision,stage,storyboard:evaluated.designDiagnostics.storyboard,repairQueue:repairQueue(issues),brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
+ return {ok:true,projectPath:path,revision:p.revision,stage,storyboard:evaluated.designDiagnostics.storyboard,repairQueue:repairQueue(issues),reviewTargets:evaluated.designDiagnostics.reviewTargets??[],...(finalState?{finalReview:finalState.finalReview,render:finalState.render,delivery:finalState.delivery}:{}),brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:finalState?.designDiagnostics.designDialogue??evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }
 function speechMarkdown(p){let elapsed=0;return `# ${p.title}\n\n目标时长：${p.brief.talkMinutes} 分钟。以下为本次导出对应的备注，实际语速须排练。\n\n`+p.slides.map((s,i)=>{const start=elapsed;elapsed+=s.seconds;const t=n=>`${Math.floor(n/60)}:${String(Math.round(n%60)).padStart(2,'0')}`;return `## ${i+1}. ${s.title}\n\n页 ID：${s.id}。时间预算：${t(start)}–${t(elapsed)}。\n\n${s.notes||'此页尚无讲稿。'}${s.transition?'\n\n衔接下一页：'+s.transition:''}\n\n`}).join('');}
 export async function buildProject(options={}){
@@ -298,11 +351,24 @@ export async function recordReview(options={}){
   const observed=new Set((a.observations??[]).map(item=>item.slideId));
   if((a.observations??[]).length!==a.reviewedSlides.length||observed.size!==a.reviewedSlides.length||a.reviewedSlides.some(id=>!observed.has(id))||(a.observations??[]).some(item=>!a.reviewedSlides.includes(item.slideId)))throw new Error('PER_SLIDE_REVIEW_REQUIRED: 当前版本每个 reviewedSlides ID 需要对应 observations，逐页写 contentCheck/legibilityCheck/issue。');
   if(a.result==='passed'&&a.observations.some(item=>item.issue.trim()))throw new Error('UNRESOLVED_REVIEW_ISSUES: 有具体问题时登记 needs-fix，不能同时声称通过。');
+  if(state.p.design.consultation?.workflowVersion===2){
+   const evaluated=await scenesAndIssues(state.p);
+   for(const item of a.observations){
+    if(!item.spaceCheck?.trim()||!item.colorCheck?.trim())throw new Error('SPACE_COLOR_REVIEW_REQUIRED: 每页必须分别观察卡片内部/整页留白、主体占幅，以及实际深浅层次与文字背景对比；填写 spaceCheck/colorCheck。');
+    const targets=evaluated.designDiagnostics.slides?.find(slide=>slide.slideId===item.slideId)?.reviewTargets??[];
+    const checks=item.diagnosticChecks??[],ids=new Set(checks.map(check=>check.targetId));
+    if(ids.size!==checks.length||checks.some(check=>!targets.some(target=>target.id===check.targetId)))throw new Error('STALE_DIAGNOSTIC_REVIEW: diagnosticChecks 只能逐项引用当前该页的 reviewTargets，不得复用旧目标或重复记录。');
+    if(targets.some(target=>!ids.has(target.id)))throw new Error('DIAGNOSTIC_REVIEW_REQUIRED: 先查看当前 check/render 返回的 reviewTargets，在 diagnosticChecks 逐项说明有意保留的作用或登记 needs-fix；修复后须重新构建和渲染。');
+    if(a.result==='passed'&&checks.some(check=>check.decision==='needs-fix'))throw new Error('UNRESOLVED_REVIEW_ISSUES: 留白或颜色仍需修复，不能登记 passed。');
+    if(a.result==='passed'&&evaluated.issues.some(issue=>issue.severity==='error'&&issue.slideId===item.slideId&&/contrast|font|projection|overflow|overlap|geometry|whitespace|clipp/.test(issue.code)))throw new Error('VISUAL_STATIC_ERRORS: 当前页面仍有可定位的排版或对比错误，先修复实际内容再复核。');
+   }
+  }
  }
  const review={...(a.observations?{observations:a.observations}:{}),pptxSha256:a.pptxSha256,reviewer:a.reviewer,basis:a.basis,reviewedSlides:a.reviewedSlides,result:a.result,notes:a.notes,createdAt:now(),attestation:'user-or-agent-recorded-not-an-automatic-visual-judgment'};
  const next={...state.p,visualReviews:[...(state.p.visualReviews??[]).filter(r=>r.pptxSha256===a.pptxSha256),review].slice(-120)};
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
- return {ok:true,projectPath:state.path,revision:state.p.revision,summary:'已保存对应版本的视觉审查记录。',review};
+ const checked=await checkProject({cwd:options.cwd,projectPath:state.path,signal:options.signal});
+ return {ok:true,projectPath:state.path,revision:state.p.revision,summary:'已保存对应版本的视觉审查记录。',review,designDialogue:checked.designDiagnostics.designDialogue,finalReview:checked.finalReview,pptxSha256:a.pptxSha256,renderReceiptSha256:checked.render.renderReceiptSha256};
 }
 export async function renderProjectArtifact(options={}){
  const a=argsFor('academic_ppt_render',options),state=await load(options);checkRevision(state.p,a.expectedRevision);const current=await artifactCheck(state.p,options.cwd);if(!current.current)throw new Error('CURRENT_ARTIFACT_REQUIRED');
@@ -316,7 +382,8 @@ export async function renderProjectArtifact(options={}){
  // The same PPTX may render differently after a font or engine change.
  next.visualReviews=(next.visualReviews??[]).filter(review=>review.basis!=='pptx-render');
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
- return {...rendered,projectPath:state.path,revision:state.p.revision,note:'这是真实 PPTX 的静态渲染，尚未判断画面质量；字体及布局仍需查看图片。'};
+ const evaluated=await scenesAndIssues(state.p);
+ return {...rendered,projectPath:state.path,revision:state.p.revision,pptxSha256:current.pptxSha256,renderReceiptSha256:hash(await readBounded(rendered.receiptPath)),reviewTargets:evaluated.designDiagnostics.reviewTargets??[],note:'这是真实 PPTX 的静态渲染，尚未判断画面质量。逐页检查内部空腔、主体占幅、深浅层次与实际对比；review填写 spaceCheck/colorCheck 并逐项回应 reviewTargets。'};
 }
 
 /** Read/write an authored storyboard, or attest to the current real pilot.
@@ -396,7 +463,7 @@ export async function deliverProject(options={}){
  checkRevision(state.p,a.expectedRevision);
  const checked=await checkProject({cwd:options.cwd,projectPath:state.path,signal:options.signal});
  if(!checked.delivery.readyForDelivery)return {ok:false,status:'blocked',projectPath:state.path,revision:state.p.revision,
-  delivery:checked.delivery,storyboard:checked.storyboard,summary:checked.summary,issues:checked.issues,repairQueue:checked.repairQueue,
+  delivery:checked.delivery,storyboard:checked.storyboard,finalReview:checked.finalReview,render:checked.render,artifact:checked.artifact,reviewTargets:checked.reviewTargets,summary:checked.summary,issues:checked.issues,repairQueue:checked.repairQueue,
   nextActions:checked.delivery.nextActions,note:'没有创建最终交付包。现有草稿仍可用于明确标记的中间预览；继续修复已授权的工作。'};
  if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');
  const directory=await safePath(options.cwd,a.outputDir);await ensureNewDir(directory);

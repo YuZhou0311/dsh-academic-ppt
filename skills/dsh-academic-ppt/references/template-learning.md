@@ -8,7 +8,7 @@
 
 `design.referenceStudy.status:reviewed` 可记录实际查看的 `templateReferences`、`pageRecipeIds` 或 `catalogIds`，并保留真实 `previewPaths`、`observations` 和 `adaptations`；详细组件记录也可独立提供对应来源、预览、观察和改造。同时按 [academic-visual-language.md](academic-visual-language.md) 填写 `componentStudies`：具体页/卡、框线与填充、题签、间距和本稿改造，以及 `paletteRationale`。整页结构学习和组件细读互相补充；采用自主drawings也不能省略组件学习。查看原48卡与20款局部参考中的相关候选，最终不强制采用preset。实际使用的preset须有已查看`catalogIds`或同ID的`card-library`细读记录，有模板不等于自动完成看图。
 
-先调用`academic_ppt_contract({"topic":"preparation"})`取得准备记录schema，再把本次汇报内容和已知选择写入本地JSON，调用`academic_ppt_prepare({requestPath,outputPath?})`。模板选择写在`template`记录中，沿用工具返回的状态与下一步；生成的准备文件可用于继续任务，不能每轮把用户已回答的状态重置成未知。工具提供分支计划，不会代替宿主提问、上传或下载文件。
+先调用`academic_ppt_contract({"topic":"preparation"})`取得准备记录schema，再把本次汇报内容和已知选择写入本地JSON，调用`academic_ppt_prepare({requestPath,outputPath?})`。v2的真实模式选择写`consultation.source`，附件状态写`template`，两者不能互相冒充。准备既有工程传`existingProject:true`保留旧协议；沿用工具返回的状态与下一步；生成的准备文件可用于继续任务，不能每轮把用户已回答的状态重置成未知。工具提供分支计划，不会代替宿主提问、上传或下载文件。
 
 | `template.status` | 实际含义与处理 |
 | --- | --- |
@@ -16,7 +16,7 @@
 | `awaiting-upload` | 用户选择上传但尚未收到文件；继续内容工作，收到后填真实路径，不重复问是否需要模板 |
 | `provided` | 已取得本地`.pptx`或`.ppt`路径；尚无匹配观察记录时检查PPTX并看图，旧PPT先转换；已有匹配`review`则继续设计 |
 | `none` | 用户明确使用当前流程，按内容和内置目录继续 |
-| `unanswered` | 宿主明确返回未回答或用户已跳过模板选择，按当前流程继续；以后补充文件时再切换 |
+| `unanswered` | 实际未收到回答；可继续材料整理，但v2的来源选择仍待决定。只有用户明确选择当前流程或明确委托才继续定稿 |
 
 模板上传由宿主完成。`academic_ppt_template`读取本次工作区中实际存在的`.pptx`；旧`.ppt`先通过宿主已支持的转换方式另存为PPTX，或请用户导出后附上。PDF与截图按视觉参考处理，不交给PPTX解析器，不声称支持任意Office格式或完整母版还原。文件路径、状态和说明只放入当前契约支持的位置。
 

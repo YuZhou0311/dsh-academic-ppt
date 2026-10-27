@@ -1,3 +1,4 @@
+import {syntheticObservations,fixtureDesign} from './fixtures.mjs';
 // Original synthetic software fixtures. These are not research results, user
 // attachments, actual user decisions, or evidence of human/vision quality review.
 // Real PPTX render calls test the renderer lifecycle; review records below are
@@ -48,7 +49,7 @@ function originalImage({vertical=false}={}) {
 function fixtures() {
   const design={...structuredClone(DEFAULT_DESIGN),density:'balanced',fontFamily:'DejaVu Sans',
     system:{...DEFAULT_DESIGN.system,header:'plain'},
-    consultation:{mode:'delegated',delegation:TEST_ONLY+' The fixture explicitly simulates delegated design.'},
+    consultation:{...structuredClone(fixtureDesign.consultation),workflowVersion:2,interaction:'checkpoints',delegation:TEST_ONLY+' The fixture explicitly delegates original design, all design topics and final review.'},
     referenceStudy:{status:'reviewed',componentStudies:[{source:'user-template',
       referenceId:'Original software-test reference / page 1 / annotation group',previewPath:'sources/original-frame-study.svg',
       frame:TEST_ONLY+' Fixture describes a pale fill, thin solid outline, no dashed border and no shadow.',
@@ -167,8 +168,7 @@ async function author(t,{all=false,plan=true,includeReferences=true,mutate}={}) 
     return invoke('plan',{expectedRevision:revision,requestPath:'pilot-review.json'});};
   const review=async(built,ids,result='passed',options={})=>invoke('review',{expectedRevision:revision,
     pptxSha256:built.pptxSha256,reviewer:'vision-model',basis:'pptx-render',reviewedSlides:ids,result,notes:TEST_ONLY,
-    observations:ids.map(slideId=>({slideId,contentCheck:TEST_ONLY+' '+slideId+' content state.',
-      legibilityCheck:TEST_ONLY+' '+slideId+' simulated review state.',issue:result==='needs-fix'?'Synthetic unresolved test issue.':''})),...options});
+    observations:syntheticObservations(await invoke('check'),ids,result==='needs-fix'?'Synthetic unresolved test issue.':''),...options});
   const edit=async(changes)=>{const result=await invoke('edit',{expectedRevision:revision,scope:'slide-content',changes});
     revision=result.revision;return result;};
   return {cwd,f,projectPath,invoke,record,writePlan,pilot,review,edit,get revision(){return revision;}};
@@ -287,6 +287,11 @@ test('a long deck requires a storyboard and an unknown vision capability cannot 
   assert.ok(checked.delivery.blockers.some(b=>b.code==='storyboard-required'));
   const built=await env.invoke('build',{expectedRevision:env.revision,mode:'review'});assert.equal(built.ok,true,JSON.stringify(built.issues));
   await assert.rejects(env.review(built,env.f.slides.map(s=>s.id),'passed',{basis:'html-preview'}),/VISION_UNVERIFIED/);
+  const actual=await render(t,env);if(!actual)return;
+  await env.review(built,env.f.slides.map(s=>s.id),'passed',{reviewer:'human'});
+  const afterSelfReview=await env.invoke('check');
+  assert.equal(afterSelfReview.finalReview.status,'not-ready','A missing required storyboard must be repaired before asking the user for final approval.');
+  assert.equal(afterSelfReview.finalReview.requiresUserResponse,false);
   const before=await readFile(env.projectPath);
   await assert.rejects(env.invoke('deliver',{expectedRevision:env.revision,outputDir:'cancelled'},AbortSignal.abort(new Error('synthetic cancellation'))),/synthetic cancellation/);
   assert.deepEqual(await readFile(env.projectPath),before);await assert.rejects(stat(join(env.cwd,'cancelled')),/ENOENT/);
@@ -348,6 +353,12 @@ test('a genuine rendered pilot can be approved, expanded, fully reviewed and del
   let checked=await env.invoke('check');
   assert.ok(checked.delivery.blockers.some(b=>b.code==='visual-review-incomplete'&&b.slideIds.includes('next-test')));
   await env.review(finalBuild,env.f.slides.slice(4).map(s=>s.id));
+  checked=await env.invoke('check');
+  assert.equal(checked.delivery.readyForDelivery,false,'Agent self-review alone must not complete the user checkpoint.');
+  assert.equal(checked.finalReview.nextAction,'record-authorized-final-review');
+  const currentDesign=(await readState(env.projectPath)).design;
+  const accepted=await env.record({design:{...currentDesign,consultation:{...currentDesign.consultation,finalReview:{status:'delegated',userResponse:TEST_ONLY+' The fixture explicitly delegates final review.',pptxSha256:finalBuild.pptxSha256,renderReceiptSha256:checked.render.renderReceiptSha256,notes:TEST_ONLY}}}});
+  assert.equal(accepted.preservedVerification.pptxSha256,finalBuild.pptxSha256);
   checked=await env.invoke('check');assert.equal(checked.delivery.readyForDelivery,true,JSON.stringify(checked.delivery));
   await mkdir(join(env.cwd,'keep'));await writeFile(join(env.cwd,'keep','sentinel.txt'),'do not replace');
   await assert.rejects(env.invoke('deliver',{expectedRevision:env.revision,outputDir:'keep'}),/EEXIST|EXISTS|NEW_DIRECTORY/);

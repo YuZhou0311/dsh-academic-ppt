@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,readFile,rm} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
-import {DESIGN_TOPICS,designDialoguePlan,designDialogueReport,componentStudyIssues} from '../src/design-dialogue.mjs';
+import {DESIGN_TOPICS,GUIDED_DESIGN_TOPICS,designDialoguePlan,designDialogueReport,componentStudyIssues} from '../src/design-dialogue.mjs';
 import {createProject,updateRecords,buildProject,contextProject,planProject} from '../src/core.mjs';
 import {assertToolArgs} from '../src/schema.mjs';
 import {prepareDesign} from '../src/design-intake.mjs';
@@ -11,6 +11,8 @@ import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
 
 const response=topic=>({topic,status:'confirmed',selected:`Synthetic ${topic} choice`,userResponse:`Synthetic user explicitly chose ${topic}.`});
 const collaborative={mode:'collaborative',decisions:DESIGN_TOPICS.map(response)};
+const source={status:'confirmed',mode:'content-led',userResponse:'Synthetic user explicitly chose the plugin original-design route.'};
+const guidedCollaborative={mode:'collaborative',workflowVersion:2,source,decisions:GUIDED_DESIGN_TOPICS.map(response)};
 const project=(consultation=collaborative,referenceStudy=fixtureDesign.referenceStudy)=>({design:{consultation,referenceStudy},slides:[{id:'s',cards:[]}]});
 async function fixture(t){const base=resolve('.test-output');await mkdir(base,{recursive:true});const cwd=await mkdtemp(join(base,'dialogue-'));t.after(()=>rm(cwd,{recursive:true,force:true}));return cwd;}
 
@@ -170,7 +172,7 @@ test('legacy detail omissions remain warnings and not-applicable cannot waive a 
 
 test('new delegated create and record defaults enforce component learning for a short pilot of a longer report',async t=>{
   const cwd=await fixture(t),design={...structuredClone(fixtureDesign),
-    consultation:{mode:'delegated',delegation:'Synthetic software fixture explicitly delegates design choices; no real user decision is claimed.'},
+    consultation:{mode:'delegated',source,delegationTopics:[...GUIDED_DESIGN_TOPICS],delegation:'Synthetic software fixture explicitly delegates design choices; no real user decision is claimed.'},
     referenceStudy:{status:'reviewed',pageRecipeIds:['paired-comparison'],previewPaths:['synthetic-page-preview.png'],
       observations:'Synthetic whole-page protocol description.',adaptations:['Keep the comparison source identity.']}};
   const created=await createProject({cwd,projectDir:'planned-pilot',title:'Synthetic component-study workflow',brief,design});
@@ -214,18 +216,19 @@ test('explicit topics survive create and record while loading and updating a ser
       // Model a serialized older project. This is a software fixture, not an
       // instruction to rewrite production projects or waive a new-deck gate.
       delete initial.design.consultation.interaction;
+      delete initial.design.consultation.workflowVersion;
       await writeFile(created.projectPath,JSON.stringify(initial));
     }
     const bytes=await readFile(created.projectPath);
     const context=await contextProject({cwd,projectPath:created.projectPath,stage:'design'});
-    assert.deepEqual(context.designDialogue.questions.map(question=>question.topic),['density','storyline']);
+    assert.deepEqual(context.designDialogue.questions.map(question=>question.topic),legacy?['density','storyline']:['source']);
     assert.deepEqual(await readFile(created.projectPath),bytes,'Read-only context must not upgrade a legacy file.');
     const consultation={mode:'delegated',delegation:'Software-test-only delegation preserves the serialized interaction mode.'};
     const recordsPath=join(cwd,legacy?'legacy-update.json':'topics-update.json');
     await writeFile(recordsPath,JSON.stringify({design:{...design,consultation}}));
     await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,recordsPath});
     const saved=JSON.parse(await readFile(created.projectPath,'utf8'));
-    assert.deepEqual(saved.design.consultation,legacy?consultation:{...consultation,interaction:'topics'});
+    assert.deepEqual(saved.design.consultation,legacy?consultation:{...consultation,interaction:'topics',workflowVersion:2});
   }
 });
 
@@ -248,8 +251,8 @@ test('prepare defaults to dialogue and waits for design choices before proposing
   assert.equal(first.imageGeneration.nextAction,'await-design-feedback');
   assert.equal(first.designRecords.consultation.mode,'collaborative');
   assert.equal(first.designRecords.consultation.interaction,'checkpoints');
-  const rendered=formatToolResult('academic_ppt_prepare',first);assert.match(rendered,/design_story/);assert.match(rendered,/不代表已经问过/);
-  await writeFile(requestPath,JSON.stringify({...request,consultation:collaborative}));
+  const rendered=formatToolResult('academic_ppt_prepare',first);assert.match(rendered,/design_source/);assert.match(rendered,/未回复不是默认同意/);
+  await writeFile(requestPath,JSON.stringify({...request,consultation:guidedCollaborative}));
   const next=await prepareDesign({cwd,requestPath});assert.equal(next.nextAction,'invoke-host-imagegen');assert.ok(next.imageGeneration.prompt.includes(request.cards[0].body));
 });
 
@@ -263,7 +266,7 @@ test('initial density can follow an actual answer before building; omitted dialo
   const changed={...fixtureDesign};delete changed.consultation;delete changed.referenceStudy;
   await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:1,design:changed});
   const after=JSON.parse(await readFile(created.projectPath,'utf8'));
-  assert.deepEqual(after.design.consultation,{...consultation,interaction:'checkpoints'});assert.equal(after.design.density,'balanced');
+  assert.deepEqual(after.design.consultation,{...consultation,interaction:'checkpoints',workflowVersion:2});assert.equal(after.design.density,'balanced');
   assert.deepEqual(after.design.referenceStudy,fixtureDesign.referenceStudy);
   const unconfirmed=await createProject({cwd,projectDir:'unconfirmed',title:'Synthetic unconfirmed choice'});
   await assert.rejects(updateRecords({cwd,projectPath:unconfirmed.projectPath,expectedRevision:0,design:{...fixtureDesign,density:'balanced',consultation:{mode:'collaborative',decisions:[{topic:'density',status:'proposed',selected:'Less dense'}]}}}),/DENSITY_REQUIREMENT_RELAXATION/);
@@ -279,8 +282,8 @@ test('unanswered design topics block review construction while a labelled draft 
   const draft=await buildProject({...args,mode:'draft'});assert.equal(draft.ok,true);assert.equal(draft.status,'draft');
   const context=await contextProject({cwd,projectPath:created.projectPath});assert.equal(context.designDialogue.readyForFinalDesign,false);
   assert.equal(context.designDialogue.questions.length,1);
-  assert.deepEqual(context.designDialogue.questions[0].topics,['density','storyline','language']);
-  await updateRecords({...args,design:{...design,consultation:collaborative}});
+  assert.deepEqual(context.designDialogue.questions[0].topics,['source']);
+  await updateRecords({...args,design:{...design,consultation:guidedCollaborative}});
   const final=await buildProject({...args,expectedRevision:2,mode:'review'});assert.equal(final.ok,true,JSON.stringify(final.issues));
 });
 
@@ -296,7 +299,7 @@ test('a provisional density survives drafts and separately recorded answers unti
   await updateRecords({...args,expectedRevision:2,design:chosen});
   const state=JSON.parse(await readFile(created.projectPath,'utf8'));
   assert.equal(state.design.density,'balanced');assert.equal(state.densityChoicePending,false);
-  assert.deepEqual(state.design.consultation,{...consultation,interaction:'checkpoints'});
+  assert.deepEqual(state.design.consultation,{...consultation,interaction:'checkpoints',workflowVersion:2});
   await updateRecords({...args,expectedRevision:3,design:{...chosen,density:'compact'}});
   await assert.rejects(updateRecords({...args,expectedRevision:4,design:chosen}),/DENSITY_REQUIREMENT_RELAXATION/);
 });
@@ -317,7 +320,7 @@ test('delegated initial design can choose density, while explicit density and re
 
 test('confirmed preferences shape generated references without copying raw replies or treating proposals as choices',async t=>{
   const cwd=await fixture(t),requestPath=join(cwd,'preferences.json');
-  const request={topic:'Synthetic image reference',template:{status:'none'},consultation:structuredClone(collaborative),imageGeneration:{availability:'available',source:'Synthetic host interface.',toolName:'synthetic_image_tool'},cards:[{id:'card',purpose:'Compare source images',title:'Synthetic comparison',body:'No research result.',evidenceStatus:'illustrative'}]};
+  const request={topic:'Synthetic image reference',template:{status:'none'},consultation:structuredClone(guidedCollaborative),imageGeneration:{availability:'available',source:'Synthetic host interface.',toolName:'synthetic_image_tool'},cards:[{id:'card',purpose:'Compare source images',title:'Synthetic comparison',body:'No research result.',evidenceStatus:'illustrative'}]};
   const choices={palette:'墨绿与暖灰',shape:'温和圆润',language:'解释型学术',texture:'浅底分组'};
   for(const decision of request.consultation.decisions){decision.userResponse='RAW_REPLY_SHOULD_NOT_BE_SENT';if(choices[decision.topic])decision.selected=choices[decision.topic];}
   await writeFile(requestPath,JSON.stringify(request));const first=await prepareDesign({cwd,requestPath});
@@ -325,7 +328,7 @@ test('confirmed preferences shape generated references without copying raw repli
   assert.ok(!first.imageGeneration.prompt.includes('RAW_REPLY_SHOULD_NOT_BE_SENT'));
   assert.match(formatToolResult('academic_ppt_prepare',first),/已采纳设计选择/);
   request.consultation.decisions.find(d=>d.topic==='palette').selected='深蓝与石墨';
-  request.consultation.mode='delegated';request.consultation.delegation='Synthetic user delegates all undecided details.';
+  request.consultation.mode='delegated';request.consultation.delegation='Synthetic user delegates all undecided details.';request.consultation.delegationTopics=['shape'];
   request.consultation.decisions.find(d=>d.topic==='shape').status='proposed';
   await writeFile(requestPath,JSON.stringify(request));const second=await prepareDesign({cwd,requestPath});
   assert.notEqual(first.imageGeneration.prompt,second.imageGeneration.prompt);

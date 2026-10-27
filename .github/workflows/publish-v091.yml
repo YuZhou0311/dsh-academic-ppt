@@ -1,0 +1,129 @@
+name: Publish v0.9.1 release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v091.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-v091
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'YuZhou0311/dsh-academic-ppt' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.19.0
+          cache: npm
+      - name: Verify the reviewed source and release version
+        run: |
+          git merge-base --is-ancestor 4a04c8075a352ac9e3f2f976be41fb985d0c28a1 HEAD
+          node --input-type=module -e 'import fs from "node:fs"; const p=JSON.parse(fs.readFileSync("package.json")); const l=JSON.parse(fs.readFileSync("package-lock.json")); if(p.name!=="dsh-academic-ppt" || p.version!=="0.9.1" || l.version!==p.version || l.packages[""].version!==p.version) throw new Error("This workflow only publishes the reviewed dsh-academic-ppt v0.9.1");'
+      - run: npm ci --ignore-scripts
+      - name: Provide the fixture font
+        run: sudo apt-get update && sudo apt-get install -y fonts-dejavu-core
+      - name: Install and verify both official Host runtimes
+        run: |
+          set -euo pipefail
+          for dsh_fixture_suffix in rc2 rc3; do
+            dsh_fixture_version="0.2.1-rc.${dsh_fixture_suffix#rc}"
+            dsh_fixture_directory=".test-output/dsh-runtime-$dsh_fixture_suffix"
+            npm install --prefix "$dsh_fixture_directory" --ignore-scripts --no-audit --no-fund \
+              "@deepseek-ai/dsh-tools@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-skill@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-system-prompt@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-app-boot@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-agent-loop@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-tool-skill@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-fs-local@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-fs-sandbox@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-sandbox-policy@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-attachment-local@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-tool-fs@$dsh_fixture_version" \
+              "@deepseek-ai/dsh-skill-filesystem@$dsh_fixture_version" \
+              @deepseek-ai/cordis@4.0.5
+            node scripts/check-dsh-compat.mjs --runtime-dir "$dsh_fixture_directory" \
+              --output ".test-output/dsh-host-$dsh_fixture_suffix.json"
+          done
+      - name: Run the full suite with mandatory render and Agent integration
+        env:
+          DSH_REQUIRE_REAL_RENDER: '1'
+          DSH_AGENT_RUNTIME_DIRS: ${{ github.workspace }}/.test-output/dsh-runtime-rc2:${{ github.workspace }}/.test-output/dsh-runtime-rc3
+        run: node --test --test-concurrency=1 test/*.test.mjs
+      - run: npm run check
+      - name: Build all five assets from this committed tree
+        run: npm run release:build -- --tag v0.9.1
+      - name: Create the exact tag and upload an unpublished release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.9.1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'v0.9.1 already exists; preserving its release and assets.'
+            exit 1
+          fi
+          release_tag_sha="$(git ls-remote origin refs/tags/v0.9.1 | cut -f1)"
+          if [ -n "$release_tag_sha" ]; then
+            test "$release_tag_sha" = "$GITHUB_SHA"
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+              -f ref=refs/tags/v0.9.1 -f sha="$GITHUB_SHA" >/dev/null
+          fi
+          gh release create v0.9.1 \
+            dist/v0.9.1/dsh-academic-ppt-0.9.1.tgz \
+            dist/v0.9.1/dsh-academic-ppt-0.9.1-source.zip \
+            dist/v0.9.1/RELEASE_NOTES.md \
+            dist/v0.9.1/release-manifest.json \
+            dist/v0.9.1/SHA256SUMS \
+            --verify-tag --target "$GITHUB_SHA" --draft \
+            --title 'v0.9.1 · 恢复真实协作、卡片自适应与深浅配色' \
+            --notes-file docs/RELEASE_NOTES.md --repo "$GITHUB_REPOSITORY"
+      - name: Download and verify every draft asset before publishing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release download v0.9.1 --repo "$GITHUB_REPOSITORY" --dir .test-output/v091-release-download
+          gh release view v0.9.1 --repo "$GITHUB_REPOSITORY" \
+            --json tagName,targetCommitish,isDraft,isPrerelease,assets > .test-output/v091-release-draft.json
+          (cd .test-output/v091-release-download && sha256sum --check SHA256SUMS)
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          source=Path('dist/v0.9.1')
+          downloaded=Path('.test-output/v091-release-download')
+          names={'dsh-academic-ppt-0.9.1.tgz','dsh-academic-ppt-0.9.1-source.zip','RELEASE_NOTES.md','release-manifest.json','SHA256SUMS'}
+          release=json.loads(Path('.test-output/v091-release-draft.json').read_text())
+          assert release['tagName']=='v0.9.1' and release['isDraft'] and not release['isPrerelease']
+          assert release['targetCommitish']==os.environ['GITHUB_SHA']
+          assert {asset['name'] for asset in release['assets']}==names
+          assert {path.name for path in downloaded.iterdir()}==names
+          for name in names:
+              assert (downloaded/name).read_bytes()==(source/name).read_bytes(),name
+          manifest=json.loads((downloaded/'release-manifest.json').read_text())
+          assert manifest['source']['commit']==os.environ['GITHUB_SHA']
+          assert manifest['source']['tree']==subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          print('All five downloaded assets match the verified source build and manifest.')
+          PY
+      - name: Publish the verified release as latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/v0.9.1" --jq '.object.sha')" = "$GITHUB_SHA"
+          gh release edit v0.9.1 --draft=false --latest --repo "$GITHUB_REPOSITORY"
+          gh release view v0.9.1 --repo "$GITHUB_REPOSITORY" --json url,tagName,isDraft,isPrerelease,assets

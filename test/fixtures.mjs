@@ -5,8 +5,17 @@ import { DEFAULT_ACADEMIC_SYSTEM } from '../src/design-system.mjs';
 // These old protocol fixtures retain their explicit v0.6 typography; projection has dedicated coverage.
 // Retain the prior topic protocol explicitly; new checkpoint defaults and full-report
 // component study are covered through their public-entry integration fixtures.
-export const fixtureDesign = { ...structuredClone(DEFAULT_DESIGN), density: 'balanced', consultation:{mode:'delegated',interaction:'topics',delegation:'Synthetic software fixtures explicitly delegate their appearance; user dialogue has separate regression coverage.'}, referenceStudy:{status:'reviewed',catalogIds:['research-tab'],previewPaths:['synthetic-fixture-reference.svg'],observations:'Synthetic record used only to test protocol paths; no actual visual review is claimed.',selectedPresets:[],adaptations:['Retain explicit legacy fixture card styles to test unchanged object identity.']}, system:{...DEFAULT_ACADEMIC_SYSTEM,header:'plain'} };
+export const fixtureDesign = { ...structuredClone(DEFAULT_DESIGN), density: 'balanced', consultation:{mode:'delegated',interaction:'topics',delegation:'Synthetic software fixtures explicitly delegate their appearance, layout, story and final review; no real user approval is claimed.',delegationTopics:['source','density','storyline','palette','shape','language','texture','cover','layout','final-review'],source:{status:'confirmed',mode:'content-led',userResponse:'Synthetic software fixture chooses original content-led design without an external template.'}}, referenceStudy:{status:'reviewed',catalogIds:['research-tab'],previewPaths:['synthetic-fixture-reference.svg'],observations:'Synthetic record used only to test protocol paths; no actual visual review is claimed.',selectedPresets:[],adaptations:['Retain explicit legacy fixture card styles to test unchanged object identity.']}, system:{...DEFAULT_ACADEMIC_SYSTEM,header:'plain'} };
 delete fixtureDesign.projection;
+// Protocol-only attestations for known synthetic pages. These exercise the
+// review schema; they never certify a user deck or a model's visual judgment.
+export function syntheticObservations(checked,ids,issue=''){
+ return ids.map(slideId=>({slideId,contentCheck:'Synthetic protocol fixture: '+slideId+' preserves its declared source and content identity.',
+  legibilityCheck:'Synthetic state fixture; no real human visual judgment is claimed for '+slideId+'.',
+  spaceCheck:'Synthetic protocol fixture explicitly records the spacing review for '+slideId+'; visual quality is tested separately.',
+  colorCheck:'Synthetic protocol fixture explicitly records the color review for '+slideId+'; no real perceptual judgment is claimed.',
+  diagnosticChecks:(checked.designDiagnostics?.slides?.find(slide=>slide.slideId===slideId)?.reviewTargets??[]).map(target=>({targetId:target.id,decision:'intentional',reason:'Synthetic protocol fixture intentionally preserves this fixed test layout to exercise review state: '+target.message})),issue}));
+}
 // Encoded by pngjs and decoded with strict CRC checks; the previous fixture had a bad IDAT CRC.
 export const PNG='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4AWPQCEj5DwADXAHcD/+zFwAAAABJRU5ErkJggg==';
 export const brief={centralQuestion:'软件能否保留测试证据与原生对象？',audience:'软件测试',talkMinutes:2,targetPaperCount:1,requireFullText:true,qualityProfile:'academic',requirePaperIntro:true,visualEvidence:{mode:'flexible',reason:'Synthetic protocol fixtures test export identity, not autonomous literature retrieval; source-led workflow has separate regression coverage.'}};

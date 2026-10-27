@@ -19,6 +19,12 @@ export function deliveryReadiness(project,checked,storyboard){
   if(storyboard?.required&&!storyboard.present)add('storyboard-required','六页及以上整稿需要明确故事板与代表样张。','用 plan 登记实际论证路线，审阅封面、困难页和连续三页。');
   if(storyboard?.present&&!storyboard.ready)add('storyboard-unfinished','故事板取舍、计划兑现或样张复核仍未完成。','处理 storyboard.issues 与 pilot 状态；已委托的决定自主完成，不重复请求授权。');
   if(project.brief?.qualityProfile!=='academic')add('academic-profile-required','当前工程未启用学术质量检查。','保留研究要求，迁移到 academic 质量档案后检查。');
+  const finalReview=checked.finalReview;
+  if(project.design?.consultation?.workflowVersion===2&&!finalReview?.ready){
+    const issue=finalReview?.issues?.[0];
+    add(issue?.code??'final-human-review-required',issue?.message??'当前成品尚未完成用户最终审查。',
+      finalReview?.nextActions?.[0]??'先完成当前成品的逐页自查与修复，再展示真实成品征求意见。');
+  }
   return {readyForDelivery:blockers.length===0,status:blockers.length?'blocked':'ready',blockers,
     nextActions:blockers.slice(0,4).map(b=>b.action),
     limits:'通过表示当前文件、计划与具名视觉审查一致；科学结论及审美仍依赖真实来源阅读和实际看图，不是自动质量保证。'};
@@ -28,7 +34,7 @@ export function deliveryReadiness(project,checked,storyboard){
  * whose early warnings hide later blocking errors. */
 export function repairQueue(issues){
   const groups=new Map();
-  const category=code=>/overflow|overlap|font|geometry|clipp|readability|label|projection/.test(code)?'legibility':/storyboard|narrative/.test(code)?'story':/dialogue|reference-study/.test(code)?'direction':/source|paper|claim|evidence|figure|asset/.test(code)?'evidence':'content';
+  const category=code=>/overflow|overlap|font|geometry|clipp|readability|label|projection|contrast|whitespace|underfill|sparse/.test(code)?'legibility':/storyboard|narrative/.test(code)?'story':/dialogue|reference-study|design-source|human-review/.test(code)?'direction':/source|paper|claim|evidence|figure|asset/.test(code)?'evidence':'content';
   for(const issue of [...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1))){
     const key=(issue.slideId??issue.path??'project')+'|'+category(issue.code??'');
     if(!groups.has(key))groups.set(key,{target:issue.slideId??issue.path??'project',category:category(issue.code??''),severity:issue.severity,codes:[],messages:[]});

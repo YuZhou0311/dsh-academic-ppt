@@ -59,7 +59,7 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
   assert.notEqual(expectedBody, skillSource.trim(), 'fixture must independently remove SKILL frontmatter')
   const expectedDefinition = academic.readBundledSkill()
   assert.equal(expectedDefinition.content, expectedBody)
-  const workflowPath = join(expectedDefinition.resourceBase.path, 'references', 'workflow-v090.md')
+  const workflowPath = join(expectedDefinition.resourceBase.path, 'references', 'workflow-v091.md')
   const workflowSource = (await readFile(workflowPath, 'utf8')).replace(/\r\n?/g, '\n')
   const expectedTools = academic.buildAcademicTools().map(({ name, description, parameters }) => ({ name, description, parameters }))
   assert.equal(expectedTools.length, 19)
@@ -275,7 +275,7 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
         const base = /^Base directory for this skill: (.+)$/m.exec(textOf(toolMessage(request, 'load-skill')))?.[1]
         assert.equal(base, expectedDefinition.resourceBase.path)
         return [
-          call('read-workflow', 'read', { file_path: join(base, 'references', 'workflow-v090.md'), limit: 2000 }),
+          call('read-workflow', 'read', { file_path: join(base, 'references', 'workflow-v091.md'), limit: 2000 }),
           call('storyboard-contract', 'academic_ppt_contract', { topic: 'storyboard' }),
         ]
       },
@@ -297,6 +297,12 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
         assert.equal(expectRendered(request, 'cards-index', 'academic_ppt_cards').totalCount, 48)
         assert.equal(expectRendered(request, 'layouts-index', 'academic_ppt_layouts').totalCount, 32)
         const created = expectRendered(request, 'init-project', 'academic_ppt_init')
+        assert.equal(created.designDialogue.workflowVersion, 2)
+        assert.equal(created.designDialogue.stage, 'source')
+        assert.equal(created.designDialogue.requiresUserResponse, true)
+        assert.equal(created.designDialogue.questions[0].topic, 'source')
+        assert.equal(created.designDialogue.questions[0].options.length, 3)
+        assert.match(textOf(toolMessage(request, 'init-project')), /需要真实用户回应/)
         assert.equal(created.projectPath, join(workspace, 'native-agent-project', 'project.json'))
         return [call('project-context', 'academic_ppt_context', { projectPath: created.projectPath, stage: 'research' })]
       },
@@ -304,6 +310,8 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
         const context = expectRendered(request, 'project-context', 'academic_ppt_context')
         assert.equal(context.stage, 'research')
         assert.equal(context.revision, 0)
+        assert.equal(context.designDialogue.requiresUserResponse, true)
+        assert.equal(context.designDialogue.stage, 'source')
         assert.ok(Array.isArray(context.nextActions))
         return done()
       },

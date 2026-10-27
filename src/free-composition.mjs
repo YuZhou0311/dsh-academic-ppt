@@ -2,6 +2,7 @@
  * no catalogue template or fixed card count is selected here. */
 import { renderNativeDrawing } from './native-drawing.mjs';
 import { measureCardSurface } from './card-surface.mjs';
+import { fitImageCardToHeight } from './image-card-surface.mjs';
 const list=v=>Array.isArray(v)?v:[];
 const boxOK=b=>b&&['x','y','w','h'].every(k=>Number.isFinite(b[k]))&&b.w>0&&b.h>0;
 const inside=(a,b)=>boxOK(a)&&a.x>=b.x-.01&&a.y>=b.y-.01&&a.x+a.w<=b.x+b.w+.01&&a.y+a.h<=b.y+b.h+.01;
@@ -82,15 +83,30 @@ export function renderFreeComposition(b,project,slide,h){
   const chosenCards=[];for(const id of list(panel.cardIds)){const value=take('card',id,cards,panel.id);if(value)chosenCards.push(value);}
   if(!items.length&&!chosenCards.length){fail('empty-panel','自由区域须引用实际证据或解释；空框不构成研究内容。',{panelId:panel.id});continue;}
   const gap=12;
+  const elasticCards=new Set();
   const cardHeights=chosenCards.map(c=>{
    if(c.box)return c.box.h;
-   const measurement=measureCardSurface(c,body.w,{design:b.design,system:b.system,wrapText:h.wrapText,measureTextWidth:h.measureTextWidth});
-   if(measurement)return measurement.minimumH;
+   const settings={design:b.design,system:b.system,wrapText:h.wrapText,measureTextWidth:h.measureTextWidth};
+   let measurement=measureCardSurface(c,body.w,settings);
+   if(measurement){if(measurement.imageCard&&c.mediaHeight===undefined){elasticCards.add(c.id);measurement=measureCardSurface({...c,mediaHeight:120},body.w,settings);}return measurement.minimumH;}
    const title=h.wrapText(c.title,body.w-40,titleSize,{bold:true}).length*titleSize*1.15;
    const text=h.wrapText(c.body,body.w-40,bodySize).length*bodySize*1.24;
    return title+text+60+(c.metric?130:0);
   });
-  const cardsH=cardHeights.reduce((a,z)=>a+z,0)+gap*Math.max(0,chosenCards.length-1);
+  let cardsH=cardHeights.reduce((a,z)=>a+z,0)+gap*Math.max(0,chosenCards.length-1);
+  if(!items.length&&elasticCards.size&&cardsH<body.h){
+   const extra=(body.h-cardsH)/elasticCards.size;
+   chosenCards.forEach((c,i)=>{if(elasticCards.has(c.id))cardHeights[i]+=extra;});
+  }
+  // Source aspect ratios can stop a card before its allocated media budget.
+  // Advance the following card from that final frame, not from the old budget.
+  chosenCards.forEach((c,i)=>{
+   if(!elasticCards.has(c.id))return;
+   const settings={design:b.design,system:b.system,wrapText:h.wrapText,measureTextWidth:h.measureTextWidth};
+   const measured=measureCardSurface(c,body.w,settings);
+   cardHeights[i]=Math.min(cardHeights[i],fitImageCardToHeight(c,{w:body.w,h:cardHeights[i]},project,settings,measured).minimumH);
+  });
+  cardsH=cardHeights.reduce((a,z)=>a+z,0)+gap*Math.max(0,chosenCards.length-1);
   const available=body.h-cardsH-(items.length&&chosenCards.length?gap:0),itemH=(available-gap*Math.max(0,items.length-1))/Math.max(1,items.length);
   if(itemH<0||cardsH>body.h+1)fail('region-overflow','自由区域无法保留全部证据与解释，须增大区域或拆分页面。',{panelId:panel.id});
   let y=body.y;

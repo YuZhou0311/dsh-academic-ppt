@@ -29,7 +29,7 @@ const makeFigure = (id,name,purpose,layout,figureCount,example,{minimumWidth=520
     avoid:'图形比例或信息关系不符时换结构；不按卡片数量缩小科研图，不自动裁图、不在数据区覆盖文字；局部图须另行登记和核对。'});
   base.recipe.imageLayout=layout;
   base.contentContract={...base.contentContract,required:['title','body','figureIds'],optional:['mediaHeight','items','metric','badge','note','icon'],
-    figureCount:[figureCount,figureCount],mediaHeight:{min:120,max:520,meaning:'整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时由配方与宽度估计'},
+    figureCount:[figureCount,figureCount],mediaHeight:{min:120,max:520,meaning:'整组图像和来源图注槽的总高度，单位为1280×720画布的px；省略时按目标区域、完整图注与原图宽高比适配；只有明确固定图槽时才填写，不能照抄示例尺寸'},
     note:'figureIds 引用已登记且看过的论文图；与 slide.figureIds 的独立图分开归属。图片保持独立对象并 contain，不裁切；外框、题签和解释为原生对象。每张源图保留图号/来源图注；示例资产只用于教学。'};
   return base;
 };
@@ -150,40 +150,40 @@ export const CARD_PRESETS = freeze([
   },{itemCount:[1,6]}),
 
   makeFigure('figure-caption','上图下释证据卡','一张主图与紧邻的观察解释','caption',1,{
-    title:'图像与观察',body:'说明图中可见的关系及成立条件。',figureIds:['card-demo-a'],mediaHeight:240,note:'结构示例，非研究结果。'
+    title:'图像与观察',body:'说明图中可见的关系及成立条件。',figureIds:['card-demo-a'],note:'结构示例，非研究结果。'
   }),
   makeFigure('figure-observation','图旁读图卡','图在左侧，单组短解释在右侧','observation',1,{
-    title:'图与就近解释',body:'先指出读图位置，再说明支持范围。',figureIds:['card-demo-b'],mediaHeight:250,items:[item('看哪里','保留关键区域与原始图例。')],note:'不覆盖图内标签。'
+    title:'图与就近解释',body:'先指出读图位置，再说明支持范围。',figureIds:['card-demo-b'],items:[item('看哪里','保留关键区域与原始图例。')],note:'不覆盖图内标签。'
   },{minimumWidth:720,preferredWidth:1040,itemCount:[0,2]}),
   makeFigure('figure-reverse','引导先读卡','先读问题与条件，再查看右侧图','reverse',1,{
-    title:'问题引导读图',body:'先明确比较条件。',figureIds:['card-demo-a'],mediaHeight:250,items:[item('比较对象','保持同一观察口径。')],note:'结构示例，非研究结果。'
+    title:'问题引导读图',body:'先明确比较条件。',figureIds:['card-demo-a'],items:[item('比较对象','保持同一观察口径。')],note:'结构示例，非研究结果。'
   },{minimumWidth:720,preferredWidth:1040,itemCount:[0,2]}),
   makeFigure('figure-pair','双图对读卡','同尺度并列两图，保留共同解释','pair',2,{
-    title:'同一口径下对读',body:'保留两图身份与共同尺度，再解释差别。',figureIds:['card-demo-a','card-demo-b'],mediaHeight:240,note:'并列本身不证明因果。'
+    title:'同一口径下对读',body:'保留两图身份与共同尺度，再解释差别。',figureIds:['card-demo-a','card-demo-b'],note:'并列本身不证明因果。'
   },{minimumWidth:780,preferredWidth:1100}),
   makeFigure('figure-stack','逐图对应卡','两幅图上下排列，每幅配一条短解释','stack',2,{
-    title:'分层查看证据',body:'每条说明只对应相邻原图。',figureIds:['card-demo-a','card-demo-c'],mediaHeight:290,items:[item('整体结构','先识别研究对象。'),item('局部关系','再说明局部任务。')]
+    title:'分层查看证据',body:'每条说明只对应相邻原图。',figureIds:['card-demo-a','card-demo-c'],items:[item('整体结构','先识别研究对象。'),item('局部关系','再说明局部任务。')]
   },{minimumWidth:760,preferredWidth:1040,itemCount:[2,2]}),
   makeFigure('figure-sequence','三阶段图序卡','按真实先后排列三幅图与阶段标签','sequence',3,{
-    title:'图像序列',body:'先后次序来自原文或实际采样。',figureIds:['card-demo-a','card-demo-c','card-demo-d'],mediaHeight:200,items:[item('输入'),item('处理'),item('输出')],note:'顺序不自动等于因果。'
+    title:'图像序列',body:'先后次序来自原文或实际采样。',figureIds:['card-demo-a','card-demo-c','card-demo-d'],items:[item('输入'),item('处理'),item('输出')],note:'顺序不自动等于因果。'
   },{minimumWidth:960,preferredWidth:1120,itemCount:[3,3]}),
   makeFigure('figure-matrix','四窗证据卡','按两个明确维度组织四幅图','matrix',4,{
-    title:'多条件证据窗',body:'行列条件须与每个面板对应。',figureIds:['card-demo-a','card-demo-b','card-demo-c','card-demo-d'],mediaHeight:310,note:'完整保留各图的来源与尺度。'
+    title:'多条件证据窗',body:'行列条件须与每个面板对应。',figureIds:['card-demo-a','card-demo-b','card-demo-c','card-demo-d'],note:'完整保留各图的来源与尺度。'
   },{minimumWidth:980,preferredWidth:1120}),
   makeFigure('figure-zoom','总图局部对照卡','完整图与另行核对的局部图对照','zoom',2,{
-    title:'总图与局部',body:'局部资产须有明确裁切位置与图号。',figureIds:['card-demo-b','card-demo-d'],mediaHeight:240,note:'配方不自动裁出或生成局部。'
+    title:'总图与局部',body:'局部资产须有明确裁切位置与图号。',figureIds:['card-demo-b','card-demo-d'],note:'配方不自动裁出或生成局部。'
   },{minimumWidth:820,preferredWidth:1100}),
   makeFigure('figure-overview-details','总览双局部卡','上方总览，下方两幅相关局部证据','overview-details',3,{
-    title:'总览与两处细节',body:'两处局部分别回答不同问题。',figureIds:['card-demo-b','card-demo-a','card-demo-d'],mediaHeight:310,note:'总览与局部都使用已核对资产。'
+    title:'总览与两处细节',body:'两处局部分别回答不同问题。',figureIds:['card-demo-b','card-demo-a','card-demo-d'],note:'总览与局部都使用已核对资产。'
   },{minimumWidth:980,preferredWidth:1120}),
   makeFigure('figure-margin-notes','中图双侧注卡','主图居中，两侧分别说明条件与解释','margin-notes',1,{
-    title:'条件、证据与解释',body:'主图保留完整数据区。',figureIds:['card-demo-c'],mediaHeight:250,items:[item('条件','指出比较前提。'),item('解释','只说明已支持关系。')]
+    title:'条件、证据与解释',body:'主图保留完整数据区。',figureIds:['card-demo-c'],items:[item('条件','指出比较前提。'),item('解释','只说明已支持关系。')]
   },{minimumWidth:980,preferredWidth:1120,itemCount:[2,2]}),
   makeFigure('figure-metrics','图证读数卡','主图下方配成对数值及单位','metrics',1,{
-    title:'图像与核对读数',body:'读数来自相邻图表及同一验证口径。',figureIds:['card-demo-a'],mediaHeight:180,items:[item('参考读数','填写来源单位与口径。'),item('比较读数','填写对应的完整条件。')],note:'示例无研究数值，不自动计算差值。'
+    title:'图像与核对读数',body:'读数来自相邻图表及同一验证口径。',figureIds:['card-demo-a'],items:[item('参考读数','填写来源单位与口径。'),item('比较读数','填写对应的完整条件。')],note:'示例无研究数值，不自动计算差值。'
   },{minimumWidth:720,preferredWidth:1040,itemCount:[2,2]}),
   makeFigure('figure-conditions','条件环绕图卡','图上方列操作条件，下方保留结论边界','conditions',1,{
-    title:'条件限定的图像证据',body:'先明确本图所处的研究条件。',figureIds:['card-demo-c'],mediaHeight:210,items:[item('对象','记录对象范围。'),item('条件','记录观察窗口。')],note:'边界：仅解释图中已经验证的条件。'
+    title:'条件限定的图像证据',body:'先明确本图所处的研究条件。',figureIds:['card-demo-c'],items:[item('对象','记录对象范围。'),item('条件','记录观察窗口。')],note:'边界：仅解释图中已经验证的条件。'
   },{minimumWidth:720,preferredWidth:1040,itemCount:[1,3]}),
 ]);
 

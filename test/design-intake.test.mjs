@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { prepareDesign, preparationRequestSchema } from '../src/design-intake.mjs';
 import { buildAcademicTools, formatToolResult } from '../src/tools.mjs';
 import { inspectTemplate } from '../src/template.mjs';
+import { DESIGN_TOPICS, GUIDED_DESIGN_TOPICS, finalReviewReport } from '../src/design-dialogue.mjs';
 
 async function fixture(t) {
   const root=resolve('.test-output');await mkdir(root,{recursive:true});
@@ -15,7 +16,9 @@ async function fixture(t) {
   return {cwd,requestPath,prepare};
 }
 
-const report={topic:'观测误差的分解',audience:'方法研究组',consultation:{mode:'delegated',delegation:'Synthetic tests explicitly delegate preferences to isolate existing template and imagegen planning.'}};
+const source={status:'confirmed',mode:'content-led',userResponse:'Synthetic user explicitly selected plugin original design.'};
+const report={topic:'观测误差的分解',audience:'方法研究组',consultation:{mode:'delegated',workflowVersion:2,source,delegationTopics:[...GUIDED_DESIGN_TOPICS],delegation:'Synthetic tests explicitly delegate preferences to isolate existing template and imagegen planning.'}};
+const templateChoice=(paths,mode='reference-guided')=>({...report.consultation,source:{status:'confirmed',mode,userResponse:'Synthetic user chose this specific template route.',templatePaths:paths}});
 const card={id:'question',purpose:'研究问题',title:'尺度变化后的误差来源',body:'区分观测噪声与模型结构误差。',evidenceStatus:'proposal',items:[{label:'当前证据',detail:'尚待跨尺度检验。'}]};
 const host={availability:'available',source:'Synthetic test fixture declares a host tool; no actual service call.',toolName:'fixture_image_generator'};
 
@@ -25,46 +28,87 @@ test('registered prepare defaults partial consultation objects to checkpoints wi
     const request={topic:report.topic,template:{status:'none'},...(consultation?{consultation}:{})};
     const bytes=JSON.stringify(request);await writeFile(requestPath,bytes);
     const result=await tool.execute({requestPath},{agent:{session:{header:{cwd}}}});
-    assert.deepEqual(result.designRecords.consultation,{...(consultation??{mode:'collaborative'}),interaction:consultation?.interaction??'checkpoints'});
+    assert.deepEqual(result.designRecords.consultation,{...(consultation??{mode:'collaborative'}),interaction:consultation?.interaction??'checkpoints',workflowVersion:2});
     assert.equal(await readFile(requestPath,'utf8'),bytes,'Preparation returns a defaulted record without changing the author request.');
     if(!consultation||consultation.mode==='collaborative'){
       assert.equal(result.nextAction,'ask-design-questions');
       assert.equal(result.designDialogue.questions.length,1);
-      assert.deepEqual(result.designDialogue.questions[0].topics,['density','storyline','language']);
+      assert.deepEqual(result.designDialogue.questions[0].topics,['source']);
     }
   }
 });
 
-test('prepare proposes the template question once without claiming the host has asked it',async t=>{
-  const {prepare}=await fixture(t), first=await prepare(report);
-  assert.equal(first.nextAction,'ask-template-once');
-  assert.equal(first.template.question.noResponseStatus,'unanswered');
-  assert.deepEqual(first.template.question.options.map(o=>o.value),['provided','none','awaiting-upload']);
-  assert.match(first.template.instructions.join(' '),/尚未.*提问界面/);
-  for(const status of ['none','unanswered','awaiting-upload']){
-    const next=await prepare({...report,template:{status}});
-    assert.equal(next.template.question,undefined,status);
-    assert.equal(next.imageGeneration.strategy,'content-led-pages');
-    assert.equal(next.nextAction,'design-evidence-pages');
+test('existing-project preparation preserves legacy topics and answers without silently adding new checkpoints',async t=>{
+  const {prepare,requestPath}=await fixture(t);
+  const decisions=DESIGN_TOPICS.map(topic=>({topic,status:'confirmed',selected:'Synthetic existing '+topic,userResponse:'Synthetic earlier user decision for '+topic}));
+  for(const interaction of [undefined,'topics','checkpoints']){
+    const consultation={mode:'collaborative',decisions,...(interaction?{interaction}:{})};
+    const request={topic:'Synthetic existing report',existingProject:true,consultation,template:{status:'none'}};
+    const result=await prepare(request);
+    assert.deepEqual(result.designRecords.consultation,consultation);
+    assert.equal(Object.hasOwn(result.designRecords.consultation,'workflowVersion'),false);
+    assert.equal(result.designDialogue.readyForFinalDesign,true);
+    assert.deepEqual(result.designDialogue.questions,[]);
+    assert.ok(!result.designDialogue.pendingTopics.includes('source'));
+    assert.equal(finalReviewReport({design:result.designRecords}).required,false);
+    assert.deepEqual(JSON.parse(await readFile(requestPath,'utf8')),request);
   }
+  const partial={mode:'collaborative',interaction:'topics',decisions:decisions.slice(0,1)};
+  const result=await prepare({topic:'Synthetic existing partial choices',existingProject:true,consultation:partial,template:{status:'none'}});
+  assert.deepEqual(result.designDialogue.questions.map(q=>q.topic),['storyline']);
+  assert.equal(result.designDialogue.recordedDecisions[0].selected,partial.decisions[0].selected);
+});
+
+test('existing-project preparation retains v2 gates and default new preparation always enables them',async t=>{
+  const {prepare}=await fixture(t);
+  const consultation={mode:'collaborative',interaction:'topics'};
+  for(const existingProject of [undefined,false]){
+    const result=await prepare({topic:'Synthetic new report',consultation,...(existingProject===undefined?{}:{existingProject})});
+    assert.equal(result.designRecords.consultation.workflowVersion,2);
+    assert.equal(result.designDialogue.stage,'source');
+  }
+  const v2={...consultation,workflowVersion:2};
+  const result=await prepare({topic:'Synthetic current report',existingProject:true,consultation:v2});
+  assert.deepEqual(result.designRecords.consultation,v2);
+  assert.equal(result.designDialogue.stage,'source');
+  assert.equal(finalReviewReport({design:result.designRecords}).required,true);
+});
+
+test('prepare asks for design source once and preserves an explicit answer without inferring silence',async t=>{
+  const {prepare}=await fixture(t),unselected={...report,consultation:{...report.consultation}};delete unselected.consultation.source;
+  const first=await prepare(unselected);
+  assert.equal(first.nextAction,'ask-design-questions');
+  assert.equal(first.template.question,undefined);
+  assert.deepEqual(first.designDialogue.questions[0].options.map(o=>o.id),['content-led','reference-guided','template-faithful']);
+  assert.equal(first.designDialogue.requiresUserResponse,true);
+  assert.match(first.template.instructions.join(' '),/等待真实回答/);
+  for(const status of ['none','unanswered']){
+    const unanswered=await prepare({...unselected,template:{status}});
+    assert.equal(unanswered.designDialogue.stage,'source');
+    const answered=await prepare({...report,template:{status}});
+    assert.equal(answered.template.question,undefined);
+    assert.equal(answered.nextAction,'design-evidence-pages');
+  }
+  const waiting=await prepare({...report,consultation:{...report.consultation,source:{status:'awaiting-upload',mode:'reference-guided',userResponse:'Synthetic user will upload their template.'}}});
+  assert.equal(waiting.nextAction,'await-template-upload');assert.deepEqual(waiting.designDialogue.questions,[]);
 });
 
 test('a supplied template routes to real inspection, while an explicit decline does not read it',async t=>{
   const {cwd,prepare}=await fixture(t);
   const file=join(cwd,'reference.pptx');await writeFile(file,'Fixture contents are not parsed by prepare.');
-  const result=await prepare({...report,template:{status:'unasked',localPaths:['reference.pptx']}});
+  const result=await prepare({...report,consultation:templateChoice(['reference.pptx']),template:{status:'unasked',localPaths:['reference.pptx']}});
   assert.equal(result.nextAction,'inspect-template');
   assert.equal(result.template.question,undefined);
   assert.deepEqual(result.template.files[0].nextTool,{name:'academic_ppt_template',arguments:{filePath:file,render:true}});
   assert.match(result.template.instructions[0],/尚未解析/);
-  await assert.rejects(prepare({...report,template:{status:'provided',localPaths:['missing.pptx']}}),/FILE_NOT_FOUND/);
+  await assert.rejects(prepare({...report,consultation:templateChoice(['missing.pptx']),template:{status:'provided',localPaths:['missing.pptx']}}),/FILE_NOT_FOUND/);
   const declined=await prepare({...report,template:{status:'none',localPaths:['missing.pptx']}});
   assert.equal(declined.template.nextAction,'continue-native');
 });
 
 test('legacy PPT requires conversion and does not masquerade as a supported PPTX',async t=>{
   const {cwd,prepare}=await fixture(t);await writeFile(join(cwd,'old.ppt'),'Synthetic legacy file.');
-  const result=await prepare({...report,template:{status:'provided',localPaths:['old.ppt']}});
+  const result=await prepare({...report,consultation:templateChoice(['old.ppt']),template:{status:'provided',localPaths:['old.ppt']}});
   assert.equal(result.template.nextAction,'convert-template-or-continue-native');
   assert.equal(result.template.files[0].status,'conversion-required');
   assert.equal(result.template.files[0].nextTool,undefined);
@@ -75,7 +119,7 @@ test('reviewed template profiles are reused only while bound to current source b
   const {cwd,prepare}=await fixture(t),file=join(cwd,'reference.pptx'),profilePath=join(cwd,'profile.json');
   await copyFile(resolve('examples/native-card-reference.pptx'),file);
   const profile=await inspectTemplate(file);await writeFile(profilePath,JSON.stringify(profile));
-  const request={...report,template:{status:'provided',localPaths:['reference.pptx'],review:{profilePaths:['profile.json'],visualObservations:'Synthetic fixture declares a viewing observation for workflow testing; no actual visual approval.'}}};
+  const request={...report,consultation:templateChoice(['reference.pptx']),template:{status:'provided',localPaths:['reference.pptx'],review:{profilePaths:['profile.json'],visualObservations:'Synthetic fixture declares a viewing observation for workflow testing; no actual visual approval.'}}};
   const result=await prepare(request);
   assert.equal(result.template.nextAction,'continue-reference-guided');
   assert.equal(result.template.files[0].status,'host-reviewed');
@@ -244,8 +288,8 @@ test('decision output is reproducible, immutable, and cannot overwrite its reque
 
 test('workspace boundaries, UTF-8, request contracts, and duplicate card IDs remain enforced',async t=>{
   const {cwd,requestPath,prepare}=await fixture(t);
-  await assert.rejects(prepare({...report,template:{status:'provided',localPaths:['../outside.pptx']}}),/PATH_OUTSIDE_WORKSPACE/);
-  await assert.rejects(prepare({...report,template:{status:'provided'}}),/localPaths/);
+  await assert.rejects(prepare({...report,consultation:templateChoice(['../outside.pptx']),template:{status:'provided',localPaths:['../outside.pptx']}}),/PATH_OUTSIDE_WORKSPACE/);
+  await assert.rejects(prepare({...report,consultation:{...report.consultation,source:undefined},template:{status:'provided'}}),/localPaths/);
   await assert.rejects(prepare({...report,cards:[card,card]}),/unique/);
   await assert.rejects(prepare({...report,secretApiKey:'not-allowed'}),/additional properties/);
   await writeFile(requestPath,Buffer.from([0xff,0xff]));

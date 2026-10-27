@@ -66,7 +66,8 @@ test('chrome can remove repeated furniture and recovers body height while preser
   legacy.slides[0].chrome={header:'plain',showBrand:false,showSection:false,showPageNumber:false,showSources:false,showFooter:false};
   const recovered=buildScenes(legacy).pages[0];
   assert.deepEqual(errors(recovered),[]);
-  assert.ok(get(recovered,'card/c/surface').h>get(old,'card/c/surface').h+50,'legacy automatic cards also receive reclaimed body height');
+  assert.ok(recovered.contentBox.h>old.contentBox.h+50,'reclaimed height remains available for actual content');
+  assert.equal(get(recovered,'card/c/surface').h,get(old,'card/c/surface').h,'short automatic text cards must not inflate to absorb the reclaimed height');
   assert.equal(get(recovered,'card/c/surface').y,recovered.contentBox.y);
 });
 

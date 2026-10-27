@@ -7,7 +7,7 @@ import {createProject,updateRecords,buildProject,checkProject,recordReview,rende
 import {embedAssets,hash} from '../src/io.mjs';
 import {renderProject} from '../src/render.mjs';
 import {buildAcademicTools} from '../src/tools.mjs';
-import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,brief,paper,claim,asset,slides,syntheticObservations} from './fixtures.mjs';
 
 async function workspace(t){
  const root=resolve('.test-output');await mkdir(root,{recursive:true});
@@ -102,7 +102,7 @@ test('successful actual PPTX rerender invalidates earlier PPTX reviews while ret
  const first=await renderProjectArtifact({...options,expectedRevision:1});
  if(first.status==='unavailable'){t.skip(`Optional actual renderer unavailable: ${first.message}`);return;}
  assert.equal(first.status,'rendered');
- const review={...options,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'human',reviewedSlides:['render-fixture'],result:'passed',notes:'Synthetic state-transition test record; no user deck or visual judgment is certified.',observations:[{slideId:'render-fixture',contentCheck:'Synthetic protocol assertion for the fixed test document only.',legibilityCheck:'Synthetic review state; this does not claim a real human visual assessment.',issue:''}]};
+ const review={...options,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'human',reviewedSlides:['render-fixture'],result:'passed',notes:'Synthetic state-transition test record; no user deck or visual judgment is certified.',observations:syntheticObservations(await checkProject(options),['render-fixture'])};
  await recordReview({...review,basis:'html-preview'});await recordReview({...review,basis:'pptx-render'});
  const before=await readState(created.projectPath),verified=await checkProject(options);
  assert.equal(verified.verification.visual,'reported-passed');assert.equal(verified.verification.htmlVisual,'reported-passed');

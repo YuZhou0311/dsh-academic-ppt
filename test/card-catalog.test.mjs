@@ -3,12 +3,16 @@ import assert from 'node:assert/strict';
 import { unzipSync, strFromU8 } from 'fflate';
 import { CARD_FAMILIES, CARD_PRESETS, CARD_PRESET_IDS, getCardPreset, listCardPresets } from '../src/card-catalog.mjs';
 import { measureCardSurface } from '../src/card-surface.mjs';
+import { fitImageCardToHeight } from '../src/image-card-surface.mjs';
 import { DEFAULT_DESIGN, buildScenes, wrapText, measureTextWidth } from '../src/scene.mjs';
 import { renderProject } from '../src/render.mjs';
 import { cardDemoAssets } from '../scripts/card-demo-assets.mjs';
 
 const design={...structuredClone(DEFAULT_DESIGN),system:{preset:'academic-report',header:'rule',panel:'tint',titleSize:40,coverTitleSize:72,bodySize:24,panelTitleSize:26,captionSize:18,sectionSize:26}};
-const measure=(card,width)=>measureCardSurface(card,width,{design,system:design.system,wrapText,measureTextWidth});
+const measure=(card,width,activeDesign=design)=>{
+  const settings={design:activeDesign,system:activeDesign.system,wrapText,measureTextWidth},m=measureCardSurface(card,width,settings);
+  return m?.imageCard?fitImageCardToHeight(card,{w:width,h:540},{assets:cardDemoAssets(),papers:[]},settings,m):m;
+};
 const demoAssets=cardDemoAssets();
 const projectFor=cards=>({title:'原创学术卡片目录',design:structuredClone(design),papers:[],claims:[],assets:structuredClone(demoAssets),slides:cards.map((card,i)=>({id:`p${i+1}`,layout:'synthesis',title:getCardPreset(card.preset)?.name||'测试',paperIds:[],claimIds:[],figureIds:[],cards:[card],seconds:30,notes:'结构演示，非研究结果。'}))});
 const exampleCards=()=>CARD_PRESETS.map(preset=>{
@@ -96,7 +100,7 @@ test('default projection policy changes measured geometry without demoting neces
   const strictDesign={...structuredClone(design),projection:{bodyMin:28,labelMin:24,noteMin:18}};
   for(const preset of CARD_PRESETS){
     const card=structuredClone(preset.example),w=preset.family==='figure'?preset.dimensions.preferredWidth:620;
-    const m=measureCardSurface(card,w,{design:strictDesign,system:strictDesign.system,wrapText,measureTextWidth});
+    const m=measure(card,w,strictDesign);
     card.box={x:80,y:120,w,h:Math.ceil(m.minimumH)};
     const project=projectFor([card]);project.design=strictDesign;
     const page=buildScenes(project).pages[0];assert.deepEqual(errors(page),[],preset.id);

@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.9.0",
-  "description": "DeepSeek Harness学术汇报插件：证据驱动故事板、真实样张协作、32种整页语法、可读性检查与可编辑PPTX交付闭环。",
+  "version": "0.9.1",
+  "description": "DeepSeek Harness学术汇报插件：真实用户协作、证据故事板、自适应卡片、深浅配色与逐页留白审查的可编辑PPTX工作流。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {

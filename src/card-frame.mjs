@@ -1,6 +1,24 @@
 /** Authored frame paint is separate from a recipe's content and geometry. */
 export const CARD_FRAME_FIELDS = Object.freeze(['fill','stroke','strokeWidth','dash','shadow']);
 
+/** Card recipes are measured at their destination width. A free-flow text
+ * card hugs that measurement; it is not a thumbnail enlarged to fill a cell.
+ * Explicit boxes remain authored geometry, but substantial empty tails must
+ * be reviewed rather than counted as occupied evidence area. */
+export function fitCardSurfaceBox(b,card,box,measurement) {
+  const measuredHeight=measurement.minimumH;
+  if(!Number.isFinite(measuredHeight)||measuredHeight<=0)return box;
+  if(!card.box)return {...box,h:Math.min(box.h,measuredHeight)};
+  const unusedHeight=Math.max(0,box.h-measuredHeight),unusedFraction=unusedHeight/box.h;
+  if(unusedHeight>=72&&unusedFraction>=.28)b.page.issues.push({
+    severity:'warning',code:'card-excess-whitespace',slideId:b.page.id,cardId:card.id,
+    allocatedHeight:box.h,measuredHeight,unusedHeight,unusedFraction,
+    box:{x:box.x,y:box.y+measuredHeight,w:box.w,h:unusedHeight},
+    message:'显式卡片框明显高于完整内容所需高度，形成连续空腔。查看实际渲染：缩短外框并重新分配区域、扩大相关证据或调整图文关系；只有确有比较对齐/分组用途时保留并在审查中说明。不能靠装饰、填充色或缩字掩盖留白。',
+  });
+  return box;
+}
+
 export function cardFramePaint(appearance = {}, defaults = {}, { fill = true, stroke = true, shadow = true, elevationOpacity = .08 } = {}) {
   const paint = {
     fill:fill ? appearance.fill ?? defaults.fill ?? 'none' : defaults.fill ?? 'none',

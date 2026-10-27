@@ -5,12 +5,13 @@ import assert from 'node:assert/strict';
 import {mkdir,mkdtemp,readFile,writeFile,rm,appendFile} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {buildAcademicTools} from '../src/tools.mjs';
+import {syntheticObservations} from './fixtures.mjs';
 
 const LABEL='Synthetic software-state fixture; no real user approval or visual judgment is asserted.';
-const TOPICS=['density','storyline','palette','shape','language','texture','cover'];
+const TOPICS=['density','storyline','palette','shape','language','texture','cover','layout'];
 const response=topic=>({topic,status:'confirmed',selected:'Fixture selection for '+topic,
   userResponse:LABEL+' Response for '+topic,referencePaths:['synthetic-'+topic+'.png']});
-const storyConsultation={mode:'collaborative',interaction:'checkpoints',decisions:['density','storyline','language'].map(response)};
+const storyConsultation={mode:'collaborative',interaction:'checkpoints',workflowVersion:2,source:{status:'confirmed',mode:'content-led',userResponse:LABEL+' Explicitly select original design without a template.'},decisions:['density','storyline','language'].map(response)};
 const allConsultation={...storyConsultation,decisions:TOPICS.map(response)};
 
 async function workspace(t){
@@ -50,9 +51,9 @@ async function fixture(t){
   const check=()=>invoke('check',{projectPath});
   const state=async()=>JSON.parse(await readFile(projectPath,'utf8'));
   const pilot=()=>plan({kind:'pilot-review',decision:'confirmed',userResponse:LABEL+' Pilot direction response.',notes:LABEL});
-  const review=(built,result='passed',reviewer='human')=>invoke('review',{projectPath,expectedRevision:revision,pptxSha256:built.pptxSha256,reviewer,basis:'pptx-render',
+  const review=async(built,result='passed',reviewer='human')=>invoke('review',{projectPath,expectedRevision:revision,pptxSha256:built.pptxSha256,reviewer,basis:'pptx-render',
     reviewedSlides:slides.map(slide=>slide.id),result,notes:LABEL,
-    observations:slides.map(slide=>({slideId:slide.id,contentCheck:LABEL,legibilityCheck:LABEL,issue:result==='passed'?'':'Synthetic unresolved issue; not an actual visual defect.'}))});
+    observations:syntheticObservations(await check(),slides.map(slide=>slide.id),result==='passed'?'':'Synthetic unresolved issue; not an actual visual defect.')});
   const render=async()=>{
     const previous=process.env.TMPDIR;const tmp=join(env.cwd,'renderer-tmp');await mkdir(tmp,{recursive:true});process.env.TMPDIR=tmp;
     try{
@@ -77,10 +78,11 @@ test('checkpoint B exposes candidate prompts before visual preferences, without 
   assert.equal(current.nextAction,'invoke-host-imagegen');
   assert.ok(current.imageGeneration.batches[0].prompt.includes(request.cards[0].body));
   assert.deepEqual(current.designRecords.consultation,storyConsultation,'Planning a candidate must not create any visual approval.');
-  assert.deepEqual(current.designDialogue.pendingTopics,['palette','shape','texture','cover']);
-  assert.match(visible('prepare',current),/展示真实样张后再提问/);
-  assert.doesNotMatch(visible('prepare',current),/本轮待提问/);
-  const legacy=await prepare({...request,consultation:{...storyConsultation,interaction:'topics'}});
+  assert.deepEqual(current.designDialogue.pendingTopics,['palette','shape','texture','cover','layout']);
+  assert.match(visible('prepare',current),/真实样张展示后的问题/);
+  assert.doesNotMatch(visible('prepare',current),/当前应向用户提出的问题/);
+  const {workflowVersion:removedVersion,...legacyConsultation}=storyConsultation;
+  const legacy=await prepare({...request,existingProject:true,consultation:{...legacyConsultation,interaction:'topics'}});
   assert.equal(legacy.imageGeneration.nextAction,'await-design-feedback');assert.equal(legacy.imageGeneration.prompt,undefined);
   const unavailable=await prepare({...request,imageGeneration:{availability:'unavailable',source:LABEL}});
   assert.equal(unavailable.imageGeneration.nextAction,'select-native-cards');
@@ -89,8 +91,14 @@ test('checkpoint B exposes candidate prompts before visual preferences, without 
 
 test('recording explicit responses preserves the same real pilot artifact and existing review results only',async t=>{
   const env=await fixture(t),built=await env.build();if(!await env.render())return;
+  assert.equal((await env.check()).designDiagnostics.designDialogue.nextAction,'prepare-pilot-candidates','Unreviewed render still needs the author to inspect it.');
   await assert.rejects(env.review(built,'passed','vision-model'),/VISION_UNVERIFIED/);
-  await env.review(built);
+  const reviewed=await env.review(built);
+  assert.equal(reviewed.designDialogue.nextAction,'ask-pilot-direction');
+  assert.equal(reviewed.designDialogue.requiresUserResponse,true);
+  const waiting=await env.invoke('context',{projectPath:env.projectPath});
+  assert.equal(waiting.designDialogue.nextAction,'ask-pilot-direction');
+  assert.equal(waiting.designDialogue.questionTiming,'current-actual-pilot');
   await assert.rejects(env.pilot(),/PILOT_HAS_ERRORS[\s\S]*academic_ppt_record/);
   const before=await env.state();
   assert.equal(before.design.consultation.decisions.length,3,'pilot-review cannot auto-confirm the missing design topics.');
@@ -111,7 +119,7 @@ test('recording explicit responses preserves the same real pilot artifact and ex
   assert.equal(storyUpdate.preservedVerification.pptxSha256,built.pptxSha256);
   assert.equal((await env.check()).storyboard.pilot.status,'reviewed');
   const restored=await env.invoke('context',{projectPath:env.projectPath});
-  assert.deepEqual(restored.designDialogue.recordedDecisions,allConsultation.decisions);
+  assert.deepEqual([...restored.designDialogue.recordedDecisions].sort((a,b)=>a.topic.localeCompare(b.topic)),[...allConsultation.decisions].sort((a,b)=>a.topic.localeCompare(b.topic)));
   assert.deepEqual(restored.storyboard.decision,storyDecision.decision);
   const visible=env.visible('context',restored);assert.match(visible,/Fixture selection for palette/);assert.match(visible,/Response for cover/);assert.match(visible,/synthetic-cover.png/);
   assert.match(visible,/Explicit storyline response/);assert.match(visible,/Explicit storyline rationale/);
@@ -161,12 +169,18 @@ test('delivery regenerates current decision, storyboard and quality records whil
   const recorded=await env.plan({kind:'storyboard',storyboard:{...env.storyboard,decision:{status:'confirmed',userResponse:responseText}}});
   assert.equal(recorded.preservedVerification.pptxSha256,built.pptxSha256);
   await env.pilot();
+  const current=await env.check();
+  assert.equal(current.finalReview.nextAction,'ask-final-review');
+  const finalReview={status:'confirmed',userResponse:LABEL+' Explicitly accept the displayed final fixture.',pptxSha256:built.pptxSha256,renderReceiptSha256:current.render.renderReceiptSha256};
+  await env.record({design:{fontFamily:env.design.fontFamily,palette:env.design.palette,consultation:{mode:'collaborative',finalReview}}});
+  const expectedConsultation=(await env.state()).design.consultation;
   const delivered=await env.invoke('deliver',{projectPath:env.projectPath,expectedRevision:env.revision,outputDir:'delivery'});
   assert.equal(delivered.ok,true);assert.equal(delivered.pptxSha256,built.pptxSha256);
   assert.deepEqual(await readFile(delivered.files.pptx),await readFile(built.files.pptx));
   const rebuilt=JSON.parse(await readFile(delivered.files.project,'utf8'));
   assert.equal(rebuilt.storyboard.decision.userResponse,responseText);
-  assert.deepEqual(rebuilt.design.consultation,allConsultation);
+  assert.deepEqual(rebuilt.design.consultation,expectedConsultation);
+  assert.deepEqual(rebuilt.design.consultation.finalReview,finalReview);
   assert.ok((await readFile(delivered.files.storyboard,'utf8')).includes(responseText));
   const quality=JSON.parse(await readFile(delivered.files.quality,'utf8'));
   assert.equal(quality.storyboard.ready,true);

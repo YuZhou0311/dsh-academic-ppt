@@ -13,6 +13,7 @@ import { renderProject, sceneToSvg } from '../src/render.mjs';
 import { assertToolArgs } from '../src/schema.mjs';
 import { cardDemoAssets } from '../scripts/card-demo-assets.mjs';
 import { renderDeck } from '../src/vendor/dsh-ppt-render.mjs';
+import { fitImageCardToHeight } from '../src/image-card-surface.mjs';
 
 // These authored values verify rendering fidelity, never scientific findings.
 const clone=structuredClone;
@@ -21,7 +22,10 @@ const design={...clone(DEFAULT_DESIGN),palette:{...DEFAULT_DESIGN.palette,soft:D
 const shadow={color:'#15283D',opacity:.12,blur:3,offset:2,angle:90};
 const dashed={fill:'none',stroke:'#42566C',strokeWidth:1.4,dash:'dash',shadow:false};
 const paper={fill:'#FFFFFF',stroke:'#9DAAB8',strokeWidth:1.1,dash:'solid',shadow};
-const measure=(c,w)=>measureCardSurface(c,w,{design,system:design.system,wrapText,measureTextWidth});
+const measure=(c,w)=>{
+  const settings={design,system:design.system,wrapText,measureTextWidth},m=measureCardSurface(c,w,settings);
+  return m?.imageCard?fitImageCardToHeight(c,{w,h:540},{assets:cardDemoAssets(),papers:[]},settings,m):m;
+};
 function card(preset,appearance){
   const c=preset?clone(getCardPreset(preset).example):{id:'generic',kind:'method',title:'完整测试条件',body:'固定软件输入，不含研究结论。',claimIds:[]};
   if(appearance)c.appearance=clone(appearance);

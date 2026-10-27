@@ -1,12 +1,12 @@
 /** Figure-bearing cards keep scientific images separate from editable furniture.
  * Slots reserve the full figure renderer, including its provenance caption.
  * No card clips an image, generates an inset or infers any research value. */
-import { cardFramePaint, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
+import { cardFramePaint, fitCardSurfaceBox, frameHasPaint, readableCardColor, reportInvisibleCardShadow } from './card-frame.mjs';
 const list=value=>Array.isArray(value)?value:[];
 const text=value=>value===undefined||value===null?'':String(value);
 const clamp=(n,lo,hi)=>Math.min(hi,Math.max(lo,n));
 
-export function measureImageCard(card,width,{design={},system={},wrapText,measureTextWidth,preset,appearance}) {
+export function measureImageCard(card,width,{design={},system={},wrapText,measureTextWidth,preset,appearance,overviewShare=.48}) {
   const pad=appearance.padding,innerW=Math.max(1,width-2*pad),gap=18,layout=preset.recipe.imageLayout;
   const bodySize=Math.max(system.bodySize??24,design.projection?.bodyMin??0);
   const titleSize=Math.max(system.panelTitleSize??26,bodySize,design.projection?.labelMin??0);
@@ -101,7 +101,7 @@ export function measureImageCard(card,width,{design={},system={},wrapText,measur
     }else if(layout==='zoom'){
       const mainW=(innerW-gap)*2/3;image(0,pad,y,mainW,mediaHeight);image(1,pad+mainW+gap,y,innerW-mainW-gap,mediaHeight);
     }else if(layout==='overview-details'){
-      const overviewH=(mediaHeight-gap)*.48;image(0,pad,y,innerW,overviewH);strip(1,2,pad,y+overviewH+gap,innerW,mediaHeight-overviewH-gap);
+      const overviewH=(mediaHeight-gap)*overviewShare;image(0,pad,y,innerW,overviewH);strip(1,2,pad,y+overviewH+gap,innerW,mediaHeight-overviewH-gap);
     }else image(0,pad,y,innerW,mediaHeight);
     y+=mediaHeight+14;
     if(layout==='metrics'){rule('readouts-rule',pad,y-4,innerW);y=itemColumns(items,pad,y+7,innerW,0,true);}
@@ -124,7 +124,64 @@ export function measureImageCard(card,width,{design={},system={},wrapText,measur
     metric,metricWidth:metric?measureTextWidth(metric,valueSize,{bold:true}):0,unitWidthIssues};
 }
 
+/** Reflow a default media slot into the actual destination, keeping text size
+ * and source aspect ratios unchanged. An explicit mediaHeight is an authored
+ * choice and is never silently replaced. Stop growing when all known sources
+ * already fill their available widths, since further height adds letterbox
+ * space instead of making the scientific evidence larger. */
+export function fitImageCardToHeight(card,box,project,options,measured) {
+  if(card.mediaHeight!==undefined||!Number.isFinite(box.h)||box.h<=0)return measured;
+  const settings={...options,preset:measured.preset,appearance:measured.appearance};
+  const sourceHeights=[];
+  for(const image of measured.images){
+    const asset=list(project.assets).find(a=>a.id===image.assetId)||project.assets?.[image.assetId];
+    const iw=Number(asset?.width||asset?.pixelWidth)*(asset?.viewport?.w??1),ih=Number(asset?.height||asset?.pixelHeight)*(asset?.viewport?.h??1);
+    if(!(iw>0&&ih>0)){sourceHeights.push(null);continue;}
+    const captionSize=Math.max(settings.system?.captionSize??18,settings.design?.projection?.noteMin??0);
+    const paperIndex=list(project.papers).findIndex(p=>p.id===asset.paperId);
+    const sourceLabel=paperIndex>=0?`[${paperIndex+1}]`:asset.paperId;
+    const caption=asset.displayCaption||[sourceLabel,asset.figure||asset.figureNumber,asset.panel,asset.caption].filter(Boolean).join(' · ');
+    const captionH=caption?Math.max(captionSize*1.45,settings.wrapText(caption,image.w,captionSize).length*captionSize*1.24+4):0;
+    const legendSize=Math.max(22,settings.design?.projection?.labelMin??0);
+    let legendH=0,rowW=0,rowH=34;
+    for(const entry of list(asset.displayLegend)){
+      const label=String(entry.label??''),labelW=Math.max(1,Math.min(settings.measureTextWidth(label,legendSize)+4,image.w-33)),w=33+labelW;
+      const h=Math.max(34,settings.wrapText(label,labelW,legendSize).length*legendSize*1.2+4);
+      if(rowW&&rowW+24+w>image.w){legendH+=rowH;rowW=0;rowH=34;}
+      rowW+=(rowW?24:0)+w;rowH=Math.max(rowH,h);
+    }
+    if(rowW)legendH+=rowH+8;
+    const pad=asset.treatment==='plain'?0:5;
+    const widthFittedHeight=Math.max(1,image.w-2*pad)*ih/iw+captionH+legendH+9+2*pad;
+    sourceHeights.push(widthFittedHeight);
+  }
+  if(measured.preset.recipe.imageLayout==='overview-details'&&sourceHeights.length===3&&sourceHeights.every(h=>h>0)){
+    // A full-width overview normally needs more height than each half-width
+    // detail. Equal row heights would shrink the main source and create large
+    // side gutters even though the card has ample total evidence area.
+    settings.overviewShare=clamp(sourceHeights[0]/(sourceHeights[0]+Math.max(...sourceHeights.slice(1))),.3,.8);
+  }
+  const at=height=>measureImageCard({...card,mediaHeight:height},box.w,settings);
+  const minMedia=120,min=at(minMedia);
+  if(min.minimumH>=box.h)return min;
+  const reference=at(measured.mediaHeight),probe=at(measured.mediaHeight+1),needs=[];
+  for(const [i,image]of reference.images.entries()){
+    const slope=probe.images[i]?.h-image.h;
+    if(!(sourceHeights[i]>0&&slope>0)){needs.length=0;break;}
+    needs.push(measured.mediaHeight+(sourceHeights[i]-image.h)/slope);
+  }
+  let low=minMedia,high=Math.max(low,Math.min(box.h,needs.length===measured.images.length&&needs.length?Math.max(...needs):box.h));
+  const largest=at(high);
+  if(largest.minimumH<=box.h)return largest;
+  for(let i=0;i<22;i++){
+    const mid=(low+high)/2;
+    if(at(mid).minimumH<=box.h)low=mid;else high=mid;
+  }
+  return at(low);
+}
+
 export function renderImageCard(b,card,box,index,project,helpers,m,{drawSemanticIcon}) {
+  box=fitCardSurfaceBox(b,card,box,m);
   const id=String(card.id||`card-${index+1}`),key=`card/${id}`,p=b.p,preset=m.preset,a=m.appearance;
   const accent=/^#[0-9a-f]{6}$/i.test(card.accent||'')?card.accent:p.accent;
   const colors={...p,accent,none:'none'},color=value=>colors[value]||value;

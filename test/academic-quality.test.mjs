@@ -4,7 +4,7 @@ import {mkdir,mkdtemp,readFile,writeFile,rm} from 'node:fs/promises';
 import {resolve,join,dirname} from 'node:path';
 import {academicIssues} from '../src/academic-quality.mjs';
 import {createProject,updateRecords,buildProject,editProject,recordReview,checkProject,contextProject,evidenceIssues,DEFAULT_DESIGN} from '../src/core.mjs';
-import {fixtureDesign,brief,paper,claim,asset,slides} from './fixtures.mjs';
+import {fixtureDesign,brief,paper,claim,asset,slides,syntheticObservations} from './fixtures.mjs';
 
 const fixture=()=>structuredClone({schemaVersion:1,id:'quality-fixture',revision:0,title:'Evidence integrity fixture',brief,design:fixtureDesign,capabilities:{imageInput:'unknown',source:'Synthetic protocol test'},papers:[paper],claims:[claim],assets:[asset],slides});
 async function project(t){const root=resolve('.test-output');await mkdir(root,{recursive:true});const cwd=await mkdtemp(join(root,'quality-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const created=await createProject({cwd,projectDir:'p',title:'Evidence integrity fixture',brief,design:fixtureDesign});await updateRecords({cwd,projectPath:created.projectPath,expectedRevision:0,papers:[paper],claims:[claim],assets:[asset],slides});return {cwd,projectPath:created.projectPath};}
@@ -102,7 +102,7 @@ test('current review requires per-slide observations and cannot pass acknowledge
  const o=await project(t),built=await buildProject({...o,expectedRevision:1});assert.equal(built.ok,true);
  const request={...o,expectedRevision:1,pptxSha256:built.pptxSha256,reviewer:'human',basis:'html-preview',reviewedSlides:['s1'],result:'passed',notes:'Protocol fixture, not a real human review.'};
  await assert.rejects(recordReview(request),/PER_SLIDE_REVIEW_REQUIRED/);
- const observation={slideId:'s1',contentCheck:'检查测试计数身份与原始fixture字段。',legibilityCheck:'协议测试不构成实际看图凭证。',issue:'模拟记录：有一处未解决的文字遮挡。'};
+ const observation=syntheticObservations(await checkProject(o),['s1'],'模拟记录：有一处未解决的文字遮挡。')[0];
  await assert.rejects(recordReview({...request,observations:[observation]}),/UNRESOLVED_REVIEW_ISSUES/);
  await recordReview({...request,result:'needs-fix',observations:[observation]});
  assert.equal((await checkProject(o)).verification.readyForDelivery,false);
