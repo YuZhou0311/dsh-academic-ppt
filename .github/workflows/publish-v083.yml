@@ -1,0 +1,64 @@
+name: Publish v0.8.3 release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v083.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v083
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'YuZhou0311/dsh-academic-ppt' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.19.0
+          cache: npm
+      - name: Verify release version
+        run: |
+          node --input-type=module -e 'import fs from "node:fs"; const p=JSON.parse(fs.readFileSync("package.json")); if(p.name!=="dsh-academic-ppt" || p.version!=="0.8.3") throw new Error("This workflow only publishes dsh-academic-ppt v0.8.3");'
+      - run: npm ci --ignore-scripts --omit=optional
+      - run: npm test
+      - run: npm run check
+      - name: Build verified release files from committed tree
+        run: npm run release:build -- --tag v0.8.3
+      - name: Publish tagged release with all five files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v0.8.3 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'v0.8.3 already published; preserving existing release assets.'
+            exit 0
+          fi
+          gh release create v0.8.3 \
+            dist/v0.8.3/dsh-academic-ppt-0.8.3.tgz \
+            dist/v0.8.3/dsh-academic-ppt-0.8.3-source.zip \
+            dist/v0.8.3/RELEASE_NOTES.md \
+            dist/v0.8.3/release-manifest.json \
+            dist/v0.8.3/SHA256SUMS \
+            --target "$GITHUB_SHA" \
+            --title 'v0.8.3 · 可编辑学术卡片组件库' \
+            --notes-file docs/RELEASE_NOTES.md \
+            --latest \
+            --repo "$GITHUB_REPOSITORY"
+      - name: Verify release asset count
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view v0.8.3 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets | map(.name) | sort | join("\n")'
+          count="$(gh release view v0.8.3 --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets | length')"
+          test "$count" -eq 5
