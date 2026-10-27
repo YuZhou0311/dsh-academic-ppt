@@ -14,6 +14,7 @@ const contracts = {
       'mustShow用于主画面必须保留的短条件/单位/判断，后续删除contentChecks、drawings或visualPlan不能解除故事板中的约束。论文图ID必须既分配又真正进入导出画面。',
       'decision为真实故事线选择：proposed可继续研究和样张，confirmed/delegated须userResponse保存回答或明确委托。不要编造批准、自动填通用推理或把材料可得性当作替换研究目标的授权。',
       'pilot指定hardestSlideId、按故事板连续的三个sequenceSlideIds及选择原因。有封面时还指定coverSlideId，可与连续三页重合。先实现这些页，build(draft)和render，实际逐页查看并review。',
+      '样张展示后的真实回答先按实际覆盖的取舍写入design.consultation，再提交pilot-review；后者不自动确认各设计主题。只更新consultation或storyboard.decision且其他工程内容完全不变时，可保留仍通过哈希校验的原PPTX、渲染和原逐页审查；操作仍递增revision，不新增看图记录。实际内容、设计、能力、参考学习或故事板页面变化仍须重建复核。',
       '新checkpoints整稿按故事板计划页数应用设计学习门槛：计划达到六页时，即使只实现样张，也须有referenceStudy.componentStudies的具体组件观察、预览定位与本稿改造，以及paletteRationale。只填整页语法ID或选择不用preset不能替代。',
       'kind=pilot-review 记录当前实际样张的成套方向选择，decision仅confirmed/delegated，附userResponse和notes。工具要求当前PPTX真实渲染、无缺字体、指定样张均有passed审查，自动绑定样张/设计/证据/故事板哈希。改变这些内容会使样张决定失效，增加其他页不会。已核对原图明确分配到尚未实现的非样张页、完整书目明确安排在后续references页时，可返回deferredFinalIssues留待整稿；未核实来源和样张自身缺图仍阻断，最终deliver不会豁免。',
       '六页及以上整稿最终deliver要求完整故事板和当前样张。旧工程继续读写、研究和预览，最终交付前可据真实内容补回故事板。计划与审查是调用者记录，工具不独立判断学术真实性或用户原话。',
@@ -23,6 +24,7 @@ const contracts = {
     schema:preparationRequestSchema, recordKey:'request',
     notes:[
       '新建与prepare缺省interaction均补checkpoints，mode默认collaborative；record省略interaction时继承工程原值，显式topics与旧文件缺字段兼容。集中确认故事线与真实样张的完整方向，一次方案选择可落实多个旧topic，不拆成七轮问卷。confirmed/逐主题delegated需selected和userResponse，整体delegated需delegation。已明确偏好直接复用，不把建议或刚发出的问题当作确认/无回复。prepare返回designRecords但不修改工程；回答后合并当前design，通过record保存。已确认的selected与rationale会传入设计参考提示，原始userResponse不自动发送给生图模型。',
+      'checkpoints进入pilot-direction后，先完成参考学习并制作/渲染真实候选，再展示样张取得成套方向回答。未决的配色、形态、层次或封面不阻断候选生图提示；questionTiming=after-actual-pilot-render的问题不能提前当作已展示。显式topics流程保留逐主题偏好等待行为。',
       'prepare规划分阶段设计协商、模板参考与图文卡片。正文保持论文身份查证、全文和原图获取、看图与图源登记；无生图接口不影响真实论文图的获取，卡片生图成功也不能替代研究证据。',
       '先按已知会话填写模板选择与实际宿主能力。template.status=unasked只产生待提问题，不代表已经询问；已给文件用provided+localPaths，明确没有用none，实际问过但无回复用unanswered；后两种不再询问。选择稍后提供用awaiting-upload，先继续现有流程。',
       'PPTX必须是本工作区明确提供的文件。prepare核实路径与格式并返回academic_ppt_template调用计划，尚未解析或查看页面；按现有工具渲染并看实际代表页。旧.ppt先转换为.pptx，不能伪称已支持解析。',
@@ -61,6 +63,7 @@ const contracts = {
     academicPalettes: Object.values(ACADEMIC_PALETTES),
     notes: [
       "consultation保存真实选择或委托。新建/prepare缺省interaction补checkpoints，mode默认collaborative；record省略interaction继承原值，旧文件缺字段及显式topics兼容。故事线与真实样张集中确认；confirmed/delegated主题须selected与userResponse，整体delegated须delegation。已有决定不重复问，未决主题阻断review但允许draft。",
+      "仅记录consultation决定而其他科学/设计内容完全不变时，record保留经哈希校验的当前成品、实际渲染和原逐页审查；保留原build修订及审查时间/result，needs-fix不会变passed。实际设计、能力或referenceStudy变化仍使成品失效。context返回recordedDecisions与delegation，恢复时沿用具体选择和真实依据。",
       "referenceStudy.componentStudies按schema记录来源、预览、边框/题签/间距/改造；paletteRationale解释配色层级。card-library用48款真实ID，editorial用C01–C20；模板在referenceId或previewPath定位源页。可仅记细读，不必重复汇总或采用preset；用preset须有catalogIds或同ID细读。新checkpoints稿实际或计划达到六页须填，pageRecipeIds不能替代；旧字段缺失仅warning。not-applicable仅适用具体局部/科学图排版，不豁免整稿重设计。细则见references/academic-visual-language.md；记录不证明真实看图或审美通过。",
       "颜色用#RRGGBB；academicPalettes是5套可编辑候选，选中后完整写入palette，以paletteRationale解释对比、原图色义和主辅比例，不按学科自动选色。fontFamily填写实际字体。",
       "封面保留完整题名、语义断行与真实身份；minimal/editorial可无图，custom+boxes支持自主构图，图片须承担研究识别任务。",

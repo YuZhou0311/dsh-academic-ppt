@@ -6,6 +6,12 @@
 
 需要实际看模板、论文图与当前PPTX时，必须有真实图像输入路径。文本提取/OCR可辅助核对，不能声称完成遮挡、配色和图例视觉审查。图像输入也不是生图权限。
 
+官方 DSH `0.2.1-rc.2` / `0.2.1-rc.3` 的 `read` 读取 UTF-8 文字，图片入口是 `read_image({file_path: 实际PNG路径})`。对模板预览、`academic_ppt_render` 返回的 `pngPaths` / `contactSheetPaths` 调用本会话实际可见的图片工具，核对成功返回的图像内容，再形成具体观察；路径、profile、OCR或HTML源码都不能充当实看依据。联系表用于整稿关系，文字、刻度和线型的判断仍需打开对应单页。
+
+`read_image` 由官方 `dsh-tool-fs` 提供，需要启用 `readImage`、挂载官方 attachments 服务，并由当前实际路由的 provider/model 明确声明图像输入支持。未知或不支持时，工具会拒绝；不能用插件工程中的 `imageInput:supported` 覆盖宿主判定。入口缺失或拒绝时记录具体视觉能力缺口，继续可完成的研究和编辑，不登记模型已看图或通过视觉验收。自定义宿主采用其实际提供并成功返回图像的入口；本插件不额外创建模型连接。
+
+该官方入口支持 PNG/JPEG/WebP/GIF，不直接接受 SVG、HTML、PDF或PPTX。`academic_ppt_cards`的单卡`previewPath`是SVG、图册是HTML：用实际可用的浏览器截图或受支持的渲染方式得到栅格图，或查看对应PPTX的实际页面渲染，再传入图片入口。不能把`read`返回的SVG/XML当作视觉观察。`academic_ppt_template(render:true)`的实际页面路径位于`preview.pngPaths`与`preview.contactSheetPaths`；它们与原始PPTX/profile路径分别处理。
+
 尽早核实并登记本次实际输入能力。`capabilities`可随init提供，也可通过recordsPath批次的根级字段登记；精确schema与记录规则见`contract(topic:assessment)`返回的`capabilityRecord`，CLI也可用`init --schema`或`record --schema`查询。`imageInput`只接受supported / unsupported / unknown，`source`写实际provider或图像输入入口及核实依据。确实收到并看过图像时，可以记录具体入口与观察；“生成了PNG”“模型名称带视觉”或“为了让review通过”都不是依据。能力更新产生新修订，应在首次构建前完成；构建后才更新需重新构建、渲染和审查当前版本。
 
 ## 主动检索、获取与查看是不同动作

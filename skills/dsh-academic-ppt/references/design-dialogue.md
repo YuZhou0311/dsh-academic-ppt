@@ -24,6 +24,8 @@
 
 先准备封面、困难证据/机制页和连续三页；使用真实原图与实际信息量，实际导出并渲染。展示两套有意义的完整方向即可，不要求为没有争议的项目穷举所有组合。
 
+checkpoints 中 `prepare` 返回的 `designDialogue.nextAction:prepare-pilot-candidates` 指向这一制作步骤。未确认的视觉主题保留为待选，不应提前要求用户回答；工具返回的方向问题在真实候选展示后使用。参考学习和草稿检查仍照常执行。
+
 每套方向一并描述：
 
 - 证据与解释如何分配空间，如何支持用户确定的信息密度。
@@ -66,6 +68,10 @@
 保留每个主题当前有效决定及真实依据，不把尚在等待的消息写成“用户无回复”。一次回答覆盖完整方向时可以映射多个字段，无需重复询问。旧工程没有协商记录时按当前任务补充，不能倒填过去的对话。
 
 故事线的具体论证与选择写入 `storyboard.decision`，实际样张的成套方向选择通过 `academic_ppt_plan` 的 `kind:pilot-review` 请求登记。后者只能在当前样张真实渲染且逐页 passed 审查后写入，不用纯聊天表态代替看图。
+
+先将真实反馈明确映射到 `design.consultation` 并用 `record` 保存，再写 `pilot-review`；该请求不会自动补全或批准全部设计主题。只记录决定且所有其他工程内容不变时，工具可在核验现有产物完整性后保留同一渲染和原观察，操作仍保留修订历史。实际调整色板、字体、图文、来源、能力或参考学习记录时，重新构建和审查；过期产物与 `needs-fix` 不因回答而获得通过。
+
+恢复时以 `academic_ppt_context` 返回的具体 `selected`、`userResponse`、`rationale` 和 `referencePaths` 为依据，不只看已解决主题列表。对很长的记录按返回路径读取完整工程中的对应记录，避免凭主题名猜测用户选择。
 
 参考学习同时覆盖整页关系和组件细节。用 `referenceStudy.componentStudies` 记录具体参考页/卡、预览、边框填充、题签、间距与改造，用 `paletteRationale` 说明颜色职责；保留实际的 `pageRecipeIds/templateReferences/catalogIds` 和总体观察可帮助追溯。细读记录也可以独立提供对应来源与观察，不必重复抄录。新 checkpoints 六页及以上整稿（含计划页）只填整页ID不足以通过检查，自主drawings也不豁免学习；实际采用preset另需相应已查看`catalogIds`或同ID的`card-library`细读记录。参考记录不构成用户选择某方案的证明。
 

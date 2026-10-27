@@ -4,10 +4,10 @@
 
 ## 软件回归
 
-本轮组件视觉修订的完整回归为 **490项通过、0失败、0跳过**，约195.3秒；初始候选为471项。设置 `DSH_REQUIRE_REAL_RENDER=1`，实际渲染不可跳过。命令等价于 `npm test` 的全部文件与并发配置，另用TAP记录：
+本轮 Agent 接入与检查点修复的完整回归为 **512项通过、0失败、0跳过**，50个测试文件，约298.0秒，核对完整TAP尾部和退出码。设置 `DSH_REQUIRE_REAL_RENDER=1`，实际渲染不可跳过；采用单文件并发以避免多组渲染争用。此前组件视觉修订为490项、初始候选为471项，均属于相应历史提交的记录。
 
 ```sh
-DSH_REQUIRE_REAL_RENDER=1 node --test --test-concurrency=2 --test-reporter=tap test/*.test.mjs
+DSH_REQUIRE_REAL_RENDER=1 node --test --test-concurrency=1 --test-reporter=tap test/*.test.mjs
 npm run check
 npm pack --dry-run --json
 ```
@@ -27,6 +27,8 @@ npm pack --dry-run --json
 
 测试材料、来源和决策均是明确标注的合成软件fixture。程序模拟的审查记录不是真实人类验收；单独查看过测试渲染也不把它升级为学术样稿。
 
+本轮新增真实反馈状态回归：视觉候选先于方向确认；回答记录复用不变的PPTX、渲染与原审查；科学内容、设计、能力、参考学习、交互模式或故事板页面变化仍失效；外部篡改文件不能复用；`needs-fix`和未知视觉能力仍不能通过；交付重新生成当前决定及质量记录。恢复输出优先保留实际选择、故事线回答、下一步与阻断事项。对应 [checkpoint-feedback.test.mjs](../test/checkpoint-feedback.test.mjs)。
+
 ## 真实 DSH Host
 
 通过隔离安装的官方 `@deepseek-ai/dsh-tools`、`dsh-skill`、`dsh-system-prompt`、`dsh-app-boot` 和 `@deepseek-ai/cordis` 运行注册/调用路径。
@@ -37,6 +39,14 @@ npm pack --dry-run --json
 | 0.2.1-rc.3 | 19 | 12 | 通过 |
 
 覆盖技能加载、48卡片与32整页语法查询、完整故事板契约、创建/记录/读取/原生PPTX导出、非法输入、越界路径、取消、cwd保持，以及卸载后重新注册。只代表实际官方Host服务与工具执行链；没有模型凭证、用户Desktop/Web界面或用户DeepSeek会话。原始结果：[rc.2](validation/v090/dsh-host-rc2.json)、[rc.3](validation/v090/dsh-host-rc3.json)。
+
+## 真实 Agent 请求与文件策略
+
+新增独立请求层测试，实际挂载官方 AgentLoop、技能消费者、文件工具、工作目录和会话策略。核对目录摘要、完整技能、参考工作流文本、19工具的真实schema与结果进入provider收到的请求；显式`/dsh-academic-ppt`、作用域、同名来源、卸载重挂和缺技能文件均有正负向断言。provider只返回固定测试响应，没有接真实模型或用户认证。详见 [Agent 接入核验](AGENT_INTEGRATION_V090.md) 及其双版本机器报告。
+
+全量回归之后补充图片输入的双版本目标复跑：最终每版31个provider请求、24次工具调用，16成功、8次预期拒绝。官方`read_image`和隔离附件store将合成PNG的原生image block及相同像素送到下一轮provider；文本模型与能力未知模型均明确拒绝。该补测没有把图片路径或脚本化响应当作视觉理解、实际模板学习或真人验收。
+
+文件策略使用真实官方`fs-sandbox`作对照：切目录不扩大原工作区权限，`read-only`禁止写但允许查询，恢复写入模式即时生效，受控全访问仅用于隔离测试Session。另覆盖静态symlink、缺失策略和条件输出。该检查是可信进程内策略核验，不代表操作系统进程沙箱。
 
 ## 图像可读性回归
 

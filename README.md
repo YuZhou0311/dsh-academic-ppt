@@ -4,7 +4,7 @@
 
 **0.9.0 源码候选版** · 19 个 DSH 工具 · 32 种整页学术语法 · 48 种局部信息卡 · 可编辑 PPTX
 
-[安装与升级](docs/INSTALL.md) · [0.9.0 发布说明](docs/RELEASE_NOTES.md) · [验证范围](docs/VALIDATION_V090.md) · [迁移说明](docs/MIGRATION_V090.md) · [整页语法图册](skills/dsh-academic-ppt/references/page-recipes/index.html)
+[安装与升级](docs/INSTALL.md) · [0.9.0 发布说明](docs/RELEASE_NOTES.md) · [验证范围](docs/VALIDATION_V090.md) · [Agent 接入核验](docs/AGENT_INTEGRATION_V090.md) · [迁移说明](docs/MIGRATION_V090.md) · [整页语法图册](skills/dsh-academic-ppt/references/page-recipes/index.html)
 
 本分支准备 `0.9.0`。GitHub Release 与版本标签须由维护者审阅后发布；源码版本号、测试通过和已有 `latest` 发布是三个不同状态。当前发布状态以 [Releases](https://github.com/YuZhou0311/dsh-academic-ppt/releases) 为准。
 

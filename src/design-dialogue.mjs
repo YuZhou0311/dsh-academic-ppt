@@ -129,12 +129,17 @@ export function designDialoguePlan(consultation={mode:'collaborative'}){
       recommendation:'先展示同样科学内容的真实候选再问，把配色、形态、层次、封面放在完整方案里比较；不要逐项问审美术语。',
       options:[option('evidence-editorial','开放图证','大图与近邻解释，克制色块和清晰的学术字级。'),option('formal-defense','正式答辩','稳定章节导航，实验/任务关系与比较条件更充分。'),option('light-report','清晰短讲','聚焦主证据和关键边界，讲稿承接次要细节。')]}];
   }
+  const preparePilot=consultation.interaction==='checkpoints'&&stageId==='pilot-direction';
   return {mode:consultation.mode||'collaborative',interaction:consultation.interaction||'topics',stage:stageId,pendingTopics,
     resolvedTopics:DESIGN_TOPICS.filter(topic=>!pendingTopics.includes(topic)),questions,
+    recordedDecisions:records.map(({topic,status,selected,userResponse,rationale,referencePaths})=>({topic,status,
+      ...(selected?{selected}:{}),...(userResponse?{userResponse}:{}),...(rationale?{rationale}:{}),...(referencePaths?{referencePaths:[...referencePaths]}:{})})),
+    ...(meaningful(consultation.delegation)?{delegation:consultation.delegation}:{}),
+    questionTiming:preparePilot?'after-actual-pilot-render':'current-checkpoint',
     readyForFinalDesign:pendingTopics.length===0,
-    nextAction:pendingTopics.length?'ask-design-questions':'continue-reference-learning',
+    nextAction:preparePilot?'prepare-pilot-candidates':pendingTopics.length?'ask-design-questions':'continue-reference-learning',
     instructions:pendingTopics.length?[
-      '本轮只提出返回的相关问题，并给出结合当前内容的推荐。选项是提议，不代表已经问过或用户同意。',
+      preparePilot?'先制作并实际渲染封面、困难正文和连续三页；返回的问题留到展示真实样张后提出。未决视觉偏好不阻断可撤销的原生候选或可用生图参考，不能为了制作候选提前填confirmed。':'本轮只提出返回的相关问题，并给出结合当前内容的推荐。选项是提议，不代表已经问过或用户同意。',
       '等待用户回答后记录selected、原话userResponse及适配理由。已给的偏好直接复用；明确委托才用delegated，不把刚发出的提问当成无回复。',
       '等待期间可继续来源核对、取图和可撤销候选；批量排版与正式交付应以协商结果为依据。',
       ...(consultation.interaction==='checkpoints'?['一次成套方案选择可以落实多个topics，把同一真实回答映射到各字段的具体选择；不得增加七次逐项问答，也不能自动替用户确认。']:[]),
@@ -161,7 +166,7 @@ export function designDialogueReport(project){
     for(const [i,decision] of records.entries())if(['confirmed','delegated'].includes(decision.status)&&!resolved(decision))
       add('design-response-record-incomplete',`design.consultation.decisions.${i}`,'已确认或已委托的决定需要selected和真实userResponse，不能把推荐选项自动当成用户选择。',{topic:decision.topic});
     if(slides.length&&plan.pendingTopics.length)add('design-dialogue-pending','design.consultation',
-      '尚有设计主题未确认或明确委托：'+plan.pendingTopics.map(t=>TOPICS[t].label).join('、')+'。按本轮问题取得反馈；研究与候选可继续，正式构建暂缓。',{pendingTopics:plan.pendingTopics});
+      '尚有设计主题未确认或明确委托：'+plan.pendingTopics.map(t=>TOPICS[t].label).join('、')+'。'+(plan.questionTiming==='after-actual-pilot-render'?'先展示真实样张，再将实际回答按已展示的取舍写入design.consultation；仅记录决定而科学内容与设计不变时，保留当前渲染与已有审查。':'按本轮问题取得反馈；')+'研究与候选可继续，正式构建暂缓。',{pendingTopics:plan.pendingTopics});
   }
   const cards=slides.flatMap(s=>list(s.cards));
   const usedPresets=distinct(cards.map(c=>c.preset).filter(Boolean));

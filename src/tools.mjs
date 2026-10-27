@@ -184,6 +184,8 @@ async function saveTemplateProfile(profile, { cwd, outputPath, signal }) {
 /** Keep durable model output bounded. The canonical value remains available to PTC. */
 export function formatToolResult(name, result) {
   const data = own(result)
+  const dialogue=data.designDialogue??data.designDiagnostics?.designDialogue??data.quality?.designDiagnostics?.designDialogue
+  const storyboard=data.storyboard??data.designDiagnostics?.storyboard
   const lines = [`${name}：${data.ok === false ? '需要处理下列问题' : '已完成本次操作'}`]
   for (const [key, label] of [['projectPath', '工程'], ['revision', '修订号'], ['title', '标题'], ['slideCount', '页数'], ['status', '状态']]) {
     if (data[key] !== undefined) lines.push(`${label}：${clip(data[key])}`)
@@ -192,6 +194,29 @@ export function formatToolResult(name, result) {
   if (typeof data.summary === 'string') lines.push(clip(data.summary, 2400))
   if (Number.isInteger(data.summary?.errors)) lines.push(`证据/版式检查：${data.summary.errors} 个错误，${data.summary.warnings ?? 0} 个提醒。`)
   if (data.counts) lines.push('工程数量：' + ['papers', 'claims', 'assets', 'slides'].filter(key => Number.isInteger(data.counts[key])).map(key => `${key} ${data.counts[key]}`).join('；'))
+  // Recovery decisions and concrete next actions must precede verbose records;
+  // clipping the tail must not strand the agent or erase an existing choice.
+  for (const key of ['nextActions', 'instructions', 'pending']) {
+    if (Array.isArray(data[key])) lines.push(...data[key].slice(0, 12).map(x => clip(typeof x === 'string' ? x : x.message ?? x.id ?? x.title, 650)))
+  }
+  if(name==='academic_ppt_context'&&storyboard?.decision){
+    const decision=storyboard.decision
+    lines.push(`已记录故事线决定：${clip(decision.status,40)}`)
+    if(decision.userResponse)lines.push(`故事线回答依据：${clip(decision.userResponse,800)}`)
+    if(decision.rationale)lines.push(`故事线选择理由：${clip(decision.rationale,600)}`)
+    lines.push('完整故事线决定见结构化storyboard.decision或projectPath所指工程的storyboard.decision；沿用实际回答范围，proposed不代表已批准。')
+  }
+  if(name==='academic_ppt_context'&&dialogue){
+    if(dialogue.delegation)lines.push(`已记录整体委托依据：${clip(dialogue.delegation,1200)}`)
+    for(const decision of dialogue.recordedDecisions??[]){
+      lines.push(`已记录决定 ${decision.topic}/${decision.status}：${clip(decision.selected??'尚未选择',600)}`)
+      if(decision.userResponse)lines.push(`回答依据：${clip(decision.userResponse,800)}`)
+      if(decision.referencePaths?.length)lines.push(`当时参考：${decision.referencePaths.slice(0,2).map(path=>clip(path,400)).join('；')}`)
+    }
+    if(dialogue.recordedDecisions?.length)lines.push('以上是已保存的决定摘要，沿用其范围；长回答、理由及其余预览见结构化recordedDecisions或工程design.consultation，不得把未决项补写为批准。')
+  }
+  const repairs=(data.repairQueue??[]).filter(item=>item.severity==='error')
+  for(const repair of repairs.slice(0,6))lines.push(`优先修复 ${clip(repair.target,120)} [${clip(repair.codes?.join(', '),220)}]：${clip(repair.messages?.[0],500)}`)
   const pptxHash = data.pptxSha256 ?? data.artifact?.pptxSha256
   if (typeof pptxHash === 'string') lines.push(`当前 PPTX SHA-256：${clip(pptxHash, 64)}`)
   const files = own(data.files)
@@ -312,7 +337,6 @@ export function formatToolResult(name, result) {
     if(data.recipes)lines.push('整页语法目录：'+JSON.stringify(data.recipes))
     if(data.guidePath)lines.push('适配说明：'+data.guidePath)
   }
-  const storyboard=data.storyboard??data.designDiagnostics?.storyboard
   if(storyboard){
     lines.push(`故事板：${storyboard.status}；样张：${storyboard.pilot?.status??'not-planned'}。`)
     if(storyboard.throughline)lines.push('论证主线：'+clip(storyboard.throughline,1600))
@@ -359,13 +383,9 @@ export function formatToolResult(name, result) {
       }
     }
   }
-  for (const key of ['instructions', 'nextActions', 'pending']) {
-    if (Array.isArray(data[key])) lines.push(...data[key].slice(0, 12).map(x => clip(typeof x === 'string' ? x : x.message ?? x.id ?? x.title, 650)))
-  }
-  const dialogue=data.designDialogue??data.designDiagnostics?.designDialogue??data.quality?.designDiagnostics?.designDialogue
   if(dialogue){
     lines.push(`设计协商：${dialogue.mode} / ${dialogue.stage}；待确认${(dialogue.pendingTopics??[]).join('、')||'无'}。提议不等于已询问或已确认。`)
-    for(const q of dialogue.questions??[])lines.push(`本轮待提问：${JSON.stringify(q)}`)
+    for(const q of dialogue.questions??[])lines.push(`${dialogue.questionTiming==='after-actual-pilot-render'?'展示真实样张后再提问':'本轮待提问'}：${JSON.stringify(q)}`)
     for(const instruction of dialogue.instructions??[])lines.push(instruction)
     if(dialogue.referenceStudy)lines.push(`卡片参考学习：${dialogue.referenceStudy.status}；当前原生配方${dialogue.referenceStudy.usedPresets.join('、')||'无'}；嵌图卡${dialogue.referenceStudy.imageCardCount}张。`)
   }
@@ -378,7 +398,7 @@ export function formatToolResult(name, result) {
   const issues = Array.isArray(data.issues) ? data.issues : Array.isArray(data.quality?.issues) ? data.quality.issues : []
   if (issues.length) {
     lines.push(`检查事项：${issues.length}`)
-    lines.push(...issues.slice(0, 12).map(issue => `${clip(issue.severity || issue.code || '提示', 40)} ${clip(issue.slideId || issue.paperId || issue.path || '', 100)}：${clip(issue.message || issue.detail || issue, 450)}`))
+    lines.push(...[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0, 12).map(issue => `${clip(issue.severity || '提示', 40)} [${clip(issue.code,100)}] ${clip(issue.slideId || issue.paperId || issue.path || '', 100)}：${clip(issue.message || issue.detail || issue, 450)}`))
     if (issues.length > 12) lines.push('其余检查事项见报告文件或结构化结果。')
   }
   if (name === 'academic_ppt_build') lines.push('导出成功只表示已生成文件；请检查论文证据和最终 PPTX 逐页画面后再登记视觉验收。')
@@ -391,7 +411,7 @@ export function formatToolResult(name, result) {
 }
 
 /** Raw-schema registrations validate at this boundary; callers may use the same API directly. */
-export function buildAcademicTools(overrides = {}) {
+export function buildAcademicTools(overrides = {}, { resolveCwd, beforeExecute } = {}) {
   return Object.values(TOOL_COMMANDS).map(name => ({
     name,
     description: descriptions[name],
@@ -403,7 +423,10 @@ export function buildAcademicTools(overrides = {}) {
     async execute(rawArgs, exec) {
       exec?.signal?.throwIfAborted()
       assertToolArgs(name, rawArgs)
-      const cwd = exec?.agent?.session?.header?.cwd ?? process.cwd()
+      const cwd = resolveCwd ? await resolveCwd(exec) : exec?.agent?.session?.header?.cwd ?? process.cwd()
+      exec?.signal?.throwIfAborted()
+      await beforeExecute?.({ name, args: rawArgs, cwd, exec })
+      exec?.signal?.throwIfAborted()
       const options = { ...rawArgs, cwd, signal: exec?.signal }
       let value
       if (overrides[name]) value = await overrides[name](options)

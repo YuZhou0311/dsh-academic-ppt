@@ -1,19 +1,24 @@
 {
   "pluginVersion": "0.9.0",
-  "checkedAt": "2026-10-27T05:54:15.649165+00:00",
+  "checkedAt": "2026-10-27T08:05:12.114106+00:00",
   "environment": {
     "node": "24.22.1",
     "platform": "linux"
   },
   "tests": {
-    "tests": 471,
-    "pass": 471,
+    "tests": 512,
+    "suites": 0,
+    "pass": 512,
     "fail": 0,
     "cancelled": 0,
     "skipped": 0,
     "todo": 0,
     "requiredRealRender": true,
-    "command": "DSH_REQUIRE_REAL_RENDER=1 node --test --test-concurrency=2 --test-reporter=tap test/*.test.mjs"
+    "command": "DSH_REQUIRE_REAL_RENDER=1 node --test --test-concurrency=1 --test-reporter=tap test/*.test.mjs",
+    "testFiles": 50,
+    "elapsedSeconds": 298.533,
+    "exitCode": 0,
+    "footerComplete": true
   },
   "hostVersions": [
     "0.2.1-rc.2",
@@ -38,12 +43,56 @@
     "missingFonts": [],
     "reviewer": "vision-model",
     "pilotDecision": "delegated",
-    "noHumanApprovalClaimed": true
+    "noHumanApprovalClaimed": true,
+    "status": "Historical first workflow sample; user rejected its visual direction. See visualRevision and VALIDATION_V090.md."
   },
   "limits": [
     "No user DeepSeek model or Desktop/Web GUI session",
     "No PowerPoint/WPS GUI or live projection verification",
     "No statistical benchmark across multiple real topics",
     "No independent proof of source truth or caller-recorded user responses"
-  ]
+  ],
+  "historicalSoftwareRuns": [
+    {
+      "purpose": "initial 0.9.0 candidate",
+      "tests": 471,
+      "pass": 471,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "purpose": "component visual revision",
+      "sourceCommit": "3464740485ecf1b7625cae36504ad789f8f23414",
+      "tests": 490,
+      "pass": 490,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "visualRevision": {
+    "sourceCommit": "3464740485ecf1b7625cae36504ad789f8f23414",
+    "pages": 10,
+    "plannedSeconds": 600,
+    "pptxSha256": "d8b8ad145b0d911449bfba4e7abddd42f7c7e5c5096d9492cb847574d7d9ebb6",
+    "quality": {
+      "errors": 0,
+      "warnings": 7
+    },
+    "delivery": "ready",
+    "missingFonts": [],
+    "reviewer": "vision-model",
+    "pilotDecision": "delegated",
+    "noHumanApprovalClaimed": true,
+    "scope": "Previous visual revision of the same research sample; not rerun or reapproved during this integration audit."
+  },
+  "agentIntegration": {
+    "report": "../AGENT_INTEGRATION_V090.md",
+    "runtimeVersions": [
+      "0.2.1-rc.2",
+      "0.2.1-rc.3"
+    ],
+    "provider": "scripted responses only",
+    "realModelInstructionFollowingTested": false,
+    "actualGuiTested": false
+  }
 }

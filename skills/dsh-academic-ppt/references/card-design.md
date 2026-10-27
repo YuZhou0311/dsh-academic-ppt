@@ -95,7 +95,7 @@
 
 生图在需要设计卡片时优先提供内容相关的参考；这个优先级不覆盖论文查证与取图。它与`capabilities.imageInput`不同：能看图不代表有生图接口；生成了图也不代表能看懂结果。根据宿主实际工具列表或明确能力声明记录可用入口，不靠模型名称猜测，不搜索凭据。生图不可用时回到原生卡片设计，研究原图仍按独立的获取流程处理。
 
-先查`academic_ppt_contract({"topic":"preparation"})`，把真实汇报题目、受众、内容块、模板选择与生图状态写入工作区 JSON，再调用`academic_ppt_prepare({requestPath,outputPath?})`。它是本地准备工具，返回下一步和提示词；它本身不请求外部服务，不创建图片，也不读取模型密钥。尚有待协商的设计决定时返回提问计划，暂不返回待调用的生图批次；先取得真实选择或明确委托并更新请求，查证取图与原生候选仍可继续。可用时由当前作者按返回计划调用宿主已有的生图工具。
+先查`academic_ppt_contract({"topic":"preparation"})`，把真实汇报题目、受众、内容块、模板选择与生图状态写入工作区 JSON，再调用`academic_ppt_prepare({requestPath,outputPath?})`。它是本地准备工具，返回下一步和提示词；它本身不请求外部服务，不创建图片，也不读取模型密钥。按返回的`designDialogue.nextAction`与`questionTiming`继续：checkpoints进入`prepare-pilot-candidates`时，先制作并实际查看候选，展示真实样张后再记录视觉选择；显式topics保留逐主题等待。已知偏好和明确委托继续沿用。可用时由当前作者按返回计划调用宿主已有的生图工具。
 
 准备请求的`paletteMode`默认`adaptive`，将`palette`作为可调整的候选；允许按本稿内容调整色相、明暗、饱和与用量，保持全稿色义。仅当用户明确固定颜色时使用`paletteMode:"fixed"`并填写`palette`，不能因参考图已有配色就自动锁定。
 

@@ -28,6 +28,17 @@ const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
 function snapshot(p){const c=clone(contentOf(p));c.assets=c.assets.map(({data,...a})=>a);return c;}
 function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
+// Only recorded checkpoint answers are non-rendering metadata. All science,
+// evidence, capabilities, reference studies, workflow interaction and actual
+// design remain protected.
+function decisionIndependentContent(p){
+ const content=clone(contentOf(p));content.revision=0;
+ const interaction=content.design.consultation?.interaction;
+ delete content.design.consultation;
+ if(interaction!==undefined)content.design.consultation={interaction};
+ if(content.storyboard)delete content.storyboard.decision;
+ return stable(content);
+}
 function initial(title,brief,design,capabilities){
  const initialDesign={mode:'content-led',density:'compact',cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)};
  initialDesign.consultation=withConsultationInteraction(initialDesign.consultation,'checkpoints');
@@ -35,12 +46,22 @@ function initial(title,brief,design,capabilities){
 }
 async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
-async function saveMutation(state,next,signal,{undo=false}={}){
+async function saveMutation(state,next,signal,{undo=false,preserveDecisionReview=false,cwd}={}){
  assertProject(next);abort(signal);
+ const keepArtifact=!undo&&preserveDecisionReview&&decisionIndependentContent(state.p)===decisionIndependentContent(next)&&
+  (await artifactCheck(state.p,cwd)).current;
  next.history=undo?next.history:[...state.p.history,snapshot(state.p)].slice(-10);
- next.revision=state.p.revision+1;next.updatedAt=now();delete next.artifact;delete next.visualReviews;
+ next.revision=state.p.revision+1;next.updatedAt=now();
+ if(keepArtifact){
+  next.artifact=clone(state.p.artifact);next.artifact.contentHash=contentHash(next);
+  // Keep the original build revision, review timestamps and results. This does
+  // not claim a new visual inspection or turn needs-fix into passed.
+  if(state.p.visualReviews)next.visualReviews=clone(state.p.visualReviews);
+ }else{delete next.artifact;delete next.visualReviews;}
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT: project changed during operation');await atomicJson(state.path,next,signal);},signal);
- return {ok:true,projectPath:state.path,revision:next.revision,summary:'已保存内容修订。已有成品保留，新内容需重新生成。',counts:counts(next)};
+ return {ok:true,projectPath:state.path,revision:next.revision,
+  summary:keepArtifact?'已保存决定记录；科学内容与设计未变化，保留同一PPTX的现有渲染与审查，未新增视觉批准。':'已保存内容修订。已有成品保留，新内容需重新生成。',counts:counts(next),
+  ...(keepArtifact?{preservedVerification:{pptxSha256:next.artifact.files.pptx.sha256,buildRevision:next.artifact.revision,basis:'checkpoint-decision-only; unchanged artifact and original review records'}}:{})};
 }
 function counts(p){return Object.fromEntries(fields.map(k=>[k,p[k].length]));}
 export async function createProject(options={}){
@@ -84,7 +105,7 @@ export async function updateRecords(options={}){
  if(a.templateProfilePaths){const profiles=[];for(const path of a.templateProfilePaths){const file=await safePath(options.cwd,path,{mustExist:true});const bytes=await readBounded(file,4*1024*1024);profiles.push(JSON.parse(bytes));}next.design.templateProfile=normalizeTemplateProfiles(profiles);}
  if(a.slideOrder){const byId=new Map(next.slides.map(slide=>[slide.id,slide]));if(a.slideOrder.length!==byId.size||new Set(a.slideOrder).size!==byId.size||a.slideOrder.some(id=>!byId.has(id)))throw new Error('INVALID_SLIDE_ORDER: slideOrder 必须恰好包含当前所有页面ID一次。');next.slides=a.slideOrder.map(id=>byId.get(id));}
  next.assets=await embedAssets(next.assets,options.cwd,options.signal);
- return saveMutation(state,next,options.signal);
+ return saveMutation(state,next,options.signal,{preserveDecisionReview:Boolean(a.design?.consultation),cwd:options.cwd});
 }
 export function evidenceIssues(p){
  const issues=[];const add=(severity,code,path,message)=>issues.push({severity,code,path,message});
@@ -205,7 +226,7 @@ export async function checkProject(options={}){
 }
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),evaluated=await scenesAndIssues(p),issues=evaluated.issues,summary=statusSummary(issues);
- let stage=a.stage??'auto';if(stage==='auto')stage=!p.papers.length?'research':!p.claims.length?'evidence':!p.slides.length?'storyboard':summary.errors?(issues.some(issue=>issue.severity==='error'&&issue.code.startsWith('narrative-'))?'storyboard':[...evaluated.designDiagnostics.issues,...evaluated.designDiagnostics.designDialogue.issues].some(issue=>issue.severity==='error')?'design':'evidence'):!p.artifact?'render':'review';
+ let stage=a.stage??'auto';if(stage==='auto')stage=!p.slides.length?(!p.papers.length?'research':!p.claims.length?'evidence':'storyboard'):summary.errors?(issues.some(issue=>issue.severity==='error'&&/^(?:narrative|storyboard)-/.test(issue.code))?'storyboard':[...evaluated.designDiagnostics.issues,...evaluated.designDiagnostics.designDialogue.issues].some(issue=>issue.severity==='error')?'design':'evidence'):!p.artifact?'render':'review';
  const mode=p.design.mode??'legacy';
  const nextActions={
   research:['使用实际宿主搜索工具核对题名、DOI、年份与发表版本，取得全文及图片后登记paper.sourceCheck和figureReview。搜索摘要、网页纯文本或verified:true均不证明已取得并看过原图。保留实际URL/本地路径、图号、图注和获取失败原因。','有参考时先看实际页面中的主辅证据、邻接解释和局部分组；没有参考文件则明确记录依据，不声称已看。'],
@@ -320,7 +341,7 @@ export async function planProject(options={}){
   const output=join(dirname(state.path),'storyboard-r'+(state.p.revision+1)+'.md');
   await writeFile(output,storyboardMarkdown(next.storyboard,next),{flag:'wx'});
   let saved;
-  try{saved=await saveMutation(state,next,options.signal);}
+  try{saved=await saveMutation(state,next,options.signal,{preserveDecisionReview:true,cwd:options.cwd});}
   catch(error){await rm(output,{force:true});throw error;}
   return {...saved,storyboard:evaluated.designDiagnostics.storyboard,files:{storyboard:output},
    nextActions:['展示问题、证据、取舍与时间预算，沿用用户已确认方向或明确委托。然后只做封面、最难正文和连续三页，实际渲染再确认整套视觉方向。']};
@@ -353,7 +374,8 @@ export async function planProject(options={}){
  ));
  const deferred=new Set(deferredFinalIssues);
  const unresolved=evaluated.issues.filter(i=>i.severity==='error'&&!deferred.has(i)&&(ids.includes(i.slideId)||affected.some(path=>i.path===path||i.path?.startsWith(path+'.'))));
- if(unresolved.length)throw new Error('PILOT_HAS_ERRORS: '+unresolved.map(i=>i.message).join(' ').slice(0,1500));
+ if(unresolved.length)throw new Error('PILOT_HAS_ERRORS: '+unresolved.map(i=>i.message).join(' ').slice(0,1500)+
+  (unresolved.some(i=>i.code==='design-dialogue-pending')?' 请先用academic_ppt_record保存实际design.consultation决定；本请求不会自动替各主题确认。仅登记决定且实际科学/设计不变时，无需重复build/render/review。':''));
  const reviews=(state.p.visualReviews??[]).filter(r=>r.pptxSha256===actual.pptxSha256&&r.basis==='pptx-render');
  if(ids.some(id=>reviews.findLast(r=>r.reviewedSlides.includes(id))?.result!=='passed'))throw new Error('PILOT_REVIEW_REQUIRED: 先实际查看样张并登记逐页observations；needs-fix必须先修复');
  const pilotReview={decision:request.decision,userResponse:request.userResponse,notes:request.notes,slideIds:ids,

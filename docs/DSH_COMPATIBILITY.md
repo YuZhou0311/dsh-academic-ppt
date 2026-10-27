@@ -1,6 +1,6 @@
 # DSH 兼容性与验证
 
-当前源码候选为 **0.9.0**，提供19个工具。声明的 Host 范围保持 `>=0.2.1-rc.2 <0.3.0-0`。0.9.0 的实测记录见 [当前验证报告](VALIDATION_V090.md)；以下0.8.2部分保留为历史验证，不能当成新版已经通过的证据。
+当前源码候选为 **0.9.0**，提供19个工具。声明的 Host 范围保持 `>=0.2.1-rc.2 <0.3.0-0`。0.9.0 的实测记录见 [当前验证报告](VALIDATION_V090.md) 与 [Agent 接入验证](AGENT_INTEGRATION_V090.md)；后者增加真实官方 AgentLoop 到 provider 请求边界的技能目录、全文加载、资源读取、工具结果、scope、当前目录与卸载检查，仅 provider 响应为脚本化测试输入。以下0.8.2部分保留为历史验证，不能当成新版已经通过的证据。
 
 `dsh-academic-ppt 0.8.2` 使用 DSH 的 Host 插件接口，在桌面端和网页端提供同一套学术汇报技能与 16 个工具。两端使用同一个安装包；插件不依赖浏览器扩展或单独的 Electron 前端。
 
@@ -74,7 +74,7 @@ npm 版 CLI 的插件命令会调用 PATH 中的 pnpm；`--profile` 放在 `add`
 
 ## 复跑 Host 兼容检查
 
-在已安装本项目依赖的源码目录执行。下面固定 rc.3；验证 rc.2 时，将四个 DSH 包的版本全部换成 `0.2.1-rc.2`。
+在已安装本项目依赖的源码目录执行。下面固定 rc.3；验证 rc.2 时，将所有 DSH 包的版本全部换成 `0.2.1-rc.2`。
 
 ```sh
 npm install --prefix .test-output/dsh-runtime --ignore-scripts --omit=optional --no-audit --no-fund \
@@ -82,6 +82,11 @@ npm install --prefix .test-output/dsh-runtime --ignore-scripts --omit=optional -
   @deepseek-ai/dsh-skill@0.2.1-rc.3 \
   @deepseek-ai/dsh-system-prompt@0.2.1-rc.3 \
   @deepseek-ai/dsh-app-boot@0.2.1-rc.3 \
+  @deepseek-ai/dsh-fs-local@0.2.1-rc.3 \
+  @deepseek-ai/dsh-working-directory@0.2.1-rc.3 \
+  @deepseek-ai/dsh-session@0.2.1-rc.3 \
+  @deepseek-ai/dsh-session-projection@0.2.1-rc.3 \
+  @deepseek-ai/dsh-sandbox-policy@0.2.1-rc.3 \
   @deepseek-ai/cordis@4.0.5
 
 node scripts/check-dsh-compat.mjs \

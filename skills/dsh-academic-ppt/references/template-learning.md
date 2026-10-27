@@ -28,6 +28,8 @@
 
 ## 取得实际观察
 
+在官方 DSH rc.2/rc.3 中，对工具返回的页面PNG和联系表使用实际可见的 `read_image({file_path: 实际PNG路径})`，核对图像成功送入当前模型。`read`只读UTF-8文字；返回路径、profile或OCR不能充当已看图的记录。图片入口、attachments和当前模型能力要求见[deepseek.md](deepseek.md)；不可用时保留具体缺口，不登记模型已看图。
+
 参考为PPTX时，调用`academic_ppt_template({filePath,render:true})`并取得真实渲染；fontDirectories只传实际存在的目录。按本次学习范围查看全稿概览，逐页记录职责和主要信息组合，再精看方法、对照、综合、密集页及相邻段落。另放大代表性组件，检查是否真noFill、实线/虚线如何区分范围、阴影落在哪一层、题签怎样覆边、文字与框的距离。不同正文类型都应进入观察，不能只看封面、目录或某一张漂亮页。结构推断、字号统计与suggestedDesign帮助定位，不替代看图；图片内部标签、继承字体和复杂母版尤其需要实看。
 
 完成实际提取和看图后，在准备请求的`template.review`中填写工具输出的`profilePaths`、真实`visualObservations`，以及可选`renderReferences`。`academic_ppt_prepare`核对每份profile与当前上传PPTX的hash；匹配时返回`continue-reference-guided`，不重复检查同一模板。模板改变时重新提取并看图，不沿用旧profile；由旧PPT转换后先把`localPaths`换成实际PPTX。hash匹配只证明profile对应文件，视觉观察仍由实际看图者负责。

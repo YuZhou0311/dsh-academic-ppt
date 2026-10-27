@@ -1,9 +1,10 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { buildAcademicTools } from './tools.mjs'
+import { assertHostOperationAccess } from './host-access.mjs'
 
 export const name = 'dsh-academic-ppt'
-export const inject = ['tools', 'skills']
+export const inject = ['tools', 'skills', 'workingDirectory', 'sandboxPolicy']
 
 export function readBundledSkill() {
   const directory = fileURLToPath(new URL('../skills/dsh-academic-ppt/', import.meta.url))
@@ -37,9 +38,16 @@ export function apply(ctx, config = {}) {
     }
   }
   try {
-    try { disposers.push(ctx.skills.register(readBundledSkill())) }
-    catch (error) { ctx.logger?.warn?.(`[dsh-academic-ppt] 技能加载失败：${String(error?.message || error).slice(0, 500)}`) }
-    for (const definition of buildAcademicTools()) disposers.push(ctx.tools.register(definition))
+    // The workflow is part of the plugin's required capability. Do not expose
+    // its tools as a healthy installation when the skill could not register.
+    disposers.push(ctx.skills.register(readBundledSkill()))
+    const resolveCwd = exec => exec?.agent
+      ? ctx.workingDirectory.ensure(exec.agent, exec.signal)
+      : process.cwd()
+    const beforeExecute = ({ name, args, cwd, exec }) => assertHostOperationAccess({
+      name, args, cwd, policy: ctx.sandboxPolicy.resolve({ session: exec?.agent?.session }), signal: exec?.signal,
+    })
+    for (const definition of buildAcademicTools({}, { resolveCwd, beforeExecute })) disposers.push(ctx.tools.register(definition))
     ctx.on?.('dispose', release)
   } catch (error) {
     release()

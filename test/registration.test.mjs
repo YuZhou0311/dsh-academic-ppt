@@ -7,7 +7,7 @@ import { spawnSync } from 'node:child_process'
 import { apply, inject } from '../src/index.mjs'
 import { buildAcademicTools, TOOL_COMMANDS, formatToolResult } from '../src/tools.mjs'
 
-function fakeHost({ failAt } = {}) {
+function fakeHost({ failAt, failSkill = false, directoryResolver = agent => agent.session.header.cwd } = {}) {
   const tools = new Map(), skills = new Map(), events = new Map(), warnings = []
   const ctx = {
     tools: { register(definition) {
@@ -15,7 +15,12 @@ function fakeHost({ failAt } = {}) {
       tools.set(definition.name, definition)
       return () => tools.delete(definition.name)
     } },
-    skills: { register(definition) { skills.set(definition.name, definition); return () => skills.delete(definition.name) } },
+    skills: { register(definition) {
+      if (failSkill) throw new Error('Host skill registration rejected')
+      skills.set(definition.name, definition); return () => skills.delete(definition.name)
+    } },
+    workingDirectory: { ensure: directoryResolver },
+    sandboxPolicy: { resolve: ({ session }) => ({ mode: 'workspace-write', workspaceRoot: session?.header?.cwd ?? process.cwd() }) },
     on(event, callback) { events.set(event, callback) },
     logger: { warn(message) { warnings.push(message) } },
   }
@@ -30,7 +35,7 @@ async function folder(t) {
 }
 
 test('DSH registers the academic skill and all nineteen bounded tools and disposes them', () => {
-  assert.deepEqual(inject, ['tools', 'skills'])
+  assert.deepEqual(inject, ['tools', 'skills', 'workingDirectory', 'sandboxPolicy'])
   const host = fakeHost(); apply(host.ctx)
   assert.equal(host.tools.size, 19)
   assert.deepEqual([...host.tools.keys()].sort(), Object.values(TOOL_COMMANDS).sort())
@@ -57,6 +62,15 @@ test('failed registration releases earlier contributions and invalid global conf
   assert.throws(() => apply(host.ctx), /Host registration rejected/)
   assert.equal(host.tools.size, 0); assert.equal(host.skills.size, 0)
   assert.throws(() => apply(fakeHost().ctx, { outputDir: 'hidden-global-dir' }), /不接受全局配置/)
+})
+
+test('a rejected required skill stops activation instead of exposing tools without their workflow', () => {
+  const host = fakeHost({ failSkill: true })
+  assert.throws(() => apply(host.ctx), /Host skill registration rejected/)
+  assert.equal(host.tools.size, 0)
+  assert.equal(host.skills.size, 0)
+  assert.equal(host.events.size, 0)
+  assert.deepEqual(host.warnings, [])
 })
 
 test('raw-schema calls reject malformed args before invoking an executor', async () => {
@@ -97,6 +111,29 @@ test('call identity uses session cwd and signal, does not mutate frozen args or 
   received = undefined
   await assert.rejects(tool.execute(args, { signal: controller.signal }), /cancelled before dispatch/)
   assert.equal(received, undefined)
+})
+
+test('Host tools follow the effective directory service and do not fall back after it rejects', async t => {
+  const initial = await folder(t), current = join(initial, 'changed-directory')
+  await mkdir(current)
+  let rejectDirectory = false, seenAgent, seenSignal
+  const host = fakeHost({ directoryResolver: async (agent, signal) => {
+    seenAgent = agent; seenSignal = signal
+    if (rejectDirectory) throw new Error('Current directory is unavailable')
+    return current
+  } })
+  apply(host.ctx)
+  const exec = { agent: { session: { header: { cwd: initial } } }, signal: new AbortController().signal }
+  const init = host.tools.get('academic_ppt_init')
+  const created = await init.execute({ projectDir: 'current-talk', title: 'Effective cwd fixture' }, exec)
+  assert.equal(created.projectPath, join(current, 'current-talk', 'project.json'))
+  assert.equal(seenAgent, exec.agent)
+  assert.equal(seenSignal, exec.signal)
+  await assert.rejects(readFile(join(initial, 'current-talk', 'project.json')), { code: 'ENOENT' })
+  rejectDirectory = true
+  await assert.rejects(init.execute({ projectDir: 'must-not-exist', title: 'Rejected cwd fixture' }, exec), /Current directory is unavailable/)
+  await assert.rejects(readFile(join(initial, 'must-not-exist', 'project.json')), { code: 'ENOENT' })
+  host.events.get('dispose')()
 })
 
 test('template access rejects escaping the calling workspace before reading a file', async t => {

@@ -116,7 +116,7 @@ export function storyboardReport(project,scenes,{final=false,recipeIds}={}){
   if(final&&required&&pilot.status!=='reviewed')add('error','storyboard-pilot-required','封面、困难页和连续三页的真实样张尚未完成或已因内容/设计改变失效。完成当前样张复核后登记 pilot-review。');
   return {present:true,required,status:issues.some(i=>i.severity==='error')?'needs-fix':missing.length?'in-progress':'planned',
     ready:issues.every(i=>i.severity!=='error')&&(!required||pilot.status==='reviewed')&&['confirmed','delegated'].includes(plan.decision?.status)&&Boolean(plan.decision?.userResponse?.trim()),
-    objective:plan.objective,audienceTakeaway:plan.audienceTakeaway,throughline:plan.throughline,
+    objective:plan.objective,audienceTakeaway:plan.audienceTakeaway,throughline:plan.throughline,decision:structuredClone(plan.decision),
     summary:{plannedPages:pages.length,implementedPages:plannedActualOrder.length,missingPages:missing.length,totalSeconds,layoutFamilies:[...new Set(bodyPages.map(p=>p.layoutFamily))]},pilot,issues,
     limits:'页面语法ID和文字对应是过程检查，不能判断故事感染力、科学真伪或美感。主图尺寸、实际几何与最终PPTX仍须逐页核查。'};
 }

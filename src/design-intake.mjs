@@ -225,13 +225,16 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   const designDialogue=designDialoguePlan(consultation);
   const template = await templatePlan(request,cwd,signal);
   let imageGeneration = generationPlan(request);
-  if(!designDialogue.readyForFinalDesign&&imageGeneration.nextAction==='invoke-host-imagegen'){
+  // Checkpoint B is a response to real candidates. The legacy topic workflow
+  // may wait for individual preferences; it must not prevent a checkpoint
+  // author from creating the very candidate the user needs to see first.
+  if(!designDialogue.readyForFinalDesign&&designDialogue.nextAction!=='prepare-pilot-candidates'&&imageGeneration.nextAction==='invoke-host-imagegen'){
     const {prompt,batches,...pendingGeneration}=imageGeneration;
     imageGeneration={...pendingGeneration,nextAction:'await-design-feedback',instructions:[
       '先取得配色、形态、文字与层次偏好，再按这些选择生成内容相关的卡片参考；当前尚未调用生图。研究查证和取图可继续。',
     ]};
   }
-  const nextAction = !designDialogue.readyForFinalDesign ? 'ask-design-questions'
+  const nextAction = designDialogue.nextAction === 'ask-design-questions' ? 'ask-design-questions'
     : template.nextAction === 'ask-template-once' || template.nextAction === 'inspect-template' ? template.nextAction : imageGeneration.nextAction;
   const plan = { ok:true,version:1,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
     nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
