@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "scope": "original design instruction; no research findings or user template assets",
+  "fontFamily": "Droid Sans Fallback",
+  "pages": [
+    {
+      "id": "frame-boundaries",
+      "title": "01  范围边界：实线与无填充虚线",
+      "summary": "两个完整边界采用相同语义层级。右侧真正 noFill；标题用独立白色对象打断上边线，无阴影。",
+      "svg": "frame-boundaries.svg",
+      "sha256": "749116f58c998c5765d7d45ba03a4b64a44bc14cec98a0a1e095306d56beefb0"
+    },
+    {
+      "id": "frame-depth",
+      "title": "02  纸面层次：细实线与无边线阴影",
+      "summary": "两个白色纸面有相同大小与轻阴影，左侧额外细线，右侧无可见边线。浅灰背景只用于清楚演示纸面差异。",
+      "svg": "frame-depth.svg",
+      "sha256": "a70e8cbb6c3e5674a696cccc3b61bebe42c89f416cdecee175fbb25a43341ab8"
+    },
+    {
+      "id": "frame-titles",
+      "title": "03  阅读入口：覆边题签与侧签",
+      "summary": "浮签使用独立深蓝底与白字，覆盖上边线；侧签明确命名共享条件，内部按行对齐。",
+      "svg": "frame-titles.svg",
+      "sha256": "505f625a1da51cf09152a183556935138ef4b9091729702f2602a91fcd56254c"
+    },
+    {
+      "id": "frame-nesting",
+      "title": "04  外层范围、内部模块与开放注释",
+      "summary": "外层透明虚线，内部白底实线和深蓝标题带；独立开放注释说明不同职责可以使用不同边界。图中箭头仅展示版式结构，不代表任何研究结果。",
+      "svg": "frame-nesting.svg",
+      "sha256": "f54b8ecceed3829e606b69dae388a2b914a8aed9025829fff83e4d6ffa91c600"
+    }
+  ],
+  "pptx": {
+    "path": "academic-frame-studies.pptx",
+    "sha256": "2038e497559655bb8bbfe5906810d206b281355b97ab1cfbcba81264890ea0eb",
+    "slideCount": 4
+  }
+}

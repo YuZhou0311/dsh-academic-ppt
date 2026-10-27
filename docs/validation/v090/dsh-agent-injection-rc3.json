@@ -1,0 +1,128 @@
+{
+  "ok": true,
+  "pluginVersion": "0.9.0",
+  "runtimeVersion": "0.2.1-rc.3",
+  "versions": {
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/dsh-agent": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-agent-loop": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session-projection": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-system-prompt": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-skill": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tool-skill": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-working-directory": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-fs-local": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tool-fs": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-skill-filesystem": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-sandbox": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-sandbox-policy": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-fs-sandbox": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-attachment": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-attachment-local": "0.2.1-rc.3"
+  },
+  "node": "v24.22.1",
+  "mode": "native",
+  "providerRequests": 31,
+  "toolPipelineCalls": 24,
+  "successfulToolResults": 16,
+  "rejectedToolResults": 8,
+  "academicToolCount": 19,
+  "skillBodyCharacters": 5772,
+  "skillBodySha256": "e4bbe665531940d7a40ca4dff640c93e56cf981a46f7fb5fecf1930073135f76",
+  "workflowSha256": "37324aa665e19aef0967254ef83688ba7033c34f1cfd2be8e77d074978c8478c",
+  "sourceHashes": {
+    "src/index.mjs": "372d6e1943304895bb4a5683af626f46c977326a225562eec4276da89dcde56a",
+    "src/tools.mjs": "07c6eaf72a499b02ed0067605ce94f483bc20e50be2f9f82fcecbaec9b7c1357",
+    "src/host-access.mjs": "264e5bdc249808fc7c7ee2041c580e2786a1a23aee9fff7ce9153a6190898776",
+    "src/core.mjs": "879ffcae11d52ca942c50eaedb0eaa593dd69fc238526b0fa1a249e4f18e7834",
+    "src/design-intake.mjs": "c8f61a982796e9007938be60d2ff8fa8db7b4828635dbd95716708a226ac359e",
+    "src/design-dialogue.mjs": "623f9924783344b09f30456bdc01696d60b684d49380cbbf95712ce0faac0f68",
+    "src/storyboard.mjs": "25ff1bcaf6187f4124fe5ebe31d84272b08fc4bc70ce887beb4059e5ccc4a0a0",
+    "src/tool-contract.mjs": "7876a80f58ec912f977a6ae107f32542ba5d69ed396f9d24ca239065c1af73b4",
+    "skills/dsh-academic-ppt/SKILL.md": "74e23563f09ae693f5255fdc9babaec50e4ced938b1704d0516b572da4ff4cdd",
+    "skills/dsh-academic-ppt/references/deepseek.md": "119b226f091a6a400111ed3e2b6823f1ac5ec4687b201237261c2f519551af5c"
+  },
+  "imageTransport": {
+    "fixture": {
+      "width": 8,
+      "height": 6,
+      "sourceBytes": 115,
+      "sourceSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+      "rgbaSha256": "7fd13983dce660368bbf4e1b0347452795a769062ff8b2dc188782e84d13c18e"
+    },
+    "nativeToolCallId": "read-image-fixture",
+    "nativeImageBlockCount": 1,
+    "attachment": {
+      "attachmentId": "sha256:ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+      "mediaType": "image/png",
+      "bytes": 115,
+      "width": 8,
+      "height": 6,
+      "name": "native-image-fixture.png"
+    },
+    "storedSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+    "requestTarget": {
+      "width": 8,
+      "height": 6,
+      "maxBytes": 115
+    },
+    "requestVariantId": "sha256:8ada0d598bdd66c27c2ec27a1adfe1a163b476d6e6cda1276a0341323c12abd2",
+    "requestMediaType": "image/png",
+    "providerResolvedBytes": 115,
+    "providerResolvedSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+    "sourceBytesPreserved": true,
+    "boundary": "The real native request delivered an image attachment reference to the scripted provider adapter, which resolved verified bytes through the official attachment store. No provider HTTP request or visual interpretation was performed."
+  },
+  "filePolicyModes": [
+    "workspace-write",
+    "read-only",
+    "danger-full-access"
+  ],
+  "checks": [
+    "Official AgentLoop -> skill catalog -> native skill tool -> complete wrapped body/resourceBase -> real read tool -> workflow text -> native academic tools -> rendered results in next provider requests",
+    "Exactly 19 unchanged academic schemas are visible at the native provider boundary; 48-card and 32-layout results plus storyboard contract are reachable",
+    "Official read_image returns a native image block in the next provider request; its exact attachment identity resolves to verified original-fixture pixels and request bytes through the isolated real attachment store",
+    "The official read_image route gate rejects both explicitly text-only and unknown input modalities; each refusal reaches the next provider request without an image block",
+    "After an official workingDirectory.set change, a model-requested relative init writes in the effective current directory while the immutable Session header stays unchanged",
+    "Changing cwd to controlled sibling directory B does not expand the original workspace A: academic init and official sandboxed write both deny and leave no artifact",
+    "A real per-session read-only switch rejects academic init and official write while cards/context remain readable and the existing project stays byte-identical",
+    "Switching the same session back to workspace-write immediately restores academic and official filesystem writes inside the original workspace",
+    "An explicit danger-full-access override on the disposable Session permits both academic and official writes to controlled directory B; the test then restores workspace-write",
+    "Malformed native tool arguments and project-path escapes are rejected by the real pipeline and retained as model-visible errors",
+    "An explicit /dsh-academic-ppt user gesture injects the full instructions before the first request and deduplicates repeated names",
+    "Real agent-scope tool restrictions suppress native loader and catalog together; explicit user invocation remains governed by userInvocable",
+    "Duplicate runtime skill registration is first-wins; disposing the duplicate preserves the winner and unchanged catalog is not republished",
+    "Unload/remount changes the next real request schemas and durable replacement catalog without stale registrations; prior instruction history is intentionally retained",
+    "Official filesystem skill discovery reads only the explicitly supplied package directory; filesystem/runtime overlap produces one catalog winner and does not create tools",
+    "A package missing its actual SKILL.md fails official Cordis activation and leaves neither academic tools nor a partial skill registration"
+  ],
+  "checkedAt": "2026-10-27T08:07:46.392Z",
+  "boundaries": {
+    "real": [
+      "published official Cordis lifecycle",
+      "AgentRegistry and AgentLoop",
+      "SessionStore and session projections",
+      "system prompt and native tool schema assembly",
+      "skill registry/catalog/loader/explicit user invocation",
+      "native tool execution and output rendering",
+      "official read/read_image/write tools and SandboxedFileSystem backend",
+      "official LocalAttachmentStore normalization, immutable storage and request-image byte resolution",
+      "official SandboxPolicyService with logged per-session mode switches",
+      "official filesystem skill discovery"
+    ],
+    "scripted": [
+      "provider capability metadata and response chunks only; tool selections and final assistant text are deterministic fixtures"
+    ],
+    "notClaimed": [
+      "real model instruction following, visual understanding or presentation quality",
+      "provider HTTP image serialization or API compatibility",
+      "Desktop/Web UI, authentication or user profiles",
+      "OS process isolation, concurrent filesystem races or remote filesystem providers",
+      "PTC/run_code transport"
+    ],
+    "isolation": "All sessions are in memory. Working directories A/B, the attachment store/cache home and unused provider home paths are explicit disposable fixtures. Policy mode switches affect only the test Session. Default skill roots and watchers are disabled. No real model adapter or session-persistence provider is mounted."
+  }
+}

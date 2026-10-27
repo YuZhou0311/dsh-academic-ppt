@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "reviewer": "vision-model",
+  "view": "pptx-render",
+  "engine": "LibreOffice Kit WASM 0.1.5",
+  "fontFamily": "Droid Sans Fallback",
+  "pptx": "academic-frame-studies.pptx",
+  "sha256": "2038e497559655bb8bbfe5906810d206b281355b97ab1cfbcba81264890ea0eb",
+  "slideCount": 4,
+  "reviewedPageIds": [
+    "frame-boundaries",
+    "frame-depth",
+    "frame-titles",
+    "frame-nesting"
+  ],
+  "nativeSceneErrors": 0,
+  "observations": [
+    "四页实际PNG逐张查看；文字未见截断，题签与边框没有穿字，组内外间距可区分。",
+    "第一与第四页透明虚线范围没有纸面填色或外阴影；上边框由独立题签底遮断。",
+    "第二页有边线与无可见边线的白纸面保留相同轻阴影，在灰白背景上可区分；同组没有额外重影。",
+    "第三页浮签、侧签与正文分别为原生可编辑形状/文字；题签下方另留正文空间。"
+  ],
+  "scope": "Original native design instruction only; manually viewed actual PPTX renders. No user-template assets, scientific claims or human aesthetic approval.",
+  "artifacts": [
+    {
+      "pageId": "frame-boundaries",
+      "pngSha256": "d44a0417fc6a39c439b51ee237e7f9bdeb113058247e2608551a79f8dc95c5ab",
+      "dimensions": [
+        1801,
+        1013
+      ]
+    },
+    {
+      "pageId": "frame-depth",
+      "pngSha256": "1a1fbcef886db961a8b4ed254fedf8186ec0fa2e031cf3114162f54e27abe589",
+      "dimensions": [
+        1801,
+        1013
+      ]
+    },
+    {
+      "pageId": "frame-titles",
+      "pngSha256": "3d1e65425b3a981f60432c27832e8b02175d2973b83a87fc2d5fd74238e8fa87",
+      "dimensions": [
+        1801,
+        1013
+      ]
+    },
+    {
+      "pageId": "frame-nesting",
+      "pngSha256": "e6575dd0a07d1d109c930ad6348a15dcf7326bb5a913e5330a0f0308fb864073",
+      "dimensions": [
+        1801,
+        1013
+      ]
+    }
+  ]
+}

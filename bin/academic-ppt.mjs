@@ -33,6 +33,9 @@ const HELP = `DSH Academic PPT — 学术汇报工程工具
   study     比较实际候选SVG/PPTX，可生成真实预览
   portfolio 比较指定工程的主体结构，供视觉复核
   review    记录实际完成的视觉检查
+  plan      登记问题与证据故事板，确认当前真实样张
+  layouts   按内容关系查询32种整页学术语法
+  deliver   通过最终检查后生成可恢复交付包，阻止草稿冒充成品
 
 --args 必须指向 UTF-8 JSON 对象文件，路径相对当前目录解析。
 --json 输出结构化结果，供程序使用；默认输出精简摘要。
@@ -64,7 +67,7 @@ function commandHelp(command, tool, schema) {
   for (const [key, field] of Object.entries(schema.properties || {})) {
     const requirement = command === 'review' && key === 'observations' ? '当前 academic 工程必填' : required.has(key) ? '必填' : '可选'
     lines.push(`  ${key} [${requirement}] ${fieldSummary(field)}`)
-    const description = (tool.parameters.properties?.[key]?.description || field.description || '').split('Runtime validation:')[0].trim()
+    const description = key === 'projectPath' ? 'init返回的project.json文件路径，不是工程目录。' : (tool.parameters.properties?.[key]?.description || field.description || '').split('Runtime validation:')[0].trim()
     if (description) lines.push(`    ${description}`)
   }
   if (command === 'record') lines.push('', '推荐通过 recordsPath 提交内容批次；保留内联 CLI 参数兼容。recordsPath 与内联内容不能同时提交。')

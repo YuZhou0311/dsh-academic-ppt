@@ -18,7 +18,7 @@
 
 当多个对象属于同一观测来源、处理、模型阶段或比较范围时，可用浅底、细线、题签或框表达共同归属。独立数据图自身已有坐标和边界时，外部可以开放。短注只要邻接与对齐明确，不必套卡片。
 
-常规解释卡从`appearance.surface:outline`起步，使用白色或极浅背景、灰蓝或中性灰细描边、小圆角与适量内边距；`accent:none`、`elevation:false`避免默认粗强调条和阴影。原生卡片会继承`design.cardDefaults`；需要开放时明确覆盖`surface:plain`，不要为了修某一旁注把整稿默认边界全部删除。
+按 [academic-visual-language.md](academic-visual-language.md) 具体区分透明范围框、白底证据面板、阴影旁注与开放结构。无填充虚线框、细实线加轻阴影、覆边题签都可以建立学术层次；选用哪种取决于实际参考和当前归属关系。普通卡继承`design.cardDefaults`，但这不是将全稿设成一种外观的理由。需要开放时明确覆盖`surface:plain`；需要保留透明边界时用`fill:none`与实际`stroke/dash`，不能把透明和无框混为一谈。
 
 主构图与局部分组可以有不同层级，例如主证据中再区分对照，方法阶段内再放输入与验证。只有新增了真实归属或包含关系时才增加一层边界；内层也可用对齐、题签或留白表达。去掉无意义双重套框，不能把所有嵌套都抹成同一层。空框、强阴影和重复标题不增加信息；卡片不必等宽等高，未分组的内容也不能任意散落。
 
@@ -28,7 +28,7 @@ composition的surface、heading与padding控制外层表达；heading:hidden可�
 
 新卡片先按[card-design.md](card-design.md)中的内容关系查询`academic_ppt_cards`，实际查看适合本稿的预览，再从7族48款中选择或改造`card.preset`。图册提供浮签、标题带、折角、编号、侧栏和不同读数、条件、对照、流程组织，另有12种[图片嵌入式卡片](image-cards.md)。卡内论文图同样可以承载主证据；按实际图片比例与阅读大小决定独立开放大图、图卡或二者组合。样式数量不决定一页应放多少卡片。按工具详情填写实际题名、正文、条目和限定，不把示例事实带入研究。
 
-显式`preset`决定内部布局、表面和强调形态，不继承项目`cardDefaults`，旧`style`也不叠加。预设只接受`appearance.padding`、`radius`、`elevation`作为外观微调，`card.accent`控制实际强调色；不要另外提交`appearance.layout`、`surface`或`accent`，这些字段会被忽略并产生提醒。不要同时设置`templateComponentId`；模板组件与原生配方选择一种。已有记录没有`preset`时继续既有样式；用独立原生drawing自主设计时无需同时套一个preset。
+显式`preset`决定内部布局、题签和条目关系，不继承项目`cardDefaults`中的内部布局或装饰模式，旧`style`也不叠加；外表面paint字段可继承并由逐卡覆盖。预设接受`appearance.padding/radius/elevation`，也接受`fill/stroke/strokeWidth/dash/shadow`调整外框；12种图片卡使用同一组外框参数。开放括线、双横线或双框保留其原有几何，外框参数不会把它们统一变成矩形。`card.accent`控制实际强调色；不要另提交`appearance.layout/surface/accent`来覆盖配方。不要同时设置`templateComponentId`；模板组件与原生配方选择一种。自主drawing不必套preset，但仍须学习与记录相关组件。
 
 既有`card.appearance.layout`改变题签与内容的实际几何关系，`surface`控制表面，两者独立选择：
 
@@ -40,7 +40,7 @@ composition的surface、heading与padding控制外层表达；heading:hidden可�
 
 旧记录缺省为stacked。按内容选结构，不逐页轮换三种样式，也不把它们当成整页模板。同一比较组通常采用一致结构；不同职责的局部注释可以开放。调用前查contract，长标题或短外框不适配时重选结构，不能截字。
 
-需要自主组件、内部嵌套或预设无法表达的关系时，使用slide.drawings的文本、矩形、椭圆、线与登记图片。绘图中的group角色形状表达局部归属，并非新的科学实体。用内部坐标设计后，检查实际区域缩放的字号和线宽；旧card.appearance仍可选择outline/tint/solid/plain、圆角、强调边与内边距。预设、既有外观与自主绘制都服务当前内容；目录为作者提供具体可用结构，不强迫不适合的材料入框。
+需要自主组件、内部嵌套或预设无法表达的关系时，使用slide.drawings的文本、矩形、椭圆、线与登记图片。矩形和椭圆可使用有界的`shadow`对象；`fill:none`、描边与线型保持独立。绘图中的group角色形状表达局部归属，并非新的科学实体，也不是Office组合对象。用内部坐标设计后检查实际区域缩放的字号、线宽和阴影；保留原有测量和内容检查。预设、既有外观与自主绘制都服务当前内容，不能用技术路径跳过视觉学习。
 
 样式只改变表达，不补充证据。涉及数据的长度、面积、位置或连接必须有明确含义和出处；辅助框与装饰线不计科学载体。复杂关系优先精简节点标签，将条件放到对应关系旁。
 

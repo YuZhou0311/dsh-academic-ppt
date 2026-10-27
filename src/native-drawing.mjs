@@ -39,7 +39,7 @@ export function renderNativeDrawing(b,project,drawing,target,{wrapText}={}){
       if(n)rendered.push(n);meaningful=meaningful||Boolean(String(e.text||'').trim());
     }else if(e.kind==='rect'||e.kind==='ellipse'){
       if((!e.fill||e.fill==='none'||e.fillOpacity===0)&&(!e.stroke||e.stroke==='none'))issue('drawing-invisible-shape','形状须有可见填色或边线，不能以不可见对象占位。',{elementId:e.id});
-      const props={...box(e),fill:e.fill??'none',stroke:e.stroke??'none',strokeWidth:(e.strokeWidth??1)*scale,...meta,semantic:!['group','decoration'].includes(e.role),...(e.fillOpacity!==undefined?{fillOpacity:e.fillOpacity}:{}),...(e.radius?{radius:e.radius*scale}:{}),...(e.dash?{dash:e.dash}:{})};
+      const props={...box(e),fill:e.fill??'none',stroke:e.stroke??'none',strokeWidth:(e.strokeWidth??1)*scale,...meta,semantic:!['group','decoration'].includes(e.role),...(e.fillOpacity!==undefined?{fillOpacity:e.fillOpacity}:{}),...(e.radius?{radius:e.radius*scale}:{}),...(e.dash&&e.dash!=='solid'?{dash:e.dash}:{}),...(e.shadow?{shadow:{...e.shadow,blur:e.shadow.blur*scale,offset:e.shadow.offset*scale}}:{})};
       if(e.kind==='ellipse'&&e.radius)issue('drawing-ellipse-radius','ellipse不支持radius，不能静默忽略。',{elementId:e.id});
       rendered.push(b.add(e.kind,id,props));meaningful=meaningful||e.role==='data';
     }else if(e.kind==='line'){

@@ -160,7 +160,9 @@ test('only actual bound reviewed source figures count, including the drawing-ima
   assert.ok(slide.excludedImages.some(a=>a.assetId==='unrelated'&&a.reason==='unbound-or-unrelated-source'));
   assert.ok(report.issues.some(i=>i.code==='scientific-image-review-missing'));
   assert.ok(report.issues.some(i=>i.code==='source-figure-thumbnail-review'&&i.assetIds.includes('used')));
-  assert.ok(!report.issues.some(i=>i.severity==='error'),'size heuristics never impose a universal quota');
+  assert.deepEqual(report.issues.filter(i=>i.severity==='error').map(i=>i.code),['figure-readability-unverified'],
+    'a read-values thumbnail needs actual label measurements; source identity alone is not legibility');
+  assert.equal(report.summary.unverifiedReadingThumbnailCount,1);
 });
 
 test('new default projection policy remains attached on record updates while explicit legacy designs remain valid',async t=>{

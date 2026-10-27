@@ -84,3 +84,12 @@ DSH 公开协议与安装机制的固定来源见 [兼容说明](docs/DSH_COMPAT
 ## 6. v0.8.3 编辑式局部卡片
 
 `skills/dsh-academic-ppt/references/editorial-v083/` 内的20款卡片由本项目根据生图概念探索重新使用 PowerPoint 原生文字、图形和独立的合成图位制作，均是**设计示意而不是研究材料**。图册未使用用户上传的论文图片、商业PPT模板或真实遥感观测数据；任何曲线、地图、遥感纹理均为本项目确定性生成的合成占位图。设计参考图不构成科学出处，使用者应自行取得并核验论文原图、图例和许可。原有第三方科研示例授权范围不因此改变。
+
+
+## 7. v0.9.0 整页语法与方法研究
+
+`src/page-recipes.mjs`、`scripts/build-page-recipes.mjs` 与 `skills/dsh-academic-ppt/references/page-recipes/` 中32种整页语法及可编辑图册均由本项目独立实现。图形、数据形态和关系示意用于教学，并逐页标明不含真实研究结论或实验数据。未复制用户购买模板的页面、图片、Logo、字体、研究内容或特色整页组合。
+
+工作流研究阅读了PPT-master、Presenton与Anthropic PPTX skill的原始文件；固定版本、采用的一般原则和未采用的产品选择见 [设计依据](docs/DESIGN_RATIONALE_V090.md)。未从这些项目复制代码、技能正文或资产。Anthropic PPTX目录自带专有许可，不把其文件视为MIT素材；本项目的独立实现与已有依赖继续按各自许可说明分发。
+
+本次用户会话、失败PPT、付费模板、原始分析文件和为验收下载的论文全文均不随候选包公开分发。

@@ -3,7 +3,9 @@ import { DEFAULT_DESIGN } from '../src/core.mjs';
 import { DEFAULT_ACADEMIC_SYSTEM } from '../src/design-system.mjs';
 // Tiny protocol fixtures deliberately leave space; density enforcement has its own integration tests.
 // These old protocol fixtures retain their explicit v0.6 typography; projection has dedicated coverage.
-export const fixtureDesign = { ...structuredClone(DEFAULT_DESIGN), density: 'balanced', consultation:{mode:'delegated',delegation:'Synthetic software fixtures explicitly delegate their appearance; user dialogue has separate regression coverage.'}, referenceStudy:{status:'reviewed',catalogIds:['research-tab'],previewPaths:['synthetic-fixture-reference.svg'],observations:'Synthetic record used only to test protocol paths; no actual visual review is claimed.',selectedPresets:[],adaptations:['Retain explicit legacy fixture card styles to test unchanged object identity.']}, system:{...DEFAULT_ACADEMIC_SYSTEM,header:'plain'} };
+// Retain the prior topic protocol explicitly; new checkpoint defaults and full-report
+// component study are covered through their public-entry integration fixtures.
+export const fixtureDesign = { ...structuredClone(DEFAULT_DESIGN), density: 'balanced', consultation:{mode:'delegated',interaction:'topics',delegation:'Synthetic software fixtures explicitly delegate their appearance; user dialogue has separate regression coverage.'}, referenceStudy:{status:'reviewed',catalogIds:['research-tab'],previewPaths:['synthetic-fixture-reference.svg'],observations:'Synthetic record used only to test protocol paths; no actual visual review is claimed.',selectedPresets:[],adaptations:['Retain explicit legacy fixture card styles to test unchanged object identity.']}, system:{...DEFAULT_ACADEMIC_SYSTEM,header:'plain'} };
 delete fixtureDesign.projection;
 // Encoded by pngjs and decoded with strict CRC checks; the previous fixture had a bad IDAT CRC.
 export const PNG='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4AWPQCEj5DwADXAHcD/+zFwAAAABJRU5ErkJggg==';

@@ -1,5 +1,7 @@
 # rc.8：36款原生卡片与参考设计入口
 
+本文保留rc.8的历史设计说明。0.9.0已扩展为48款卡片，并增加 `fill/stroke/strokeWidth/dash/shadow` 外表面参数和具体组件细读记录；当前行为以[组件语法](../skills/dsh-academic-ppt/references/component-grammar.md)和[学术卡片视觉语言](../skills/dsh-academic-ppt/references/academic-visual-language.md)为准。
+
 ## 1. 卡片是内容组件
 
 36种配方覆盖问题、方法、证据、指标、条件和进展。每种配方由外框、题签和内部内容组织共同构成，区分浮签、折角、侧签、编号、成组指标、输入输出、证据追踪、观察解释分层、条件分支等关系。它们不决定整页布局；图表、表格、流程与开放文字继续按逐页设计稿组织。

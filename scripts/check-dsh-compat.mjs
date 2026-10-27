@@ -21,13 +21,14 @@ assert.ok(options['--runtime-dir'], '--runtime-dir is required; the script never
 const requireRuntime = createRequire(join(options['--runtime-dir'], 'package.json'))
 const load = name => import(pathToFileURL(requireRuntime.resolve(name)).href)
 const versionOf = name => requireRuntime(`${name}/package.json`).version
-const versions = Object.fromEntries(['@deepseek-ai/dsh-tools', '@deepseek-ai/dsh-skill', '@deepseek-ai/dsh-system-prompt', '@deepseek-ai/dsh-app-boot', '@deepseek-ai/cordis'].map(name => [name, versionOf(name)]))
+const versions = Object.fromEntries(['@deepseek-ai/dsh-tools', '@deepseek-ai/dsh-skill', '@deepseek-ai/dsh-system-prompt', '@deepseek-ai/dsh-app-boot', '@deepseek-ai/dsh-session', '@deepseek-ai/dsh-session-projection', '@deepseek-ai/dsh-fs-local', '@deepseek-ai/dsh-working-directory', '@deepseek-ai/dsh-sandbox-policy', '@deepseek-ai/cordis'].map(name => [name, versionOf(name)]))
 const runtimeVersion = versions['@deepseek-ai/dsh-tools']
 for (const [name, version] of Object.entries(versions)) {
   if (name.startsWith('@deepseek-ai/dsh-')) assert.equal(version, runtimeVersion, `mixed DSH package versions: ${name}`)
 }
-const [{ Context }, { default: SystemPrompt }, { default: Tools }, { default: Skills }, { evaluatePluginCompatibility }] = await Promise.all([
+const [{ Context }, { default: SystemPrompt }, { default: Tools }, { default: Skills }, { evaluatePluginCompatibility }, { default: Sessions }, { default: SessionProjections }, { default: LocalFs }, { default: WorkingDirectory }, { default: SandboxPolicy }] = await Promise.all([
   load('@deepseek-ai/cordis'), load('@deepseek-ai/dsh-system-prompt'), load('@deepseek-ai/dsh-tools'), load('@deepseek-ai/dsh-skill'), load('@deepseek-ai/dsh-app-boot'),
+  load('@deepseek-ai/dsh-session'), load('@deepseek-ai/dsh-session-projection'), load('@deepseek-ai/dsh-fs-local'), load('@deepseek-ai/dsh-working-directory'), load('@deepseek-ai/dsh-sandbox-policy'),
 ])
 const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
 assert.equal(typeof manifest.engines?.dsh, 'string', 'package.json must declare engines.dsh')
@@ -43,7 +44,7 @@ const ctx = new Context()
 const checks = []
 const originalCwd = process.cwd()
 let calls = 0
-const agent = { ctx, session: { id: 'academic-plugin-compatibility-fixture', header: { cwd: workspace } } }
+let agent
 const execute = (name, args, signal = new AbortController().signal) => ctx.tools.execute({
   callId: `academic-compat-${++calls}`, name, arguments: args, agent, signal,
 })
@@ -58,18 +59,24 @@ async function successful(name, args) {
 
 try {
   await ctx.plugin(SystemPrompt)
+  await ctx.plugin(Sessions)
+  await ctx.plugin(SessionProjections)
+  await ctx.plugin(LocalFs, { cwd: workspace })
+  await ctx.plugin(WorkingDirectory, { defaultDirectory: workspace })
+  await ctx.plugin(SandboxPolicy, { mode: 'workspace-write', workspaceRoot: workspace })
   await ctx.plugin(Tools)
   await ctx.plugin(Skills)
+  agent = { ctx, session: ctx.sessions.create('academic-plugin-compatibility-fixture', { meta: { cwd: workspace } }) }
   let plugin = ctx.plugin(academic)
   await plugin
-  assert.equal(ctx.tools.schemas().length, 16)
+  assert.equal(ctx.tools.schemas().length, 19)
   const summaries = await ctx.skills.list({ cwd: workspace })
   assert.equal(summaries.filter(skill => skill.name === academic.name).length, 1)
   const skill = await ctx.skills.get(academic.name, { cwd: workspace })
   assert.ok(skill?.content.length > 300)
   assert.equal(skill.resourceBase.kind, 'directory')
   await access(join(skill.resourceBase.path, 'SKILL.md'))
-  checks.push('register sixteen tools and discover/load the packaged skill')
+  checks.push('register nineteen tools and discover/load the packaged skill')
 
   const cards = await successful('academic_ppt_cards', {})
   assert.equal(cards.totalCount, 48)
@@ -77,6 +84,11 @@ try {
   const contract = await successful('academic_ppt_contract', { topic: 'preparation' })
   assert.ok(JSON.stringify(contract).includes('paletteMode'))
   checks.push('query all 48 cards including scientific image cards and the full preparation contract through the host pipeline')
+  const layouts = await successful('academic_ppt_layouts', {})
+  assert.equal(layouts.totalCount, 32)
+  const storyboard = await successful('academic_ppt_contract', {topic:'storyboard'})
+  assert.ok(JSON.stringify(storyboard).includes('pilot-review'))
+  checks.push('query 32 semantic page recipes and the storyboard authoring contract through the actual host')
 
   const created = await successful('academic_ppt_init', { projectDir: 'talk', title: 'DSH compatibility fixture' })
   assert.equal(created.projectPath, join(workspace, 'talk', 'project.json'))
@@ -118,7 +130,7 @@ try {
   assert.equal((await ctx.skills.list({ cwd: workspace })).length, 0)
   plugin = ctx.plugin(academic)
   await plugin
-  assert.equal(ctx.tools.schemas().length, 16)
+  assert.equal(ctx.tools.schemas().length, 19)
   assert.equal((await ctx.skills.list({ cwd: workspace })).length, 1)
   await plugin.dispose()
   assert.equal(ctx.tools.schemas().length, 0)

@@ -2,6 +2,7 @@
 import { expandClaimIds } from './academic-quality.mjs';
 import { readingRole } from './projection-quality.mjs';
 import { isBodySlide } from './design-quality.mjs';
+import { figureGeometry, FIGURE_LABEL_TARGET_PX, FIGURE_LABEL_FLOOR_PX } from './figure-planning.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
 const roots = slide => [...list(slide.claimIds), ...list(slide.cards).flatMap(c => list(c.claimIds)),
@@ -56,6 +57,30 @@ const dataFigureTypes = new Set(['dense-multipanel','plot','table','mixed']);
 const nonContentRoles = new Set(['footer','citation','note','caption','source-details','reference-title','reference-index','identity','section-label','section-index','index','decoration','icon','logo','context-visual']);
 const unique = values => [...new Set(values)];
 const rounded = value => Math.round(value * 10000) / 10000;
+const readingTasks = new Set(['read-values','compare-panels']);
+
+/** Use the picture's native bounds, never its containing card, as the scale.
+ * The scene exposes caption/legend costs for ordinary and nested figures.
+ * Native drawings and older scenes remain measurable from their image node.
+ */
+function actualFigureReading(asset,node,placement) {
+  const effectiveAsset=node.viewport?{...asset,viewport:node.viewport}:asset;
+  // A malformed external/legacy scene is not allowed to crash the rest of a
+  // quality report. The figure renderer independently rejects invalid crops.
+  let geometry=null;
+  try { geometry=figureGeometry(effectiveAsset,node); } catch { /* unmeasured below */ }
+  const measured=finite(asset.reading?.minLabelPx)&&asset.reading.minLabelPx>0;
+  const projectedLabelPx=geometry&&measured?rounded(asset.reading.minLabelPx*geometry.scale):null;
+  return {
+    task:asset.reading?.task||null,requiresLabels:readingTasks.has(asset.reading?.task),
+    sourceLabelPx:measured?asset.reading.minLabelPx:null,projectedLabelPx,
+    labelFloorPx:FIGURE_LABEL_FLOOR_PX,labelTargetPx:FIGURE_LABEL_TARGET_PX,
+    status:projectedLabelPx===null?'unmeasured':projectedLabelPx<FIGURE_LABEL_FLOOR_PX?'below-floor':projectedLabelPx<FIGURE_LABEL_TARGET_PX?'needs-review':'estimated-readable',
+    requiredImageAtTarget:geometry&&measured?{w:rounded(geometry.visibleWidth*FIGURE_LABEL_TARGET_PX/asset.reading.minLabelPx),h:rounded(geometry.visibleHeight*FIGURE_LABEL_TARGET_PX/asset.reading.minLabelPx)}:null,
+    ...(placement?{slotBox:placement.slotBox,frameBox:placement.frameBox,captionHeight:placement.captionHeight,legendHeight:placement.legendHeight,slotUtilization:rounded(placement.slotUtilization)}:{}),
+    basis:'source-label-measurement-and-final-image-geometry-not-visual-approval',
+  };
+}
 
 /** This checks the recorded review, never independently interprets pixels. */
 export function isReviewedScientificImage(asset) {
@@ -125,6 +150,7 @@ export function evidenceDesignReport(project, scenes) {
     const linked = expandClaimIds(list(project.claims), roots(slide)).map(id => claims.get(id)).filter(Boolean);
     const quantitative = linked.some(c => list(c.metrics).length);
     const page=pages.get(slide.id) || {}, nodes=list(page.nodes).filter(n=>visibleNode(n,page));
+    const placements=new Map(list(page.figurePlacements).map(item=>[item.objectId,item]));
     const visibleCarriers = [];
     const sourceFigures=[],authoredFigures=[],excludedImages=[];
     const pageArea=(page.width || 1280)*(page.height || 720);
@@ -135,8 +161,9 @@ export function evidenceDesignReport(project, scenes) {
         !isReviewedScientificImage(asset)?'unreviewed':!['source','author-created',undefined].includes(asset.provenance)?'non-research-provenance':
         !/^data:image\/(?:png|jpeg);base64,/.test(node.data || asset.data || asset.dataUri || '')?'missing-pixels':!box?'not-visible':null;
       if(reason){excludedImages.push({assetId:node.assetId,reason});continue;}
-      const record={assetId:asset.id,paperId:asset.paperId,figure:asset.figure || '',contentType:asset.reading.contentType,
-        areaFraction:rounded(box.w*box.h/pageArea),box,thumbnail:box.w*box.h/pageArea<.06&&(box.w<260||box.h<160)};
+      const record={assetId:asset.id,objectId:node.id,paperId:asset.paperId,figure:asset.figure || '',contentType:asset.reading.contentType,
+        areaFraction:rounded(box.w*box.h/pageArea),box,thumbnail:box.w*box.h/pageArea<.06&&(box.w<260||box.h<160),
+        reading:actualFigureReading(asset,node,placements.get(node.id))};
       if(isReviewedSourceFigure(asset))sourceFigures.push(record);
       else if(asset.provenance==='author-created')authoredFigures.push(record);
       else excludedImages.push({assetId:asset.id,reason:'missing-source-identity'});
@@ -203,6 +230,11 @@ export function evidenceDesignReport(project, scenes) {
     const thumbnails=unique(sourceFigures.filter(f=>f.thumbnail).map(f=>f.assetId));
     if(thumbnails.length)issues.push({severity:'warning',code:'source-figure-thumbnail-review',slideId:slide.id,assetIds:thumbnails,
       message:'论文图目前只占较小显示区域。按实际阅读任务检查图内标签、图例和比较关系，必要时放大相关面板并重排解释；此为缩略图提醒，不是统一图片占幅配额。'});
+    const unreadableCandidates=[...sourceFigures,...authoredFigures].filter(f=>f.thumbnail&&f.reading.requiresLabels&&f.reading.projectedLabelPx===null);
+    if(unreadableCandidates.length)issues.push({severity:'error',code:'figure-readability-unverified',slideId:slide.id,
+      assetIds:unique(unreadableCandidates.map(f=>f.assetId)),
+      figures:unreadableCandidates.map(f=>({assetId:f.assetId,objectId:f.objectId,imageBox:f.box,task:f.reading.task})),
+      message:`${unreadableCandidates.map(f=>`${f.assetId}（实际 ${Math.round(f.box.w)}×${Math.round(f.box.h)} px）`).join('、')}需要读数或面板比较，但当前是缩略图且没有关键标签高度测量。记录源图 reading.minLabelPx 后按最终比例复核，或扩大原图并重排说明；大卡框、高分辨率和“已看原图”不能证明投影可读，不得为通过检查改成定位图。`});
     if(textBurden)issues.push({severity:'warning',code:'body-text-burden-review',slideId:slide.id,bodyCharacters,bodyTextBlocks:bodyTexts.length,
       message:'正文文字负担较高；检查可否用论文图、方法结构或准确数据图承担关系表达，并把解释放在相应图旁。字符数仅是复核信号，不要求按固定字数删减必要条件。'});
   }
@@ -216,7 +248,9 @@ export function evidenceDesignReport(project, scenes) {
     scientificVisualSlideCount:slides.filter(s=>s.hasScientificVisual).length,nativeTableSlideCount:slides.filter(s=>s.hasNativeTable).length,
     textOnlySlideCount:slides.filter(s=>s.textOnly).length,longestTextOnlyRun:Math.max(0,...runs.map(ids=>ids.length)),
     sourceFigureSlideCoverage:bodySlideCount?rounded(slides.filter(s=>s.sourceFigureIds.length).length/bodySlideCount):0,
-    scientificVisualSlideCoverage:bodySlideCount?rounded(slides.filter(s=>s.hasScientificVisual).length/bodySlideCount):0};
+    scientificVisualSlideCoverage:bodySlideCount?rounded(slides.filter(s=>s.hasScientificVisual).length/bodySlideCount):0,
+    unmeasuredReadingFigureCount:slides.flatMap(s=>[...s.sourceFigures,...s.authoredFigures]).filter(f=>f.reading.requiresLabels&&f.reading.projectedLabelPx===null).length,
+    unverifiedReadingThumbnailCount:slides.flatMap(s=>[...s.sourceFigures,...s.authoredFigures]).filter(f=>f.thumbnail&&f.reading.requiresLabels&&f.reading.projectedLabelPx===null).length};
   return { basis: 'actual-scene-carriers-with-declared-source-review-not-independent-verification', summary,slides,issues,
     limits:'覆盖是实际场景中的载体统计，原图身份和reading来自可审查记录；不联网验真、不判断图像语义或最终可读性。面积为可见边界的几何估算，未计算遮挡，不设统一图片数量或占幅配额。' };
 }

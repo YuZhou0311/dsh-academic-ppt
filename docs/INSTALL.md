@@ -1,10 +1,29 @@
 # 安装与使用
 
-> **版本提示：** `0.8.3` 的新增20款局部卡片及源码已纳入 `main`。本页现有在线 TGZ 安装命令仍指向**已正式发布的 0.8.2**；它不包含0.8.3的新组件。若使用0.8.3，请先从 `main` 获取源码或此前交付的0.8.3更新包。待0.8.3正式发布安装资产后，再将以下下载URL统一更新。不要把0.8.2的安装成功误认为0.8.3已生效。
+> **版本提示：** 本分支是 `0.9.0` 发布候选，先安装维护者提供的本地 `dsh-academic-ppt-0.9.0.tgz`。维护者实际创建 v0.9.0 Release 后可使用对应下载地址；不要用旧版 `latest` 代替本地候选包。
 
-**dsh-academic-ppt 0.8.2** 为 DeepSeek Harness 提供学术汇报技能和 16 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。声明的 DSH Host 范围为 `>=0.2.1-rc.2 <0.3.0-0`。插件在 Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。
+**dsh-academic-ppt 0.9.0** 为 DeepSeek Harness 提供学术汇报技能和 19 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。声明的 DSH Host 范围为 `>=0.2.1-rc.2 <0.3.0-0`。插件在 Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。
 
-[下载 0.8.2](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.8.2) · [插件介绍与展示](../README.md) · [DSH 兼容性与验证](DSH_COMPATIBILITY.md)
+[查看实际发布状态](https://github.com/YuZhou0311/dsh-academic-ppt/releases) · [插件介绍与展示](../README.md) · [DSH 兼容性与验证](DSH_COMPATIBILITY.md)
+
+## 指导如何进入 Agent
+
+本插件按 DSH 官方的按需技能机制接入：插件注册完整技能及工具，官方 `dsh-tool-skill` 向 Agent 提供名称和摘要；调用 `skill({name:"dsh-academic-ppt"})` 后，完整正文及资源目录进入下一轮模型请求。正文引用的 `references/` 再按任务通过文件读取工具加载，不会把所有参考资料一次塞进系统提示词。
+
+在标准 DSH 会话里，可显式使用以下入口，让官方技能消费者在当前步骤直接注入全文：
+
+```text
+/dsh-academic-ppt
+请根据工作区里的论文和实验数据制作一份12分钟组会汇报，先核对证据与故事线，再展示真实正文样张供我选择方向。
+```
+
+应安装完整 DSH bundle。仅将 `SKILL.md` 放入文件系统技能目录只会发现技能，不会注册19个 `academic_ppt_*` 工具。自定义 Agent preset 还须保留官方 `dsh-tool-skill`、文件读取能力和所需学术工具；标准本地组合提供的 `workingDirectory` 服务负责当前会话目录，插件跟随该服务的目录变化，不使用初始目录替代当前目录。
+
+插件同时依赖官方 `sandboxPolicy`。切换当前目录不会改变原会话的授权工作区；在 `read-only` 模式仍可查询卡片、契约和现有工程，保存工程、解析并保存模板 profile、导出或登记审查等写入会返回明确拒绝。需要写入时由用户在宿主选择合适模式，插件不会自行改变权限。
+
+要让 Agent 查看模板和PPTX页面，在官方本地组合中还需要实际可用的 `read_image`：`dsh-tool-fs` 启用 `readImage`、官方 attachments 服务可用，且当前路由模型明确支持图像输入。`read`只读文字，返回图片路径也不代表模型看到了图像。没有图像输入仍可研究和编辑，但不能登记模型视觉验收；具体规则见[宿主能力指南](../skills/dsh-academic-ppt/references/deepseek.md)。
+
+若使用 PTC，内部 `tools.skill(...)` 的完整结果须按该运行时要求返回或打印，才能进入模型上下文；仅调用而丢弃返回值不等于加载完成。本轮自动化验证覆盖 native 调用链，PTC 和用户 Desktop/Web 界面不在实测范围内。注入路径、已修问题与复跑方法见 [Agent 接入验证](AGENT_INTEGRATION_V090.md)。
 
 ## 选择安装方式
 
@@ -22,16 +41,16 @@
 
 1. 从 [DeepSeek Harness 官网](https://www.deepseek.com/harness/)安装或更新官方桌面应用，启动并进入工作区。
 2. 打开侧栏「插件」，选择「添加插件」或其菜单中的「安装第三方插件」。
-3. 在包地址输入框粘贴完整安装包地址：
+3. 将维护者提供的 TGZ 放到 DSH 所在电脑，在包地址输入框填写其真实绝对路径（替换下面示意路径）：
 
    ```text
-   https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.2/dsh-academic-ppt-0.8.2.tgz
+   file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz
    ```
 
-4. 核对名称为 `dsh-academic-ppt`、版本为 `0.8.2`，安装后选择「立即启用」。
+4. 核对名称为 `dsh-academic-ppt`、版本为 `0.9.0`，安装后选择「立即启用」。
 5. 按界面提示重启应用，在新会话中加载 `dsh-academic-ppt` 技能。
 
-如果应用无法访问 GitHub，可先下载 `.tgz`，在输入框填写该文件在 **DSH 所在电脑**上的绝对路径，例如 `C:/Users/your-name/Downloads/dsh-academic-ppt-0.8.2.tgz` 或 `/Users/your-name/Downloads/dsh-academic-ppt-0.8.2.tgz`。将用户名和目录换成实际值。插件尚未发布到 npm registry，请使用发布包地址或真实文件路径安装。
+如果应用无法访问 GitHub，可先下载 `.tgz`，在输入框填写该文件在 **DSH 所在电脑**上的绝对路径，例如 `C:/Users/your-name/Downloads/dsh-academic-ppt-0.9.0.tgz` 或 `/Users/your-name/Downloads/dsh-academic-ppt-0.9.0.tgz`。将用户名和目录换成实际值。插件尚未发布到 npm registry，请使用发布包地址或真实文件路径安装。
 
 ### 使用桌面自带命令
 
@@ -40,7 +59,7 @@
 先启动一次桌面应用以初始化 profile，再从应用菜单或托盘中**完全退出**；关闭窗口可能只是隐藏应用。退出后运行：
 
 ```sh
-dsh plugin --profile desktop add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.2/dsh-academic-ppt-0.8.2.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz"
 ```
 
 重新打开桌面应用。**通过 npm/npx 单独安装的 DSH CLI 不能修改桌面端的 `desktop` profile**；桌面端使用应用内插件管理或桌面自带命令。桌面自带 pnpm，无需为这条安装路径另行配置全局 pnpm。
@@ -49,7 +68,7 @@ dsh plugin --profile desktop add "https://github.com/YuZhou0311/dsh-academic-ppt
 
 ### 从界面安装
 
-在 DSH 网页侧栏打开「插件 → 添加插件」，填入上面的 `0.8.2` 安装包地址，安装并启用。网页与桌面使用同一个插件包。
+在 DSH 网页侧栏打开「插件 → 添加插件」，填入上面的 `0.9.0` 安装包地址，安装并启用。网页与桌面使用同一个插件包。
 
 Web Host 在远程服务器运行时，本地路径指向**服务器上的文件**，不是访问网页的电脑上的文件。HTTPS 安装包地址由 Host 下载；使用本地 `.tgz` 时先把文件放到服务器，再填写绝对路径。
 
@@ -58,20 +77,20 @@ Web Host 在远程服务器运行时，本地路径指向**服务器上的文件
 使用运行 Web Host 的同一 DSH 安装、同一 `DSH_HOME` 和同一 profile。npm 版 DSH 的包管理依赖 PATH 中可用的 pnpm。准备 Node.js 和 pnpm 后运行：
 
 ```sh
-npx --yes @deepseek-ai/dsh@0.2.1-rc.3 plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.2/dsh-academic-ppt-0.8.2.tgz"
+npx --yes @deepseek-ai/dsh@0.2.1-rc.3 plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz"
 npx --yes @deepseek-ai/dsh@0.2.1-rc.3 web
 ```
 
 已安装 `dsh` 命令时：
 
 ```sh
-dsh plugin --profile web add "https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.8.2/dsh-academic-ppt-0.8.2.tgz"
+dsh plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz"
 dsh web
 ```
 
 `--profile` 放在 `add` 之前。自定义 profile 将 `web` 改为实际名称，再用 `dsh --profile <实际名称>` 启动。安装后重启已经运行的 Web 服务。
 
-上例固定在已核验的 `0.2.1-rc.3`。使用 `0.2.1-rc.2` 时，将安装与启动命令中的 DSH 版本一起替换；已有 Web Host 则复用其实际运行时，不混用不同 profile 或管理命令。插件版本仍为 `0.8.2`。
+上例固定在已核验的 `0.2.1-rc.3`。使用 `0.2.1-rc.2` 时，将安装与启动命令中的 DSH 版本一起替换；已有 Web Host 则复用其实际运行时，不混用不同 profile 或管理命令。插件版本仍为 `0.9.0`。
 
 ## 3. 升级与确认
 
@@ -79,21 +98,23 @@ dsh web
 
 使用 CLI 时，停止对应应用或 Web 服务后，用新包地址再次执行 `dsh plugin --profile <实际名称> add ...`，然后重启。桌面 profile 仍须使用桌面自带命令。
 
-在插件详情核对版本为 `0.8.2`，新建会话并发送：
+在插件详情核对版本为 `0.9.0`，新建会话并发送：
 
-> 请加载 dsh-academic-ppt 技能，查看学术卡片库和准备流程，确认可以使用。
+> /dsh-academic-ppt 请查询整页语法与故事板契约，确认可以使用0.9.0的计划、样张和交付流程。
 
-应能发现 `academic_ppt_prepare`、`academic_ppt_cards`、`academic_ppt_template` 等工具。卡片索引返回 **48** 款预设，包含 `figure` 家族的 **12** 种图片嵌入卡；`academic_ppt_contract` 的 `preparation` / `design` 主题包含分阶段协商与参考学习约定。若仍显示旧版本，检查所选 profile、启用状态和是否已重启。
+已经加载的旧技能正文属于旧会话历史，升级或重新挂载不会改写那段历史。新建会话能避免新旧工作流混用；继续旧任务时，重新显式调用技能并用当前工程的 `context` 恢复真实决定，不把旧摘要当作新指南。
+
+应能发现新增的 `academic_ppt_plan`、`academic_ppt_layouts`、`academic_ppt_deliver`，以及原有工具。整页语法索引返回32项。局部卡片索引返回 **48** 款预设，包含 `figure` 家族的 **12** 种图片嵌入卡；`academic_ppt_contract` 的 `preparation` / `design` 主题包含分阶段协商与参考学习约定。若仍显示旧版本，检查所选 profile、启用状态和是否已重启。
 
 ## 4. 第一次制作汇报
 
 把论文、数据和参考 PPTX 上传到当前 DSH 会话，或放进会话工作目录，再说明汇报对象、时长和研究任务。例如：
 
-> 请用 dsh-academic-ppt，根据工作区里的论文和实验数据制作一份 12 分钟组会汇报，并与我逐步确定设计方向。
+> /dsh-academic-ppt 请根据工作区里的论文和实验数据制作一份 12 分钟组会汇报，并与我逐步确定设计方向。
 
-Agent 会分别讨论信息密度、故事线、配色、形态、语言、层次质感和封面，每轮只问少量相关选择，并展示真实候选。已有偏好继续沿用，明确委托后自主完成。查证、全文阅读和取图可在讨论期间继续；不要把设计对话理解为暂停研究。
+Agent 会围绕故事线与真实困难样张讨论完整方向，并在最终使用时呈现可用成品和剩余科学取舍。一次方向选择可以落实多个设计字段。已有偏好继续沿用，明确委托后自主完成。查证、全文阅读和取图可在讨论期间继续；不要把设计对话理解为暂停研究。
 
-插件提供准备计划与卡片参考，当前宿主 Agent 执行提问、读取上传文件和调用可用的生图工具。它需要实际查看参考，再根据当前论文调整配色、图文比例和内容组织。论文图可放入图卡，也可开放排版；没有模板或生图能力时继续原生流程。插件不需要额外模型密钥，也不包含独立的生图服务。
+插件提供证据故事板、整页语法和按需局部参考，当前宿主 Agent 执行提问、读取上传文件和实际看图。它需要根据当前论文调整配色、图文比例和内容组织。论文图可放入图卡，也可开放排版；只有明确需要探索局部构图时才使用补充生图参考，没有模板或生图能力时继续原生流程。插件不需要额外模型密钥，也不包含独立的生图服务。
 
 用户模板支持 `.pptx`；旧 `.ppt` 先用 PowerPoint 或 WPS 另存为 `.pptx`。参考用于学习层级、比例、分组和视觉语言，当前研究的文字、数据、配色和内部结构由实际内容决定。
 
@@ -101,18 +122,18 @@ Agent 会分别讨论信息密度、故事线、配色、形态、语言、层�
 
 | 文件 | 用途 |
 | --- | --- |
-| `dsh-academic-ppt-0.8.2.tgz` | DSH 安装包，直接交给插件管理器，无需解压 |
-| `dsh-academic-ppt-0.8.2-source.zip` | 含锁文件与测试的源码，可运行 `npm ci` 和 `npm test` |
+| `dsh-academic-ppt-0.9.0.tgz` | DSH 安装包，直接交给插件管理器，无需解压 |
+| `dsh-academic-ppt-0.9.0-source.zip` | 含锁文件与测试的源码，可运行 `npm ci` 和 `npm test` |
 | `SHA256SUMS` | 发布文件的 SHA-256 校验值 |
 | `release-manifest.json` | 包版本、源提交、文件大小和摘要 |
 | `RELEASE_NOTES.md` | 本版功能、安装入口与验证范围 |
 
-单包校验可用 `sha256sum dsh-academic-ppt-0.8.2.tgz`（Linux）、`shasum -a 256 dsh-academic-ppt-0.8.2.tgz`（macOS），或 PowerShell 的 `Get-FileHash .\dsh-academic-ppt-0.8.2.tgz -Algorithm SHA256`，与 `SHA256SUMS` 中同名文件的值比较。
+单包校验可用 `sha256sum dsh-academic-ppt-0.9.0.tgz`（Linux）、`shasum -a 256 dsh-academic-ppt-0.9.0.tgz`（macOS），或 PowerShell 的 `Get-FileHash .\dsh-academic-ppt-0.9.0.tgz -Algorithm SHA256`，与 `SHA256SUMS` 中同名文件的值比较。
 
 源码也可从发布标签获取：
 
 ```sh
-git clone --branch v0.8.2 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch feat/v0.9.0-academic-workflow --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 npm test
@@ -170,7 +191,7 @@ dsh plugin --profile web remove dsh-academic-ppt
 
 ## 官方安装依据
 
-安装机制固定参考官方仓库提交 `22ddee3792402c3e70ec5f86a63c3e3e895a2f60`；插件 0.8.2 对已发布运行时的实测范围与日期见 [兼容说明](DSH_COMPATIBILITY.md)。
+安装机制固定参考官方仓库提交 `22ddee3792402c3e70ec5f86a63c3e3e895a2f60`；插件 0.9.0 对已发布运行时的实测范围与日期见 [兼容说明](DSH_COMPATIBILITY.md)。
 
 - [桌面命令与运行时归属](https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/apps/desktop/README.zh.md#bundled-command-runtime)
 - [插件管理界面的安装流程](https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/packages/client/ui-plugin-manager/README.md#installing-a-bundle)

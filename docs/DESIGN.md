@@ -138,7 +138,9 @@ design.chrome 与 slide.chrome 分别提供全稿起点和逐页覆盖。header 
 
 ### 原生卡片与可见层次
 
-面板表面处理区域关系，design.cardDefaults 和 card.appearance 处理独立小卡片。appearance 支持 surface:outline/tint/solid/plain、radius:0–18、padding:12–24、accent:left/top/none 和 elevation:boolean。新工程默认 outline、radius12、padding16、accent:left、elevation:false；逐卡可覆盖。文本容量测量包含真实内边距和图标占位，不仅在旧文字背后补一个框。
+面板表面处理区域关系，design.cardDefaults 和 card.appearance 处理独立小卡片。appearance 支持 surface:outline/tint/solid/plain、radius:0–18、padding:12–24、accent:left/top/none 和 elevation:boolean。新工程默认 outline、radius4、padding16、accent:none、elevation:false；逐卡可覆盖。文本容量测量包含真实内边距和图标占位，不仅在旧文字背后补一个框。
+
+普通卡、48种preset和嵌图卡都可设置 `fill/stroke/strokeWidth/dash/shadow`，区分真正无填充范围、白底细实线、无边线纸面与克制阴影。外表面参数不重排preset内部内容；开放括线、双框、浮签仍保留各自几何。`shadow:false`覆盖旧elevation，透明边界不会自动变成有阴影的白色卡。具体参数与使用关系见[学术卡片视觉语言](../skills/dsh-academic-ppt/references/academic-visual-language.md)及[四页可编辑细节图册](../skills/dsh-academic-ppt/references/frame-studies/index.html)。
 
 card.icon 支持 question/method/evidence/comparison/boundary/hypothesis/satellite/leaf/water/model，由可编辑原生线条和形状组成。图标用于识别概念，不能充当研究证据。独立条件、读图解释与限制通常需要可见容器；外层plain可以搭配内层outline或tint，外层已有明显容器时内层可plain，保留一层主要边界即可。
 

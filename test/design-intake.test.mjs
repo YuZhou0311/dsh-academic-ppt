@@ -19,6 +19,22 @@ const report={topic:'观测误差的分解',audience:'方法研究组',consultat
 const card={id:'question',purpose:'研究问题',title:'尺度变化后的误差来源',body:'区分观测噪声与模型结构误差。',evidenceStatus:'proposal',items:[{label:'当前证据',detail:'尚待跨尺度检验。'}]};
 const host={availability:'available',source:'Synthetic test fixture declares a host tool; no actual service call.',toolName:'fixture_image_generator'};
 
+test('registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics',async t=>{
+  const {cwd,requestPath}=await fixture(t),tool=buildAcademicTools().find(value=>value.name==='academic_ppt_prepare');
+  for(const consultation of [undefined,{mode:'collaborative'},report.consultation,{...report.consultation,interaction:'topics'}]){
+    const request={topic:report.topic,template:{status:'none'},...(consultation?{consultation}:{})};
+    const bytes=JSON.stringify(request);await writeFile(requestPath,bytes);
+    const result=await tool.execute({requestPath},{agent:{session:{header:{cwd}}}});
+    assert.deepEqual(result.designRecords.consultation,{...(consultation??{mode:'collaborative'}),interaction:consultation?.interaction??'checkpoints'});
+    assert.equal(await readFile(requestPath,'utf8'),bytes,'Preparation returns a defaulted record without changing the author request.');
+    if(!consultation||consultation.mode==='collaborative'){
+      assert.equal(result.nextAction,'ask-design-questions');
+      assert.equal(result.designDialogue.questions.length,1);
+      assert.deepEqual(result.designDialogue.questions[0].topics,['density','storyline','language']);
+    }
+  }
+});
+
 test('prepare proposes the template question once without claiming the host has asked it',async t=>{
   const {prepare}=await fixture(t), first=await prepare(report);
   assert.equal(first.nextAction,'ask-template-once');
@@ -28,8 +44,8 @@ test('prepare proposes the template question once without claiming the host has 
   for(const status of ['none','unanswered','awaiting-upload']){
     const next=await prepare({...report,template:{status}});
     assert.equal(next.template.question,undefined,status);
-    assert.equal(next.imageGeneration.strategy,'native-catalog');
-    assert.equal(next.nextAction,'select-native-cards');
+    assert.equal(next.imageGeneration.strategy,'content-led-pages');
+    assert.equal(next.nextAction,'design-evidence-pages');
   }
 });
 
@@ -52,7 +68,7 @@ test('legacy PPT requires conversion and does not masquerade as a supported PPTX
   assert.equal(result.template.nextAction,'convert-template-or-continue-native');
   assert.equal(result.template.files[0].status,'conversion-required');
   assert.equal(result.template.files[0].nextTool,undefined);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
 });
 
 test('reviewed template profiles are reused only while bound to current source bytes',async t=>{
@@ -64,7 +80,7 @@ test('reviewed template profiles are reused only while bound to current source b
   assert.equal(result.template.nextAction,'continue-reference-guided');
   assert.equal(result.template.files[0].status,'host-reviewed');
   assert.equal(Object.hasOwn(result.template.files[0],'nextTool'),false);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
   assert.equal(result.template.review.profiles[0].templateSha256,profile.sha256);
   assert.match(result.template.instructions[0],/不重复/);
   await writeFile(file,'Changed source bytes');
@@ -122,19 +138,63 @@ test('all reference branches expose actionable adaptation and native reconstruct
     const result=await tool.execute({requestPath},{agent:{session:{header:{cwd}}}});
     const rendered=tool.output.render({},result).map(part=>part.text??'').join('\n');
     assert.deepEqual(result.designAdaptation.routes.map(route=>route.mode),['adapt-preset','compose-native']);
-    for(const expected of ['adaptive','drawings','composition.regions','card.accent','design.direction','白字','原生设计：',result.nativeFallback.selection])assert.ok(rendered.includes(expected),expected);
+    for(const expected of ['adaptive','drawings','composition.regions','card.accent','appearance.fill/stroke/strokeWidth/dash/shadow','design.direction','白字','原生设计：',result.nativeFallback.selection])assert.ok(rendered.includes(expected),expected);
   }
 });
 
-test('unknown and unavailable generation use native cards; available without content requests content first',async t=>{
+test('explicit card requests retain fallback while preparation without cards continues whole-page design',async t=>{
   const {prepare}=await fixture(t);
   for(const availability of ['unknown','unavailable']){
     const result=await prepare({...report,template:{status:'unanswered'},imageGeneration:{availability,source:'Fixture capability record.'},cards:[card]});
     assert.equal(result.nextAction,'select-native-cards');assert.equal(result.imageGeneration.prompt,undefined);
   }
   const contentFirst=await prepare({...report,template:{status:'none'},imageGeneration:host});
-  assert.equal(contentFirst.nextAction,'write-card-content');assert.equal(contentFirst.imageGeneration.prompt,undefined);
+  assert.equal(contentFirst.nextAction,'design-evidence-pages');assert.equal(contentFirst.imageGeneration.prompt,undefined);
   await assert.rejects(prepare({...report,imageGeneration:{availability:'available',source:'No named host tool.'},cards:[card]}),/toolName/);
+});
+
+test('preparation restores actual component study guidance even when no preset or generated card is requested',async t=>{
+  const {prepare}=await fixture(t);
+  const result=await prepare({...report,template:{status:'none'}});
+  assert.equal(result.nextAction,'design-evidence-pages');assert.equal(result.imageGeneration.prompt,undefined);
+  assert.equal(result.designRecords.referenceStudy,undefined,'Preparing guidance must not invent a viewing record.');
+  assert.equal(result.nativeFallback.tool,'academic_ppt_cards');
+  const text=formatToolResult('academic_ppt_prepare',result);
+  for(const expected of ['原48款','20款','C01–C20','componentStudies','frame','titleTreatment','spacing','adaptation','paletteRationale','drawings'])assert.ok(text.includes(expected),expected);
+  assert.match(text,/与是否采用preset.*无关|是否采用preset或最终是否出现卡片无关/);
+  assert.match(text,/同一模板可以提供多类组件/);
+  assert.match(text,/不.*证明.*看图|不.*证明.*审美/);
+});
+
+test('specific component descriptions survive preparation intact and invalid identities are rejected',async t=>{
+  const {prepare}=await fixture(t);
+  // Original software-test strings only: no real reference viewing is claimed.
+  const record={source:'user-template',referenceId:'Synthetic template / page 4 / aligned callout',previewPath:'synthetic-template-page-4.png',
+    frame:'Synthetic description: light fill, narrow solid border, no dashed border or shadow.',
+    titleTreatment:'Synthetic description: left-aligned title tab attached to the upper border.',
+    spacing:'Synthetic description: one text line of separation, equal inner margins, and a narrow group gap.',
+    adaptation:'Synthetic plan: redraw this relation near the current evidence panel, preserving all scientific conditions.',
+    colorHierarchy:'Synthetic description: dark body text, one muted title accent and neutral framing.'};
+  const referenceStudy={status:'reviewed',componentStudies:[record],
+    paletteRationale:'Synthetic description: the neutral surface preserves contrast and avoids competing with the existing source figure colors.'};
+  const original=structuredClone(referenceStudy);
+  const result=await prepare({...report,template:{status:'none'},referenceStudy});
+  assert.deepEqual(result.designRecords.referenceStudy,original);assert.deepEqual(referenceStudy,original);
+  assert.equal(result.designRecords.referenceStudy.catalogIds,undefined,'A detailed template study does not require unrelated catalog checkboxes.');
+  for(const changed of [
+    {...record,source:'card-library',referenceId:'not-a-card'},
+    {...record,source:'editorial',referenceId:'C21'},
+    {...record,referenceId:'Unlocated synthetic component',previewPath:'synthetic-component.png'},
+    {...record,referenceId:'Unlocated synthetic component',previewPath:'synthetic-component.png',adaptation:'Synthetic target only: apply the frame to slide 4 of the current report.'},
+  ])await assert.rejects(prepare({...report,template:{status:'none'},referenceStudy:{...referenceStudy,componentStudies:[changed]}}),/INVALID_PREPARATION/);
+  for(const field of ['previewPath','frame','titleTreatment','spacing','adaptation']){
+    const missing={...record};delete missing[field];
+    await assert.rejects(prepare({...report,referenceStudy:{...referenceStudy,componentStudies:[missing]}}),/INVALID_PREPARATION/,field);
+  }
+  for(const source of [{source:'card-library',referenceId:'figure-caption'},{source:'editorial',referenceId:'C20'}]){
+    const next=await prepare({...report,template:{status:'none'},referenceStudy:{...referenceStudy,componentStudies:[{...record,...source}]}});
+    assert.equal(next.designRecords.referenceStudy.componentStudies[0].referenceId,source.referenceId);
+  }
 });
 
 test('large card sets produce bounded independent prompt batches with complete content',async t=>{
@@ -200,7 +260,7 @@ test('registered preparation tool and its opt-in contract stay executable and bo
   assert.equal(contract.submission.tool,'academic_ppt_prepare');
   assert.equal(contract.submission.transport,'requestPath');
   const result=await tools.get('academic_ppt_prepare').execute({requestPath,outputPath:'plan.json'},exec);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
   const metadata=buildAcademicTools().map(({name,description,parameters})=>({name,description,parameters}));
   assert.ok(Buffer.byteLength(JSON.stringify(metadata))<18000,'new tools must not repeat the content contract in every model request');
 });
@@ -214,7 +274,7 @@ test('native card discovery exposes actual recipes and a useful compact context 
   assert.ok(selected.preset.contentContract);assert.ok(selected.preset.recipe);
   for(const result of [all,selected]){
     const rendered=formatToolResult('academic_ppt_cards',result);
-    for(const expected of ['drawings','composition.regions'])assert.ok(rendered.includes(expected),expected);
+    for(const expected of ['drawings','composition.regions','appearance.fill/stroke','strokeWidth','dash','shadow','card.accent','references/academic-visual-language.md'])assert.ok(rendered.includes(expected),expected);
   }
   assert.match(selected.instructions.join(' '),/先判断配方是否适合/);
   const filtered=await tools.get('academic_ppt_cards').execute({family:'method',limit:2});

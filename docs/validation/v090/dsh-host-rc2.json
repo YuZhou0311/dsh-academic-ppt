@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "pluginVersion": "0.9.0",
+  "runtimeVersion": "0.2.1-rc.2",
+  "versions": {
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-skill": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-system-prompt": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-app-boot": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-session": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-session-projection": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-fs-local": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-working-directory": "0.2.1-rc.2",
+    "@deepseek-ai/dsh-sandbox-policy": "0.2.1-rc.2",
+    "@deepseek-ai/cordis": "4.0.5"
+  },
+  "declaredDshRange": ">=0.2.1-rc.2 <0.3.0-0",
+  "node": "v24.22.1",
+  "platform": "linux",
+  "toolCalls": 12,
+  "checks": [
+    "register nineteen tools and discover/load the packaged skill",
+    "query all 48 cards including scientific image cards and the full preparation contract through the host pipeline",
+    "query 32 semantic page recipes and the storyboard authoring contract through the actual host",
+    "create, record, reopen, export native PPTX and inspect current artifacts in the calling workspace",
+    "reject malformed arguments and workspace escapes; preserve cancellation and process cwd",
+    "dispose and remount without stale or duplicate registrations"
+  ],
+  "checkedAt": "2026-10-27T07:57:24.372Z",
+  "scope": "Published DSH Cordis services and tool execution pipeline in an isolated runtime; no model, credentials or Desktop/Web GUI session."
+}
