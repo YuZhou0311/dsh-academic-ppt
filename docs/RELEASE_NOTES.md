@@ -2,11 +2,11 @@
 
 0.9.0 将制作流程从局部组件选择推进到“研究证据 → 故事板 → 真实样张 → 整稿 → 可验证交付”。保留学术来源链、原图、原生可编辑对象和 `schemaVersion: 1`，注册工具从16个增加到19个。
 
-本文件对应源码候选版本。正式版本标签、GitHub Release 和发布资产须对应维护者审阅的同一个提交；版本号不代表 Release 已发布。
+本文件对应 **v0.9.0 正式版本**。[下载 DSH 安装包](https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.9.0/dsh-academic-ppt-0.9.0.tgz) · [Release 与五项发布文件](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.9.0)。安装包、源码ZIP与校验清单来自同一发布提交，具体提交和文件摘要见 `release-manifest.json` 与 `SHA256SUMS`。
 
 ## 官方 Agent 接入复核
 
-在固定官方 DSH `0.2.1-rc.2` / `0.2.1-rc.3` 上新增真实 AgentLoop 回归，逐步核对技能目录、完整正文、参考文件、19个工具的 schema 及模型可见结果。每版31个 provider 请求、24次实际工具调用；包含原生图片内容送达和视觉能力拒绝对照，provider 响应使用合成脚本，未调用真实模型API。详见 [Agent 接入核验](AGENT_INTEGRATION_V090.md)。
+在固定官方 DSH `0.2.1-rc.2` / `0.2.1-rc.3` 上新增真实 AgentLoop 回归，逐步核对技能目录、完整正文、参考文件、19个工具的 schema 及模型可见结果。每版31个 provider 请求、24次实际工具调用；包含原生图片内容送达和视觉能力拒绝对照，provider 响应使用合成脚本，未调用真实模型API。详见 [Agent 接入核验](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/docs/AGENT_INTEGRATION_V090.md)。
 
 修复必需技能失败后仍暴露工具、会话切目录后仍使用旧目录、未核验只读/工作区写入策略，以及样张前确认循环和反馈使相同产物失效的问题。恢复输出增加具体已选方案和回答依据。CI固定两版实际接入测试，并强制执行真实渲染下的反馈、样张与交付回归。
 
@@ -38,7 +38,7 @@
 
 普通卡、preset和嵌图卡新增`fill/stroke/strokeWidth/dash/shadow`，可直接表达真正无填充虚线、白底细实线与独立轻阴影。保留内部内容关系、图像尺寸与原始媒体。原生drawing的矩形/椭圆同样支持阴影；实际PPTX明确输出noFill、线型与零值阴影参数。
 
-配套[视觉语言指南](../skills/dsh-academic-ppt/references/academic-visual-language.md)及四页原创可编辑细节图册，说明边界、纸面、浮签、侧签与嵌套的用途。深蓝、黑灰、白与克制暗红提供正式方向的起点，实际色义与用户偏好优先；颜色与边框丰富度不作为自动审美分。
+配套[视觉语言指南](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/skills/dsh-academic-ppt/references/academic-visual-language.md)及四页原创可编辑细节图册，说明边界、纸面、浮签、侧签与嵌套的用途。深蓝、黑灰、白与克制暗红提供正式方向的起点，实际色义与用户偏好优先；颜色与边框丰富度不作为自动审美分。
 
 ### 5. 检查原图最终能否承担读图任务
 
@@ -65,15 +65,15 @@
 
 ## 验证与实际边界
 
-已执行源码回归、原生PPTX检查、实际LibreOffice渲染、独立工作流验收，以及DSH官方Host `0.2.1-rc.2` / `0.2.1-rc.3` 注册与调用测试。具体数量、样稿、字体与环境范围以 [0.9.0验证记录](VALIDATION_V090.md) 为准。
+已执行源码回归、原生PPTX检查、实际LibreOffice渲染、独立工作流验收，以及DSH官方Host `0.2.1-rc.2` / `0.2.1-rc.3` 注册与调用测试。具体数量、样稿、字体与环境范围以 [0.9.0验证记录](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/docs/VALIDATION_V090.md) 为准。
 
 这不等于已测试用户的Desktop/Web界面、DeepSeek模型会话、PowerPoint/WPS和所有字体组合。插件可检查过程、文件和来源记录，不能自动证明科学结论、审美水平或用户确认真实发生；实际看图和专业判断仍不可省略。
 
 ## 升级入口
 
-- [安装与候选包使用](INSTALL.md)
-- [0.8.x工程迁移](MIGRATION_V090.md)
-- [32页原创语法图册](../skills/dsh-academic-ppt/references/page-recipes/index.html)
-- [设计依据与开源参考](DESIGN_RATIONALE_V090.md)
+- [安装与升级](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/docs/INSTALL.md)
+- [0.8.x工程迁移](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/docs/MIGRATION_V090.md)
+- [32页原创语法图册](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/skills/dsh-academic-ppt/references/page-recipes/index.html)
+- [设计依据与开源参考](https://github.com/YuZhou0311/dsh-academic-ppt/blob/v0.9.0/docs/DESIGN_RATIONALE_V090.md)
 
 运行范围保持 Node.js `^22.19.0 || >=24.0.0`、DSH Host `>=0.2.1-rc.2 <0.3.0-0`。本次提高 renderer 版本，旧导出保留，但不能沿用为新版的最终审查凭证。

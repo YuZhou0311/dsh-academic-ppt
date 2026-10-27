@@ -2,11 +2,11 @@
 
 **用可追溯证据组织故事线，与用户一起看真实样张，制作能够继续编辑和正式讲述的学术汇报。**
 
-**0.9.0 源码候选版** · 19 个 DSH 工具 · 32 种整页学术语法 · 48 种局部信息卡 · 可编辑 PPTX
+**0.9.0** · 19 个 DSH 工具 · 32 种整页学术语法 · 48 种局部信息卡 · 可编辑 PPTX
 
 [安装与升级](docs/INSTALL.md) · [0.9.0 发布说明](docs/RELEASE_NOTES.md) · [验证范围](docs/VALIDATION_V090.md) · [Agent 接入核验](docs/AGENT_INTEGRATION_V090.md) · [迁移说明](docs/MIGRATION_V090.md) · [整页语法图册](skills/dsh-academic-ppt/references/page-recipes/index.html)
 
-本分支准备 `0.9.0`。GitHub Release 与版本标签须由维护者审阅后发布；源码版本号、测试通过和已有 `latest` 发布是三个不同状态。当前发布状态以 [Releases](https://github.com/YuZhou0311/dsh-academic-ppt/releases) 为准。
+[下载 v0.9.0 安装包](https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.9.0/dsh-academic-ppt-0.9.0.tgz) · [正式 Release 与校验清单](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.9.0)。安装包、源码和清单绑定同一发布提交；GitHub Release 不表示已发布到 npm registry。
 
 ## 0.9.0 改变了制作过程
 
@@ -89,7 +89,7 @@
 
 ## 开始使用
 
-安装维护者提供的 `dsh-academic-ppt-0.9.0.tgz`，确认 DSH 插件详情显示 `0.9.0`。发布前使用本地包，勿把旧版 `latest` 安装成功当作新版已生效。
+从 [v0.9.0 Release](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.9.0) 安装 `dsh-academic-ppt-0.9.0.tgz`，确认 DSH 插件详情显示 `0.9.0`，重启后在新会话中显式调用 `/dsh-academic-ppt`。安装入口支持固定版本下载地址或真实本地包路径。
 
 > 请使用 dsh-academic-ppt，根据工作区论文和实验材料制作一份15分钟组会汇报。先与我确认故事线，再展示最难正文和连续三页的实际样张。我要学术严谨、内容充实、版式随问题变化；设计细节由你推荐。
 

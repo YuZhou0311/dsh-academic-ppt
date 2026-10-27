@@ -1,6 +1,6 @@
 # 安装与使用
 
-> **版本提示：** 本分支是 `0.9.0` 发布候选，先安装维护者提供的本地 `dsh-academic-ppt-0.9.0.tgz`。维护者实际创建 v0.9.0 Release 后可使用对应下载地址；不要用旧版 `latest` 代替本地候选包。
+> **版本：0.9.0。** 从 [正式 Release](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.9.0) 下载 [DSH 安装包](https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.9.0/dsh-academic-ppt-0.9.0.tgz)。使用固定版本地址或下载后的真实本地路径；升级后核对插件详情中的版本。
 
 **dsh-academic-ppt 0.9.0** 为 DeepSeek Harness 提供学术汇报技能和 19 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。声明的 DSH Host 范围为 `>=0.2.1-rc.2 <0.3.0-0`。插件在 Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。
 
@@ -41,10 +41,10 @@
 
 1. 从 [DeepSeek Harness 官网](https://www.deepseek.com/harness/)安装或更新官方桌面应用，启动并进入工作区。
 2. 打开侧栏「插件」，选择「添加插件」或其菜单中的「安装第三方插件」。
-3. 将维护者提供的 TGZ 放到 DSH 所在电脑，在包地址输入框填写其真实绝对路径（替换下面示意路径）：
+3. 在包地址输入框填写固定版本的安装包地址：
 
    ```text
-   file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz
+   https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.9.0/dsh-academic-ppt-0.9.0.tgz
    ```
 
 4. 核对名称为 `dsh-academic-ppt`、版本为 `0.9.0`，安装后选择「立即启用」。
@@ -133,7 +133,7 @@ Agent 会围绕故事线与真实困难样张讨论完整方向，并在最终�
 源码也可从发布标签获取：
 
 ```sh
-git clone --branch feat/v0.9.0-academic-workflow --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
+git clone --branch v0.9.0 --depth 1 https://github.com/YuZhou0311/dsh-academic-ppt.git
 cd dsh-academic-ppt
 npm ci --ignore-scripts
 npm test

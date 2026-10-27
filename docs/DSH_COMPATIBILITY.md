@@ -1,6 +1,6 @@
 # DSH 兼容性与验证
 
-当前源码候选为 **0.9.0**，提供19个工具。声明的 Host 范围保持 `>=0.2.1-rc.2 <0.3.0-0`。0.9.0 的实测记录见 [当前验证报告](VALIDATION_V090.md) 与 [Agent 接入验证](AGENT_INTEGRATION_V090.md)；后者增加真实官方 AgentLoop 到 provider 请求边界的技能目录、全文加载、资源读取、工具结果、scope、当前目录与卸载检查，仅 provider 响应为脚本化测试输入。以下0.8.2部分保留为历史验证，不能当成新版已经通过的证据。
+当前版本为 **0.9.0**，提供19个工具。声明的 Host 范围保持 `>=0.2.1-rc.2 <0.3.0-0`。0.9.0 的实测记录见 [当前验证报告](VALIDATION_V090.md) 与 [Agent 接入验证](AGENT_INTEGRATION_V090.md)；后者增加真实官方 AgentLoop 到 provider 请求边界的技能目录、全文加载、资源读取、工具结果、scope、当前目录与卸载检查，仅 provider 响应为脚本化测试输入。以下0.8.2部分保留为历史验证，不能当成新版已经通过的证据。
 
 `dsh-academic-ppt 0.8.2` 使用 DSH 的 Host 插件接口，在桌面端和网页端提供同一套学术汇报技能与 16 个工具。两端使用同一个安装包；插件不依赖浏览器扩展或单独的 Electron 前端。
 
@@ -46,7 +46,7 @@ DSH 在安装和启动插件时检查 `engines.dsh`，其 SemVer 比较包括预
 需要终端操作时，先在桌面应用菜单通过 **Manage dsh Command…（管理 dsh 命令）** 安装或修复桌面随附命令。桌面应用至少启动一次后，使用「退出」完全关闭应用，再运行：
 
 ```sh
-dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.8.2.tgz"
+dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz"
 ```
 
 随后重新打开桌面应用。只关闭窗口通常会隐藏应用，Host 仍在运行。**npm 安装的 `dsh` 不允许修改官方 Desktop 的受管 profile**；桌面随附命令才能管理它。桌面端与 Web 共用 Host / 插件管理接口，但各自维护独立的可执行依赖与插件启用状态。[官方桌面命令与安装归属](https://github.com/deepseek-ai/deepseek-harness/blob/22ddee3792402c3e70ec5f86a63c3e3e895a2f60/apps/desktop/README.md#bundled-command-runtime)
@@ -58,7 +58,7 @@ dsh plugin --profile desktop add "file:/absolute/path/to/dsh-academic-ppt-0.8.2.
 通过插件管理界面安装，或在 Host 上运行。下面固定使用已核验的 rc.3：
 
 ```sh
-npx --yes @deepseek-ai/dsh@0.2.1-rc.3 plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.8.2.tgz"
+npx --yes @deepseek-ai/dsh@0.2.1-rc.3 plugin --profile web add "file:/absolute/path/to/dsh-academic-ppt-0.9.0.tgz"
 npx --yes @deepseek-ai/dsh@0.2.1-rc.3 web
 ```
 
