@@ -30,7 +30,7 @@ test('global CLI help exposes command discovery and preparation among the curren
   assert.equal(manifest.bin['dsh-academic-ppt'],'bin/academic-ppt.mjs');
   assert.doesNotMatch(result.stdout,/^  academic-ppt /m);
   const topics = toolSchemas.academic_ppt_contract.properties.topic.enum;
-  assert.deepEqual(topics, ['brief', 'paper', 'claim', 'asset', 'slide', 'design', 'assessment', 'preparation']);
+  assert.deepEqual(topics, ['brief', 'paper', 'claim', 'asset', 'slide', 'design', 'assessment', 'preparation', 'storyboard']);
   assert.ok(result.stdout.includes(`topic 仅支持：${topics.join(' / ')}`));
   assert.match(result.stdout, /init、build、render.*--help.*--schema/);
   assert.deepEqual(await readdir(cwd), []);
@@ -38,7 +38,7 @@ test('global CLI help exposes command discovery and preparation among the curren
 
 test('init, render and record help discover exact top-level fields without an argument file', async t => {
   const cwd = await workspace(t);
-  for (const command of ['init', 'render', 'record']) {
+  for (const command of ['init', 'render', 'record', 'plan', 'layouts', 'deliver']) {
     const result = run(t, [command, '--help'], cwd); if (!result) return;
     assert.equal(result.status, 0, result.stderr);
     const schema = toolSchemas[TOOL_COMMANDS[command]];
@@ -71,7 +71,7 @@ test('review discovery makes observations mandatory for current academic project
 
 test('per-command schema is exactly its shared runtime schema, including existing CLI compatibility', async t => {
   const cwd = await workspace(t);
-  for (const command of ['init', 'render', 'record']) {
+  for (const command of ['init', 'render', 'record', 'plan', 'layouts', 'deliver']) {
     const result = run(t, [command, '--schema'], cwd); if (!result) return;
     assert.equal(result.status, 0, result.stderr);
     const schema = JSON.parse(result.stdout);

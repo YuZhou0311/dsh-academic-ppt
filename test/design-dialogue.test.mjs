@@ -63,6 +63,23 @@ test('reference learning needs real candidate identities and observations, while
   assert.equal(designDialogueReport(unreviewed).issues.filter(i=>i.severity==='error').length,0);
 });
 
+test('whole-page learning validates actual recipe identities without forcing a card preset',()=>{
+ const study={status:'reviewed',pageRecipeIds:['paired-comparison'],previewPaths:['synthetic-page-preview.png'],observations:'Synthetic review of shared scale, condition labels and paired evidence.',adaptations:['Adjust widths to the two actual evidence figures; retain common units.']};
+ assert.equal(designDialogueReport(project(collaborative,study)).issues.filter(i=>i.severity==='error').length,0);
+ study.pageRecipeIds=['made-up-page'];
+ assert.ok(designDialogueReport(project(collaborative,study)).issues.some(i=>i.code==='page-reference-unknown-recipe'));
+});
+
+test('checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction',()=>{
+ const first=designDialoguePlan({mode:'collaborative',interaction:'checkpoints'});
+ assert.equal(first.questions.length,1);assert.equal(first.stage,'story');
+ assert.deepEqual(first.questions[0].topics,['density','storyline','language']);
+ const second=designDialoguePlan({mode:'collaborative',interaction:'checkpoints',decisions:['density','storyline','language'].map(response)});
+ assert.equal(second.questions.length,1);assert.equal(second.stage,'pilot-direction');
+ assert.deepEqual(second.questions[0].topics,['palette','shape','texture','cover']);
+ assert.equal(designDialoguePlan({mode:'collaborative',interaction:'topics'}).questions.length,2);
+});
+
 test('prepare defaults to dialogue and waits for design choices before proposing an imagegen call',async t=>{
   const cwd=await fixture(t),requestPath=join(cwd,'request.json');
   const request={topic:'Synthetic study of observation uncertainty',template:{status:'none'},imageGeneration:{availability:'available',source:'Synthetic host capabilities only.',toolName:'synthetic_image_tool'},cards:[{id:'q',purpose:'Question',title:'Synthetic comparison',body:'No scientific facts in this fixture.',evidenceStatus:'illustrative'}]};
@@ -71,7 +88,8 @@ test('prepare defaults to dialogue and waits for design choices before proposing
   assert.equal(first.nextAction,'ask-design-questions');assert.equal(first.imageGeneration.prompt,undefined);
   assert.equal(first.imageGeneration.nextAction,'await-design-feedback');
   assert.equal(first.designRecords.consultation.mode,'collaborative');
-  const rendered=formatToolResult('academic_ppt_prepare',first);assert.match(rendered,/design_density/);assert.match(rendered,/不代表已经问过/);
+  assert.equal(first.designRecords.consultation.interaction,'checkpoints');
+  const rendered=formatToolResult('academic_ppt_prepare',first);assert.match(rendered,/design_story/);assert.match(rendered,/不代表已经问过/);
   await writeFile(requestPath,JSON.stringify({...request,consultation:collaborative}));
   const next=await prepareDesign({cwd,requestPath});assert.equal(next.nextAction,'invoke-host-imagegen');assert.ok(next.imageGeneration.prompt.includes(request.cards[0].body));
 });

@@ -62,14 +62,14 @@ try {
   await ctx.plugin(Skills)
   let plugin = ctx.plugin(academic)
   await plugin
-  assert.equal(ctx.tools.schemas().length, 16)
+  assert.equal(ctx.tools.schemas().length, 19)
   const summaries = await ctx.skills.list({ cwd: workspace })
   assert.equal(summaries.filter(skill => skill.name === academic.name).length, 1)
   const skill = await ctx.skills.get(academic.name, { cwd: workspace })
   assert.ok(skill?.content.length > 300)
   assert.equal(skill.resourceBase.kind, 'directory')
   await access(join(skill.resourceBase.path, 'SKILL.md'))
-  checks.push('register sixteen tools and discover/load the packaged skill')
+  checks.push('register nineteen tools and discover/load the packaged skill')
 
   const cards = await successful('academic_ppt_cards', {})
   assert.equal(cards.totalCount, 48)
@@ -77,6 +77,11 @@ try {
   const contract = await successful('academic_ppt_contract', { topic: 'preparation' })
   assert.ok(JSON.stringify(contract).includes('paletteMode'))
   checks.push('query all 48 cards including scientific image cards and the full preparation contract through the host pipeline')
+  const layouts = await successful('academic_ppt_layouts', {})
+  assert.equal(layouts.totalCount, 32)
+  const storyboard = await successful('academic_ppt_contract', {topic:'storyboard'})
+  assert.ok(JSON.stringify(storyboard).includes('pilot-review'))
+  checks.push('query 32 semantic page recipes and the storyboard authoring contract through the actual host')
 
   const created = await successful('academic_ppt_init', { projectDir: 'talk', title: 'DSH compatibility fixture' })
   assert.equal(created.projectPath, join(workspace, 'talk', 'project.json'))
@@ -118,7 +123,7 @@ try {
   assert.equal((await ctx.skills.list({ cwd: workspace })).length, 0)
   plugin = ctx.plugin(academic)
   await plugin
-  assert.equal(ctx.tools.schemas().length, 16)
+  assert.equal(ctx.tools.schemas().length, 19)
   assert.equal((await ctx.skills.list({ cwd: workspace })).length, 1)
   await plugin.dispose()
   assert.equal(ctx.tools.schemas().length, 0)

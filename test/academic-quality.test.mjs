@@ -28,6 +28,17 @@ test('inferences require traceable independent premises and an alternative expla
  assert.deepEqual(academicIssues(p),[]);
  p.claims[0].dependsOn=['C2'];assert.ok(codes(p).includes('cyclic-reasoning'));
 });
+test('identical reasoning across independent sources is advisory while shared-study wording remains valid',()=>{
+ const p=fixture();
+ p.papers.push({...structuredClone(paper),id:'P2'});
+ p.claims.push({...structuredClone(claim),id:'C2'},{...structuredClone(claim),id:'C3',paperId:'P2'});
+ const repeated=academicIssues(p).find(i=>i.code==='reasoning-duplicated-across-sources');
+ assert.equal(repeated.severity,'warning');assert.deepEqual(repeated.relatedClaimIds,['C1','C2','C3']);
+ p.claims[2].paperId=paper.id;
+ assert.ok(!codes(p).includes('reasoning-duplicated-across-sources'));
+ p.claims[2].paperId='P2';p.claims[2].reasoning.boundary='另一来源限定于独立的地点与年份，不沿用此前样本的比较条件。';
+ assert.ok(!codes(p).includes('reasoning-duplicated-across-sources'));
+});
 test('indirect premises cannot hide unread or unanalysed sources from academic and brief gates',async t=>{
  const o=await project(t),p2={...structuredClone(paper),id:'P2',title:'A second synthetic source behind two inference steps',reading:{...paper.reading,status:'abstract-only'}};
  delete p2.analysis;

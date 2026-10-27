@@ -47,6 +47,19 @@ export function academicIssues(project) {
     if(c.kind!=='reported'&&!(c.dependsOn?.length)) add('reasoning-premise-missing',path,'inference/proposal 用 dependsOn 指向支持它的已核对证据，不能只有一个论文 ID。');
     for(const id of c.dependsOn??[]) if(id===c.id||!claims.has(id)) add('invalid-reasoning-premise',path,'dependsOn 需要存在且不为自身的证据 ID：'+id);
   }
+  // A repeated sentence can be legitimate for a shared experiment. Across
+  // independent sources it deserves inspection, not an automatic truth score.
+  const reasoningGroups=new Map();
+  for(const c of project.claims){
+    if(!substantive(c.reasoning?.warrant)||!substantive(c.reasoning?.boundary))continue;
+    const key=normalize(c.reasoning.warrant)+'|'+normalize(c.reasoning.boundary);
+    if(!reasoningGroups.has(key))reasoningGroups.set(key,[]);
+    reasoningGroups.get(key).push(c);
+  }
+  for(const group of reasoningGroups.values())if(group.length>=3&&new Set(group.map(c=>c.paperId)).size>=2){
+    issues.push({severity:'warning',code:'reasoning-duplicated-across-sources',path:'claims',relatedClaimIds:group.map(c=>c.id),
+      message:'不同来源的多个论点使用完全相同的推理与边界。逐一核对样本、条件和替代解释；填写通用warrant/boundary不代表完成学术论证。共同依据确实相同时可保留并说明。'});
+  }
   const active=new Set(),done=new Set();
   const visit=id=>{if(active.has(id)){add('cyclic-reasoning','claims.'+id,'证据推导出现循环，需回到独立的原始观察。');return;}if(done.has(id)||!claims.has(id))return;active.add(id);for(const next of claims.get(id).dependsOn??[])visit(next);active.delete(id);done.add(id);};
   for(const c of project.claims)visit(c.id);

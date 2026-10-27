@@ -28,8 +28,8 @@ test('prepare proposes the template question once without claiming the host has 
   for(const status of ['none','unanswered','awaiting-upload']){
     const next=await prepare({...report,template:{status}});
     assert.equal(next.template.question,undefined,status);
-    assert.equal(next.imageGeneration.strategy,'native-catalog');
-    assert.equal(next.nextAction,'select-native-cards');
+    assert.equal(next.imageGeneration.strategy,'content-led-pages');
+    assert.equal(next.nextAction,'design-evidence-pages');
   }
 });
 
@@ -52,7 +52,7 @@ test('legacy PPT requires conversion and does not masquerade as a supported PPTX
   assert.equal(result.template.nextAction,'convert-template-or-continue-native');
   assert.equal(result.template.files[0].status,'conversion-required');
   assert.equal(result.template.files[0].nextTool,undefined);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
 });
 
 test('reviewed template profiles are reused only while bound to current source bytes',async t=>{
@@ -64,7 +64,7 @@ test('reviewed template profiles are reused only while bound to current source b
   assert.equal(result.template.nextAction,'continue-reference-guided');
   assert.equal(result.template.files[0].status,'host-reviewed');
   assert.equal(Object.hasOwn(result.template.files[0],'nextTool'),false);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
   assert.equal(result.template.review.profiles[0].templateSha256,profile.sha256);
   assert.match(result.template.instructions[0],/不重复/);
   await writeFile(file,'Changed source bytes');
@@ -126,14 +126,14 @@ test('all reference branches expose actionable adaptation and native reconstruct
   }
 });
 
-test('unknown and unavailable generation use native cards; available without content requests content first',async t=>{
+test('explicit card requests retain fallback while preparation without cards continues whole-page design',async t=>{
   const {prepare}=await fixture(t);
   for(const availability of ['unknown','unavailable']){
     const result=await prepare({...report,template:{status:'unanswered'},imageGeneration:{availability,source:'Fixture capability record.'},cards:[card]});
     assert.equal(result.nextAction,'select-native-cards');assert.equal(result.imageGeneration.prompt,undefined);
   }
   const contentFirst=await prepare({...report,template:{status:'none'},imageGeneration:host});
-  assert.equal(contentFirst.nextAction,'write-card-content');assert.equal(contentFirst.imageGeneration.prompt,undefined);
+  assert.equal(contentFirst.nextAction,'design-evidence-pages');assert.equal(contentFirst.imageGeneration.prompt,undefined);
   await assert.rejects(prepare({...report,imageGeneration:{availability:'available',source:'No named host tool.'},cards:[card]}),/toolName/);
 });
 
@@ -200,7 +200,7 @@ test('registered preparation tool and its opt-in contract stay executable and bo
   assert.equal(contract.submission.tool,'academic_ppt_prepare');
   assert.equal(contract.submission.transport,'requestPath');
   const result=await tools.get('academic_ppt_prepare').execute({requestPath,outputPath:'plan.json'},exec);
-  assert.equal(result.nextAction,'select-native-cards');
+  assert.equal(result.nextAction,'design-evidence-pages');
   const metadata=buildAcademicTools().map(({name,description,parameters})=>({name,description,parameters}));
   assert.ok(Buffer.byteLength(JSON.stringify(metadata))<18000,'new tools must not repeat the content contract in every model request');
 });

@@ -1,0 +1,49 @@
+{
+  "pluginVersion": "0.9.0",
+  "checkedAt": "2026-10-27T05:54:15.649165+00:00",
+  "environment": {
+    "node": "24.22.1",
+    "platform": "linux"
+  },
+  "tests": {
+    "tests": 471,
+    "pass": 471,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "requiredRealRender": true,
+    "command": "DSH_REQUIRE_REAL_RENDER=1 node --test --test-concurrency=2 --test-reporter=tap test/*.test.mjs"
+  },
+  "hostVersions": [
+    "0.2.1-rc.2",
+    "0.2.1-rc.3"
+  ],
+  "pageRecipeAtlas": {
+    "pages": 32,
+    "nativeSceneErrors": 0,
+    "reviewBasis": "actual LibreOffice render; vision-model; original structure studies only"
+  },
+  "forwardStudy": {
+    "pages": 10,
+    "plannedSeconds": 600,
+    "sourcePapers": 2,
+    "pilotPages": 4,
+    "pptxSha256": "1cf46292edee9afb6aad09e0b72eddc2a63f2b8dcff64ec38fcacf5e1bb56b9c",
+    "quality": {
+      "errors": 0,
+      "warnings": 6
+    },
+    "delivery": "ready",
+    "missingFonts": [],
+    "reviewer": "vision-model",
+    "pilotDecision": "delegated",
+    "noHumanApprovalClaimed": true
+  },
+  "limits": [
+    "No user DeepSeek model or Desktop/Web GUI session",
+    "No PowerPoint/WPS GUI or live projection verification",
+    "No statistical benchmark across multiple real topics",
+    "No independent proof of source truth or caller-recorded user responses"
+  ]
+}

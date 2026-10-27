@@ -24,6 +24,25 @@ jobs:
       - run: npm run check
       - run: npm pack --dry-run --ignore-scripts
 
+  delivery-render:
+    name: Actual PPTX render and delivery
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+      - name: Install the optional real renderer
+        run: npm ci --ignore-scripts
+      - name: Provide the fixture font
+        run: sudo apt-get update && sudo apt-get install -y fonts-dejavu-core
+      - name: Exercise pilot, actual render, review and final delivery without renderer skips
+        env:
+          DSH_REQUIRE_REAL_RENDER: '1'
+        run: node --test test/storyboard-delivery.test.mjs test/figure-readability-regression.test.mjs
+
   dsh-host:
     name: DSH Host (${{ matrix.dsh }})
     runs-on: ubuntu-latest

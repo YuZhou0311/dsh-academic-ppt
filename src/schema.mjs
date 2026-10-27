@@ -3,6 +3,7 @@ import {templateProfileSchema,assertTemplateProfile} from './template-profile.mj
 import { SEMANTIC_ICONS } from './card-surface.mjs';
 import { CARD_PRESET_IDS, CARD_FAMILIES } from './card-catalog.mjs';
 import { consultationSchema, referenceStudySchema } from './design-dialogue.mjs';
+import { storyboardSchema, storyboardRequestSchema } from './storyboard.mjs';
 
 export const LAYOUTS = ['cover','section','academic','roadmap','paper','figure-focus','figure-split','comparison','method','results','synthesis','proposal','closing','references'];
 export const CARD_STYLES = ['plain','ruled','compact','academic-panel','academic-tab','academic-side','open-frame','floating-tab','split-label','paper-shadow','title-band','stacked-corner','ledger','dashed-note'];
@@ -74,12 +75,15 @@ export const plotSchema = obj({kind:en(['distribution','interval']),unit:nonempt
 const identifiedPlotSchema=obj({id,...plotSchema.properties},['id',...plotSchema.required]);
 export const tableSchema = obj({columns:arr(nonempty(180),8,1),rows:arr(arr(str(800),8,1),14,1),columnWeights:arr(num(.2,8),8,1),highlightRows:arr(integer(0,13),14),caption:str(1200),sourceClaimIds:ids},['columns','rows']);
 export const slideSchema = obj({id,layout:en(LAYOUTS),referenceTemplateId:id,cover:coverSchema,closing:closingSchema,chrome:chromeSchema,section:sectionSchema,sectionId:id,transition:nonempty(1000),agenda:agendaSchema,contentChecks:arr(obj({id,text:nonempty(600)},['id','text']),30,1),composition:compositionSchema,heading:headingSchema,drawings:arr(drawingSchema,12,1),referenceIds:arr(id,6,1),diagram:diagramSchema,argument:argumentSchema,visualPlan:visualPlanSchema,panelTitles:arr(nonempty(220),8,1),title:nonempty(700),kicker:str(200),subtitle:str(1200),paperIds:ids,claimIds:ids,takeaway:str(1000),notes:str(30000),seconds:num(0,1800),figureIds:arr(id,4),figureBoxes:arr(box,4,1),cards:arr(cardSchema,8),nodes:arr(nodeSchema,16),edges:arr(edgeSchema,28),chart:chartSchema,plot:plotSchema,plots:arr(identifiedPlotSchema,4,1),table:tableSchema},['id','layout','title','paperIds','claimIds','notes','seconds','figureIds','cards']);
-export const projectContentSchema = obj({schemaVersion:{type:'integer',const:1},id,revision:integer(),title:nonempty(700),brief:briefSchema,design:designSchema,capabilities:capabilitiesSchema,papers:arr(paperSchema,60),claims:arr(claimSchema,600),assets:arr(assetSchema,160),slides:arr(slideSchema,120)},['schemaVersion','id','revision','title','brief','design','capabilities','papers','claims','assets','slides']);
+export const projectContentSchema = obj({schemaVersion:{type:'integer',const:1},id,revision:integer(),title:nonempty(700),brief:briefSchema,design:designSchema,storyboard:storyboardSchema,capabilities:capabilitiesSchema,papers:arr(paperSchema,60),claims:arr(claimSchema,600),assets:arr(assetSchema,160),slides:arr(slideSchema,120)},['schemaVersion','id','revision','title','brief','design','capabilities','papers','claims','assets','slides']);
 
 const base = {projectPath:nonempty(3000)};
 const revision = {expectedRevision:integer()};
 const changes = arr(obj({slideId:id,cardId:id,patch:freeObject,removeFields:arr(en(['referenceTemplateId','figureBoxes','cover','subtitle','takeaway','chart','plot','plots','table','panelTitles','kicker','section','sectionId','transition','agenda','composition','diagram','visualPlan','chrome','closing','heading','drawings','referenceIds','contentChecks']),20,1)},['slideId','patch']),40,1);
 export const toolSchemas = {
+ academic_ppt_plan:obj({...base,...revision,requestPath:nonempty(3000)},['projectPath','expectedRevision']),
+ academic_ppt_deliver:obj({...base,...revision,outputDir:nonempty(3000)},['projectPath','expectedRevision','outputDir']),
+ academic_ppt_layouts:obj({recipeId:id,purpose:nonempty(200),relationship:nonempty(200),limit:integer(1,32)}),
  academic_ppt_init:obj({projectDir:nonempty(3000),title:nonempty(700),brief:briefSchema,design:designSchema,capabilities:capabilitiesSchema},['projectDir','title']),
  academic_ppt_record:obj({...base,...revision,recordsPath:nonempty(3000),papers:arr(paperSchema,5,1),claims:arr(claimSchema,20,1),assets:arr(assetSchema,8,1),slides:arr(slideSchema,8,1),brief:briefSchema,design:designSchema,capabilities:capabilitiesSchema,templateProfilePaths:arr(nonempty(3000),4,1),slideOrder:arr(id,120,1)},['projectPath','expectedRevision']),
  academic_ppt_study:obj({...base,...revision,outputDir:nonempty(3000),candidatesPath:nonempty(3000),candidates:arr(obj({id,label:nonempty(200),slide:slideSchema},['id','label','slide']),6,2),render:bool,fontDirectories:arr(nonempty(3000),4,1),externalReferencePrompts:bool},['projectPath','expectedRevision','outputDir']),
@@ -94,12 +98,13 @@ export const toolSchemas = {
  academic_ppt_cards:obj({presetId:en(CARD_PRESET_IDS),family:en(CARD_FAMILIES.map(f=>typeof f==='string'?f:f.id)),purpose:nonempty(200),limit:integer(1,CARD_PRESET_IDS.length)}),
  academic_ppt_prepare:obj({requestPath:nonempty(3000),outputPath:nonempty(3000)},['requestPath']),
  academic_ppt_render:obj({...base,...revision,fontDirectories:arr(nonempty(3000),4,1)},['projectPath','expectedRevision']),
- academic_ppt_contract:obj({topic:en(['brief','paper','claim','asset','slide','design','assessment','preparation'])},['topic']),
+ academic_ppt_contract:obj({topic:en(['brief','paper','claim','asset','slide','design','assessment','preparation','storyboard'])},['topic']),
  academic_ppt_review:obj({...base,...revision,pptxSha256:{type:'string',pattern:'^[a-f0-9]{64}$'},reviewer:en(['human','vision-model']),basis:en(['html-preview','pptx-render']),reviewedSlides:arr(id,120,1),result:en(['passed','needs-fix']),notes:nonempty(6000),observations:{...arr(assessmentSchema,120,1),description:'当前 academic 工程必填：每个 reviewedSlides ID 恰好一条，逐页填写 contentCheck、legibilityCheck 与 issue。仅未启用 academic 质量档案的旧工程兼容省略。'}},['projectPath','expectedRevision','pptxSha256','reviewer','basis','reviewedSlides','result','notes'])
 };
 const ajv = new Ajv({allErrors:true,strict:true});
 const validators = Object.fromEntries(Object.entries(toolSchemas).map(([name,schema])=>[name,ajv.compile(schema)]));
 const validateContent = ajv.compile(projectContentSchema);
+const validateStoryboardRequest = ajv.compile(storyboardRequestSchema);
 function checkDangerousKeys(value,depth=0) {
  if (depth>32) throw new Error('INVALID_INPUT: JSON nesting exceeds 32 levels');
  if (Array.isArray(value)) { for(const v of value) checkDangerousKeys(v,depth+1); }
@@ -114,6 +119,7 @@ function validateOrThrow(validate,value,label) {
  return value;
 }
 export function assertToolArgs(name,args) {if(!validators[name]) throw new Error('Unknown tool: '+name);return validateOrThrow(validators[name],args,name);}
+export function assertStoryboardRequest(value){return validateOrThrow(validateStoryboardRequest,value,'storyboard request');}
 export function contentOf(p) {return Object.fromEntries(Object.keys(projectContentSchema.properties).map(k=>[k,p[k]]));}
 export function assertProject(p) {
  validateOrThrow(validateContent,contentOf(p),'project');

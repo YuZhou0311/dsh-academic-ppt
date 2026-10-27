@@ -1,6 +1,7 @@
 import {
   createProject, updateRecords, contextProject, buildProject, editProject,
   undoProject, checkProject, recordReview, renderProjectArtifact, studyProject, portfolioProjects,
+  planProject, deliverProject,
 } from './core.mjs'
 import { inspectTemplate } from './template.mjs'
 import { referenceLayouts } from './reference.mjs'
@@ -28,28 +29,44 @@ export const TOOL_COMMANDS = Object.freeze({
   portfolio: 'academic_ppt_portfolio',
   prepare: 'academic_ppt_prepare',
   cards: 'academic_ppt_cards',
+  plan: 'academic_ppt_plan',
+  layouts: 'academic_ppt_layouts',
+  deliver: 'academic_ppt_deliver',
 })
 
 const descriptions = {
-  academic_ppt_init: '创建可恢复学术汇报工程，记录研究问题、听众与章节；默认source-led与分阶段设计协商。先讨论密度/故事线等偏好并查证取图，契约见brief/design。',
-  academic_ppt_record: '从工作区 recordsPath 读取≤1MiB UTF-8 JSON批次，登记论文、论点、图资产或页面；参数只放工程文件路径与修订号。字段不清楚先用academic_ppt_contract按主题查询，先登记被引用记录。Read bounded record batches from a workspace JSON file.',
-  academic_ppt_context: '按阶段读取工程的精简工作上下文与待解决项；不回传整篇论文或图片数据。Get compact stage context and stable IDs.',
-  academic_ppt_build: '把工程生成原生可编辑 PPTX、HTML 与检查材料；保存新版本，不覆盖 Office 手工修改。Build editable artifacts; successful export is not visual approval.',
-  academic_ppt_edit: '修改指定页面或小卡片，使用稳定 ID、明确范围与修订号；style-only 只变样式，保留文字、图表与其他对象。Apply a scope-limited edit.',
-  academic_ppt_undo: '以新修订恢复上一工程状态；已有交付文件保留。Restore the previous project snapshot without rewriting past deliveries.',
-  academic_ppt_check: '检查设计协商、参考学习、图源使用、文字与版面；静态通过不代替逐页看最终PPTX。',
-  academic_ppt_template: '研究用户提供的PPTX，提取候选设计变量suggestedDesign并另存profile。默认reference-guided，学习主辅证据、邻接解释、分组、密度与层级，当前内容决定实际坐标；明确要求沿用版式才设template-faithful。render:true生成实际代表页供核对。Inspect reference design tokens, not a mandatory slide blueprint.',
-  academic_ppt_reference: '可选查询48种中性布局；不作为新稿必经步骤。先确定研究关系、主证据和阅读顺序，优先用composition自主构图。templateId返回容量和骨架，figure返回最多3个几何候选；教学示例仅includeExamples=true返回。Inspect optional reference geometries.',
-  academic_ppt_contract: '按preparation/brief/paper/claim/asset/slide/design/assessment单一主题读取完整字段schema、批次限额与短说明；首次写该类记录或遇到字段错误时使用，不必一次读取全部主题。Read one complete authoring contract on demand.',
-  academic_ppt_render: '通过可选渲染引擎读取当前交付 PPTX，生成实际页面画面并记录摘要；引擎缺失时如实返回未验证。Render the current PPTX without changing the editable source.',
-  academic_ppt_study: '从工作区candidatesPath读取≤1MiB UTF-8候选数组[{id,label,slide}]，每个slide字段见contract(slide)。提供2–6个真实候选，导出SVG、原生PPTX和并列HTML；render:true生成实际PPTX预览，不改原工程或批准。Compare concrete authored alternatives.',
-  academic_ppt_portfolio: '只读比较明确提供的2–12份工程的主体结构和封面；换文字颜色或数据值不算结构改变，报告可并列的页对供实图复核，不提供原创性得分。Inspect supplied projects without scanning other files.',
-  academic_ppt_review: '记录对当前交付版本的实际视觉检查，绑定产物摘要与检查范围；没有看过画面不得标记通过。Bind an explicit visual review to current artifact hashes.',
-  academic_ppt_prepare: '规划卡片与模板参考，论文查证取图优先。读取requestPath（≤1MiB JSON，契约见preparation），返回分阶段设计问题、模板提问与宿主生图计划；失败回退原生卡片。不自行提问、调用模型或读取密钥。',
-  academic_ppt_cards: '按family/purpose查询48种原生学术卡片（含12种嵌图卡）；presetId返回内容契约、尺寸、结构与示例。用于局部信息组合，非整页布局。Inspect editable card recipes.',
+  academic_ppt_init: '创建可恢复学术工程。先确认问题与用途，查证取图，再用plan规划故事线和真实样张；学术完整性不可降级。',
+  academic_ppt_record: '读取recordsPath中的≤1MiB UTF-8 JSON批次，登记来源/论点/图像/页面。先查contract，引用记录先登记，批次内不放路由参数。',
+  academic_ppt_context: '读取当前阶段、阻断项及稳定ID；可选recordIds读取至多4条记录，不返回图片base64。',
+  academic_ppt_build: '导出当前可编辑PPTX与辅助文件。draft只供中间预览；review构建不等于验收，最终用deliver。',
+  academic_ppt_edit: '按稳定ID与修订号修改指定页。card-style仅改样式，保留文字和其他对象；slide-content允许内容/布局变更。',
+  academic_ppt_undo: '以新修订恢复上一工程快照，保留此前导出文件。',
+  academic_ppt_check: '检查证据、实际几何、图像可读性、故事板及当前审查；返回可交付状态和修复队列。',
+  academic_ppt_template: '研究明确提供的PPTX，提取设计变量和profile；render:true生成真实参考页。默认学习信息组织，旧内容/媒体不进入新研究。',
+  academic_ppt_reference: '可选查询48种旧版中性页型和图片几何建议；新稿优先按论证使用layouts与composition，不要求套模板。',
+  academic_ppt_contract: '按单一topic读取完整schema和提交说明；按需查询。',
+  academic_ppt_render: '实际渲染当前PPTX并记录哈希；无引擎时如实返回未验证。HTML/SVG不替代真实PPTX复核。',
+  academic_ppt_study: '比较candidatesPath中的2–6个{id,label,slide}候选（≤1MiB）。render:true生成实际画面；不修改工程或批准。',
+  academic_ppt_portfolio: '只读比较明确提供的2–12份工程结构，供真实画面对照；不扫描其他文件或给原创性评分。',
+  academic_ppt_review: '记录真正完成的逐页视觉观察并绑定当前PPTX哈希；问题记needs-fix，未看画面不得通过。',
+  academic_ppt_prepare: '读取≤1MiB requestPath，规划设计问题、模板和可选生图参考。由宿主执行提问/看图，不自行调用模型或读取密钥。',
+  academic_ppt_cards: '查询48种局部信息卡（含12种嵌图卡）的语义、容量与槽位；presetId读取完整配方，不能当整页模板。',
+  academic_ppt_plan: '读取或通过requestPath写故事板/登记真实样张确认。先查contract(storyboard)；六页以上最终交付须完成计划与样张。',
+  academic_ppt_layouts: '按论证关系查询32种整页语法、槽位、容量和适配理由；允许自创布局，不强凑多样性配额。',
+  academic_ppt_deliver: '核验当前review构建、真实渲染、全页审查与故事板，全部满足才生成可恢复交付包。无force或草稿降级。',
 }
 
 const coreExecutors = {
+  academic_ppt_plan: planProject,
+  academic_ppt_deliver: deliverProject,
+  academic_ppt_layouts: async ({recipeId,purpose,relationship,limit,signal}) => {
+    signal?.throwIfAborted()
+    const {PAGE_RECIPES,getPageRecipe,listPageRecipes}=await import('./page-recipes.mjs')
+    const guidePath=fileURLToPath(new URL('../skills/dsh-academic-ppt/references/page-recipes.md',import.meta.url))
+    if(recipeId){const recipe=getPageRecipe(recipeId);if(!recipe)throw new Error('UNKNOWN_PAGE_RECIPE: '+recipeId);return {ok:true,recipe,guidePath,instructions:['先按当前图表比例和论证关系适配槽位；compilePageRecipe可从显式bindings编译到composition，或直接原创rows/regions。','整页语法不提供研究结论；所有数据、论文图、解释与边界由当前材料决定，不能复用示例作为证据。']}}
+    return {ok:true,totalCount:PAGE_RECIPES.length,recipes:listPageRecipes({purpose,relationship,limit:limit??12}),guidePath,
+      instructions:['先匹配本页要让听众看见的比较、因果、时序或综合关系，再查recipeId。共同实验/尺度可保持同构，不随机轮换或强凑32种。']}
+  },
   academic_ppt_init: createProject,
   academic_ppt_record: updateRecords,
   academic_ppt_context: contextProject,
@@ -117,8 +134,8 @@ export function registeredToolParameters(name) {
   // The exact preset enum is enforced at runtime and discoverable through cards;
   // do not repeat the entire catalogue in every model request.
   if(name==='academic_ppt_cards')wire.properties.presetId={type:'string',description:'本工具索引中返回的精确preset.id；运行时按完整枚举校验。'}
-  if (wire.properties.projectPath) wire.properties.projectPath.description = 'init返回的project.json文件路径，不是工程目录。 ' + (wire.properties.projectPath.description ?? '')
-  if (wire.properties.recordsPath) wire.properties.recordsPath.description = '工作区内≤1MiB UTF-8 JSON批次文件；字段见academic_ppt_contract，文件内不放projectPath/expectedRevision等路由参数。 ' + (wire.properties.recordsPath.description ?? '')
+  if (wire.properties.projectPath) wire.properties.projectPath.description = 'init返回的project.json。 ' + (wire.properties.projectPath.description ?? '')
+  if (wire.properties.recordsPath) wire.properties.recordsPath.description = '≤1MiB UTF-8批次，字段见contract。 ' + (wire.properties.recordsPath.description ?? '')
   return wire
 }
 
@@ -178,7 +195,7 @@ export function formatToolResult(name, result) {
   const pptxHash = data.pptxSha256 ?? data.artifact?.pptxSha256
   if (typeof pptxHash === 'string') lines.push(`当前 PPTX SHA-256：${clip(pptxHash, 64)}`)
   const files = own(data.files)
-  for (const key of ['pptx', 'html', 'json', 'report', 'notes', 'manifest', 'speech', 'evidence', 'assets', 'quality', 'gallery', 'records', 'categoryPptx']) {
+  for (const key of ['pptx', 'pdf', 'html', 'json', 'report', 'notes', 'manifest', 'speech', 'evidence', 'assets', 'quality', 'gallery', 'records', 'categoryPptx', 'storyboard', 'project', 'reviews']) {
     if (typeof files[key] === 'string') lines.push(`${key}：${clip(files[key])}`)
   }
   for (const key of ['pptxPath', 'htmlPath', 'outputDir', 'reportPath', 'receiptPath', 'externalPromptsPath']) {
@@ -289,6 +306,22 @@ export function formatToolResult(name, result) {
     if (data.schema) lines.push(`完整JSON Schema：${JSON.stringify(data.schema)}`)
     if (data.capabilityRecord) lines.push(`图像输入能力记录：${JSON.stringify(data.capabilityRecord)}`)
     if (data.academicPalettes) lines.push(`学术配色候选（默认${data.defaultPalette}）：${JSON.stringify(data.academicPalettes)}`)
+  }
+  if(name==='academic_ppt_layouts'){
+    if(data.recipe)lines.push('整页语法：'+JSON.stringify(data.recipe))
+    if(data.recipes)lines.push('整页语法目录：'+JSON.stringify(data.recipes))
+    if(data.guidePath)lines.push('适配说明：'+data.guidePath)
+  }
+  const storyboard=data.storyboard??data.designDiagnostics?.storyboard
+  if(storyboard){
+    lines.push(`故事板：${storyboard.status}；样张：${storyboard.pilot?.status??'not-planned'}。`)
+    if(storyboard.throughline)lines.push('论证主线：'+clip(storyboard.throughline,1600))
+    if(storyboard.summary)lines.push('故事板进度：'+JSON.stringify(storyboard.summary))
+    for(const issue of (storyboard.issues??[]).filter(i=>i.severity==='error').slice(0,6))lines.push(`故事板阻断 ${issue.slideId??''}：${clip(issue.message,600)}`)
+  }
+  if(data.delivery){
+    lines.push('最终交付：'+(data.delivery.readyForDelivery?'当前版本可打包':'尚不可交付，继续修复'))
+    for(const blocker of (data.delivery.blockers??[]).slice(0,8))lines.push(`${blocker.code}：${clip(blocker.message,500)} ${clip(blocker.action,600)}`)
   }
   if (name === 'academic_ppt_context') {
     if (typeof data.context === 'string') lines.push(clip(data.context, 16000))

@@ -1,0 +1,3193 @@
+[
+  {
+    "id": "question-evidence",
+    "name": "现象、证据与可检验问题",
+    "purposes": [
+      "question",
+      "background",
+      "proposal"
+    ],
+    "relationship": "evidence-explanation",
+    "choose": "开场需要把实际现象收束为一个能被研究回答的问题。",
+    "avoid": "已经进入结果精读，或现象图只起装饰作用。",
+    "evidenceNeed": "可定位的现象或需求证据；明确尚未回答的关系。",
+    "grammar": "现象建立入口，证据解释为何重要，问题连接下一页的检验。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 180,
+      "figureAspect": [
+        0.6,
+        3.2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "research-gap",
+      "hero-evidence"
+    ],
+    "slots": [
+      {
+        "id": "observation",
+        "label": "实际现象",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.61,
+          "h": 0.7
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "context",
+        "label": "现象发生的条件",
+        "role": "conditions",
+        "box": {
+          "x": 0.64,
+          "y": 0,
+          "w": 0.36,
+          "h": 0.7
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "question",
+        "label": "需要回答的问题",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0.75,
+          "w": 1,
+          "h": 0.25
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": "一个具体问题；不追加新研究结论。"
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2.8,
+        "slots": [
+          {
+            "id": "observation",
+            "weight": 1.7
+          },
+          {
+            "id": "context",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "question",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-evidence",
+    "name": "单一证据精读",
+    "purposes": [
+      "evidence",
+      "results",
+      "paper-reading"
+    ],
+    "relationship": "evidence-explanation",
+    "choose": "一幅复杂图需要完整画幅读清轴、图例与关系。",
+    "avoid": "没有单一共同问题，却把无关拼图塞满整页。",
+    "evidenceNeed": "原图、定位、完整轴和单位；解释在图中邻接或进入讲稿。",
+    "grammar": "阅读入口由证据本身决定，内部多面板仍需实际阅读顺序。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 80,
+      "figureAspect": [
+        1.2,
+        3.5
+      ],
+      "note": "优先保住原图标签。原图过密时拆面板，不能仅放大截图。"
+    },
+    "alternatives": [
+      "evidence-margin",
+      "small-multiples"
+    ],
+    "slots": [
+      {
+        "id": "evidence",
+        "label": "本页主证据",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": "允许一个带完整标注的组合证据；不机械增加旁注。"
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "evidence",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evidence-margin",
+    "name": "主证据与开放旁注",
+    "purposes": [
+      "evidence",
+      "results",
+      "paper-reading"
+    ],
+    "relationship": "evidence-explanation",
+    "choose": "一幅可读主图只需要短的解释与适用边界。",
+    "avoid": "旁注很长，或窄栏使主图的关键标签不可读。",
+    "evidenceNeed": "主图来源；旁注须区分观察、推断和边界。",
+    "grammar": "证据占主要画幅，侧栏就近解释局部，不复述整页标题。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 150,
+      "figureAspect": [
+        0.9,
+        2.1
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "hero-evidence",
+      "evidence-ledger"
+    ],
+    "slots": [
+      {
+        "id": "evidence",
+        "label": "主证据",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.69,
+          "h": 1
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "interpretation",
+        "label": "解释与适用边界",
+        "role": "explanation",
+        "box": {
+          "x": 0.73,
+          "y": 0.08,
+          "w": 0.27,
+          "h": 0.84
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": "两条短解释优先；超过容量时换版式。"
+        }
+      }
+    ]
+  },
+  {
+    "id": "evidence-ledger",
+    "name": "主图、解释与边界分层",
+    "purposes": [
+      "evidence",
+      "results",
+      "limitation"
+    ],
+    "relationship": "evidence-explanation",
+    "choose": "同一证据需要明确分开结果解释与适用边界。",
+    "avoid": "两个辅助区都只写同义结论。",
+    "evidenceNeed": "一幅证据，得到该解释的依据，至少一个真实限制条件。",
+    "grammar": "大证据跨两层；上部解释，下部条件，避免相同大小三卡。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 210,
+      "figureAspect": [
+        0.7,
+        1.8
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "evidence-margin",
+      "mechanism-proof"
+    ],
+    "slots": [
+      {
+        "id": "evidence",
+        "label": "观察或结果",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.64,
+          "h": 1
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "interpretation",
+        "label": "结果意味着什么",
+        "role": "explanation",
+        "box": {
+          "x": 0.68,
+          "y": 0,
+          "w": 0.32,
+          "h": 0.48
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "boundary",
+        "label": "何时不应外推",
+        "role": "conditions",
+        "box": {
+          "x": 0.68,
+          "y": 0.54,
+          "w": 0.32,
+          "h": 0.46
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ]
+  },
+  {
+    "id": "paired-comparison",
+    "name": "共尺度对照",
+    "purposes": [
+      "comparison",
+      "evidence",
+      "results"
+    ],
+    "relationship": "comparison",
+    "choose": "两个处理、方法或状态在同一评价口径下直接比较。",
+    "avoid": "两组研究的样本、指标或尺度不可比且未披露。",
+    "evidenceNeed": "A/B 的同一尺度、基准、分母、评价窗口和独立样本定义。",
+    "grammar": "两个证据在相同高度与尺度对齐，共享比较条件只写一次。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        2
+      ],
+      "textChars": 120,
+      "figureAspect": [
+        0.7,
+        1.7
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "before-after-delta",
+      "literature-matrix"
+    ],
+    "slots": [
+      {
+        "id": "a",
+        "label": "对照 A",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.76
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "b",
+        "label": "对照 B",
+        "role": "evidence",
+        "box": {
+          "x": 0.515,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.76
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "conditions",
+        "label": "使比较成立的共同条件",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.81,
+          "w": 1,
+          "h": 0.19
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": "只放比较必要条件。"
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 3.7,
+        "slots": [
+          {
+            "id": "a",
+            "weight": 1
+          },
+          {
+            "id": "b",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "conditions",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "before-after-delta",
+    "name": "前后状态与差异解释",
+    "purposes": [
+      "comparison",
+      "results",
+      "mechanism"
+    ],
+    "relationship": "comparison",
+    "choose": "同一对象的两个时间点或干预前后需要同时呈现差异。",
+    "avoid": "不同对象被误写成前后变化，或未排除时间混杂。",
+    "evidenceNeed": "对象配对规则、前后时间、变化的计量方式与混杂限制。",
+    "grammar": "上部保留前后证据；下部以差异或变化机制连接，不重复两个描述。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        3
+      ],
+      "textChars": 150,
+      "figureAspect": [
+        1.1,
+        2.4
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "paired-comparison",
+      "contradiction-explainer"
+    ],
+    "slots": [
+      {
+        "id": "before",
+        "label": "基线或干预前",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.58
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "after",
+        "label": "随访或干预后",
+        "role": "evidence",
+        "box": {
+          "x": 0.515,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.58
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "delta",
+        "label": "配对差异与解释",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0.64,
+          "w": 1,
+          "h": 0.36
+        },
+        "accepts": [
+          "drawing",
+          "chart",
+          "plot",
+          "table",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1.65,
+        "slots": [
+          {
+            "id": "before",
+            "weight": 1
+          },
+          {
+            "id": "after",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "delta",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "small-multiples",
+    "name": "可比较的多面板",
+    "purposes": [
+      "comparison",
+      "results",
+      "robustness"
+    ],
+    "relationship": "matrix",
+    "choose": "同一变量在不超过四个明确条件下比较，且能共用尺度。",
+    "avoid": "原论文四个过密面板仍看不清，或各图坐标不相容。",
+    "evidenceNeed": "各面板的条件、共享或明确不同的尺度、完整图例和来源。",
+    "grammar": "行列有明确语义；位置代表条件，不能为凑四格而添结果。",
+    "capacity": {
+      "evidenceItems": [
+        4,
+        4
+      ],
+      "textChars": 90,
+      "figureAspect": [
+        1.1,
+        2.5
+      ],
+      "note": "四面板只是本配方形态；材料只有两组时改选双图。"
+    },
+    "alternatives": [
+      "paired-comparison",
+      "hero-evidence"
+    ],
+    "slots": [
+      {
+        "id": "a",
+        "label": "条件 A",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "b",
+        "label": "条件 B",
+        "role": "evidence",
+        "box": {
+          "x": 0.515,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "c",
+        "label": "条件 C",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0.53,
+          "w": 0.485,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "d",
+        "label": "条件 D",
+        "role": "evidence",
+        "box": {
+          "x": 0.515,
+          "y": 0.53,
+          "w": 0.485,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "a",
+            "weight": 1
+          },
+          {
+            "id": "b",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "c",
+            "weight": 1
+          },
+          {
+            "id": "d",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "result-statistics",
+    "name": "总体结果与精确统计",
+    "purposes": [
+      "results",
+      "evidence",
+      "comparison"
+    ],
+    "relationship": "evidence-explanation",
+    "choose": "趋势/分布与少量精确统计值需要同时供观众核对。",
+    "avoid": "数字表仅复述图中全部数值，或不确定性来源未知。",
+    "evidenceNeed": "结果图、同一分析的统计量、单位、n 和不确定性定义。",
+    "grammar": "上部读模式，下部核对数值；统计表不应挤成小角落。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 100,
+      "figureAspect": [
+        1.6,
+        3.5
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "distribution-uncertainty",
+      "evidence-ledger"
+    ],
+    "slots": [
+      {
+        "id": "result",
+        "label": "结果模式",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.62
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "statistics",
+        "label": "精确统计与样本条件",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.68,
+          "w": 1,
+          "h": 0.32
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": "少量列/行；更多数值移至附录。"
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1.9,
+        "slots": [
+          {
+            "id": "result",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "statistics",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "distribution-uncertainty",
+    "name": "分布与估计不确定性",
+    "purposes": [
+      "results",
+      "statistics",
+      "comparison"
+    ],
+    "relationship": "comparison",
+    "choose": "需要区分个体观测分布和总体估计区间。",
+    "avoid": "只有均值却编造离散点、箱线图或置信区间。",
+    "evidenceNeed": "原始观测或已报告分布；已报告或可复算区间；区间的定义。",
+    "grammar": "分布与估计分开表达，并共享样本及单位说明。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        2
+      ],
+      "textChars": 120,
+      "figureAspect": [
+        0.8,
+        1.6
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "result-statistics",
+      "paired-comparison"
+    ],
+    "slots": [
+      {
+        "id": "distribution",
+        "label": "个体观测分布",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.57,
+          "h": 0.78
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "uncertainty",
+        "label": "估计与区间",
+        "role": "evidence",
+        "box": {
+          "x": 0.6,
+          "y": 0,
+          "w": 0.4,
+          "h": 0.78
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "sample",
+        "label": "样本与区间定义",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.84,
+          "w": 1,
+          "h": 0.16
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 4.6,
+        "slots": [
+          {
+            "id": "distribution",
+            "weight": 1.4
+          },
+          {
+            "id": "uncertainty",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "sample",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "map-and-detail",
+    "name": "总体定位与局部证据",
+    "purposes": [
+      "evidence",
+      "spatial",
+      "mechanism"
+    ],
+    "relationship": "hierarchy",
+    "choose": "需要把局部现象放回总体对象、空间或系统。",
+    "avoid": "局部图与总体没有可追踪对应，或裁剪丢掉决定性边界。",
+    "evidenceNeed": "总体与局部的定位关系、比例尺/坐标、裁剪与放大说明。",
+    "grammar": "总览跨两层，两个局部与总览中明确标记的位置对应。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        3
+      ],
+      "textChars": 140,
+      "figureAspect": [
+        0.6,
+        1.6
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "hero-evidence",
+      "evidence-ledger"
+    ],
+    "slots": [
+      {
+        "id": "overview",
+        "label": "总体与定位标记",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.62,
+          "h": 1
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "detail-a",
+        "label": "局部 A",
+        "role": "evidence",
+        "box": {
+          "x": 0.66,
+          "y": 0,
+          "w": 0.34,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "detail-b",
+        "label": "局部 B",
+        "role": "evidence",
+        "box": {
+          "x": 0.66,
+          "y": 0.53,
+          "w": 0.34,
+          "h": 0.47
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ]
+  },
+  {
+    "id": "scale-ladder",
+    "name": "跨尺度关系",
+    "purposes": [
+      "mechanism",
+      "spatial",
+      "review"
+    ],
+    "relationship": "hierarchy",
+    "choose": "研究把不同尺度的观测、过程或外推联系起来。",
+    "avoid": "仅有三个平行对象却画成上下游或尺度递进。",
+    "evidenceNeed": "每层的空间/时间支持、测量对象和跨尺度映射假设。",
+    "grammar": "一个连续关系图表达尺度转换；辅助栏列出不能直接外推的条件。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        3
+      ],
+      "textChars": 200,
+      "figureAspect": [
+        1.2,
+        2.8
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "method-pipeline",
+      "source-evidence-map"
+    ],
+    "slots": [
+      {
+        "id": "scales",
+        "label": "尺度与映射关系",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.72
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "assumptions",
+        "label": "跨尺度映射条件",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.78,
+          "w": 1,
+          "h": 0.22
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 3.2,
+        "slots": [
+          {
+            "id": "scales",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "assumptions",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "source-evidence-map",
+    "name": "来源到论证的映射",
+    "purposes": [
+      "review",
+      "synthesis",
+      "paper-reading"
+    ],
+    "relationship": "synthesis",
+    "choose": "多篇研究为同一个问题提供不同证据角色。",
+    "avoid": "只是将论文封面并排，缺少共同问题或支持关系。",
+    "evidenceNeed": "每个来源的具体结论、定位和支持/冲突/补充身份。",
+    "grammar": "来源列对接论证图；连接线必须能解释支持的具体命题。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        4
+      ],
+      "textChars": 230,
+      "figureAspect": [
+        1,
+        2.5
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "literature-matrix",
+      "cross-study-synthesis"
+    ],
+    "slots": [
+      {
+        "id": "sources",
+        "label": "来源与研究条件",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.3,
+          "h": 1
+        },
+        "accepts": [
+          "card",
+          "drawing",
+          "references"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "argument-map",
+        "label": "共同问题与证据关系",
+        "role": "synthesis",
+        "box": {
+          "x": 0.34,
+          "y": 0,
+          "w": 0.66,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "sources",
+            "weight": 0.46
+          },
+          {
+            "id": "argument-map",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "literature-matrix",
+    "name": "文献证据矩阵",
+    "purposes": [
+      "review",
+      "comparison",
+      "synthesis"
+    ],
+    "relationship": "matrix",
+    "choose": "跨研究按少数相同维度进行可审查比较。",
+    "avoid": "表中塞下每篇论文的所有摘要，或指标定义不同却直接排名。",
+    "evidenceNeed": "来源、研究条件、比较维度与不可比项，逐行可追溯。",
+    "grammar": "列是比较维度，行是研究或方法；边界与缺测必须显式保留。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        8
+      ],
+      "textChars": 350,
+      "figureAspect": [
+        1.8,
+        3.5
+      ],
+      "note": "典型 3–6 行、3–5 列是可读起点，不是硬性研究数量要求。"
+    },
+    "alternatives": [
+      "source-evidence-map",
+      "cross-study-synthesis"
+    ],
+    "slots": [
+      {
+        "id": "matrix",
+        "label": "可审查的研究比较",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.82
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "scope",
+        "label": "可比性与缺测说明",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.87,
+          "w": 1,
+          "h": 0.13
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 5,
+        "slots": [
+          {
+            "id": "matrix",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 0.8,
+        "slots": [
+          {
+            "id": "scope",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "research-gap",
+    "name": "已有能力、失效条件与缺口",
+    "purposes": [
+      "question",
+      "proposal",
+      "review"
+    ],
+    "relationship": "synthesis",
+    "choose": "需要从已有研究推导一个具体缺口。",
+    "avoid": "用“研究很少”代替证据，或未检索就宣布首次。",
+    "evidenceNeed": "已有能力的真实证据、失效/未覆盖条件及可检验问题。",
+    "grammar": "上部对照能力与边界，下部把缺口写成可操作的关系。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 240,
+      "figureAspect": [
+        0.6,
+        3.2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "question-evidence",
+      "proposal-decision"
+    ],
+    "slots": [
+      {
+        "id": "known",
+        "label": "已有研究已经做到什么",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.54,
+          "h": 0.65
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "card",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "boundary",
+        "label": "在哪些条件下仍不足",
+        "role": "conditions",
+        "box": {
+          "x": 0.58,
+          "y": 0,
+          "w": 0.42,
+          "h": 0.65
+        },
+        "accepts": [
+          "card",
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "gap",
+        "label": "由证据推出的研究问题",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0.72,
+          "w": 1,
+          "h": 0.28
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2.3,
+        "slots": [
+          {
+            "id": "known",
+            "weight": 1.3
+          },
+          {
+            "id": "boundary",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "gap",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "method-pipeline",
+    "name": "方法管线与输入输出约束",
+    "purposes": [
+      "method",
+      "mechanism",
+      "proposal"
+    ],
+    "relationship": "sequence",
+    "choose": "方法有清晰的输入、变换、输出以及相应条件。",
+    "avoid": "步骤本身是反馈或并行依赖，却被线性箭头掩盖。",
+    "evidenceNeed": "真实操作和数据流；每一步的输入输出对象；训练/评估边界。",
+    "grammar": "主流程横贯画幅，下方解释输入条件与输出验证，箭头端点真实。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 200,
+      "figureAspect": [
+        2,
+        4
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "method-swimlane",
+      "feedback-cycle"
+    ],
+    "slots": [
+      {
+        "id": "pipeline",
+        "label": "输入、变换与输出",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.65
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "inputs",
+        "label": "输入与约束",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.72,
+          "w": 0.485,
+          "h": 0.28
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "validation",
+        "label": "输出与验证",
+        "role": "conditions",
+        "box": {
+          "x": 0.515,
+          "y": 0.72,
+          "w": 0.485,
+          "h": 0.28
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2.3,
+        "slots": [
+          {
+            "id": "pipeline",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "inputs",
+            "weight": 1
+          },
+          {
+            "id": "validation",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "method-swimlane",
+    "name": "并行方法泳道",
+    "purposes": [
+      "method",
+      "mechanism",
+      "comparison"
+    ],
+    "relationship": "sequence",
+    "choose": "两个主体、数据源或阶段并行执行后汇合。",
+    "avoid": "实际仅是三个相邻标签，或流程顺序/同步关系未知。",
+    "evidenceNeed": "各泳道主体、共享阶段、交互/汇合点及传递对象。",
+    "grammar": "行代表主体、列代表阶段；跨行连线表达数据交换，不做装饰。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 220,
+      "figureAspect": [
+        1.6,
+        3.5
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "method-pipeline",
+      "factorial-design"
+    ],
+    "slots": [
+      {
+        "id": "swimlanes",
+        "label": "并行阶段及交互",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "swimlanes",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "feedback-cycle",
+    "name": "状态更新与反馈回路",
+    "purposes": [
+      "method",
+      "mechanism",
+      "assimilation"
+    ],
+    "relationship": "mechanism",
+    "choose": "观测或反馈改变系统的下一状态，线性列表会丢失核心机制。",
+    "avoid": "没有实际更新方程或因果方向，却画一个闭环表示完整。",
+    "evidenceNeed": "预测状态、观测、误差/创新量、更新对象和时间索引。",
+    "grammar": "闭环中区分预测、观测与校正，右栏保留状态/参数/单位身份。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 220,
+      "figureAspect": [
+        0.8,
+        1.8
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "method-pipeline",
+      "equation-interpretation"
+    ],
+    "slots": [
+      {
+        "id": "cycle",
+        "label": "预测与更新回路",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.68,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "states",
+        "label": "状态与更新条件",
+        "role": "conditions",
+        "box": {
+          "x": 0.72,
+          "y": 0,
+          "w": 0.28,
+          "h": 1
+        },
+        "accepts": [
+          "card",
+          "table",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "cycle",
+            "weight": 2.3
+          },
+          {
+            "id": "states",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "experiment-design",
+    "name": "实验处理与共同评估",
+    "purposes": [
+      "design",
+      "experiment",
+      "proposal"
+    ],
+    "relationship": "hierarchy",
+    "choose": "需要说明样本如何分组、接受处理并进入共同评估。",
+    "avoid": "直接放结果却没有交代随机化、对照或分析单位。",
+    "evidenceNeed": "实验单位、分配规则、处理、对照、评价指标和重复结构。",
+    "grammar": "分支代表处理，汇合代表共同评估；下栏保留公平比较的条件。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 210,
+      "figureAspect": [
+        1.4,
+        3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "factorial-design",
+      "cohort-flow"
+    ],
+    "slots": [
+      {
+        "id": "design",
+        "label": "样本、处理与评估",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.7
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "controls",
+        "label": "对照、重复与测量条件",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.77,
+          "w": 1,
+          "h": 0.23
+        },
+        "accepts": [
+          "card",
+          "drawing",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 3,
+        "slots": [
+          {
+            "id": "design",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "controls",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cohort-flow",
+    "name": "样本流转与排除理由",
+    "purposes": [
+      "design",
+      "experiment",
+      "methods"
+    ],
+    "relationship": "sequence",
+    "choose": "样本数量在筛选、随访或清洗中发生变化。",
+    "avoid": "只有总样本量，无法核对各步骤的数量守恒。",
+    "evidenceNeed": "每一步的样本数量、排除理由、分析集与重复单位。",
+    "grammar": "纵向流转与右侧排除/分组对应，不能以流程图掩盖样本变化。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 220,
+      "figureAspect": [
+        0.5,
+        1.3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "experiment-design",
+      "result-statistics"
+    ],
+    "slots": [
+      {
+        "id": "flow",
+        "label": "筛选与分析集",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.44,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "accounting",
+        "label": "样本量与排除依据",
+        "role": "conditions",
+        "box": {
+          "x": 0.49,
+          "y": 0,
+          "w": 0.51,
+          "h": 1
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "flow",
+            "weight": 0.86
+          },
+          {
+            "id": "accounting",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "factorial-design",
+    "name": "因子、处理组合与分析",
+    "purposes": [
+      "design",
+      "experiment",
+      "comparison"
+    ],
+    "relationship": "matrix",
+    "choose": "两个或多个因素的处理组合决定实验安排。",
+    "avoid": "观测分组被误写成随机因子设计。",
+    "evidenceNeed": "因素、水平、重复、随机化/区组方式、交互效应的分析定义。",
+    "grammar": "左侧精确组合矩阵，右侧表达分配/分析关系。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 190,
+      "figureAspect": [
+        1,
+        2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "experiment-design",
+      "literature-matrix"
+    ],
+    "slots": [
+      {
+        "id": "factors",
+        "label": "因素与水平组合",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.52,
+          "h": 1
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "allocation",
+        "label": "分配、重复与分析",
+        "role": "method",
+        "box": {
+          "x": 0.56,
+          "y": 0,
+          "w": 0.44,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "factors",
+            "weight": 1.2
+          },
+          {
+            "id": "allocation",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mechanism-proof",
+    "name": "机制与支持证据",
+    "purposes": [
+      "mechanism",
+      "evidence",
+      "results"
+    ],
+    "relationship": "mechanism",
+    "choose": "机制示意需要与具体结果相互核对。",
+    "avoid": "示意箭头被当成因果证据，或证据只支持相关性。",
+    "evidenceNeed": "机制来源、对应观测/干预、替代解释和适用边界。",
+    "grammar": "左机制右证据逐点对应，下栏标明证据不能证明什么。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 180,
+      "figureAspect": [
+        0.8,
+        1.8
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "evidence-ledger",
+      "contradiction-explainer"
+    ],
+    "slots": [
+      {
+        "id": "mechanism",
+        "label": "待解释的机制",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.5,
+          "h": 0.76
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "proof",
+        "label": "支持或约束该机制的证据",
+        "role": "evidence",
+        "box": {
+          "x": 0.54,
+          "y": 0,
+          "w": 0.46,
+          "h": 0.76
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "limits",
+        "label": "因果与外推边界",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.82,
+          "w": 1,
+          "h": 0.18
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 4,
+        "slots": [
+          {
+            "id": "mechanism",
+            "weight": 1.1
+          },
+          {
+            "id": "proof",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "limits",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "equation-interpretation",
+    "name": "公式、符号与成立条件",
+    "purposes": [
+      "theory",
+      "method",
+      "mechanism"
+    ],
+    "relationship": "definition",
+    "choose": "核心方程值得逐项解释，并且影响后续方法或判断。",
+    "avoid": "公式仅增加学术感，或渲染不能保留数学符号。",
+    "evidenceNeed": "公式来源/推导身份、变量与单位、假设、适用域。",
+    "grammar": "公式为主视觉；符号解释与假设是不同层，不能只放无定义方程。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        1
+      ],
+      "textChars": 220,
+      "figureAspect": [
+        1.8,
+        4
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "feedback-cycle",
+      "method-pipeline"
+    ],
+    "slots": [
+      {
+        "id": "equation",
+        "label": "关键表达式",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.38
+        },
+        "accepts": [
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "symbols",
+        "label": "变量、单位与含义",
+        "role": "explanation",
+        "box": {
+          "x": 0,
+          "y": 0.45,
+          "w": 0.6,
+          "h": 0.55
+        },
+        "accepts": [
+          "drawing",
+          "table",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "assumptions",
+        "label": "成立条件",
+        "role": "conditions",
+        "box": {
+          "x": 0.64,
+          "y": 0.45,
+          "w": 0.36,
+          "h": 0.55
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 0.7,
+        "slots": [
+          {
+            "id": "equation",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "symbols",
+            "weight": 1.6
+          },
+          {
+            "id": "assumptions",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ablation-study",
+    "name": "消融结果与干预定义",
+    "purposes": [
+      "results",
+      "comparison",
+      "method"
+    ],
+    "relationship": "comparison",
+    "choose": "需要把性能变化与具体移除/替换的组件关联。",
+    "avoid": "多个因素同时变化却把差异归因于单一组件。",
+    "evidenceNeed": "基线、唯一干预、共同训练/验证条件、方差和指标方向。",
+    "grammar": "左侧结果对齐右侧组件/干预表，阅读者能核查每个比较的含义。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 170,
+      "figureAspect": [
+        0.9,
+        2.2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "result-statistics",
+      "paired-comparison"
+    ],
+    "slots": [
+      {
+        "id": "effects",
+        "label": "消融效果与不确定性",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.64,
+          "h": 1
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "interventions",
+        "label": "组件与公平比较条件",
+        "role": "conditions",
+        "box": {
+          "x": 0.68,
+          "y": 0,
+          "w": 0.32,
+          "h": 1
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "effects",
+            "weight": 2
+          },
+          {
+            "id": "interventions",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "robustness-landscape",
+    "name": "条件变化与稳健性边界",
+    "purposes": [
+      "results",
+      "robustness",
+      "limitation"
+    ],
+    "relationship": "matrix",
+    "choose": "结论随环境、参数或数据分布变化，需要呈现失效区域。",
+    "avoid": "只有最佳配置的一个数字，却宣称普遍稳健。",
+    "evidenceNeed": "实际扫描范围、指标尺度、失败条件与未观测区域。",
+    "grammar": "上部条件空间保留连续性/离散性，下部解释有效域与失效域。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 180,
+      "figureAspect": [
+        1.4,
+        3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "small-multiples",
+      "limitation-response"
+    ],
+    "slots": [
+      {
+        "id": "landscape",
+        "label": "条件空间与结果",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.68
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "supported",
+        "label": "被证据支持的范围",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.75,
+          "w": 0.485,
+          "h": 0.25
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "failure",
+        "label": "失效或未知范围",
+        "role": "conditions",
+        "box": {
+          "x": 0.515,
+          "y": 0.75,
+          "w": 0.485,
+          "h": 0.25
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2.7,
+        "slots": [
+          {
+            "id": "landscape",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "supported",
+            "weight": 1
+          },
+          {
+            "id": "failure",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "contradiction-explainer",
+    "name": "冲突结果与条件解释",
+    "purposes": [
+      "review",
+      "synthesis",
+      "comparison"
+    ],
+    "relationship": "comparison",
+    "choose": "研究得到方向不同的结果，需要解释条件差异。",
+    "avoid": "通过删去反向结果来制造一致结论。",
+    "evidenceNeed": "两项结果的真实出处、指标、样本、尺度及可比性。",
+    "grammar": "冲突先可见，再比较可能解释；假设性的解释明确为推断。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        2
+      ],
+      "textChars": 220,
+      "figureAspect": [
+        1,
+        2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "paired-comparison",
+      "cross-study-synthesis"
+    ],
+    "slots": [
+      {
+        "id": "finding-a",
+        "label": "结果 A",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.62
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "finding-b",
+        "label": "结果 B",
+        "role": "evidence",
+        "box": {
+          "x": 0.515,
+          "y": 0,
+          "w": 0.485,
+          "h": 0.62
+        },
+        "accepts": [
+          "figure",
+          "drawing",
+          "chart",
+          "plot",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "explanation",
+        "label": "条件差异与替代解释",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0.69,
+          "w": 1,
+          "h": 0.31
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2,
+        "slots": [
+          {
+            "id": "finding-a",
+            "weight": 1
+          },
+          {
+            "id": "finding-b",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "explanation",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cross-study-synthesis",
+    "name": "跨研究证据与综合判断",
+    "purposes": [
+      "review",
+      "synthesis",
+      "conclusion"
+    ],
+    "relationship": "synthesis",
+    "choose": "一组研究已经比较过，需要回答共同问题并保留分歧。",
+    "avoid": "未完成逐项核对就生成包罗万象的共识。",
+    "evidenceNeed": "比较过的来源、支持/冲突/缺测记录和推断边界。",
+    "grammar": "上部证据关系压缩但可追溯，下部明确综合判断与尚未知之处。",
+    "capacity": {
+      "evidenceItems": [
+        2,
+        6
+      ],
+      "textChars": 240,
+      "figureAspect": [
+        1.7,
+        3.5
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "literature-matrix",
+      "source-evidence-map"
+    ],
+    "slots": [
+      {
+        "id": "evidence-map",
+        "label": "共同维度下的证据",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.63
+        },
+        "accepts": [
+          "table",
+          "drawing",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "synthesis",
+        "label": "有条件的综合判断",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0.7,
+          "w": 0.65,
+          "h": 0.3
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "unresolved",
+        "label": "仍待回答",
+        "role": "conditions",
+        "box": {
+          "x": 0.69,
+          "y": 0.7,
+          "w": 0.31,
+          "h": 0.3
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 2.1,
+        "slots": [
+          {
+            "id": "evidence-map",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "synthesis",
+            "weight": 2.1
+          },
+          {
+            "id": "unresolved",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "limitation-response",
+    "name": "局限、影响与可检验响应",
+    "purposes": [
+      "limitation",
+      "proposal",
+      "discussion"
+    ],
+    "relationship": "matrix",
+    "choose": "需要把局限具体连接到影响和补救/验证动作。",
+    "avoid": "列出泛泛缺点，然后默认未来工作必然解决。",
+    "evidenceNeed": "局限的证据、影响哪一项判断、可测的响应与失败分支。",
+    "grammar": "每一行是局限→影响→行动的同一关系，行数由实际材料决定。",
+    "capacity": {
+      "evidenceItems": [
+        0,
+        3
+      ],
+      "textChars": 300,
+      "figureAspect": [
+        1.8,
+        3.5
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "proposal-decision",
+      "robustness-landscape"
+    ],
+    "slots": [
+      {
+        "id": "responses",
+        "label": "局限、影响与响应的对应关系",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "responses",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "proposal-decision",
+    "name": "研究方案与判定分支",
+    "purposes": [
+      "proposal",
+      "plan",
+      "design"
+    ],
+    "relationship": "sequence",
+    "choose": "尚未实施的方案需要解释如何得到可判定结果。",
+    "avoid": "将预期效果写成已取得结果，或只画成功路线。",
+    "evidenceNeed": "明确假设、公平对照、观测指标、预先定义的判断及失败后行动。",
+    "grammar": "问题通向实验，再分为支持/不支持两条路径，保留两种结果。",
+    "capacity": {
+      "evidenceItems": [
+        0,
+        2
+      ],
+      "textChars": 240,
+      "figureAspect": [
+        1.5,
+        3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "experiment-design",
+      "research-gap"
+    ],
+    "slots": [
+      {
+        "id": "hypothesis",
+        "label": "待检验假设",
+        "role": "explanation",
+        "box": {
+          "x": 0,
+          "y": 0.1,
+          "w": 0.25,
+          "h": 0.8
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "test",
+        "label": "实验与判定流程",
+        "role": "method",
+        "box": {
+          "x": 0.29,
+          "y": 0,
+          "w": 0.71,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ]
+  },
+  {
+    "id": "work-package-dependency",
+    "name": "研究任务的依赖网络",
+    "purposes": [
+      "plan",
+      "proposal",
+      "organization"
+    ],
+    "relationship": "hierarchy",
+    "choose": "多个工作包有真实数据、方法或交付物依赖。",
+    "avoid": "只需并列任务清单却画大量无意义箭头。",
+    "evidenceNeed": "每个工作包的输入、输出、负责人/边界、依赖与汇合。",
+    "grammar": "节点是研究任务，边是可说明的交付物，关键路径不能靠颜色臆断。",
+    "capacity": {
+      "evidenceItems": [
+        0,
+        1
+      ],
+      "textChars": 240,
+      "figureAspect": [
+        1.4,
+        3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "method-swimlane",
+      "milestone-timeline"
+    ],
+    "slots": [
+      {
+        "id": "dependencies",
+        "label": "任务、交付物与依赖",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "dependencies",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "milestone-timeline",
+    "name": "里程碑与验收证据",
+    "purposes": [
+      "plan",
+      "progress",
+      "proposal"
+    ],
+    "relationship": "sequence",
+    "choose": "研究进度必须对应时间和可核验交付物。",
+    "avoid": "时间点没有依据，或把所有任务画成顺序串行。",
+    "evidenceNeed": "开始/结束或阶段时间、依赖、当前状态与验收定义。",
+    "grammar": "上部时间与任务对齐，下部说明关键里程碑如何被验收。",
+    "capacity": {
+      "evidenceItems": [
+        0,
+        1
+      ],
+      "textChars": 200,
+      "figureAspect": [
+        2,
+        4
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "work-package-dependency",
+      "proposal-decision"
+    ],
+    "slots": [
+      {
+        "id": "timeline",
+        "label": "时间、任务与依赖",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.73
+        },
+        "accepts": [
+          "drawing",
+          "table"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "acceptance",
+        "label": "里程碑验收依据",
+        "role": "conditions",
+        "box": {
+          "x": 0,
+          "y": 0.79,
+          "w": 1,
+          "h": 0.21
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 3.4,
+        "slots": [
+          {
+            "id": "timeline",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "acceptance",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "resource-allocation",
+    "name": "资源结构与精确核对",
+    "purposes": [
+      "plan",
+      "budget",
+      "organization"
+    ],
+    "relationship": "hierarchy",
+    "choose": "需要解释资源如何分配，并核对总量与项目。",
+    "avoid": "缺少真实预算或数量，却用饼图面积暗示精确比例。",
+    "evidenceNeed": "真实总量、单位、分配规则、分类互斥性与加总校验。",
+    "grammar": "结构图解释归属，表格保留精确数值；图表不新增虚构预算。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        2
+      ],
+      "textChars": 150,
+      "figureAspect": [
+        1,
+        2
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "result-statistics",
+      "literature-matrix"
+    ],
+    "slots": [
+      {
+        "id": "allocation",
+        "label": "资源归属关系",
+        "role": "method",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 0.47,
+          "h": 1
+        },
+        "accepts": [
+          "drawing",
+          "diagram",
+          "chart"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "accounting",
+        "label": "精确数值与总量核对",
+        "role": "evidence",
+        "box": {
+          "x": 0.51,
+          "y": 0,
+          "w": 0.49,
+          "h": 1
+        },
+        "accepts": [
+          "table",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "allocation",
+            "weight": 0.96
+          },
+          {
+            "id": "accounting",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "conclusion-return",
+    "name": "以证据回应开场问题",
+    "purposes": [
+      "conclusion",
+      "synthesis",
+      "closing"
+    ],
+    "relationship": "synthesis",
+    "choose": "结尾需要回到开场问题，明确已知、边界和下一步讨论。",
+    "avoid": "最后一页只重复章节标题或喊口号。",
+    "evidenceNeed": "已讲过的证据链、可支持的回答、不可外推范围。",
+    "grammar": "主区域回答问题，下部将关键证据与未决条件并置，不引入新发现。",
+    "capacity": {
+      "evidenceItems": [
+        1,
+        3
+      ],
+      "textChars": 180,
+      "figureAspect": [
+        1.4,
+        3
+      ],
+      "note": ""
+    },
+    "alternatives": [
+      "cross-study-synthesis",
+      "question-evidence"
+    ],
+    "slots": [
+      {
+        "id": "answer",
+        "label": "对开场问题的有条件回答",
+        "role": "synthesis",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.44
+        },
+        "accepts": [
+          "drawing",
+          "card"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "support",
+        "label": "已呈现的关键证据关系",
+        "role": "evidence",
+        "box": {
+          "x": 0,
+          "y": 0.51,
+          "w": 0.65,
+          "h": 0.49
+        },
+        "accepts": [
+          "drawing",
+          "table",
+          "figure"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      },
+      {
+        "id": "boundary",
+        "label": "讨论与下一步判断",
+        "role": "conditions",
+        "box": {
+          "x": 0.69,
+          "y": 0.51,
+          "w": 0.31,
+          "h": 0.49
+        },
+        "accepts": [
+          "card",
+          "drawing"
+        ],
+        "capacity": {
+          "maxPrimaryItems": 1,
+          "maxCards": 2,
+          "guidance": ""
+        }
+      }
+    ],
+    "rows": [
+      {
+        "weight": 0.9,
+        "slots": [
+          {
+            "id": "answer",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "weight": 1,
+        "slots": [
+          {
+            "id": "support",
+            "weight": 2.1
+          },
+          {
+            "id": "boundary",
+            "weight": 1
+          }
+        ]
+      }
+    ]
+  }
+]

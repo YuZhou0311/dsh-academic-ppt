@@ -1,6 +1,7 @@
 /** Recorded design dialogue and reference learning. This module plans questions;
  * it never asks the user, infers consent, or independently verifies a review. */
 import { CARD_PRESET_IDS, getCardPreset } from './card-catalog.mjs';
+import { PAGE_RECIPE_IDS } from './page-recipes.mjs';
 
 const text=(maxLength=1800)=>({type:'string',minLength:1,maxLength,pattern:'\\S'});
 const en=values=>({type:'string',enum:values});
@@ -12,7 +13,7 @@ const distinct=values=>[...new Set(values)];
 
 export const DESIGN_TOPICS=Object.freeze(['density','storyline','palette','shape','language','texture','cover']);
 export const consultationSchema=obj({
-  mode:en(['collaborative','delegated']),delegation:text(2400),
+  mode:en(['collaborative','delegated']),delegation:text(2400),interaction:en(['checkpoints','topics']),
   decisions:arr(obj({topic:en(DESIGN_TOPICS),status:en(['proposed','confirmed','delegated']),
     recommendation:text(1600),options:arr(obj({id:text(100),label:text(200),rationale:text(1000)},['id','label','rationale']),3,2),
     selected:text(1800),userResponse:text(2400),rationale:text(1800),referencePaths:arr(text(3000),8,1),
@@ -21,6 +22,7 @@ export const consultationSchema=obj({
 
 export const referenceStudySchema=obj({
   status:en(['reviewed','not-applicable']),catalogIds:arr(text(100),CARD_PRESET_IDS.length,1),previewPaths:arr(text(3000),CARD_PRESET_IDS.length,1),
+  pageRecipeIds:arr(text(100),32,1),templateReferences:arr(text(3000),8,1),
   observations:text(4000),selectedPresets:arr(text(100),CARD_PRESET_IDS.length),adaptations:arr(text(1400),16,1),reason:text(2400),
 },['status']);
 
@@ -71,13 +73,25 @@ export function designDialoguePlan(consultation={mode:'collaborative'}){
   const delegated=consultation.mode==='delegated'&&meaningful(consultation.delegation);
   const pendingTopics=delegated?[]:DESIGN_TOPICS.filter(topic=>!resolved(byTopic.get(topic)));
   const stage=STAGES.find(s=>s.topics.some(topic=>pendingTopics.includes(topic)));
-  const questions=(stage?.topics||[]).filter(topic=>pendingTopics.includes(topic)).map(topic=>{
+  let questions=(stage?.topics||[]).filter(topic=>pendingTopics.includes(topic)).map(topic=>{
     const record=byTopic.get(topic),defaults=TOPICS[topic];
     return {id:'design_'+topic,topic,label:defaults.label,text:defaults.question,
       recommendation:record?.recommendation||defaults.recommendation,
       options:record?.options||defaults.options,...(record?.referencePaths?{referencePaths:record.referencePaths}:{})};
   });
-  return {mode:consultation.mode||'collaborative',stage:stage?.id||'ready',pendingTopics,
+  let stageId=stage?.id||'ready';
+  if(consultation.interaction==='checkpoints'&&pendingTopics.length){
+    const storyTopics=['density','storyline','language'].filter(topic=>pendingTopics.includes(topic));
+    stageId=storyTopics.length?'story':'pilot-direction';
+    questions=storyTopics.length?[{id:'design_story',topic:'storyline',topics:storyTopics,label:'故事线与使用场景',
+      text:'结合听众和时长，这份汇报更适合沿哪条研究问题路线展开？',
+      recommendation:'展示已填入真实材料的问题路线、核心证据与必须保留的条件，并说明推荐。将使用场景、语言深度与路线一起确认；已有答案直接沿用。',
+      options:TOPICS.storyline.options}]:[{id:'design_pilot_direction',topic:'cover',topics:pendingTopics,label:'真实样张的整体方向',
+      text:'看过封面、困难正文和连续三页后，哪套完整方向更合适？',
+      recommendation:'先展示同样科学内容的真实候选再问，把配色、形态、层次、封面放在完整方案里比较；不要逐项问审美术语。',
+      options:[option('evidence-editorial','开放图证','大图与近邻解释，克制色块和清晰的学术字级。'),option('formal-defense','正式答辩','稳定章节导航，实验/任务关系与比较条件更充分。'),option('light-report','清晰短讲','聚焦主证据和关键边界，讲稿承接次要细节。')]}];
+  }
+  return {mode:consultation.mode||'collaborative',interaction:consultation.interaction||'topics',stage:stageId,pendingTopics,
     resolvedTopics:DESIGN_TOPICS.filter(topic=>!pendingTopics.includes(topic)),questions,
     readyForFinalDesign:pendingTopics.length===0,
     nextAction:pendingTopics.length?'ask-design-questions':'continue-reference-learning',
@@ -85,6 +99,7 @@ export function designDialoguePlan(consultation={mode:'collaborative'}){
       '本轮只提出返回的相关问题，并给出结合当前内容的推荐。选项是提议，不代表已经问过或用户同意。',
       '等待用户回答后记录selected、原话userResponse及适配理由。已给的偏好直接复用；明确委托才用delegated，不把刚发出的提问当成无回复。',
       '等待期间可继续来源核对、取图和可撤销候选；批量排版与正式交付应以协商结果为依据。',
+      ...(consultation.interaction==='checkpoints'?['一次成套方案选择可以落实多个topics，把同一真实回答映射到各字段的具体选择；不得增加七次逐项问答，也不能自动替用户确认。']:[]),
     ]:['保留已确认选择与真实委托依据，继续研究、实际参考学习和逐页设计；不重复追问同一决定。'],
     basis:'proposed-questions-and-caller-recorded-responses-not-independent-user-confirmation'};
 }
@@ -110,17 +125,20 @@ export function designDialogueReport(project){
   const cards=slides.flatMap(s=>list(s.cards));
   const usedPresets=distinct(cards.map(c=>c.preset).filter(Boolean));
   const imageCards=cards.filter(c=>list(c.figureIds).length);
-  const referenceStudy={status:study?.status||'missing',usedPresets,imageCardCount:imageCards.length,
+  const referenceStudy={status:study?.status||'missing',usedPresets,pageRecipeIds:list(study?.pageRecipeIds),imageCardCount:imageCards.length,
     imagePresetIds:usedPresets.filter(id=>getCardPreset(id)?.family==='figure')};
   if(!study){
     if(!legacy&&slides.length)add('card-reference-study-required','design.referenceStudy',
-      '批量设计前应查询卡片目录、查看适合本稿的实际预览并记录选择与改造。论文图可嵌入图像卡片；若确实不需要卡片，记录具体不适用原因，不能跳过参考学习后只写“自由设计”。');
+      '批量设计前应查看适合本稿的整页语法、局部卡片或用户参考模板，记录实际预览观察与内容改造。整页关系优先；采用原生卡片时再查看对应卡片预览。');
   }else if(study.status==='reviewed'){
     const missing=['observations'].filter(key=>!meaningful(study[key]));
-    for(const key of ['catalogIds','previewPaths','adaptations'])if(!list(study[key]).length)missing.push(key);
+    for(const key of ['previewPaths','adaptations'])if(!list(study[key]).length)missing.push(key);
+    if(!list(study.catalogIds).length&&!list(study.pageRecipeIds).length&&!list(study.templateReferences).length)missing.push('catalogIds/pageRecipeIds/templateReferences');
     if(missing.length)add('card-reference-study-incomplete','design.referenceStudy','参考学习缺少实际目录、预览观察或内容适配记录：'+missing.join('、')+'。');
     const unknown=distinct([...list(study.catalogIds),...list(study.selectedPresets)]).filter(id=>!CARD_PRESET_IDS.includes(id));
     if(unknown.length)add('card-reference-unknown-preset','design.referenceStudy','目录/选中配方需来自实际卡片索引，未知ID：'+unknown.join('、')+'。');
+    const unknownPages=distinct(list(study.pageRecipeIds)).filter(id=>!PAGE_RECIPE_IDS.includes(id));
+    if(unknownPages.length)add('page-reference-unknown-recipe','design.referenceStudy.pageRecipeIds','整页语法需来自实际layouts目录，未知ID：'+unknownPages.join('、')+'。自定义构图可根据已查看的参考说明改造，不编造目录ID。');
     const uninspected=list(study.selectedPresets).filter(id=>!list(study.catalogIds).includes(id));
     if(uninspected.length)add('card-reference-selection-unreviewed','design.referenceStudy','选中配方尚未列入查看过的目录，先查看实际预览再记录选择。',{presetIds:uninspected});
     const unreviewedUsed=usedPresets.filter(id=>!list(study.catalogIds).includes(id));

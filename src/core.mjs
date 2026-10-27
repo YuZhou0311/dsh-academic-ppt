@@ -1,7 +1,7 @@
 import {mkdir,writeFile,readFile,rm,stat} from 'node:fs/promises';
 import {dirname,join,relative} from 'node:path';
 import {randomUUID} from 'node:crypto';
-import {assertToolArgs,assertProject,contentOf} from './schema.mjs';
+import {assertToolArgs,assertProject,assertStoryboardRequest,contentOf} from './schema.mjs';
 import {normalizeTemplateProfiles} from './template-profile.mjs';
 import {DEFAULT_ACADEMIC_SYSTEM} from './design-system.mjs';
 import {getAcademicPalette,DEFAULT_ACADEMIC_PALETTE_ID} from './academic-palette.mjs';
@@ -15,16 +15,20 @@ import { designDialogueReport, designDialoguePlan, designDecisionResolved } from
 import { layoutDiversityReport } from './layout-diversity.mjs';
 import { writeDesignStudy } from './design-study.mjs';
 import { compareProjectStructures } from './portfolio.mjs';
+import {storyboardReport,storyboardMarkdown,storyboardSignature,pilotSlideIds,pilotFingerprint} from './storyboard.mjs';
+import {deliveryReadiness,repairQueue} from './delivery.mjs';
+import {PAGE_RECIPE_IDS} from './page-recipes.mjs';
+export {PAGE_RECIPES,PAGE_RECIPE_IDS,getPageRecipe,listPageRecipes,recommendPageRecipes,compilePageRecipe} from './page-recipes.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
 export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'line',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=15;
+const RENDERER_VERSION=16;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
 function snapshot(p){const c=clone(contentOf(p));c.assets=c.assets.map(({data,...a})=>a);return c;}
 function contentHash(p){return hash(stable({...contentOf(p),revision:0}));}
-function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(design.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:{mode:'content-led',density:'compact',consultation:{mode:'collaborative'},cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)},capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
+function initial(title,brief,design,capabilities){return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(design.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:{mode:'content-led',density:'compact',consultation:{mode:'collaborative',interaction:'checkpoints'},cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)},capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};}
 async function load(options){const path=await safePath(options.cwd,options.projectPath,{mustExist:true});if((await stat(path)).isDirectory())throw new Error('PROJECT_PATH_IS_DIRECTORY: projectPath 必须是 init 返回的 project.json 文件，不是工程目录。');const {value,fingerprint}=await readJson(path);assertProject(value);if(!Array.isArray(value.history)||value.history.length>10)throw new Error('INVALID_HISTORY');if(value.assets.some(a=>!a.data||!a.sha256))throw new Error('INVALID_PROJECT_ASSETS: register assets through academic_ppt_record');const checkedAssets=await embedAssets(value.assets,options.cwd,options.signal);if(checkedAssets.some((a,i)=>a.width!==value.assets[i].width||a.height!==value.assets[i].height))throw new Error('INVALID_PROJECT_ASSETS: stored dimensions differ from actual pixels');return {p:value,path,fingerprint};}
 function checkRevision(p,revision){if(p.revision!==revision)throw new Error(`REVISION_CONFLICT: expected ${revision}; current ${p.revision}. Read academic_ppt_context before retrying.`);}
 async function saveMutation(state,next,signal,{undo=false}={}){
@@ -39,7 +43,7 @@ export async function createProject(options={}){
  const a=argsFor('academic_ppt_init',options),dir=await safePath(options.cwd,a.projectDir);
  await ensureNewDir(dir);const path=join(dir,'project.json');const p=initial(a.title,a.brief,a.design,a.capabilities);
  assertProject(p);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
- return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['先按design-dialogue.md分阶段讨论密度、故事线、配色、形态、语言、层次与封面。已有偏好直接记录，明确委托才跳过提问；建议不等于用户确认。用prepare规划本轮问题，回答后将consultation写入design。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
+ return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.0先读workflow-v090.md：故事线与科学取舍、真实样张方向、最终使用三个关键节点。一次完整方向选择可落实多个设计topic，已有选择/委托不重复问。六页以上整稿用plan记录问题、证据、边界、承接与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','若本会话尚未明确模板偏好，用academic_ppt_prepare规划一次模板提问；已提供/不提供/无回复均沿用现有记录。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
 }
 export async function updateRecords(options={}){
  let a=argsFor('academic_ppt_record',options);
@@ -164,7 +168,17 @@ export function evidenceIssues(p){
 function statusSummary(issues){return {errors:issues.filter(x=>x.severity==='error').length,warnings:issues.filter(x=>x.severity==='warning').length};}
 export function slideClaimIds(s){return [...new Set([...(s.claimIds??[]),...(s.cards??[]).flatMap(c=>c.claimIds??[]),...(s.chart?[s.chart.sourceClaimId]:[]),...(s.plot?.sourceClaimIds??[]),...(s.plots??[]).flatMap(plot=>plot.sourceClaimIds??[]),...(s.table?.sourceClaimIds??[]),...(s.drawings??[]).flatMap(d=>[...(d.claimIds??[]),...(d.elements??[]).flatMap(e=>e.claimIds??[])])])];}
 export function slideAssetIds(s){return [...new Set([...(s.figureIds??[]),...(s.cards??[]).flatMap(card=>card.figureIds??[]),...(s.drawings??[]).flatMap(d=>(d.elements??[]).filter(e=>e.kind==='image').map(e=>e.assetId))])];}
-async function scenesAndIssues(p){const {buildScenes}=await import('./scene.mjs');const scenes=buildScenes(p),designDiagnostics=designGeometryReport(p,scenes);designDiagnostics.evidenceDesign=evidenceDesignReport(p,scenes);designDiagnostics.researchEvidence=researchEvidenceReport(p,scenes,designDiagnostics.evidenceDesign);designDiagnostics.designDialogue=designDialogueReport(p);designDiagnostics.layoutDiversity=layoutDiversityReport(p,scenes);designDiagnostics.contentCoverage=contentCoverageReport(p,scenes);return {scenes,designDiagnostics,issues:[...evidenceIssues(p),...(scenes.issues??[]),...designDiagnostics.issues,...designDiagnostics.evidenceDesign.issues,...designDiagnostics.researchEvidence.issues,...designDiagnostics.designDialogue.issues,...designDiagnostics.layoutDiversity.issues,...designDiagnostics.contentCoverage.issues]};}
+async function scenesAndIssues(p){
+ const {buildScenes}=await import('./scene.mjs');
+ const scenes=buildScenes(p),designDiagnostics=designGeometryReport(p,scenes);
+ designDiagnostics.evidenceDesign=evidenceDesignReport(p,scenes);
+ designDiagnostics.researchEvidence=researchEvidenceReport(p,scenes,designDiagnostics.evidenceDesign);
+ designDiagnostics.designDialogue=designDialogueReport(p);
+ designDiagnostics.layoutDiversity=layoutDiversityReport(p,scenes);
+ designDiagnostics.contentCoverage=contentCoverageReport(p,scenes);
+ designDiagnostics.storyboard=storyboardReport(p,scenes,{recipeIds:new Set(PAGE_RECIPE_IDS)});
+ return {scenes,designDiagnostics,issues:[...evidenceIssues(p),...(scenes.issues??[]),...designDiagnostics.issues,...designDiagnostics.evidenceDesign.issues,...designDiagnostics.researchEvidence.issues,...designDiagnostics.designDialogue.issues,...designDiagnostics.layoutDiversity.issues,...designDiagnostics.contentCoverage.issues,...designDiagnostics.storyboard.issues]};
+}
 async function artifactCheck(p,cwd){
  if(!p.artifact)return {current:false,reason:'not-built'};
  if(p.artifact.rendererVersion!==RENDERER_VERSION)return {current:false,reason:'renderer-updated-rebuild-required'};
@@ -176,12 +190,13 @@ async function renderReceiptCheck(p,cwd){
  try{const pptx=await safePath(cwd,p.artifact.files.pptx.path,{mustExist:true});const receipt=await safePath(cwd,p.artifact.render.receiptPath,{mustExist:true});const {readRenderReceipt}=await import('./vendor/dsh-ppt-render.mjs');return readRenderReceipt(pptx,receipt);}catch(e){return {status:'not-verified',message:e.message};}
 }
 export async function checkProject(options={}){
- argsFor('academic_ppt_check',options);const {p,path}=await load(options);const {issues,designDiagnostics}=await scenesAndIssues(p);const artifact=await artifactCheck(p,options.cwd),render=await renderReceiptCheck(p,options.cwd);
+ argsFor('academic_ppt_check',options);const {p,path}=await load(options);const {issues,designDiagnostics,scenes}=await scenesAndIssues(p);const artifact=await artifactCheck(p,options.cwd),render=await renderReceiptCheck(p,options.cwd);
  const reviews=(p.visualReviews??[]).filter(r=>artifact.current&&r.pptxSha256===artifact.pptxSha256);
  const full=(basis)=>p.slides.every(s=>reviews.findLast(r=>r.basis===basis&&r.reviewedSlides.includes(s.id))?.result==='passed');
  const summary=statusSummary(issues),visual=artifact.current&&full('pptx-render')&&render.status==='rendered'?'reported-passed':'not-verified';
- const ready=p.brief.qualityProfile==='academic'&&summary.errors===0&&artifact.current&&p.artifact.mode==='review'&&visual==='reported-passed'&&!(render.missingFonts?.length);
- return {ok:summary.errors===0,projectPath:path,revision:p.revision,counts:counts(p),summary,issues,designDiagnostics,artifact,verification:{evidence:'records-checked-not-independently-verified',layout:'estimated',pptxRender:render.status,visual,htmlVisual:artifact.current&&full('html-preview')?'reported-passed':'not-verified',readyForDelivery:ready},render,slides:p.slides.map(s=>({id:s.id,title:s.title,layout:s.layout,seconds:s.seconds})),note:'格式、引用链和内容分布诊断不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。'};
+ const storyboard=storyboardReport(p,scenes,{final:true,recipeIds:new Set(PAGE_RECIPE_IDS)});
+ const delivery=deliveryReadiness(p,{issues,artifact,render},storyboard);
+ return {ok:summary.errors===0,projectPath:path,revision:p.revision,counts:counts(p),summary,issues,repairQueue:repairQueue(issues),designDiagnostics,storyboard,delivery,artifact,verification:{evidence:'records-checked-not-independently-verified',layout:'estimated',pptxRender:render.status,visual,htmlVisual:artifact.current&&full('html-preview')?'reported-passed':'not-verified',readyForDelivery:delivery.readyForDelivery},render,slides:p.slides.map(s=>({id:s.id,title:s.title,layout:s.layout,seconds:s.seconds})),note:'格式、引用链和内容分布诊断不能证明论文结论真实或审美优秀；视觉审查为具名记录，须查看实际最终 PPTX 渲染。'};
 }
 export async function contextProject(options={}){
  const a=argsFor('academic_ppt_context',options),{p,path}=await load(options),evaluated=await scenesAndIssues(p),issues=evaluated.issues,summary=statusSummary(issues);
@@ -190,11 +205,11 @@ export async function contextProject(options={}){
  const nextActions={
   research:['使用实际宿主搜索工具核对题名、DOI、年份与发表版本，取得全文及图片后登记paper.sourceCheck和figureReview。搜索摘要、网页纯文本或verified:true均不证明已取得并看过原图。保留实际URL/本地路径、图号、图注和获取失败原因。','有参考时先看实际页面中的主辅证据、邻接解释和局部分组；没有参考文件则明确记录依据，不声称已看。'],
   evidence:['先处理researchEvidence列出的来源查证、图源盘点及已选图未上页问题。取得并实看原图后登记asset.reading、figureIds、card.figureIds或drawing.image，按图安排解释和条件；图片必须在实际导出scene中可见，不能仅登记asset或补文字卡。','核对reported/inference/proposal及推理前提。把关键结果、比较条件和边界分配到真实可见载体。','检查是否只摘了漂亮的单个数字而丢失分布、对照、时间变化和负结果；按问题修复，不为构图补造结果。'],
-  design:['先查看designDialogue中的待确认项和参考学习缺口；取得真实反馈，查看卡片实际预览并记录内容适配，再批量排版。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
+  design:['先查看designDialogue中的待确认项和参考学习缺口；沿用已有反馈或明确委托。先按研究关系查看整页语法或用户模板的实际预览；需要局部卡片再查对应预览。记录内容适配后，用真实困难样张确定完整方向。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
    '阅读references/visual-decision.md；从contract(design)的academicPalettes选择合适学术色板，用direction说明依据，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
-   '用academic_ppt_study实际绘制2个封面和2个困难证据页候选（SVG与原生PPTX），可render:true查看真实画面。与参考和论文原图并列选择，不以方案名称代替设计。',
+   '已有方向或明确委托直接沿用。若完整方向仍有实质分歧，或困难样张暴露具体风险，用academic_ppt_study按同一真实内容比较必要的候选，render:true查看实际画面。把比较集中于样张阶段，不为每页制作备选，也不重复询问已经决定的事项。',
    '需要信息卡时用academic_ppt_cards按用途查询48种原生配方（含12种嵌图卡），选定card.preset并填写items等真实内容；标题、单位和边界都必须可见。与图表、表格、开放文字组合，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
-  storyboard:['先用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','先把已取得的原图、数据图和机制示意分配到对应页，写清看哪里、比较什么及成立条件，再写argument、内容覆盖与visualPlan，并用composition.rows/regions或drawings组合图文；不必选择referenceTemplateId。',
+  storyboard:['六页及以上整稿先用academic_ppt_plan提交证据故事板，逐页写问题、判断、推理、边界、必须可见条件和承接，标出最难页与连续三页。已确认方向直接沿用；不能把资料易得性当作改题授权。','用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','先把已取得的原图、数据图和机制示意分配到对应页，写清看哪里、比较什么及成立条件，再写argument、内容覆盖与visualPlan，并用composition.rows/regions或drawings组合图文；不必选择referenceTemplateId。',
    '先盘点本页证据、解释、条件和方法关系，再分配区域。visualPlan.contentLayers可用role、panelIds和summary记录实际信息层，不规定层数或分栏；上下、主辅、跨栏和单一主载体均按内容选择。用contentChecks登记必须可见的关键条件，不能只留在notes。',
    'heading与cover自定题名位置和语义断行；heading.inheritChrome:true可保留章节带与身份层，作者题名box须避开保留区，不静默挪动或缩字。颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',
    '保留普通正文和图标签的中间字级；拥挤时先重排主辅/去重复或拆任务，不能删重要边界或缩成脚注。references/referenceIds显示完整书目。'],
@@ -202,10 +217,10 @@ export async function contextProject(options={}){
   review:['academic_ppt_render后查看每张实际PPTX图片和整稿概览，逐项对照图源清单。检查原图是否真正可见、图文是否对应、主图是否过小、文字是否替代了本应呈现的结果图，并处理高卡片底部/表格下方大空区；核对缺字、裁切、轴、单位、图例、颜色语义和流程方向。',
    '先单独读目录、章节问题、逐页标题与过渡，确认前一证据能引出下一问题、结尾回应中心问题；再与参考和原图对照。有此前工程时portfolio只比较明确提供的工程。',
    '逐页核对contentLayers中的证据、解读和条件是否在实际画面可找到；近似结构提示也覆盖自由区域和drawings，合理同尺度比较可用repetitionReason解释，不能靠换色或细移文字框作变化。将未解决问题登记needs-fix，修改后查看当前版本变化页并核对未变化页；只有实际看过的最终画面才能登记通过。'],
-  delivery:['academic_ppt_check核对当前成品hash、真实渲染及审查范围。','交付PPTX、PDF/实际预览、讲稿、来源与可重建记录；如实说明仍存问题和未测宿主。'],
+  delivery:['academic_ppt_check核对delivery.blockers及repairQueue，先修复未完成证据、故事板、样张与当前逐页审查；不把draft路径当成正式交付。','academic_ppt_deliver创建新目录，打包同一hash的可编辑PPTX、PDF/实际预览、讲稿、来源、故事板、审查记录和可重建工程。交付后说明实际验证范围与未测宿主。'],
  }[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
- return {ok:true,projectPath:path,revision:p.revision,stage,brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:issues.slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
+ return {ok:true,projectPath:path,revision:p.revision,stage,storyboard:evaluated.designDiagnostics.storyboard,repairQueue:repairQueue(issues),brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }
 function speechMarkdown(p){let elapsed=0;return `# ${p.title}\n\n目标时长：${p.brief.talkMinutes} 分钟。以下为本次导出对应的备注，实际语速须排练。\n\n`+p.slides.map((s,i)=>{const start=elapsed;elapsed+=s.seconds;const t=n=>`${Math.floor(n/60)}:${String(Math.round(n%60)).padStart(2,'0')}`;return `## ${i+1}. ${s.title}\n\n页 ID：${s.id}。时间预算：${t(start)}–${t(elapsed)}。\n\n${s.notes||'此页尚无讲稿。'}${s.transition?'\n\n衔接下一页：'+s.transition:''}\n\n`}).join('');}
 export async function buildProject(options={}){
@@ -217,12 +232,12 @@ export async function buildProject(options={}){
  const token=`r${p.revision}-${randomUUID().slice(0,8)}`,directory=join(exportRoot,token);await mkdir(directory);
  let committed=false;
  try{
-  const fileValues={pptx:['report.pptx',generated.pptx],html:['report.html',generated.html],speech:['speaker-notes.md',speechMarkdown(p)],evidence:['evidence.json',JSON.stringify({brief:p.brief,papers:p.papers,claims:p.claims},null,2)],assets:['asset-manifest.json',JSON.stringify(p.assets.map(({data,...rest})=>rest),null,2)],quality:['quality.json',JSON.stringify({createdAt:now(),revision:p.revision,mode,issues,designDiagnostics:preflight.designDiagnostics,verification:{static:'checked',visual:'not-verified'},sourceHash:contentHash(p)},null,2)]};
+  const fileValues={pptx:[mode==='draft'?'preview-not-for-delivery.pptx':'report.pptx',generated.pptx],html:['report.html',generated.html],speech:['speaker-notes.md',speechMarkdown(p)],evidence:['evidence.json',JSON.stringify({brief:p.brief,papers:p.papers,claims:p.claims},null,2)],assets:['asset-manifest.json',JSON.stringify(p.assets.map(({data,...rest})=>rest),null,2)],quality:['quality.json',JSON.stringify({createdAt:now(),revision:p.revision,mode,issues,designDiagnostics:preflight.designDiagnostics,verification:{static:'checked',visual:'not-verified',readyForDelivery:false},sourceHash:contentHash(p)},null,2)]};
   const files={};for(const [kind,[name,body]] of Object.entries(fileValues)){abort(options.signal);const path=join(directory,name);await writeFile(path,body,{flag:'wx'});files[kind]={path,sha256:hash(typeof body==='string'?Buffer.from(body):body)};}
   await mkdir(join(directory,'previews'));for(const [i,page] of generated.svgPages.entries())await writeFile(join(directory,'previews',String(i+1).padStart(3,'0')+'.svg'),page.svg,{flag:'wx'});
  const artifact={mode,createdAt:now(),rendererVersion:RENDERER_VERSION,contentHash:contentHash(p),revision:p.revision,files};const next={...p,builtOnce:true,densityChoicePending:mode==='review'?false:p.densityChoicePending,artifact,visualReviews:[]};
   await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT: content changed during rendering');await atomicJson(state.path,next,options.signal);},options.signal);committed=true;
-  return {ok:true,status:mode==='draft'?'draft':'ready-for-review',projectPath:state.path,revision:p.revision,files:Object.fromEntries(Object.entries(files).map(([k,v])=>[k,v.path])),pptxSha256:files.pptx.sha256,summary:statusSummary(issues),issues,evidenceDesign:{summary:preflight.designDiagnostics.evidenceDesign.summary},researchEvidence:{mode:preflight.designDiagnostics.researchEvidence.mode,summary:preflight.designDiagnostics.researchEvidence.summary},designDialogue:preflight.designDiagnostics.designDialogue,layoutDiversity:preflight.designDiagnostics.layoutDiversity,verification:{static:'checked',visual:'not-verified'},note:'成品写入新版本目录。PowerPoint/WPS 的后续手工修改不会同步回工程，新生成不会覆盖该文件。'};
+  return {ok:true,status:mode==='draft'?'draft':'ready-for-review',projectPath:state.path,revision:p.revision,files:Object.fromEntries(Object.entries(files).map(([k,v])=>[k,v.path])),pptxSha256:files.pptx.sha256,summary:statusSummary(issues),issues,repairQueue:repairQueue(issues),evidenceDesign:{summary:preflight.designDiagnostics.evidenceDesign.summary},researchEvidence:{mode:preflight.designDiagnostics.researchEvidence.mode,summary:preflight.designDiagnostics.researchEvidence.summary},designDialogue:preflight.designDiagnostics.designDialogue,layoutDiversity:preflight.designDiagnostics.layoutDiversity,storyboard:preflight.designDiagnostics.storyboard,verification:{static:'checked',visual:'not-verified',readyForDelivery:false},nextActions:[mode==='draft'?'此为明确标记的中间预览。按repairQueue继续修复，不能作为最终交付。':'实际渲染当前PPTX、逐页查看并修复；最后用academic_ppt_deliver核验并生成交付包。'],note:'成品写入新版本目录。PowerPoint/WPS 的后续手工修改不会同步回工程，新生成不会覆盖该文件。'};
  }finally{if(!committed)await rm(directory,{recursive:true,force:true});}
 }
 function cardPrefix(slideId,cardId){return `${slideId}/card/${cardId}/`;}
@@ -276,6 +291,121 @@ export async function renderProjectArtifact(options={}){
  next.visualReviews=(next.visualReviews??[]).filter(review=>review.basis!=='pptx-render');
  await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
  return {...rendered,projectPath:state.path,revision:state.p.revision,note:'这是真实 PPTX 的静态渲染，尚未判断画面质量；字体及布局仍需查看图片。'};
+}
+
+/** Read/write an authored storyboard, or attest to the current real pilot.
+ * The small requestPath tool keeps the full authoring schema out of each turn. */
+export async function planProject(options={}){
+ const a=argsFor('academic_ppt_plan',options),state=await load(options);
+ checkRevision(state.p,a.expectedRevision);
+ if(!a.requestPath){
+  const evaluated=await scenesAndIssues(state.p);
+  return {ok:true,projectPath:state.path,revision:state.p.revision,storyboard:evaluated.designDiagnostics.storyboard,
+   ...(state.p.storyboard?{pages:state.p.storyboard.pages.map(p=>({slideId:p.slideId,title:p.title,role:p.role,layoutFamily:p.layoutFamily,seconds:p.seconds}))}:{}),
+   nextActions:['首次写入先查 contract(topic=storyboard)。按用户目标写完整问题与证据路线，再选页面语法；不自动补造论点、用户回答或研究结果。']};
+ }
+ const file=await safePath(options.cwd,a.requestPath,{mustExist:true}),bytes=await readBounded(file,1024*1024);
+ let request;try{request=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{throw new Error('INVALID_STORYBOARD_FILE: 需要≤1MiB UTF-8 JSON对象');}
+ assertStoryboardRequest(request);
+ if(request.kind==='storyboard'){
+  if(new Set(request.storyboard.pages.map(p=>p.slideId)).size!==request.storyboard.pages.length)throw new Error('DUPLICATE_STORYBOARD_PAGE');
+  const next={...state.p,storyboard:clone(request.storyboard)};
+  assertProject(next);
+  const evaluated=await scenesAndIssues(next);
+  const output=join(dirname(state.path),'storyboard-r'+(state.p.revision+1)+'.md');
+  await writeFile(output,storyboardMarkdown(next.storyboard,next),{flag:'wx'});
+  let saved;
+  try{saved=await saveMutation(state,next,options.signal);}
+  catch(error){await rm(output,{force:true});throw error;}
+  return {...saved,storyboard:evaluated.designDiagnostics.storyboard,files:{storyboard:output},
+   nextActions:['展示问题、证据、取舍与时间预算，沿用用户已确认方向或明确委托。然后只做封面、最难正文和连续三页，实际渲染再确认整套视觉方向。']};
+ }
+ if(!state.p.storyboard?.pilot)throw new Error('PILOT_PLAN_REQUIRED: 先在故事板指定困难页和连续三页');
+ const ids=pilotSlideIds(state.p.storyboard),evaluated=await scenesAndIssues(state.p);
+ if(ids.some(id=>!state.p.slides.some(s=>s.id===id)))throw new Error('PILOT_SLIDES_MISSING');
+ const selectionErrors=evaluated.designDiagnostics.storyboard.issues.filter(i=>i.severity==='error');
+ if(selectionErrors.length)throw new Error('PILOT_PLAN_INVALID: '+selectionErrors.map(i=>i.message).join(' ').slice(0,1500));
+ const actual=await artifactCheck(state.p,options.cwd),render=await renderReceiptCheck(state.p,options.cwd);
+ if(!actual.current||render.status!=='rendered')throw new Error('PILOT_ACTUAL_RENDER_REQUIRED: 样张须来自当前未改动PPTX的真实渲染');
+ if(render.missingFonts?.length)throw new Error('PILOT_FONTS_MISSING: '+render.missingFonts.join(', '));
+ const pilotPages=state.p.slides.filter(s=>ids.includes(s.id));
+ const claimIds=new Set(expandClaimIds(state.p.claims,pilotPages.flatMap(slideClaimIds)));
+ const assetIds=new Set(pilotPages.flatMap(s=>[...slideAssetIds(s),s.cover?.assetId,s.closing?.assetId].filter(Boolean)));
+ const paperIds=new Set([...pilotPages.flatMap(s=>[...s.paperIds,...(s.referenceIds??[])]),
+  ...state.p.claims.filter(c=>claimIds.has(c.id)).map(c=>c.paperId),...state.p.assets.filter(f=>assetIds.has(f.id)).map(f=>f.paperId).filter(Boolean)]);
+ const affected=[...ids.map(id=>'slides.'+id),...[...claimIds].map(id=>'claims.'+id),
+  ...[...assetIds].map(id=>'assets.'+id),...[...paperIds].map(id=>'papers.'+id),'design','brief'];
+ // A pilot is an actual subset of the planned report. Source identity and
+ // reading must already be checked, but a verified figure explicitly assigned
+ // to a later page and the final bibliography need not be inserted early.
+ // The ordinary full-report checks retain these issues; no gate is disabled.
+ const implemented=new Set(state.p.slides.map(s=>s.id));
+ const futurePages=state.p.storyboard.pages.filter(page=>!implemented.has(page.slideId));
+ const futureAssetIds=new Set(futurePages.flatMap(page=>page.assetIds));
+ const deferredFinalIssues=evaluated.issues.filter(i=>i.severity==='error'&&(
+  i.code==='reference-entry'&&futurePages.some(page=>page.role==='references')||
+  i.code==='selected-source-figure-not-used'&&futureAssetIds.has(i.assetId)&&!assetIds.has(i.assetId)
+ ));
+ const deferred=new Set(deferredFinalIssues);
+ const unresolved=evaluated.issues.filter(i=>i.severity==='error'&&!deferred.has(i)&&(ids.includes(i.slideId)||affected.some(path=>i.path===path||i.path?.startsWith(path+'.'))));
+ if(unresolved.length)throw new Error('PILOT_HAS_ERRORS: '+unresolved.map(i=>i.message).join(' ').slice(0,1500));
+ const reviews=(state.p.visualReviews??[]).filter(r=>r.pptxSha256===actual.pptxSha256&&r.basis==='pptx-render');
+ if(ids.some(id=>reviews.findLast(r=>r.reviewedSlides.includes(id))?.result!=='passed'))throw new Error('PILOT_REVIEW_REQUIRED: 先实际查看样张并登记逐页observations；needs-fix必须先修复');
+ const pilotReview={decision:request.decision,userResponse:request.userResponse,notes:request.notes,slideIds:ids,
+  pptxSha256:actual.pptxSha256,renderReceiptSha256:hash(await readBounded(state.p.artifact.render.receiptPath)),
+  storyboardSha256:storyboardSignature(state.p.storyboard),fingerprint:pilotFingerprint(state.p),createdAt:now(),
+  attestation:'caller-recorded-human-response-or-explicit-delegation-not-independent-confirmation'};
+ const next={...state.p,pilotReview};
+ await locked(state.path,async()=>{if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');await atomicJson(state.path,next,options.signal);},options.signal);
+ return {ok:true,projectPath:state.path,revision:state.p.revision,pilotReview,storyboard:storyboardReport(next,evaluated.scenes),deferredFinalIssues,
+  nextActions:['保持已确认的科学取舍与视觉系统，按页面任务扩展整稿。改变样张的科学内容/字体/配色/主线后须复核，单纯增加其他页不会使样张失效。',
+   ...(deferredFinalIssues.length?[`仍有${deferredFinalIssues.length}项已计划在后续页呈现的原图或完整书目待完成。样张记录不解除这些整稿要求，check与deliver会继续阻止提前交付。`]:[])]};
+}
+
+/** A final package can only be created from the exact reviewed artifact.
+ * No force flag and no fallback to draft are offered by this operation. */
+export async function deliverProject(options={}){
+ const a=argsFor('academic_ppt_deliver',options),state=await load(options);
+ checkRevision(state.p,a.expectedRevision);
+ const checked=await checkProject({cwd:options.cwd,projectPath:state.path,signal:options.signal});
+ if(!checked.delivery.readyForDelivery)return {ok:false,status:'blocked',projectPath:state.path,revision:state.p.revision,
+  delivery:checked.delivery,storyboard:checked.storyboard,summary:checked.summary,issues:checked.issues,repairQueue:checked.repairQueue,
+  nextActions:checked.delivery.nextActions,note:'没有创建最终交付包。现有草稿仍可用于明确标记的中间预览；继续修复已授权的工作。'};
+ if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');
+ const directory=await safePath(options.cwd,a.outputDir);await ensureNewDir(directory);
+ const files={},entries=[];let complete=false;
+ const put=async(name,body,kind)=>{abort(options.signal);const dest=join(directory,name);await mkdir(dirname(dest),{recursive:true});const bytes=typeof body==='string'?Buffer.from(body):body;await writeFile(dest,bytes,{flag:'wx'});entries.push({file:name,kind,sha256:hash(bytes),byteLength:bytes.length});files[kind]=dest;};
+ try{
+  for(const [kind,item] of Object.entries(state.p.artifact.files)){
+   if(kind==='quality')continue;
+   const source=await safePath(options.cwd,item.path,{mustExist:true}),bytes=await readBounded(source);
+   if(hash(bytes)!==item.sha256)throw new Error('DELIVERY_SOURCE_CHANGED');
+   await put(kind==='pptx'?'report.pptx':kind==='html'?'report.html':kind==='speech'?'speaker-notes.md':kind==='evidence'?'evidence.json':'asset-manifest.json',bytes,kind);
+  }
+  const sourceRender=state.p.artifact.render;
+  const receiptPath=await safePath(options.cwd,sourceRender.receiptPath,{mustExist:true});
+  const receipt=JSON.parse((await readBounded(receiptPath)).toString('utf8'));
+  for(const [i,item] of (receipt.pngs??[]).entries()){
+   const source=await safePath(options.cwd,join(dirname(receiptPath),item.file),{mustExist:true}),bytes=await readBounded(source);
+   if(hash(bytes)!==item.sha256)throw new Error('DELIVERY_RENDER_CHANGED');
+   await put('previews/'+String(i+1).padStart(3,'0')+'.png',bytes,'preview-'+(i+1));
+  }
+  if(receipt.pdf){const bytes=await readBounded(await safePath(options.cwd,join(dirname(receiptPath),receipt.pdf.file),{mustExist:true}));if(hash(bytes)!==receipt.pdf.sha256)throw new Error('DELIVERY_RENDER_CHANGED');await put('report.pdf',bytes,'pdf');}
+  await put('quality.json',JSON.stringify(checked,null,2)+'\n','quality');
+  if(state.p.storyboard)await put('storyboard.md',storyboardMarkdown(state.p.storyboard,state.p),'storyboard');
+  const recoverable={...clone(contentOf(state.p)),history:[],createdAt:state.p.createdAt,updatedAt:state.p.updatedAt,...(state.p.pilotReview?{pilotReview:clone(state.p.pilotReview)}:{})};
+  await put('rebuild-project.json',JSON.stringify(recoverable,null,2)+'\n','project');
+  await put('review-records.json',JSON.stringify({visualReviews:state.p.visualReviews,pilotReview:state.p.pilotReview,renderReceipt:receipt},null,2)+'\n','reviews');
+  if(hash(await readBounded(state.path))!==state.fingerprint)throw new Error('REVISION_CONFLICT');
+  const manifest={schemaVersion:1,status:'ready',createdAt:now(),projectId:state.p.id,revision:state.p.revision,
+   pptxSha256:state.p.artifact.files.pptx.sha256,sourceHash:contentHash(state.p),files:entries,
+   verification:checked.verification,limits:checked.delivery.limits};
+  await writeFile(join(directory,'delivery-manifest.json'),JSON.stringify(manifest,null,2)+'\n',{flag:'wx'});
+  files.manifest=join(directory,'delivery-manifest.json');complete=true;
+  return {ok:true,status:'ready',projectPath:state.path,revision:state.p.revision,outputDir:directory,
+   pptxSha256:manifest.pptxSha256,files,verification:checked.verification,delivery:checked.delivery,
+   note:'交付包对应已逐页审查的当前PPTX。rebuild-project.json可继续编辑和重建；重建后需要重新渲染与审查，不继承本次最终批准。'};
+ }finally{if(!complete)await rm(directory,{recursive:true,force:true});}
 }
 
 

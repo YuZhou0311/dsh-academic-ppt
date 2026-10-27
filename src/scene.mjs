@@ -2,7 +2,7 @@
  * No scientific value is inferred here: every visible result comes from the project.
  */
 import { getReferenceTemplate } from './reference-catalog.mjs';
-import { assessFigurePlacement } from './figure-planning.mjs';
+import { assessFigurePlacement, FIGURE_LABEL_TARGET_PX, FIGURE_LABEL_FLOOR_PX } from './figure-planning.mjs';
 import { resolveAcademicSystem } from './design-system.mjs';
 import { academicHeader, academicCover, academicSection, academicClosing, resolveChrome } from './academic-chrome.mjs';
 import { renderAcademicComposition } from './academic-composition.mjs';
@@ -135,7 +135,7 @@ export function wrapText(value, width, size, options = {}) {
 
 function pageBuilder(slide, index, total, design) {
   const p = design.palette;
-  const page = { id: slide.id || `slide-${index + 1}`, title: asText(slide.title), layout: slide.layout, notes: asText(slide.notes), seconds: slide.seconds || 0, width: CANVAS.width, height: CANVAS.height, background: p.background, nodes: [], issues: [] };
+  const page = { id: slide.id || `slide-${index + 1}`, title: asText(slide.title), layout: slide.layout, notes: asText(slide.notes), seconds: slide.seconds || 0, width: CANVAS.width, height: CANVAS.height, background: p.background, nodes: [], figurePlacements: [], issues: [] };
   const regions = [];
   const region = (key, box, type) => regions.push({ id: `${page.id}/${key}`, ...box, type });
   const add = (kind, key, props, cardId) => {
@@ -406,6 +406,28 @@ function figure(b, project, id, box, key) {
   const imageBox = { x: frame.x + (frame.w - iw * scale) / 2, y: frame.y + (frame.h - ih * scale) / 2, w: iw * scale, h: ih * scale };
   const assessment=assessFigurePlacement(asset,frame,{slideId:b.page.id,objectId:`${b.page.id}/${key}:image`});
   b.page.issues.push(...assessment.issues);
+  // Record the pixels' actual displayed extent separately from the containing
+  // card/slot. A large frame can contain a tiny plot after title/caption costs
+  // and aspect-ratio fitting; asset counts and frame area cannot prove that a
+  // reader can see its axes. These are reproducible geometry estimates only.
+  const labelPx=asset.reading?.minLabelPx,hasLabelMeasurement=Number.isFinite(labelPx)&&labelPx>0;
+  const targetScale=hasLabelMeasurement?FIGURE_LABEL_TARGET_PX/labelPx:null;
+  b.page.figurePlacements.push({
+    assetId:id,objectId:`${b.page.id}/${key}:image`,
+    ...(key.startsWith('card/')?{cardId:key.split('/')[1]}:{}),
+    slotBox:clone(box),frameBox:clone(frame),imageBox:clone(imageBox),
+    captionBox:caption?{x:box.x,y:box.y+box.h-captionH,w:box.w,h:captionH}:null,
+    captionHeight:captionH,legendHeight:legendH,
+    imageAreaFraction:imageBox.w*imageBox.h/(b.page.width*b.page.height),
+    slotUtilization:imageBox.w*imageBox.h/(box.w*box.h),
+    sourceVisiblePixels:{w:iw,h:ih},scale,
+    readingTask:asset.reading?.task||null,purpose:asset.reading?.purpose||null,
+    sourceLabelPx:hasLabelMeasurement?labelPx:null,projectedLabelPx:assessment.projectedLabelPx,
+    labelFloorPx:FIGURE_LABEL_FLOOR_PX,labelTargetPx:FIGURE_LABEL_TARGET_PX,
+    requiredImageAtTarget:targetScale===null?null:{w:iw*targetScale,h:ih*targetScale},
+    labelStatus:!hasLabelMeasurement?'unmeasured':assessment.projectedLabelPx<FIGURE_LABEL_FLOOR_PX?'below-floor':assessment.projectedLabelPx<FIGURE_LABEL_TARGET_PX?'needs-review':'estimated-readable',
+    basis:'source-label-measurement-and-final-image-geometry-not-visual-approval',
+  });
   // The matte follows the actual source aspect ratio, not its empty layout slot.
   // A native outer shadow adds a shallow paper layer without rasterizing the page.
   if(matte)b.rect(`${key}:paper`,{x:imageBox.x-3,y:imageBox.y-3,w:imageBox.w+6,h:imageBox.h+6},'#FFFFFF','#CCD4DD',{strokeWidth:.8,shadow:{color:'#263B50',opacity:.12,blur:3,offset:2,angle:90}});

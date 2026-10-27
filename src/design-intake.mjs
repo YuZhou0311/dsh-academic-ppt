@@ -118,7 +118,7 @@ async function templatePlan(request, cwd, signal) {
   };
   if (status === 'awaiting-upload') return {
     status, nextAction:'continue-native-until-upload',
-    instructions:['用户已选择稍后提供，不重复询问是否有模板。先按当前内容与内置卡片库工作；附件可用后将status改为provided并登记其工作区路径。'],
+    instructions:['用户已选择稍后提供，不重复询问是否有模板。先按当前真实内容与整页研究关系设计；附件可用后将status改为provided并登记其工作区路径。'],
   };
   if (['none','unanswered'].includes(status)) return {
     status, nextAction:'continue-native',
@@ -152,7 +152,7 @@ async function templatePlan(request, cwd, signal) {
     return {status,nextAction:'continue-reference-guided',files:reviewedFiles,
       review:{status:'host-reviewed',profiles,visualObservations:provided.review.visualObservations,...(provided.review.renderReferences?{renderReferences:provided.review.renderReferences}:{})},
       instructions:['已经登记匹配当前模板字节的profile与宿主看图观察，不重复要求提取同一模板。观察是宿主记录，插件未独立进行视觉检查。',
-        '将已观察的层级、题签、描边与内容组织原则适配到当前材料，继续原生卡片设计。模板文件发生改变后须重新提取并查看，不沿用旧profile。'],
+        '将已观察的层级、主辅证据和内容组织原则适配到当前材料，继续整页设计；只有局部信息关系需要时才选卡片。模板文件发生改变后须重新提取并查看，不沿用旧profile。'],
     };
   }
   return { status, nextAction:files.some(file=>file.format === 'pptx') ? 'inspect-template' : 'convert-template-or-continue-native', files,
@@ -172,14 +172,15 @@ function generationPlan(request) {
     return { ...common, strategy:'native-from-reviewed-reference',nextAction:'rebuild-editable-cards',resultReferences:declared.resultReferences,visualObservations:declared.visualObservations,
       instructions:['这些引用和看图观察由宿主提供，插件没有独立看过图像。按保留的原始内容重建可编辑卡片，再检查最终PPTX；生成参考不替代来源核对或视觉验收。'] };
   }
+  if (!request.cards?.length) return { ...common,strategy:'content-led-pages',nextAction:'design-evidence-pages',
+    ...(declared.failureReason ? {reason:declared.failureReason} : {}),
+    instructions:['本次没有请求局部卡片参考，继续依据真实图源、证据和故事板设计页面。先查academic_ppt_layouts或已提供模板；不因生图接口是否可用而创建无必要的卡片。只有实际需要探索局部构图时，才提供cards进入补充参考流程。'] };
   if (status === 'failed' || status === 'declined') return { ...common,strategy:'native-catalog',nextAction:'select-native-cards',
     ...(declared.failureReason ? { reason:declared.failureReason } : {}),
     instructions:[status === 'failed' ? '本次生图失败，保留原因并转内置卡片库。无需为了继续制作反复重试、索要密钥或更换外部服务。' : '本次用户选择不用生图，直接按内容选原生卡片并继续。'] };
   if (declared.availability !== 'available') return { ...common,strategy:'native-catalog',nextAction:'select-native-cards',
     instructions:[declared.availability === 'unknown' ? '按宿主已公开的工具清单核实一次能力；当前没有已证实的接口，先用内置卡片库继续。不得仅凭模型名称或生成过PNG推定能调用生图。' : '当前宿主没有可用生图接口，直接使用内置卡片库与现有逐页设计流程。'] };
   if (!declared.toolName) throw new Error('INVALID_PREPARATION: available image generation requires the actual host toolName.');
-  if (!request.cards?.length) return { ...common,strategy:'host-imagegen-preferred',nextAction:'write-card-content',toolName:declared.toolName,
-    instructions:['已声明可用生图工具。先确定当前汇报需要的卡片标题、正文、指标、条件与内容状态，再生成对应参考；不要先做脱离内容的随机皮肤。'] };
   const batches=[];
   for(let start=0;start<request.cards.length;start+=4){
     const cards=request.cards.slice(start,start+4);
@@ -215,7 +216,7 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   try { request = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes).replace(/^\uFEFF/,'')); }
   catch { throw new Error('INVALID_PREPARATION_JSON: requestPath must contain a UTF-8 JSON object.'); }
   valid(request);
-  const consultation=request.consultation || {mode:'collaborative'};
+  const consultation=request.consultation || {mode:'collaborative',interaction:'checkpoints'};
   const designDialogue=designDialoguePlan(consultation);
   const template = await templatePlan(request,cwd,signal);
   let imageGeneration = generationPlan(request);
@@ -231,7 +232,7 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
     nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
     designRecords:{consultation:structuredClone(consultation),...(request.referenceStudy?{referenceStudy:structuredClone(request.referenceStudy)}:{})},
     researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划卡片与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
-    nativeFallback:{ tool:'academic_ppt_cards',selection:'先查询完整目录与figure家族，读取合适候选的presetId并实际查看SVG或figure-cards.pptx；记录referenceStudy的预览观察、选型及内容改造。论文图可以放入card.figureIds，与图内题签、读图提示和条件组成一体；配方不适合时用drawings与composition.regions重组，保持证据来源。卡片、开放大图、跨栏比较和上下组合按研究任务选择。' },
+    nativeFallback:{ tool:'academic_ppt_layouts',selection:'先按研究关系查询整页语法，查看实际图册并记录referenceStudy.pageRecipeIds、预览观察与内容改造。需要局部卡片时再查academic_ppt_cards及对应预览，记录catalogIds。用真实图形比例和比较任务调整composition或drawings，保持证据来源；不按目录顺序套用整稿。' },
     stateRecord:'准备请求记录用户选择和宿主实际能力。返回提问/调用计划不代表动作已执行，不能把刚提出的问题记为无回复；得到真实回答后才更新状态。designRecords是待登记值，需合并实际design并用record保存，prepare不修改工程。',
   };
   if (outputPath) {
