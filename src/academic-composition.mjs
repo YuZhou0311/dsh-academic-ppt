@@ -217,7 +217,7 @@ function chartPlan(project, chart, width, ctx) {
 function scientificPlotPlan(data, width, ctx, panelId, plotId) {
   const details = { panelId, ...(plotId ? { plotId } : {}) };
   if (width < 380) ctx.error('plot-width', '科学统计图的面板正文宽度至少为380px；扩大面板或将统计图单独成行。', { ...details, availableWidth: width, requiredWidth: 380 });
-  const measurement = measureScientificPlotMinimum(data, width, { fontFamily: ctx.fontFamily, wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system, projection:ctx.design.projection });
+  const measurement = measureScientificPlotMinimum(data, width, { fontFamily: ctx.fontFamily, annotationFontFamily:ctx.design.annotationFontFamily, wrapText: ctx.wrapText, measureTextWidth: ctx.measureTextWidth, system: ctx.system, projection:ctx.design.projection });
   for (const issue of list(measurement.issues)) ctx.recordIssue(issue, details);
   if (!positive(measurement.minimumHeight) && !list(measurement.issues).some(issue => issue.severity === 'error')) ctx.error('plot-measurement', '科学统计图无法在指定列宽保留完整标签、刻度、来源和所有观测；请扩大面板或拆页。', details);
   // An impossible width/density has already raised a blocking error. Keeping
@@ -388,7 +388,7 @@ export function renderAcademicComposition(b, project, slide, helpers) {
   const system = b.system || design.system || {}, bodySize = system.bodySize ?? 24, titleSize = system.panelTitleSize ?? 26, captionSize = Math.max(system.captionSize ?? 18,design.projection?.noteMin??0);
   if (![bodySize, titleSize, captionSize].every(positive) || bodySize < 22 || titleSize < 24 || captionSize < 16) { error('typography', '学术面板须使用公共设计契约中的字号：正文至少22px、标题至少24px、来源图注至少16px；布局不会自行缩小字号容纳内容。'); return; }
   const panelStyle = system.panel || 'band';
-  if (!['band', 'tint', 'line'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint 或 line。'); return; }
+  if (!['band', 'tint', 'line', 'plain'].includes(panelStyle)) { error('panel-style', 'design.system.panel 必须是 band、tint、line 或 plain。'); return; }
   const academicTables = b.design?.hasAcademicSystem ?? Boolean(project.design?.system || design.system);
   const ctx = { project, design, card, figure, table, diagram, plot, wrapText, measureTextWidth, clone, error, system, bodySize, titleSize, captionSize, panelStyle, tableSize: Math.max(academicTables ? bodySize : 23,design.projection?.labelMin??0), fontFamily: design.fontFamily || 'Noto Sans CJK SC', recordIssue: (issue, details = {}) => b.page.issues.push({ ...issue, slideId: b.page.id, ...details }), lines: (value, width, size, bold = false) => wrapText(textOf(value), Math.max(1, width), size, { bold }).length };
   const unknown = (value, allowed, name) => { for (const key of Object.keys(value || {})) if (!allowed.includes(key)) error('unsupported-field', `${name}.${key} 没有可见排版规则；移除此字段或使用明确支持的内容字段。`, { field: `${name}.${key}` }); };

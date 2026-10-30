@@ -116,23 +116,34 @@ function chartSvg(node) {
   return svgEl('g', { 'data-object-id': node.id, role: 'img', 'aria-label': c.unit || '数据图表' }, out);
 }
 
+// One paint contract serves the SVG preview and native PowerPoint table.
+// Omitted tableStyle retains the old panel-coupled rendering for saved decks.
+export function tableRowStyle(n,rowIndex,rowCount) {
+  const p=n.palette,style=n.tableStyle,header=rowIndex===0,last=rowIndex===rowCount-1;
+  const banded=style==='banded'||!style&&n.academicStyle==='band';
+  const threeLine=style==='three-line';
+  return {fill:header?(banded?p.accent:threeLine?p.paper:p.tint):(n.table.highlightRows?.includes(rowIndex-1)?p.tint:p.paper),
+    ink:header?(banded?'#FFFFFF':threeLine?p.ink:p.accent):p.ink,
+    topWidth:header?1.5:0,bottomWidth:header||last?1.3:threeLine?0:.7,
+    topColor:threeLine?p.ink:p.accent,bottomColor:threeLine?p.ink:header||last?p.accent:p.line};
+}
+
 function tableSvg(n) {
   const p=n.palette,rows=[n.table.columns,...n.table.rows];let y=n.y,out='';
-  const rowFill=ri=>ri===0?(n.academicStyle==='band'?p.accent:p.tint):(n.table.highlightRows?.includes(ri-1)?p.tint:p.paper);
-  const rowInk=ri=>ri===0?(n.academicStyle==='band'?'#FFFFFF':p.accent):p.ink;
   for(let ri=0;ri<rows.length;ri++){
-    let x=n.x;
-    out+=svgEl('rect',{x:n.x,y,width:n.w,height:n.rowHeights[ri],fill:paint(rowFill(ri),'#FFFFFF')});
+    let x=n.x;const style=tableRowStyle(n,ri,rows.length);
+    out+=svgEl('rect',{x:n.x,y,width:n.w,height:n.rowHeights[ri],fill:paint(style.fill,'#FFFFFF')});
     for(let ci=0;ci<rows[ri].length;ci++){
       const lines=n.cellLines[ri][ci],tx=x+n.padX;
       const content=lines.map((line,li)=>svgEl('tspan',{x:tx,y:y+n.padY+n.fontSize*.96+li*n.fontSize*n.lineHeight},esc(line))).join('');
-      out+=svgEl('text',{'data-cell':`${ri}:${ci}`,'font-family':n.fontFamily,'font-size':n.fontSize,'font-weight':ri===0?700:400,fill:paint(rowInk(ri),'#171C22')},content);
+      out+=svgEl('text',{'data-cell':`${ri}:${ci}`,'font-family':n.fontFamily,'font-size':n.fontSize,'font-weight':ri===0?700:400,fill:paint(style.ink,'#171C22')},content);
       x+=n.colWidths[ci];
     }
     y+=n.rowHeights[ri];
-    out+=svgEl('line',{x1:n.x,y1:y,x2:n.x+n.w,y2:y,stroke:paint(ri===0||ri===rows.length-1?p.accent:p.line,'#C5CFDA'),'stroke-width':ri===0||ri===rows.length-1?1.3:.7});
+    if(style.bottomWidth)out+=svgEl('line',{x1:n.x,y1:y,x2:n.x+n.w,y2:y,stroke:paint(style.bottomColor,'#C5CFDA'),'stroke-width':style.bottomWidth});
   }
-  out+=svgEl('line',{x1:n.x,y1:n.y,x2:n.x+n.w,y2:n.y,stroke:paint(p.accent,'#183B66'),'stroke-width':1.5});
+  const first=tableRowStyle(n,0,rows.length);
+  out+=svgEl('line',{x1:n.x,y1:n.y,x2:n.x+n.w,y2:n.y,stroke:paint(first.topColor,'#183B66'),'stroke-width':first.topWidth});
   return svgEl('g',{'data-object-id':n.id,role:'table','aria-label':n.table.caption||'研究数据表'},out);
 }
 
@@ -199,7 +210,7 @@ async function nativePptx(project, scenes, signal) {
   const pptx = new PptxGenJS();
   pptx.defineLayout({ name: 'ACADEMIC_WIDE', width: 1280 / 96, height: 720 / 96 });
   pptx.layout = 'ACADEMIC_WIDE'; pptx.author = 'DSH Academic PPT'; pptx.subject = project.brief?.centralQuestion || '学术研究汇报'; pptx.title = project.title;
-  pptx.lang = 'zh-CN'; pptx.company = ''; pptx.theme = { headFontFace: scenes.design.fontFamily, bodyFontFace: scenes.design.fontFamily, lang: 'zh-CN' };
+  pptx.lang = 'zh-CN'; pptx.company = ''; pptx.theme = { headFontFace: scenes.design.titleFontFamily||scenes.design.fontFamily, bodyFontFace: scenes.design.fontFamily, lang: 'zh-CN' };
   for (const page of scenes.pages) {
     abort(signal); const slide = pptx.addSlide(); slide.background = { color: hex(page.background) };
     for (const n of page.nodes) {
@@ -227,9 +238,7 @@ async function nativePptx(project, scenes, signal) {
       }
       else if(n.kind==='table'){
         const p=n.palette,none={type:'none',pt:0,color:hex(p.paper)},all=[n.table.columns,...n.table.rows];
-        const rowFill=ri=>ri===0?(n.academicStyle==='band'?p.accent:p.tint):(n.table.highlightRows?.includes(ri-1)?p.tint:p.paper);
-        const rowInk=ri=>ri===0?(n.academicStyle==='band'?'#FFFFFF':p.accent):p.ink;
-        const rows=all.map((row,ri)=>row.map((cell,ci)=>({text:n.cellLines[ri][ci].join('\n'),options:{bold:ri===0,color:hex(rowInk(ri)),fill:{color:hex(rowFill(ri))},lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceBefore:0,paraSpaceAfter:0,lang:'zh-CN',border:[ri===0?{type:'solid',pt:1.125,color:hex(p.accent)}:none,none,{type:'solid',pt:(ri===0||ri===all.length-1)?.975:.525,color:hex(ri===0||ri===all.length-1?p.accent:p.line)},none]}})));
+        const rows=all.map((row,ri)=>{const style=tableRowStyle(n,ri,all.length);return row.map((cell,ci)=>({text:n.cellLines[ri][ci].join('\n'),options:{bold:ri===0,color:hex(style.ink),fill:{color:hex(style.fill)},lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceBefore:0,paraSpaceAfter:0,lang:'zh-CN',border:[style.topWidth?{type:'solid',pt:style.topWidth*.75,color:hex(style.topColor)}:none,none,style.bottomWidth?{type:'solid',pt:style.bottomWidth*.75,color:hex(style.bottomColor)}:none,none]}}));});
         slide.addTable(rows,{...base,colW:n.colWidths.map(inch),rowH:n.rowHeights.map(inch),autoPage:false,fontFace:n.fontFamily,fontSize:n.fontSize*.75,color:hex(p.ink),align:'left',valign:'top',margin:[n.padY*.75,n.padX*.75,n.padY*.75,n.padX*.75],border:none,lineSpacing:n.fontSize*.75*n.lineHeight,paraSpaceAfter:0,paraSpaceBefore:0,verbose:false});
       }
       else if (n.kind === 'chart') {

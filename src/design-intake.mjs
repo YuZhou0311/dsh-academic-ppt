@@ -4,7 +4,7 @@ import { mkdir, open, rm, stat } from 'node:fs/promises';
 import { dirname, extname } from 'node:path';
 import { hash, readBounded, safePath } from './io.mjs';
 import { CARD_PRESET_IDS } from './card-catalog.mjs';
-import { consultationSchema, referenceStudySchema, componentStudyIssues, designDialoguePlan, designSourceResolved, resolvedDesignPreferences, withConsultationInteraction } from './design-dialogue.mjs';
+import { consultationSchema, referenceStudySchema, componentStudyIssues, designStudyIssues, designDialoguePlan, designSourceResolved, resolvedDesignPreferences, withConsultationInteraction } from './design-dialogue.mjs';
 
 const text = (maxLength = 1800) => ({ type:'string', minLength:1, maxLength, pattern:'\\S' });
 const enumeration = values => ({ type:'string', enum:values });
@@ -49,7 +49,7 @@ const valid = request => {
   if (new Set((request.cards || []).map(card=>card.id)).size !== (request.cards || []).length) throw new Error('INVALID_PREPARATION: card IDs must be unique.');
   const topics=(request.consultation?.decisions||[]).map(decision=>decision.topic);
   if(new Set(topics).size!==topics.length)throw new Error('INVALID_PREPARATION: each design topic needs one current decision.');
-  const componentIssues=componentStudyIssues(request.referenceStudy);
+  const componentIssues=[...componentStudyIssues(request.referenceStudy),...designStudyIssues(request.referenceStudy)];
   if(componentIssues.length)throw new Error('INVALID_PREPARATION: '+componentIssues.map(issue=>issue.message).join(' ').slice(0,1800));
   if (request.paletteMode === 'fixed' && !request.palette) throw new Error('INVALID_PREPARATION: paletteMode=fixed requires the explicitly specified palette.');
   return request;
@@ -72,7 +72,7 @@ function adaptationPlan(request) {
       {mode:'compose-native',instruction:'需要改变内部列宽、题签位置、信息分区或正文文字色时，借鉴设计原则，用drawings与composition.regions重建原生组件；preset的内部recipe不接受appearance.layout/surface/accent覆盖，外框填充/线型/阴影可直接通过appearance控制。'},
     ],
     instructions:[
-      '自主设计前，先看原48款原生卡片与20款编辑式参考中贴合本次任务的实际候选；后者见references/editorial-v083/index.html（C01–C20）。学习填充、实线/虚线、阴影、题签和间距，与是否采用preset或最终是否出现卡片无关，不能只读layouts名称后跳过。',
+      '先查看与当前证据任务有关的实际页面：academicStyles样张、page-recipes、用户模板或公开科学报告。研究阅读顺序、证据层级和直接标注。只有局部组件适用时才细读卡片；不把卡片数量当作设计目标。',
       '已提供用户模板时，实际查看代表正文与困难页中的组件，明确页号与局部位置。已有具体、可定位的模板组件细读可以沿用，不要求重新提取同一模板、看完每一页或额外打卡无关目录；同一模板可以提供多类组件。',
       '先确定实际文字量、条件、指标与信息关系，再决定保留、合并、拆分或重排哪些区块。卡片库、preferredPresets、用户模板和生成参考都是设计起点，不能只换字照搬，也不要求每张卡为了不同而强行变化。',
       '全稿保持颜色与研究对象、比较组、条件或边界的对应一致；同类比较使用一致视觉尺度。换色不能代替内容适配，也不能只靠颜色传达区别。',
@@ -81,7 +81,7 @@ function adaptationPlan(request) {
       '在真实样张中安排深色结构、白底证据区与局部填色的分工。适合强调的题签、结论区、比较栏可用深色或中等明度实色；克制不等于整稿都是浅色。保持科学图本来的颜色含义和文字对比。',
       '核对文字与底色的实际对比。band/notch预设标题为白字，需要足够深的强调色；浅色题签配深字时用原生绘制。当前不保证自动修复任意自定义颜色。',
     ],
-    decisionRecord:'用design.referenceStudy.componentStudies记录source/referenceId/previewPath、frame（填充/线型/虚线/阴影）、titleTreatment、spacing和adaptation（本稿哪页如何改或为何不用），可补colorHierarchy；paletteRationale说明本稿配色与主辅层级。整页关系另记design.direction或slide.visualPlan.rationale。记录不能证明真的看图或审美通过，仍须查看实际参考和最终PPTX；制作记录不进入正式正文。',
+    decisionRecord:'用design.referenceStudy.designStudies记录source/referenceId/previewPath、readingOrder、evidenceHierarchy和adaptation；局部组件可用componentStudies记录frame/titleTreatment/spacing。两者是替代路径，开放科学排版不必读卡片。paletteRationale说明配色、比较色义和可读性。实际使用preset须有catalogIds或同ID的card-library细读。记录不能证明已经看图，仍须查看实际参考与最终PPTX。',
   };
 }
 
@@ -165,14 +165,14 @@ async function templatePlan(request, cwd, signal) {
     return {status,nextAction:'continue-reference-guided',files:reviewedFiles,
       review:{status:'host-reviewed',profiles,visualObservations:provided.review.visualObservations,...(provided.review.renderReferences?{renderReferences:provided.review.renderReferences}:{})},
       instructions:['已经登记匹配当前模板字节的profile与宿主看图观察，不重复要求提取同一模板。观察是宿主记录，插件未独立进行视觉检查。',
-        '从实际看过的组件补referenceStudy.componentStudies：source=user-template，定位具体页号与预览，记录填充/线型/阴影、题签、间距和本稿改造；同一模板的不同组件可分别记录，不强制采用preset。profile摘要一致不代替组件细读。',
+        '从实际看过的代表页补referenceStudy.designStudies：source=user-template，定位源页与预览，记录readingOrder/evidenceHierarchy/adaptation。需要局部组件时可改用componentStudies。profile摘要一致不等于实际看过页面。',
         '将已观察的层级、主辅证据和内容组织原则适配到当前材料，继续整页设计；只有局部信息关系需要时才选卡片。模板文件发生改变后须重新提取并查看，不沿用旧profile。'],
     };
   }
   return { status, nextAction:files.some(file=>file.format === 'pptx') ? 'inspect-template' : 'convert-template-or-continue-native', files,
     instructions:['仅检查用户明确提供的文件。PPTX交由academic_ppt_template提取并渲染代表页，观察实际排版后采用reference-guided；本步骤只核实文件路径和格式，尚未解析或看过模板。',
       ...(files.some(file=>file.format === 'ppt') ? ['旧版.ppt需先由可用转换工具或用户另存为.pptx。没有转换能力时如实说明并继续内置流程，不把.ppt当ZIP/PPTX解析。'] : []),
-      '逐组件观察填充/线型/虚线/阴影、题签、间距与色彩层级，写出用于本稿哪页、如何调整或为何不用，登记componentStudies及paletteRationale。避免移入模板原文、机构、数据或无关图片；只有用户明确要求沿用版式才使用template-faithful。'],
+      '观察代表页的证据主次、阅读顺序、留白和术语层级，登记designStudies或相关componentStudies及paletteRationale。说明本稿如何适配；不移入模板原文、机构、数据或无关图片。只有用户明确要求沿用版式才使用template-faithful。'],
   };
 }
 
@@ -188,7 +188,7 @@ function generationPlan(request) {
   }
   if (!request.cards?.length) return { ...common,strategy:'content-led-pages',nextAction:'design-evidence-pages',
     ...(declared.failureReason ? {reason:declared.failureReason} : {}),
-    instructions:['本次没有请求卡片生图，仍须先看原48款与20款中相关候选以及已提供模板的具体组件，记录真实观察和改造；不用preset或全部采用drawings不豁免完整新稿的组件学习。再按图源与故事板查layouts、设计页面，不因生图接口可用而添加无必要的卡片；已有充分模板细读不重复打卡无关目录。'] };
+    instructions:['本次未请求卡片生图。先按证据与故事板查看相关整页或学术风格样张，记录designStudies与paletteRationale，再用composition或drawings组织开放页面。只有需要局部组件时才查询cards，不因存在生图接口而添加卡片。'] };
   if (status === 'failed' || status === 'declined') return { ...common,strategy:'native-catalog',nextAction:'select-native-cards',
     ...(declared.failureReason ? { reason:declared.failureReason } : {}),
     instructions:[status === 'failed' ? '本次生图失败，保留原因并转内置卡片库。无需为了继续制作反复重试、索要密钥或更换外部服务。' : '本次用户选择不用生图，直接按内容选原生卡片并继续。'] };
@@ -256,7 +256,7 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
     nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
     designRecords:{consultation:structuredClone(consultation),...(request.referenceStudy?{referenceStudy:structuredClone(request.referenceStudy)}:{})},
     researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划卡片与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
-    nativeFallback:{ tool:'academic_ppt_cards',selection:'先通过academic_ppt_cards查看原48款的相关真实预览，并看references/editorial-v083/index.html的20款编辑式候选（C01–C20）；用户模板按实际页号细读。记录componentStudies的边框、题签、间距与本稿改造，以及paletteRationale。已充分细读的模板可直接沿用；不强制preset、卡片数量或无关目录打卡。随后查layouts按研究关系组织composition或drawings，整页语法不能替代组件视觉学习。' },
+    nativeFallback:{ tool:'academic_ppt_layouts',selection:'按当前研究关系查看整页语法或contract(design).academicStyles的实际样张，记录designStudies的阅读顺序、证据层级、适配与paletteRationale。用户模板已有充分观察可沿用。需要局部组件时才调用academic_ppt_cards，并查看实际采用的preset；开放页面无需额外卡片学习。' },
     stateRecord:'准备请求记录用户选择和宿主实际能力。返回提问/调用计划不代表动作已执行，不能把刚提出的问题记为无回复；得到真实回答后才更新状态。designRecords是待登记值，需合并实际design并用record保存，prepare不修改工程。',
   };
   if (outputPath) {

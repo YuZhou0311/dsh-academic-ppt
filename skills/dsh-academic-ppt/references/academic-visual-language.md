@@ -1,5 +1,7 @@
 # 学术卡片、题签与框线的视觉语言
 
+> 这是边框、题签和局部分组的按需参考。开放图表、公式和全页证据设计无需先采用这些组件；全稿方向见 [academic-styles.md](academic-styles.md)。
+
 用于新建整稿、整稿重设计，以及用户指出“扁平、轻浮、没有学到模板细节”的修订。先看真实参考，再用本页指南解释和重建；本文不能代替看图。
 
 [四页原创细节图册](frame-studies/index.html) · [可编辑PPTX](frame-studies/academic-frame-studies.pptx) · [实际PPTX渲染概览](frame-studies/montage.png) · [查看记录](frame-studies/render-review.json)
@@ -20,7 +22,7 @@
 
 把参考分成三个尺度阅读。全稿概览看页序和疏密；完整正文页看主证据、解释、条件与阅读路径；局部放大看框线是否真无填充、题签怎样覆边、文字距框多远、阴影落在哪里。没有看过的页面不能列入观察记录。统计颜色和形状只能辅助定位。
 
-同时查看原[48款卡片](card-library/index.html)和[20款局部组合](editorial-v083/index.html)中与本稿相关的候选。前者提供题签、侧签、括线、读数和图卡等可执行结构，后者帮助理解图与注释怎样组合。**学习是制作步骤，采用哪个 preset 是设计选择。** 最终用自主 drawings，仍要完成相关组件的视觉学习；并不要求采用卡片、凑款数或改造所有参考。
+需要卡片或局部分组时，查看原[48款卡片](card-library/index.html)或[20款局部组合](editorial-v083/index.html)中的相关候选。前者提供可执行局部结构，后者演示图与注释的组合。开放图表、公式或自主drawings可改用 `designStudies` 学习对应整页和科学表达，不将组件目录作为必经步骤。实际采用preset时仍须查看对应预览。
 
 在 `design.referenceStudy.componentStudies` 保存具体观察，每项包括 `source`、`referenceId`、`previewPath`、`frame`、`titleTreatment`、`spacing`、`adaptation`，可加 `colorHierarchy`。来源分别为 `card-library`、`editorial`、`user-template`；用真实卡片 ID、C01–C20 或可定位到页的模板 ID。记录实际画面，不用“简洁、专业、丰富”替代细节。`paletteRationale` 说明主色、正文、边界和必要强调色的职责。
 
@@ -37,7 +39,7 @@
 }
 ```
 
-上述内容仅展示记录格式，必须换成实际观察。新 checkpoints 整稿的计划或现有页数达到6页时，需要组件细读和配色理由；只写整页 recipe ID 不足以完成学习。旧工程局部修订保持兼容。记录可审查，但不能证明调用者真的看过图，也不能自动证明审美达标。
+上述内容仅展示记录格式，必须换成实际观察。新 checkpoints 整稿达到6页时，用内容相关的 `designStudies` 或 `componentStudies` 保存具体观察，并记录配色理由；只写参考ID不足以完成学习，开放排版无需组件细读。旧工程局部修订保持兼容。记录可审查，但不能证明调用者真的看过图，也不能自动证明审美达标。
 
 ## 边界与表面的选择
 

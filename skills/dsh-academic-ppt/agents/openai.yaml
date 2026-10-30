@@ -1,4 +1,4 @@
 interface:
-  display_name: "学术汇报与证据故事线"
-  short_description: "以真实证据建立故事板，协作审阅困难样张，完成丰富而严谨的可编辑PPT"
-  default_prompt: "使用 $dsh-academic-ppt，围绕听众问题核对全文与原图，先提出可审阅故事板，再以封面、困难正文与连续三页确认完整方向；复用已知偏好和明确委托，按内容选择整页语法与局部卡片，完成实际PPTX渲染、逐页修复和最终deliver检查。"
+  display_name: "专业学术汇报与证据设计"
+  short_description: "从真实证据组织学术叙事，选择合适的风格，制作可编辑并经实际渲染检查的PPT"
+  default_prompt: "使用 $dsh-academic-ppt，先核对研究问题和真实证据，再选择适合听众的学术风格，用困难正文与连续片段验证，按内容设计并逐页检查实际PPTX。"

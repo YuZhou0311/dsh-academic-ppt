@@ -32,7 +32,7 @@ test('partial checkpoint updates use the same merged density decision and reject
  const initialized=await createProject({cwd,projectDir:'project',title:'Synthetic density checkpoint'});
  const route={cwd,projectPath:initialized.projectPath};
  const state=JSON.parse(await readFile(initialized.projectPath,'utf8'));
- const base={fontFamily:state.design.fontFamily,palette:state.design.palette};
+ const base={styleProfile:state.design.styleProfile};
  const density={topic:'density',status:'confirmed',selected:'balanced',userResponse:'Synthetic fixture explicitly chooses balanced density for this protocol test.'};
  await updateRecords({...route,expectedRevision:0,design:{...base,consultation:{mode:'collaborative',decisions:[density]}}});
  const palette={topic:'palette',status:'confirmed',selected:'navy',userResponse:'Synthetic fixture explicitly chooses navy for this protocol test.'};

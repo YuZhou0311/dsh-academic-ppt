@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "assistant-primary-agent",
+  "caseId": "cross-site-reversal",
+  "scope": "One fresh-context plan-only authoring trial; no DSH model execution, PPTX, baseline or blind human comparison",
+  "task": {
+    "path": "forward-authoring-task.txt",
+    "sha256": "02e1472a7c76fccd3c670d7aaa29bc0a9159012f42355158fec03b70d11a1a28"
+  },
+  "output": {
+    "path": "forward-authoring-plan.md",
+    "sha256": "aef91c68cdd1127379e22ea1aebb04a1a26dcb1fe224f8b17365073cc66e1e48"
+  },
+  "authorContext": {
+    "inheritedResearchDiagnosis": false,
+    "allowedInputs": "Task text, current SKILL and task-relevant references only",
+    "rubricGivenToAuthor": false
+  },
+  "findings": [
+    {
+      "criterion": "Scientific fidelity",
+      "observation": "All eight original RMSE values and the unit t/ha are retained. The four within-condition differences are -0.09, +0.10, +0.05 and +0.02. No raw points, uncertainty estimates, p-values or additional experiment results are invented."
+    },
+    {
+      "criterion": "Unfavorable result",
+      "observation": "The plan explicitly says A loses its observed random-split advantage in all three provided site holdouts. It neither softens these directions to minor fluctuations nor generalizes them to every new site."
+    },
+    {
+      "criterion": "Analysis unit",
+      "observation": "120 records, three sites and two years of data coverage are distinguished. The plan does not claim cross-year independent validation or pool site RMSEs into an unsupported overall RMSE."
+    },
+    {
+      "criterion": "Method attribution",
+      "observation": "A process constraint is described as a testable method idea. The plan does not claim its causal contribution, physiological validity, architecture or novelty is established."
+    },
+    {
+      "criterion": "Evidence organization",
+      "observation": "A shared-zero difference plot is paired with an aligned table preserving all original values. Required conditions stay on the page. No decorative agricultural photos, maps or extra cards are introduced."
+    },
+    {
+      "criterion": "Task adherence",
+      "observation": "Four pages with no standalone cover; 80+100+190+110=480 seconds. Existing authorization is respected and no user approval or rendering outcome is fabricated."
+    },
+    {
+      "criterion": "Limits",
+      "observation": "The geometry is a proposed execution starting point. Actual layout fit, font substitution, editable output, projection legibility and spoken duration remain unverified."
+    }
+  ],
+  "disposition": "No substantive source distortion identified in this plan. Proceed to actual build/render only when that workflow is run; do not treat this as visual approval.",
+  "notClaimed": [
+    "End-to-end DSH model performance",
+    "Improvement magnitude against baseline",
+    "General success rate",
+    "PPTX rendering or visual pass",
+    "Human evaluation",
+    "Real scientific finding"
+  ]
+}

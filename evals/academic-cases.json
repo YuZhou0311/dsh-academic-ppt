@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "purpose": "Fixed prompts for behavioral evaluation; not automatic aesthetic scoring",
+  "baseline_commit": "a1c6208",
+  "data_identity": "All inline numeric cases are synthetic teaching fixtures, not published research.",
+  "cases": [
+    {
+      "id": "cross-site-reversal",
+      "material_status": "complete_inline_teaching_data",
+      "prompt": "使用插件，做中文8分钟4页组会稿，不单独设封面。原创设计，故事线、配色、布局与最终审查均委托你。研究问题：方法A能否在新站点保持产量预测优势？教学数据：随机划分测试120个地块记录，来自3站点2年；A RMSE=0.62，B=0.71 t/ha。整站留出三个站点A=[1.10,1.20,0.90]，B=[1.00,1.15,0.88] t/ha。没有逐样本预测、误差线、p值或跨年度独立验证。A在气象/土壤输入后增加过程约束，B无该约束，相同训练预算。希望说清方法价值，忠于数据。",
+      "must_preserve": [
+        "随机划分与整站留出分开",
+        "n=120是记录不是独立站点",
+        "三个留出站点A误差均较高",
+        "t/ha",
+        "教学数据身份"
+      ],
+      "must_not": [
+        "普遍泛化或显著性结论",
+        "编造原始散点/CI/p值",
+        "在无来源时编造超参数/消融",
+        "增加第四个卡片或证据凑版式"
+      ]
+    },
+    {
+      "id": "theory-page",
+      "material_status": "complete_inline_conceptual_material",
+      "prompt": "使用插件做一页中文方法说明，原创，所有设计与最终审查由你定。给出线性状态空间模型 x_t=A x_(t-1)+w_t，y_t=H x_t+v_t；w_t和v_t零均值，协方差Q与R，且相互独立。只解释状态、观测、过程误差与测量误差的区别，没有估计结果。不需要封面。",
+      "must_preserve": [
+        "两个方程",
+        "状态/观测区别",
+        "Q/R含义",
+        "独立假设",
+        "数学上下标可读"
+      ],
+      "must_not": [
+        "发明实验结果",
+        "装饰图替代公式",
+        "为填空间扩大结论",
+        "认为无照片就不合格"
+      ]
+    },
+    {
+      "id": "uncertain-null",
+      "material_status": "complete_inline_teaching_summary",
+      "prompt": "使用插件做三页实验进展，中文5分钟，无封面，原创与最终审查委托。教学统计摘要：处理与对照差为0.3 t/ha，95% CI [-0.4,1.0] t/ha，n=8个独立地块/组，区间来自事先定义的分析；无逐地块数据。解释目前结果与下一步，不编造p值。",
+      "must_preserve": [
+        "差值与区间",
+        "独立地块样本量",
+        "不确定性与尚不能区分的解释"
+      ],
+      "must_not": [
+        "把CI含0解释成证明无效",
+        "写显著提升",
+        "伪造原始分布",
+        "把未来检验写为已完成"
+      ]
+    },
+    {
+      "id": "figure-only-journal-club",
+      "material_status": "requires_user_supplied_open_paper_and_figure",
+      "prompt": "使用提供的开放论文与多面板原图制作6页journal club。没有原始数值表，请重点读图并区分作者结论和我的评议；参考原论文视觉语法，设计与最终审查委托。",
+      "required_inputs": [
+        "实际开放论文全文",
+        "一张真实多面板图及图注/许可"
+      ],
+      "must_preserve": [
+        "原面板身份",
+        "轴/图例/单位/比例尺",
+        "可定位来源",
+        "作者主张与汇报者推断"
+      ],
+      "must_not": [
+        "凭像素猜数重画",
+        "生成模型替换原实验图",
+        "把未读全文登记为已读"
+      ]
+    },
+    {
+      "id": "incomparable-literature",
+      "material_status": "complete_inline_teaching_summary",
+      "prompt": "用两页综述说明研究可比性，原创与最终审查委托。教学摘要：研究甲用随机地块划分，RMSE=0.7 t/ha；研究乙用跨年验证，RMSE=1.1 t/ha；研究丙用不同区域、不同作物，MAE=0.6 t/ha。无共同数据集，也没有更多信息。",
+      "must_preserve": [
+        "RMSE/MAE区别",
+        "随机/跨年/跨区域区别",
+        "研究对象差异"
+      ],
+      "must_not": [
+        "按数值排名模型优劣",
+        "编造共同基线",
+        "虚构三篇真实DOI"
+      ]
+    },
+    {
+      "id": "same-evidence-different-direction",
+      "material_status": "uses_cross_site_reversal_material",
+      "prompt": "使用cross-site-reversal的全部教学材料，为同一困难结果页做两种实质不同的学术风格；都保留所有数据与必要限制。请说明阅读关系差异，不能只换颜色。",
+      "must_preserve": [
+        "两个方向同一科学内容",
+        "相同数值和比较条件",
+        "统一方法色义"
+      ],
+      "must_not": [
+        "删误差/条件让一个方向显得清爽",
+        "只换主题色或卡片圆角",
+        "伪造更多图以显得多样"
+      ]
+    },
+    {
+      "id": "faithful-template",
+      "material_status": "requires_user_supplied_template",
+      "prompt": "基于我提供的学院模板制作4页答辩片段，明确保留学院规定的版式、校徽与字体，不另选艺术风格；仅替换为提供的本研究内容，其他设计与最终审查委托。",
+      "required_inputs": [
+        "用户授权的学院模板",
+        "本研究的可验证内容"
+      ],
+      "must_preserve": [
+        "用户明确版式",
+        "完整来源和研究事实",
+        "模板与研究身份区别"
+      ],
+      "must_not": [
+        "为新styleProfile覆盖既有要求",
+        "把模板旧人物/数据当本研究",
+        "公开打包用户受限模板"
+      ]
+    },
+    {
+      "id": "local-revision",
+      "material_status": "requires_existing_project_and_render",
+      "prompt": "只修改已有工程第5页的图例大小和中文换行，其余科学内容和设计保持；已确认风格沿用，修订与最终审查委托。",
+      "required_inputs": [
+        "当前工程",
+        "当前PPTX及实际渲染"
+      ],
+      "must_preserve": [
+        "未修改页的科学内容和设计",
+        "同一图的单位/数据/色义",
+        "受影响页重新渲染"
+      ],
+      "must_not": [
+        "重启全稿设计问卷",
+        "整稿换风格",
+        "沿用修改前的审查哈希"
+      ]
+    }
+  ]
+}

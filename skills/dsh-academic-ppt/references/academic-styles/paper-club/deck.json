@@ -1,0 +1,767 @@
+{
+  "title": "论文精读：站点评估教学样例",
+  "design": {
+    "styleProfile": "paper-club",
+    "density": "balanced",
+    "chrome": {
+      "showSources": false,
+      "showBrand": false
+    }
+  },
+  "papers": [],
+  "claims": [],
+  "assets": [],
+  "slides": [
+    {
+      "id": "paper-club-1",
+      "layout": "academic",
+      "title": "随机划分误差较低，跨站点差异不确定",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "02",
+        "title": "评价结果"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "figure-plate",
+          "width": 818,
+          "height": 424.94000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "图 T1  配对误差差值（t/ha）",
+              "x": 0,
+              "y": 0,
+              "w": 818,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e1",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 553.5,
+                  "y": 68
+                },
+                {
+                  "x": 553.5,
+                  "y": 368.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "fig-e2",
+              "kind": "text",
+              "text": "随机划分",
+              "x": 0,
+              "y": 82,
+              "w": 136,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#202A35",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e3",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 256.0564482572675,
+                  "y": 98
+                },
+                {
+                  "x": 361.94355174273244,
+                  "y": 98
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "fig-e4",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 256.0564482572675,
+                  "y": 91
+                },
+                {
+                  "x": 256.0564482572675,
+                  "y": 105
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "fig-e5",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 361.94355174273244,
+                  "y": 91
+                },
+                {
+                  "x": 361.94355174273244,
+                  "y": 105
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "fig-e6",
+              "kind": "ellipse",
+              "x": 303,
+              "y": 92,
+              "w": 12,
+              "h": 12,
+              "fill": "#245E86",
+              "stroke": "none",
+              "role": "data"
+            },
+            {
+              "id": "fig-e7",
+              "kind": "text",
+              "text": "−0.300 [−0.365, −0.235]",
+              "x": 146,
+              "y": 116,
+              "w": 652,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#245E86",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e8",
+              "kind": "text",
+              "text": "整站留出",
+              "x": 0,
+              "y": 226.47000000000003,
+              "w": 136,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#202A35",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e9",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 464.5653130596662,
+                  "y": 242.47000000000003
+                },
+                {
+                  "x": 723.9346869403338,
+                  "y": 242.47000000000003
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "fig-e10",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 464.5653130596662,
+                  "y": 235.47000000000003
+                },
+                {
+                  "x": 464.5653130596662,
+                  "y": 249.47000000000003
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "fig-e11",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 723.9346869403338,
+                  "y": 235.47000000000003
+                },
+                {
+                  "x": 723.9346869403338,
+                  "y": 249.47000000000003
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "fig-e12",
+              "kind": "ellipse",
+              "x": 588.25,
+              "y": 236.47000000000003,
+              "w": 12,
+              "h": 12,
+              "fill": "#A35332",
+              "stroke": "none",
+              "role": "data"
+            },
+            {
+              "id": "fig-e13",
+              "kind": "text",
+              "text": "0.050 [−0.109, 0.209]",
+              "x": 146,
+              "y": 260.47,
+              "w": 652,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#A35332",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e14",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 146,
+                  "y": 368.94000000000005
+                },
+                {
+                  "x": 798,
+                  "y": 368.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "fig-e15",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 227.5,
+                  "y": 368.94000000000005
+                },
+                {
+                  "x": 227.5,
+                  "y": 374.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "fig-e16",
+              "kind": "text",
+              "text": "−0.4",
+              "x": 192.5,
+              "y": 381.94000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e17",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 390.5,
+                  "y": 368.94000000000005
+                },
+                {
+                  "x": 390.5,
+                  "y": 374.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "fig-e18",
+              "kind": "text",
+              "text": "−0.2",
+              "x": 355.5,
+              "y": 381.94000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e19",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 553.5,
+                  "y": 368.94000000000005
+                },
+                {
+                  "x": 553.5,
+                  "y": 374.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "fig-e20",
+              "kind": "text",
+              "text": "0",
+              "x": 518.5,
+              "y": 381.94000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "fig-e21",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 716.4999999999999,
+                  "y": 368.94000000000005
+                },
+                {
+                  "x": 716.4999999999999,
+                  "y": 374.94000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "fig-e22",
+              "kind": "text",
+              "text": "0.2",
+              "x": 681.4999999999999,
+              "y": 381.94000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "reader-margin",
+          "width": 320,
+          "height": 424.94000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "读图批注",
+              "x": 0,
+              "y": 0,
+              "w": 320,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#A35332",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "两行比较的是同一误差差值，单位一致。",
+              "x": 0,
+              "y": 57.28,
+              "w": 320,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "整站留出区间跨零。\n“有泛化优势”的说法\n超出了这份证据。",
+              "x": 0,
+              "y": 154.84,
+              "w": 320,
+              "h": 107.84,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "问：只有 4 个站点时，结果对站点组成有多敏感？",
+              "x": 0,
+              "y": 287.68,
+              "w": 320,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "figure-plate",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 171.06,
+              "w": 818,
+              "h": 424.94000000000005
+            },
+            "drawingIds": [
+              "figure-plate"
+            ]
+          },
+          {
+            "id": "reader-margin",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 912,
+              "y": 171.06,
+              "w": 320,
+              "h": 424.94000000000005
+            },
+            "drawingIds": [
+              "reader-margin"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "paper-club-2",
+      "layout": "academic",
+      "title": "从观测误差到站点层面的比较",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "03",
+        "title": "分析单位与边界"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "table": {
+        "columns": [
+          "站点",
+          "随机 Δ",
+          "留站 Δ"
+        ],
+        "columnWeights": [
+          0.7,
+          1.2,
+          1.2
+        ],
+        "rows": [
+          [
+            "A",
+            "−0.300",
+            "0.100"
+          ],
+          [
+            "B",
+            "−0.250",
+            "−0.100"
+          ],
+          [
+            "C",
+            "−0.350",
+            "0.100"
+          ],
+          [
+            "D",
+            "−0.300",
+            "0.100"
+          ]
+        ],
+        "caption": "Δ = 方法 − 基线，单位 t/ha；每格来自同站 6 个观测",
+        "sourceClaimIds": []
+      },
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "claim-audit",
+          "width": 590,
+          "height": 424.94000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "原始信息与讲者判断分开",
+              "x": 0,
+              "y": 0,
+              "w": 590,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "记录：每站 6 个观测。先求站点 MAE，\n再计算方法与基线的差值。",
+              "x": 0,
+              "y": 62.28,
+              "w": 590,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "判断：随机划分差值低于零；\n整站留出的方向仍不确定。",
+              "x": 0,
+              "y": 159.84,
+              "w": 590,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "边界：统计单位是站点。24 个观测\n不能替代更多独立站点。",
+              "x": 0,
+              "y": 257.4,
+              "w": 590,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "table",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 171.06,
+              "w": 540,
+              "h": 424.94000000000005
+            },
+            "table": true
+          },
+          {
+            "id": "claim-audit",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 642,
+              "y": 171.06,
+              "w": 590,
+              "h": 424.94000000000005
+            },
+            "drawingIds": [
+              "claim-audit"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

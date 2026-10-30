@@ -42,6 +42,7 @@ test('text-only editorial cover reclaims media width and has no empty colored si
 test('restrained card surfaces survive SVG and native PPTX export, with explicit overrides retained',async()=>{
   const cards=[{id:'c',kind:'method',title:'独立验证',body:'比较方法前先统一数据划分与评价口径。',claimIds:[]}];
   const p=project([slide({layout:'academic',title:'先明确比较口径，再解释证据',cards,composition:{rows:[{panels:[{id:'p',title:'验证条件',surface:'plain',cardIds:['c']}]}]}})]);
+  p.design.cardDefaults={...p.design.cardDefaults,surface:'outline',radius:4};
   const out=await renderProject(p),page=out.scenes.pages[0],surface=node(page,'card/c/surface');
   assert.deepEqual(errors(out),[]); assert.ok(surface); assert.ok(surface.strokeWidth>=1);
   assert.equal(surface.stroke,p.design.palette.line); assert.equal(surface.fill,p.design.palette.paper);

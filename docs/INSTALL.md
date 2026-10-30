@@ -1,5 +1,11 @@
 # 安装与使用
 
+## 0.10.0-rc.1 候选源码
+
+本分支为候选版，尚未发布对应Release。可在独立源码目录运行 `npm ci`、`npm test`、`npm run check` 后执行 `npm pack`，将生成的 `dsh-academic-ppt-0.10.0-rc.1.tgz` 通过下文的本地包路径方式安装。不要把下文0.9.1下载链接当作0.10候选。新字段和兼容说明见 [当前工作流](../skills/dsh-academic-ppt/references/workflow-v010.md)，实际验证见 [VALIDATION_V010.md](VALIDATION_V010.md)。
+
+## 已发布的0.9.1安装说明
+
 > **版本：0.9.1。** 从 [正式 Release](https://github.com/YuZhou0311/dsh-academic-ppt/releases/tag/v0.9.1) 下载 [DSH 安装包](https://github.com/YuZhou0311/dsh-academic-ppt/releases/download/v0.9.1/dsh-academic-ppt-0.9.1.tgz)。使用固定版本地址或下载后的真实本地路径；升级后核对插件详情中的版本。
 
 **dsh-academic-ppt 0.9.1** 为 DeepSeek Harness 提供学术汇报技能和 19 个 `academic_ppt_*` 工具，支持官方桌面端和网页端。声明的 DSH Host 范围为 `>=0.2.1-rc.2 <0.3.0-0`。插件在 Host 中运行，使用当前会话的工作目录；论文、模板和生成文件应放在该工作目录中。

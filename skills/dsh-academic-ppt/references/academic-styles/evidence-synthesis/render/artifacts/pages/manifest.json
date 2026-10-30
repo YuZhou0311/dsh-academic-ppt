@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/workspace/scratch/ca5fe89f4906/dsh-academic-ppt/skills/dsh-academic-ppt/references/academic-styles/evidence-synthesis/evidence-synthesis.pptx",
+  "sourceSha256": "e5c8885b9185499be473fec50a7b83a493c357555b4db206d4c1de9dafd22b06",
+  "dpi": 120,
+  "pageCount": 2,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/evidence-synthesis/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 186266
+    },
+    {
+      "index": 2,
+      "page": 2,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/evidence-synthesis/artifacts/pages/page-0002.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 209372
+    }
+  ],
+  "missingFonts": []
+}

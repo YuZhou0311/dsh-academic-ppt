@@ -6,7 +6,7 @@
 
 这个问题用于选择参考来源。用户选择当前流程或明确跳过时，继续查证、取图、按需参考学习和逐页设计；不因缺少模板暂停。等待模板回答或上传时也可先做研究。刚问出问题还没有收到答复，不得立刻记成“无回答”，未回答也不能冒充完整方向已确认；已有明确授权则继续，不为密度和配色重复提问。只处理实际收到的文件，不假设能访问用户电脑或历史附件。
 
-`design.referenceStudy.status:reviewed` 可记录实际查看的 `templateReferences`、`pageRecipeIds` 或 `catalogIds`，并保留真实 `previewPaths`、`observations` 和 `adaptations`；详细组件记录也可独立提供对应来源、预览、观察和改造。同时按 [academic-visual-language.md](academic-visual-language.md) 填写 `componentStudies`：具体页/卡、框线与填充、题签、间距和本稿改造，以及 `paletteRationale`。整页结构学习和组件细读互相补充；采用自主drawings也不能省略组件学习。查看原48卡与20款局部参考中的相关候选，最终不强制采用preset。实际使用的preset须有已查看`catalogIds`或同ID的`card-library`细读记录，有模板不等于自动完成看图。
+`design.referenceStudy.status:reviewed` 保存真实参考观察。开放排版用 `designStudies` 记录整页/科学图表/用户模板的定位、阅读顺序、证据层级和改造；需要局部组件时按 [academic-visual-language.md](academic-visual-language.md) 用 `componentStudies` 记录边界、题签和间距。保留 `paletteRationale` 及必要的总体观察，不重复抄录。自主drawings无需先查看48卡或20组件；实际采用preset仍须有已查看的 `catalogIds` 或同ID的 `card-library` 细读记录。模板存在、目录ID或路径本身不证明看过。
 
 先调用`academic_ppt_contract({"topic":"preparation"})`取得准备记录schema，再把本次汇报内容和已知选择写入本地JSON，调用`academic_ppt_prepare({requestPath,outputPath?})`。v2的真实模式选择写`consultation.source`，附件状态写`template`，两者不能互相冒充。准备既有工程传`existingProject:true`保留旧协议；沿用工具返回的状态与下一步；生成的准备文件可用于继续任务，不能每轮把用户已回答的状态重置成未知。工具提供分支计划，不会代替宿主提问、上传或下载文件。
 
@@ -30,7 +30,7 @@
 
 在官方 DSH rc.2/rc.3 中，对工具返回的页面PNG和联系表使用实际可见的 `read_image({file_path: 实际PNG路径})`，核对图像成功送入当前模型。`read`只读UTF-8文字；返回路径、profile或OCR不能充当已看图的记录。图片入口、attachments和当前模型能力要求见[deepseek.md](deepseek.md)；不可用时保留具体缺口，不登记模型已看图。
 
-参考为PPTX时，调用`academic_ppt_template({filePath,render:true})`并取得真实渲染；fontDirectories只传实际存在的目录。按本次学习范围查看全稿概览，逐页记录职责和主要信息组合，再精看方法、对照、综合、密集页及相邻段落。另放大代表性组件，检查是否真noFill、实线/虚线如何区分范围、阴影落在哪一层、题签怎样覆边、文字与框的距离。不同正文类型都应进入观察，不能只看封面、目录或某一张漂亮页。结构推断、字号统计与suggestedDesign帮助定位，不替代看图；图片内部标签、继承字体和复杂母版尤其需要实看。
+参考为PPTX时，调用`academic_ppt_template({filePath,render:true})`并取得真实渲染；fontDirectories只传实际存在的目录。按本次学习范围查看全稿概览，逐页记录职责和主要信息组合，再精看方法、对照、综合、密集页及相邻段落。需要迁移局部分组时再放大相关组件，检查是否真noFill、实线/虚线如何区分范围、阴影落在哪一层、题签怎样覆边、文字与框的距离。不同正文类型都应进入观察，不能只看封面、目录或某一张漂亮页。结构推断、字号统计与suggestedDesign帮助定位，不替代看图；图片内部标签、继承字体和复杂母版尤其需要实看。
 
 完成实际提取和看图后，在准备请求的`template.review`中填写工具输出的`profilePaths`、真实`visualObservations`，以及可选`renderReferences`。`academic_ppt_prepare`核对每份profile与当前上传PPTX的hash；匹配时返回`continue-reference-guided`，不重复检查同一模板。模板改变时重新提取并看图，不沿用旧profile；由旧PPT转换后先把`localPaths`换成实际PPTX。hash匹配只证明profile对应文件，视觉观察仍由实际看图者负责。
 

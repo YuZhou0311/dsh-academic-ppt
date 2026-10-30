@@ -5,7 +5,7 @@ const freeze = value => {
 };
 export const ACADEMIC_SYSTEM_ENUMS = freeze({
   preset: ['academic-defense', 'academic-report', 'plain'],
-  header: ['band', 'rule', 'plain'], cover: ['framed', 'project', 'minimal', 'split', 'editorial'], panel: ['band', 'tint', 'line'],
+  header: ['band', 'rule', 'plain'], cover: ['framed', 'project', 'minimal', 'split', 'editorial'], panel: ['band', 'tint', 'line', 'plain'],
 });
 export const ACADEMIC_SYSTEM_RANGES = freeze({
   titleSize: [32, 44], coverTitleSize: [60, 100], bodySize: [22, 40],

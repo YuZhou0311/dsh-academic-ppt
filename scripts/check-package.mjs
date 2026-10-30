@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {readFile,readdir,stat} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
-import {resolve,dirname,join,relative} from 'node:path';
+import {resolve,dirname,join,relative,isAbsolute,sep} from 'node:path';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {unzipSync} from 'fflate';
@@ -9,6 +9,7 @@ import {readBundledSkill,buildAcademicTools} from '../src/index.mjs';
 import {REFERENCE_TEMPLATES,REFERENCE_CATEGORIES} from '../src/reference-catalog.mjs';
 import {CARD_PRESETS} from '../src/card-catalog.mjs';
 import {PAGE_RECIPES,PAGE_RECIPE_IDS} from '../src/page-recipes.mjs';
+import {ACADEMIC_STYLE_IDS} from '../src/academic-styles.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
@@ -97,7 +98,91 @@ const frameXml=frameSlides.map(path=>Buffer.from(frameZip[path]).toString('utf8'
 assert.equal((frameXml.match(/<p:pic>/g)||[]).length,0,'frame studies must remain native original objects');
 for(const expression of [/<a:noFill\/>/,/<a:prstDash val="dash"\/>/,/<a:outerShdw\b/])assert.match(frameXml,expression,'native frame paint missing');
 for(const name of ['index.html','montage.png'])assert.ok((await stat(join(frameRoot,name))).isFile(),'frame study '+name);
-const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs','scripts/build-frame-studies.mjs'];
+// Authored teaching studies are checked for packaging and artifact identity.
+// Matching review records never constitute fresh visual or scientific approval.
+const styleRoot=join(root,'skills/dsh-academic-ppt/references/academic-styles');
+const styleFile=name=>{
+ assert.ok(typeof name==='string'&&name.length>0&&!isAbsolute(name),'academic style asset needs a relative path');
+ const path=resolve(styleRoot,name),local=relative(styleRoot,path);
+ assert.ok(local&&local!=='..'&&!local.startsWith('..'+sep),'academic style asset escapes its reference directory: '+name);
+ return path;
+};
+const studyDigest=bytes=>createHash('sha256').update(bytes).digest('hex');
+const studyJson=async name=>JSON.parse(await readFile(styleFile(name),'utf8'));
+const styleCatalog=await studyJson('catalog.json');
+const styleReview=await studyJson('render-review.json');
+const styleNative=await studyJson('native-editability.json');
+assert.equal(ACADEMIC_STYLE_IDS.length,6,'six executable academic directions remain available');
+assert.deepEqual(styleCatalog.profiles.map(profile=>profile.id),ACADEMIC_STYLE_IDS,'style catalogue order matches the runtime API');
+assert.deepEqual(styleNative.profiles.map(profile=>profile.profile),ACADEMIC_STYLE_IDS,'native inspection covers every direction in order');
+assert.equal(styleCatalog.identity,'constructed-teaching-data-not-research-results');
+assert.equal(styleCatalog.fixtureType,'authored-plugin-renderer-study-not-model-evaluation');
+assert.equal((await studyJson('teaching-data.json')).identity,styleCatalog.identity,'sample data retain their teaching-only identity');
+const stylePages=styleCatalog.profiles.flatMap(profile=>profile.pages);
+assert.equal(new Set(stylePages.map(page=>page.id)).size,stylePages.length,'academic study page IDs are unique');
+assert.deepEqual(styleReview.pages.map(page=>page.id),stylePages.map(page=>page.id),'review records cover exactly the shipped study pages');
+assert.equal(styleReview.coverage.pages,stylePages.length,'review coverage count matches the current catalogue');
+assert.equal(styleReview.status,'reviewed-with-scoped-findings','retain the scoped review status rather than an automatic approval');
+assert.ok(styleReview.limitations?.length>0,'study review must preserve its stated limits');
+const styleGallery=await readFile(styleFile('index.html'),'utf8');
+let stylePptxDigests=0,stylePngDigests=0,styleEditablePages=0;
+for(const [profileIndex,profile] of styleCatalog.profiles.entries()){
+ assert.equal(profile.pages.length,2,'each academic direction has two substantive study pages: '+profile.id);
+ const native=styleNative.profiles[profileIndex];
+ const deck=await studyJson(profile.deck),receipt=await studyJson(profile.renderReceipt);
+ assert.equal(deck.design.styleProfile,profile.id,'rebuild record uses its declared style');
+ assert.deepEqual(deck.slides.map(slide=>slide.id),profile.pages.map(page=>page.id),'rebuild pages follow catalogue order');
+ assert.ok(deck.slides.every(slide=>slide.layout!=='cover'),'academic studies include content pages, not cover-only variants');
+ const bytes=await readFile(styleFile(profile.pptx)),digest=studyDigest(bytes),zip=unzipSync(bytes);
+ const slides=Object.keys(zip).filter(name=>/^ppt\/slides\/slide\d+\.xml$/.test(name))
+  .sort((left,right)=>Number(left.match(/slide(\d+)\.xml$/)[1])-Number(right.match(/slide(\d+)\.xml$/)[1]));
+ assert.equal(slides.length,profile.pages.length,'actual PPTX page count '+profile.id);
+ assert.equal(digest,profile.pptxSha256,'catalogue PPTX digest '+profile.id);
+ assert.equal(native.pptx,profile.pptx,'native inspection names the shipped PPTX');
+ assert.equal(native.pptxSha256,digest,'native inspection binds the actual PPTX '+profile.id);
+ assert.deepEqual(native.pages.map(page=>page.slide),slides.map(path=>path.slice('ppt/slides/'.length)),'native inspection page order '+profile.id);
+ assert.equal(receipt.status,'rendered');assert.equal(receipt.visual,'not-verified','rendering alone must not claim visual approval');
+ assert.equal(receipt.source.sha256,digest,'actual render source matches the shipped PPTX '+profile.id);
+ assert.equal(receipt.source.byteLength,bytes.length);assert.equal(receipt.slideCount,profile.pages.length);
+ assert.equal(receipt.pngs.length,profile.pages.length);
+ assert.deepEqual({...receipt.renderer,missingFonts:receipt.missingFonts},profile.renderer,'catalogue renderer metadata matches its receipt');
+ stylePptxDigests++;
+ for(const artifact of [receipt.manifest,receipt.pdf]){
+  const path=join(dirname(profile.renderReceipt),artifact.file),artifactBytes=await readFile(styleFile(path));
+  assert.equal(studyDigest(artifactBytes),artifact.sha256,'render receipt companion digest '+path);
+  assert.equal(artifactBytes.length,artifact.byteLength,'render receipt companion size '+path);
+ }
+ assert.equal(resolve(styleRoot,profile.pdf),resolve(styleRoot,dirname(profile.renderReceipt),receipt.pdf.file),'catalogue PDF follows the render receipt');
+ const manifest=await studyJson(join(dirname(profile.renderReceipt),receipt.manifest.file));
+ assert.equal(manifest.sourceSha256,digest);assert.equal(manifest.pageCount,profile.pages.length);
+ for(const [pageIndex,page] of profile.pages.entries()){
+  const reviewed=styleReview.pages.find(item=>item.id===page.id),rendered=receipt.pngs[pageIndex];
+  const png=await readFile(styleFile(page.png)),pngDigest=studyDigest(png);
+  assert.equal(rendered.page,pageIndex+1,'actual rendered page order');
+  assert.equal(resolve(styleRoot,page.png),resolve(styleRoot,dirname(profile.renderReceipt),rendered.file),'catalogue PNG follows the render receipt');
+  assert.equal(pngDigest,page.pngSha256,'catalogue PNG digest '+page.id);
+  assert.equal(pngDigest,rendered.sha256,'render receipt PNG digest '+page.id);assert.equal(png.length,rendered.byteLength);
+  assert.equal(reviewed.image,page.png);assert.equal(reviewed.imageSha256,pngDigest,'review binds the actual PNG '+page.id);
+  assert.equal(reviewed.pptx,profile.pptx);assert.equal(reviewed.pptxSha256,digest,'review binds the actual PPTX '+page.id);
+  const xml=Buffer.from(zip[slides[pageIndex]]).toString('utf8');
+  const counts={shapes:(xml.match(/<p:sp>/g)||[]).length,tables:(xml.match(/<a:tbl>/g)||[]).length,
+   pictures:(xml.match(/<p:pic>/g)||[]).length,charts:(xml.match(/<c:chart\b/g)||[]).length};
+  for(const [kind,count] of Object.entries(counts))assert.equal(native.pages[pageIndex][kind],count,'native object inventory '+page.id+' '+kind);
+  assert.ok(counts.shapes>0&&/<a:t>/.test(xml),'editable native shapes and text '+page.id);
+  assert.equal(counts.pictures,0,'authored teaching studies must not become slide screenshots '+page.id);
+  assert.equal(counts.charts,0,'these study plots use editable shapes, not chart-workbook objects '+page.id);
+  if(deck.slides[pageIndex].table)assert.ok(counts.tables>0,'authored tables remain native PowerPoint tables '+page.id);
+  const visibleText=[...xml.matchAll(/<a:t>([\s\S]*?)<\/a:t>/g)].map(match=>match[1]).join('');
+  assert.match(visibleText,/教学构造数据/,'teaching identity remains visible '+page.id);
+  assert.match(visibleText,/非真实科研结果/,'research-result limitation remains visible '+page.id);
+  assert.ok(styleGallery.includes(`src="${page.png}"`),'gallery uses the current actual render '+page.id);
+  assert.ok((await stat(styleFile(page.svg))).isFile(),'editable scene preview '+page.id);
+  stylePngDigests++;styleEditablePages++;
+ }
+ assert.ok((await stat(styleFile(profile.html))).isFile(),'per-style HTML preview '+profile.id);
+}
+for(const name of ['README.md','index.html','montage.png','build-quality.json'])assert.ok((await stat(styleFile(name))).isFile(),'academic style reference '+name);
+const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','docs/RESEARCH_V010.md','docs/VALIDATION_V010.md','evals/README.md','evals/academic-cases.json','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs','scripts/build-frame-studies.mjs','scripts/build-academic-styles.mjs'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
 const templateRoot=join(root,'skills/dsh-academic-ppt/references/templates');
@@ -127,7 +212,7 @@ for(const path of markdown){
   await stat(resolved).catch(()=>{throw new Error(`Broken link in ${relative(root,path)}: ${target}`)});links++;
  }
 }
-for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery','workflow-v090','storyboard-v090','page-recipes','academic-visual-language']){
+for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery','workflow-v090','storyboard-v090','page-recipes','academic-visual-language','workflow-v010','academic-styles','academic-writing','scientific-figures','design-critique']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,frameStudySlides:frameSlides.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset consistency, module loading and documentation links; no scientific or visual approval'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,academicStyles:styleCatalog.profiles.length,academicStyleStudySlides:stylePages.length,academicStylePptxDigestsChecked:stylePptxDigests,academicStylePngDigestsChecked:stylePngDigests,nativeEditableStylePages:styleEditablePages,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,frameStudySlides:frameSlides.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset hashes and record bindings, native object inventory, module loading and documentation links; no scientific or visual approval, glyph verification, or end-to-end model evaluation'},null,2)+'\n');

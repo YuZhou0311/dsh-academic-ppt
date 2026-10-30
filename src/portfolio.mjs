@@ -1,5 +1,6 @@
 /** Compare explicitly supplied authored projects. Never scan other workspaces. */
 import { structureOf, similarStructure, drawingStructure, isBodySlide } from './design-quality.mjs';
+import { applyAcademicStyle } from './academic-styles.mjs';
 
 const list=value=>Array.isArray(value)?value:[];
 const box=value=>value?['x','y','w','h'].map(k=>Math.round(value[k]/32)):null;
@@ -33,6 +34,7 @@ function similarCoverMain(a,b){
 }
 
 export function compareProjectStructures(entries) {
+  entries=entries.map(entry=>({...entry,project:{...entry.project,design:applyAcademicStyle(entry.project.design)}}));
   const summaries=entries.map(({project,path})=>({projectId:project.id,title:project.title,path,revision:project.revision,
     slideCount:project.slides.length,bodySlides:project.slides.filter(isBodySlide).length}));
   const comparisons=[],issues=[];

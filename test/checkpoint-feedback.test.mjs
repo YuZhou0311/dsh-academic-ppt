@@ -29,7 +29,7 @@ async function workspace(t){
 async function fixture(t){
   const env=await workspace(t),{invoke,json}=env;
   const contract=await invoke('contract',{topic:'design'});
-  const design={fontFamily:'DejaVu Sans',palette:contract.academicPalettes[0].palette,consultation:structuredClone(storyConsultation),
+  const design={fontFamily:'DejaVu Sans',titleFontFamily:'DejaVu Sans',annotationFontFamily:'DejaVu Sans',palette:contract.academicPalettes[0].palette,consultation:structuredClone(storyConsultation),
     referenceStudy:{status:'not-applicable',reason:LABEL+' The fixture contains only administrative title and section pages, no information cards.'}};
   const initialized=await invoke('init',{projectDir:'project',title:'Checkpoint lifecycle protocol',
     brief:{centralQuestion:'How do explicit recorded responses affect unchanged artifact verification?',audience:'Software auditors',talkMinutes:2.5,targetPaperCount:0,requireFullText:false,genre:'proposal'},

@@ -1,8 +1,9 @@
 import {
-  briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designSchema,
+  briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designPatchSchema,
   assessmentSchema, capabilitiesSchema, assertToolArgs,
 } from './schema.mjs'
-import { ACADEMIC_PALETTES, DEFAULT_ACADEMIC_PALETTE_ID } from './academic-palette.mjs'
+import { ACADEMIC_PALETTES } from './academic-palette.mjs'
+import { ACADEMIC_STYLES, DEFAULT_ACADEMIC_STYLE_ID } from './academic-styles.mjs'
 import { preparationRequestSchema } from './design-intake.mjs'
 import {storyboardRequestSchema} from './storyboard.mjs'
 
@@ -15,7 +16,7 @@ const contracts = {
       'decision为真实故事线选择：proposed可继续研究和样张，confirmed/delegated须userResponse保存回答或明确委托。不要编造批准、自动填通用推理或把材料可得性当作替换研究目标的授权。',
       'pilot指定hardestSlideId、按故事板连续的三个sequenceSlideIds及选择原因。有封面时还指定coverSlideId，可与连续三页重合。先实现这些页，build(draft)和render，实际逐页查看并review。',
       '样张展示后的真实回答先按实际覆盖的取舍写入design.consultation，再提交pilot-review；后者不自动确认各设计主题。只更新consultation或storyboard.decision且其他工程内容完全不变时，可保留仍通过哈希校验的原PPTX、渲染和原逐页审查；操作仍递增revision，不新增看图记录。实际内容、设计、能力、参考学习或故事板页面变化仍须重建复核。',
-      '新checkpoints整稿按故事板计划页数应用设计学习门槛：计划达到六页时，即使只实现样张，也须有referenceStudy.componentStudies的具体组件观察、预览定位与本稿改造，以及paletteRationale。只填整页语法ID或选择不用preset不能替代。',
+      '新checkpoints整稿按故事板计划页数应用设计学习门槛：计划达到六页时，样张阶段须有referenceStudy.designStudies或componentStudies的实际预览与本稿适配，以及paletteRationale。整页科学表达与学术风格研究是有效路径，不要求卡片来源；目录ID本身不证明看图。',
       'kind=pilot-review 记录当前实际样张的成套方向选择，decision仅confirmed/delegated，附userResponse和notes。工具要求当前PPTX真实渲染、无缺字体、指定样张均有passed审查，自动绑定样张/设计/证据/故事板哈希。改变这些内容会使样张决定失效，增加其他页不会。已核对原图明确分配到尚未实现的非样张页、完整书目明确安排在后续references页时，可返回deferredFinalIssues留待整稿；未核实来源和样张自身缺图仍阻断，最终deliver不会豁免。',
       '六页及以上整稿最终deliver要求完整故事板和当前样张。旧工程继续读写、研究和预览，最终交付前可据真实内容补回故事板。计划与审查是调用者记录，工具不独立判断学术真实性或用户原话。',
     ],
@@ -28,12 +29,12 @@ const contracts = {
       'prepare规划分阶段设计协商、模板参考与图文卡片。正文保持论文身份查证、全文和原图获取、看图与图源登记；无生图接口不影响真实论文图的获取，卡片生图成功也不能替代研究证据。',
       '先按已知会话填写模板选择与实际宿主能力。template.status=unasked只产生待提问题，不代表已经询问；已给文件用provided+localPaths，明确没有用none，实际未答用unanswered；template状态不替代v2的consultation.source真实选择。未答保持待决定；awaiting-upload只等待附件，不重复问选择，可继续材料整理。',
       'PPTX必须是本工作区明确提供的文件。prepare核实路径与格式并返回academic_ppt_template调用计划，尚未解析或查看页面；按现有工具渲染并看实际代表页。旧.ppt先转换为.pptx，不能伪称已支持解析。',
-      '提取并实际看过模板后，填写template.review.profilePaths与visualObservations，可补renderReferences；同时把具体页号、局部frame/题签/间距与本稿改造存入referenceStudy.componentStudies。prepare验证profile与当前PPTX一致后不重复提取；摘要一致与字符串观察不证明已看图或审美通过。',
+      '提取并实际看过模板后，填写template.review.profilePaths与visualObservations，可补renderReferences；在referenceStudy.designStudies中定位源页，记录阅读顺序、证据层级与适配，或用componentStudies记录相关组件。prepare核对profile与当前PPTX一致，但字符串观察不证明真实看图。',
       'imageGeneration.availability由宿主工具清单或实际能力决定，source记依据；available须填实际toolName。cards填本次标题、正文、指标槽位、内容状态和来源说明，工具据此生成提示。该工具不读取密钥、不自行调用模型；宿主负责按真实工具契约调用。',
       '成功生图并实际查看后才能写status=generated、resultReferences与visualObservations；失败记failed及原因，用户拒绝记declined。unknown/unavailable/failed/declined均继续内置卡片库。引用和看图记录是宿主声明，不冒充插件独立视觉验证。',
       'paletteMode默认adaptive，palette为可修改的候选色；允许根据当前内容改变参考色的色相、明暗、饱和度及占比，保持全稿色义与文字对比。只有用户明确固定配色时使用fixed，并同时提供palette。',
-      '自主设计前先看原48款卡片与20款编辑式参考中相关候选的实际画面；20款见references/editorial-v083/index.html，编号C01–C20。细读填充/实虚线/阴影、题签和间距，再用layouts组织整页。学习与是否采用preset无关；用户模板已有具体组件细读可沿用，不要求重复提取或无关目录打卡。',
-      'referenceStudy.componentStudies最多12条，每条必填source（card-library/editorial/user-template）、referenceId、previewPath、frame、titleTreatment、spacing、adaptation，可选colorHierarchy。card-library用48款真实ID，editorial用C01–C20，user-template在referenceId或previewPath定位源页；同一模板可记录多类组件。paletteRationale写配色/主辅层级理由。外框用appearance.fill/stroke/strokeWidth/dash/shadow，题签用card.accent，留白用padding/radius；内部结构用drawings与composition.regions。字段与视觉原则见references/academic-visual-language.md，不强制卡片数量。',
+      '先按研究任务查看相关整页语法、academicStyles真实样张、用户模板或科学报告，学习证据主次、阅读路径和直接标注。需要局部组件时才看cards；开放科学页面不必先研究卡片。已有相关观察可复用。',
+      'referenceStudy.designStudies最多12条，必填source（page-recipe/academic-style/user-template/scientific-reference）、referenceId、previewPath、readingOrder、evidenceHierarchy、adaptation，可选typography/grouping。page-recipe与academic-style使用真实目录ID，user-template定位源页，scientific-reference使用真实来源URL。原componentStudies继续可用；实际用preset必须查看其对应预览。paletteRationale保留配色和比较色义理由。',
       '根据实际内容保留、合并、拆分或重排区块；不只换字照搬，不为凑原创强制改变每张卡。生成图只指导设计，最终以原始内容重建可编辑文字、数据与形状。outputPath可保存独立准备记录，已有不同内容会拒绝覆盖，使用新文件名保存下一次选择。',
     ],
   },
@@ -58,19 +59,29 @@ const contracts = {
     notes: ['图像卡片以preset=figure-caption等12款figure配方声明图文关系，card.figureIds消费1–4个真实asset ID，mediaHeight可选120–520px且包含图注空间；各配方的准确图数和尺寸先查cards(presetId)。卡内图无需再加入slide.figureIds，避免作为独立图重复分配；相关论文仍须出现在slide.paperIds。原图contain显示，不自动裁数据区或生成不存在的局部图。', '正文先确定实际可用的论文图、数据图或研究示意，再安排图旁解释、对照、条件和适合的图文卡片。用figureIds、card.figureIds或drawings.image把资产真正放入页面；表格与文字卡、关系箭头不能冒充论文原图，定量结果也不能仅用流程线替代数据比较。一个页面可以组合多张相关图和多组解释，不机械每页一图。', 'argument 明确本页研究问题、论证作用、具体贡献与边界；标题、正文、备注须忠实于引用证据。', 'sectionId引用brief.narrative.sections中的ID，派生可见章节标签。layout:roadmap可显示整稿目录，layout:section标识转入某节并显示本节问题；二者可由narrative派生agenda。显式agenda.items可含sectionId/title/question，不与composition混用。transition是具体承上启下句，会进入PPTX备注和导出讲稿；需要当场可见的转折同时写入subtitle、标题或正文。', '组合正文页先用visualPlan简短记录信息关系、primaryPanelId、readingOrder和rationale，再决定composition；固定页型不要填写visualPlan。计划中的面板必须实际存在且readingOrder覆盖每个面板一次。它记录可审阅的设计选择，不是长思维链，也不会自动重排页面。关键页可记最多两个alternatives及取舍。readingOrder最多12项，与自由regions容量一致。可选contentLayers记录[{role,panelIds,summary}]，role为evidence/explanation/conditions/method/synthesis；panelIds绑定当前页实际区域，不要求固定层数、每层独占一框或并排分栏。', '页面坐标与 figureBoxes/card.box 使用1280×720画布的px；seconds 是预算，不能声称已排练。', '新稿用composition.rows或自由composition.regions，也可用drawings直接绘制；不必先选referenceTemplateId。panel引用本页cards/figureIds/chart/table/nodes/plots/drawingIds/referenceIds；每项恰好显示一次。heading:hidden隐藏重复题签，padding可0–24px。surface可选inherit/plain/rule/tint/band。未用preset时card.appearance.layout可选stacked/banded/side-label，缺省stacked；surface可选outline/tint/solid/plain。preset内部recipe不接受layout/surface/accent覆盖，题签强调用card.accent。外框可用appearance.fill/stroke（#RRGGBB或none）、strokeWidth、dash（solid/dash/dot）、shadow（false或{color,opacity,blur,offset,angle}）；padding/radius调留白和圆角，elevation保留兼容。icon使用内建语义图标。外层已有容器时避免套框，细则见references/academic-visual-language.md。', 'align:start仅用于未启用自由布局功能的流式rows，按内容收紧且不与该面板card.box或所消费节点node.box混用。自由regions，以及含heading、padding、drawingIds或referenceIds的rows，用区域box或行权重控制高度，不设置align:start；收紧后重新安排剩余空间。chrome可逐页覆盖标题线、角标、品牌、页脚和页码；来源记录始终保留。cover支持split/editorial等起点，也可variant:custom，用boxes.title/subtitle/occasion/metadata/visual和align自行分配角色区域；按实际内容提供对应box，插件检查边界、相撞与高度。closing对象支持statement/evidence收束，只用于layout:closing且不与composition混用。', 'drawings的elements可原生编辑：文字、形状、关系线与登记图片。数据标记须关联有数值口径的claimIds。heading支持标题位置、语义断行与强调。heading.inheritChrome:true显式保留当前章节/身份与band/rule；作者的box须避开保留区，冲突报错不挪动或缩字，缺省false保持旧自定标题。contentChecks指定主要视图必须保留的字句，notes或脚注不能替代。plotId支持同页多个科学图。机制图可用diagram或drawings，连线与标签必须准确对应，不为外观制造因果箭头。', '先用academic_ppt_study比较真实候选：candidatesPath读取[{id,label,slide}]的UTF8 JSON数组，2–6项，outputDir须为新目录。render:true生成实际PPTX画面，不写原工程或正式批准。有既有报告时portfolio只读比较明确给出的2–12工程，不扫描其他文件或给原创评分。', '先登记依赖的paper/claim/asset；已构建页面用academic_ppt_edit明确scope修改；批次slideOrder可按全部当前页ID重排，不改project.json。'],
   },
   design: {
-    schema: designSchema, recordKey: 'design',
-    defaultPalette: DEFAULT_ACADEMIC_PALETTE_ID,
+    schema: designPatchSchema, recordKey: 'design',
+    defaultPalette: ACADEMIC_STYLES[DEFAULT_ACADEMIC_STYLE_ID].paletteId,
     academicPalettes: Object.values(ACADEMIC_PALETTES),
+    defaultStyleProfile: DEFAULT_ACADEMIC_STYLE_ID,
+    academicStyles: Object.values(ACADEMIC_STYLES),
+    styleSuggestions: {
+      basis:'观看任务与证据关系的候选建议，不能按学科或页码自动轮换',
+      byGenre:{'research-progress':['research-seminar','field-report'],'paper-reading':['paper-club'],'literature-review':['evidence-synthesis','research-seminar'],proposal:['methods-whiteboard','thesis-defense'],defense:['thesis-defense','research-seminar']},
+      reference:'references/academic-styles.md',
+    },
     notes: [
       "新init自动consultation.workflowVersion:2，mode默认collaborative。source先选择content-led/reference-guided/template-faithful，保存status/userResponse及实际templatePaths；随后讨论故事线和真实样张配色/风格/layout。confirmed/delegated主题须selected与真实userResponse；全局委托须delegation和delegationTopics，只覆盖明确范围。未答不可代填，提问后等待；旧已存无标记工程兼容。",
       "仅记录consultation决定而其他科学/设计内容完全不变时，record保留经哈希校验的当前成品、实际渲染和原逐页审查；保留原build修订及审查时间/result，needs-fix不会变passed。实际设计、能力或referenceStudy变化仍使成品失效。v2的局部consultation更新保留省略的字段，decisions按topic更新；显式空数组可清空。context恢复具体source、recordedDecisions与delegationTopics，不只看主题名。",
-      "referenceStudy.componentStudies按schema记录来源、预览、边框/题签/间距/改造；paletteRationale解释配色层级。card-library用48款真实ID，editorial用C01–C20；模板在referenceId或previewPath定位源页。可仅记细读，不必重复汇总或采用preset；用preset须有catalogIds或同ID细读。新checkpoints稿实际或计划达到六页须填，pageRecipeIds不能替代；旧字段缺失仅warning。not-applicable仅适用具体局部/科学图排版，不豁免整稿重设计。细则见references/academic-visual-language.md；记录不证明真实看图或审美通过。",
+      "完整新稿样张阶段保存designStudies或相关componentStudies及paletteRationale。前者记录可定位整页/科学参考的阅读顺序、证据层级与本稿适配，后者适用于实际相关组件。开放排版无需卡片打卡；使用preset须有catalogIds或同ID的card-library细读。仅列pageRecipeIds不证明真实看图。旧工程与局部修改保持兼容。",
       "颜色用#RRGGBB；academicPalettes是5套可编辑候选；surfaceOptions给出深色题签、深底重点面、中间色面和开放证据区的可执行配置，选中后完整写入palette，以paletteRationale解释对比、原图色义和主辅比例，不按学科自动选色。fontFamily填写实际字体。",
       "封面保留完整题名、语义断行与真实身份；minimal/editorial可无图，custom+boxes支持自主构图，图片须承担研究识别任务。",
       "mode新稿content-led，有参考reference-guided；明确保留版式才用template-faithful。模式不生成布局或保证任意模板无损复刻。",
-      "density默认compact：正文结构性大空区阻断review，封面/目录/章节留白只提醒。balanced须来自观看场景的真实选择；初始未定密度可据回答或委托落实，首次明确选择或review构建后保持既定要求，不为消除失败调低。",
-      "cardDefaults默认outline、4px圆角、16px内边距、无阴影；新默认system.panel=band，深题签配白正文，逐panel可改plain/rule/tint避免重复套框。外框用fill/stroke/strokeWidth/dash/shadow；完整字段见contract(slide)，视觉指导见references/academic-visual-language.md。避免套框，chrome可逐页覆盖，风格一致不要求卡片阵列。",
-      "direction记录视觉依据，colorRoles绑定研究意义，projection默认28/24/18px保留正文/标签/注释层级。更新design省略mode/density/cardDefaults/chrome/direction/projection/colorRoles/consultation/referenceStudy/system/branding/templateProfile时保留原值；旧缺失兼容，legacy不是可提交mode。",
+      "新工程density默认balanced，空区进入实际画面复核，不按面积逼迫添加内容。用户明确选择compact时保留正文大空区门禁；旧工程既有compact与用户密度选择不因升级或改profile而放松。科学含义、证据与可读性仍须独立通过。",
+      "新默认research-seminar采用开放plain分组与无阴影文字组。styleProfile提供标题/正文/注释字体、system、chrome、tableStyle及局部分组默认；tableStyle独立为three-line/ruled/banded，不再要求随panel表面换色。按真实证据关系选页面，不按页轮换profile。",
+      "design输入是局部更新，可只记录consultation、density或一个视觉字段；最终保存仍校验完整工程。新建时只有元信息或局部覆盖也采用默认profile，完整旧fontFamily+palette配置保留legacy语义；读取已有工程不自动迁移。",
+      "新工程可只写design:{styleProfile:ID}，其余defaults在渲染时解析；不要为选方向而展开全部DEFAULT_DESIGN。fontFamily覆盖正文，titleFontFamily覆盖标题，annotationFontFamily覆盖图注/来源；显式palette/system/chrome等按字段覆盖profile，原图不重新着色。字体安装仍需实际渲染核对。",
+      "切换styleProfile仅改变未显式覆盖的默认。record省略的design字段与consultation/来源/委托继续保留；旧工程原有fontFamily、palette或system也是显式值，不静默清除。若希望完整迁移，先核对用户固定要求，再将所选academicStyles.defaults中需要替换的字段明确写入design；不要用迁移删除科研或审查记录。样式变化使旧成品审查失效。",
+      "当前流程见references/workflow-v010.md，设计方向见academic-styles.md，科学图表见scientific-figures.md，文字审稿见academic-writing.md，实际画面审阅见design-critique.md。profile只是起点，真实内容与用户模板优先。",
       "finalReview仅在成品实际render且全页自审修复完成后记录：status、真实userResponse、当前pptxSha256和renderReceiptSha256。check/context返回状态与双哈希。只有明确授权final-review时使用delegated；未授权时先展示成品并等待反馈。Agent自查passed不代表用户接受，旧哈希确认不继承。",
       "academic_ppt_template.suggestedDesign仅是候选，须看真实代表页再适配。system.bodySize为22–40px；先去重复、调列宽或重排，不靠降低关键字级通过。templateProfilePaths只按需导入局部背景，旧文字、机构与数据不作当前研究内容。",
     ],

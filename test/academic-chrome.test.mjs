@@ -87,7 +87,7 @@ test('explicit band and rule headers apply title tokens and keep branding visibl
 
 test('section headers reserve actual wrapped title height before composition evidence', () => {
   const p = project([slide({ layout: 'academic', title: '比较机制、独立证据与适用边界之间的对应关系：保留完整实验条件和来源口径', section: { number: '02', title: '证据分析' }, kicker: '同一输入，独立检验', cards: [{ id: 'c', kind: 'method', title: '检验口径', body: '保留完整测试条件。', claimIds: ['C1'], style: 'compact' }], composition: { rows: [{ panels: [{ id: 'p', title: '证据与解释', cardIds: ['c'] }] }] } })]);
-  p.design.system.titleSize = 44; p.design.system.sectionSize = 34;
+  p.design.system.titleSize = 44; p.design.system.sectionSize = 34; p.design.chrome.showSection = true;
   const rendered = page(p), title = node(rendered, 'title'), section = node(rendered, 'section-label'), kicker = node(rendered, 'kicker');
   assert.deepEqual(errors(rendered), []);
   assert.equal(title.fontSize, 44); assert.equal(section.fontSize, 34);

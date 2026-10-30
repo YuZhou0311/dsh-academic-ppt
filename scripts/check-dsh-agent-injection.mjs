@@ -59,13 +59,15 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
   assert.notEqual(expectedBody, skillSource.trim(), 'fixture must independently remove SKILL frontmatter')
   const expectedDefinition = academic.readBundledSkill()
   assert.equal(expectedDefinition.content, expectedBody)
-  const workflowPath = join(expectedDefinition.resourceBase.path, 'references', 'workflow-v091.md')
+  const workflowPath = join(expectedDefinition.resourceBase.path, 'references', 'workflow-v010.md')
   const workflowSource = (await readFile(workflowPath, 'utf8')).replace(/\r\n?/g, '\n')
   const expectedTools = academic.buildAcademicTools().map(({ name, description, parameters }) => ({ name, description, parameters }))
   assert.equal(expectedTools.length, 19)
   const sourceHashes = Object.fromEntries(await Promise.all([
     'src/index.mjs', 'src/tools.mjs', 'src/host-access.mjs', 'src/core.mjs', 'src/design-intake.mjs',
-    'src/design-dialogue.mjs', 'src/storyboard.mjs', 'src/tool-contract.mjs', 'skills/dsh-academic-ppt/SKILL.md',
+    'src/design-dialogue.mjs', 'src/storyboard.mjs', 'src/tool-contract.mjs', 'src/academic-styles.mjs',
+    'src/schema.mjs', 'src/scene.mjs', 'src/render.mjs', 'skills/dsh-academic-ppt/SKILL.md',
+    'skills/dsh-academic-ppt/references/workflow-v010.md', 'skills/dsh-academic-ppt/references/academic-styles.md',
     'skills/dsh-academic-ppt/references/deepseek.md',
   ].map(async path => [path, hash(await readFile(join(projectRoot, path)))])))
   await mkdir(join(projectRoot, '.test-output'), { recursive: true })
@@ -275,7 +277,7 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
         const base = /^Base directory for this skill: (.+)$/m.exec(textOf(toolMessage(request, 'load-skill')))?.[1]
         assert.equal(base, expectedDefinition.resourceBase.path)
         return [
-          call('read-workflow', 'read', { file_path: join(base, 'references', 'workflow-v091.md'), limit: 2000 }),
+          call('read-workflow', 'read', { file_path: join(base, 'references', 'workflow-v010.md'), limit: 2000 }),
           call('storyboard-contract', 'academic_ppt_contract', { topic: 'storyboard' }),
         ]
       },

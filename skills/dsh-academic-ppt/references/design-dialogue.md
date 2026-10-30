@@ -79,7 +79,7 @@ v2的record局部更新保留省略的协商字段，decisions按topic更新，�
 
 恢复时以 `academic_ppt_context` 返回的具体 `selected`、`userResponse`、`rationale` 和 `referencePaths` 为依据，不只看已解决主题列表。对很长的记录按返回路径读取完整工程中的对应记录，避免凭主题名猜测用户选择。
 
-参考学习同时覆盖整页关系和组件细节。用 `referenceStudy.componentStudies` 记录具体参考页/卡、预览、边框填充、题签、间距与改造，用 `paletteRationale` 说明颜色职责；保留实际的 `pageRecipeIds/templateReferences/catalogIds` 和总体观察可帮助追溯。细读记录也可以独立提供对应来源与观察，不必重复抄录。新 checkpoints 六页及以上整稿（含计划页）只填整页ID不足以通过检查，自主drawings也不豁免学习；实际采用preset另需相应已查看`catalogIds`或同ID的`card-library`细读记录。参考记录不构成用户选择某方案的证明。
+参考学习围绕当前困难页的证据与阅读关系。用 `referenceStudy.designStudies` 保存可定位的整页、学术风格、科学图表或用户模板观察，记录阅读顺序、证据层级与改造；需要组件时沿用 `componentStudies`。用 `paletteRationale` 说明颜色职责。开放排版不强制先看卡片目录；实际采用preset仍需相应已查看 `catalogIds` 或同ID的 `card-library` 细读记录。仅写参考ID、路径或好听的形容词不足以证明看图，参考记录也不构成用户选择。
 
 ## 让决定落实到画面
 

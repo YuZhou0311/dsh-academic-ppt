@@ -132,7 +132,7 @@ const layoutIssue = (code, message, details = {}) => ({ severity: 'error', code,
  * All positions here are local to x=0. It measures actual text and uses the
  * same numeric domain/packing as the final native shapes, without a builder.
  */
-function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextWidth, system = {}, projection } = {}) {
+function prepareScientificPlot(data, width, { fontFamily, annotationFontFamily, wrapText, measureTextWidth, system = {}, projection } = {}) {
   const invalid = validate(data, { x: 0, y: 0, w: width, h: 1 });
   if (invalid) return { issue: layoutIssue(...invalid) };
   if (typeof wrapText !== 'function' || typeof measureTextWidth !== 'function')
@@ -146,11 +146,11 @@ function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextW
   if (innerWidth < 240)
     return { issue: layoutIssue('plot-area-too-small', '科学图区域过窄；扩大区域或拆页，不能缩小轴、标签或观测点。') };
 
-  const measure = (text, availableWidth, size, bold = false) => {
-    const metrics = { bold, fontFamily: face }, lines = wrapText(text, availableWidth, size, metrics);
+  const measure = (text, availableWidth, size, bold = false, textFace = face) => {
+    const metrics = { bold, fontFamily: textFace }, lines = wrapText(text, availableWidth, size, metrics);
     const widths = Array.isArray(lines) ? lines.map(line => measureTextWidth(line, size, metrics)) : [];
     if (!lines?.length || widths.some(w => !finite(w) || w < 0 || w > availableWidth + .5)) return null;
-    return { text, lines, w: availableWidth, h: lines.length * size * LINE_HEIGHT, size, bold };
+    return { text, lines, w: availableWidth, h: lines.length * size * LINE_HEIGHT, size, bold, fontFamily:textFace };
   };
   const labelTexts = data.groups.map(group => data.kind === 'distribution' ? `${group.label} (n = ${group.values.length})` : group.label);
   const labelWidth = Math.min(innerWidth * .25, Math.max(68, ...labelTexts.map(text => measureTextWidth(text, groupFont, { fontFamily: face, bold: true }) + 6)));
@@ -167,7 +167,7 @@ function prepareScientificPlot(data, width, { fontFamily, wrapText, measureTextW
     ? `每点为一条观测；纵向错位仅防重叠${reference !== undefined ? `；参考值 = ${numericText(reference)}` : ''}`
     : `点为估计值；线为区间；参考值 = ${numericText(reference)}`;
   const note = measure(noteText, innerWidth, smallFont);
-  const caption = data.caption ? measure(data.caption, innerWidth, captionFont) : null;
+  const caption = data.caption ? measure(data.caption, innerWidth, captionFont, false, annotationFontFamily||face) : null;
   const unit = measure(data.unit, plotWidth, smallFont);
   const labels = labelTexts.map(text => measure(text, labelWidth, groupFont, true));
   const valueLabels = valueTexts.map(text => measure(text, valueWidth, smallFont));
@@ -234,7 +234,7 @@ export function renderScientificPlot(b, data, box, { fontFamily, wrapText, measu
 
   const p = b.p || {}, system = b.system || {};
   const prepared = prepareScientificPlot(data, box.w, {
-    fontFamily: fontFamily || system.fontFamily || b.fontFamily, wrapText, measureTextWidth, system, projection:b.design?.projection,
+    fontFamily: fontFamily || system.fontFamily || b.fontFamily, annotationFontFamily:b.design?.annotationFontFamily, wrapText, measureTextWidth, system, projection:b.design?.projection,
   });
   if (prepared.issue) {
     const { code, message, severity, ...details } = prepared.issue;
@@ -274,7 +274,7 @@ export function renderScientificPlot(b, data, box, { fontFamily, wrapText, measu
   b.region(`${PREFIX}-region`, { ...box }, 'plot');
   const text = (key, layout, x, y, more = {}) => b.text(`${PREFIX}/${key}`, layout.text,
     { x, y, w: layout.w, h: layout.h }, layout.size,
-    { fontFamily: face, lineHeight: LINE_HEIGHT, color: ink, bold: layout.bold, ...common, ...more });
+    { fontFamily: layout.fontFamily||face, lineHeight: LINE_HEIGHT, color: ink, bold: layout.bold, ...common, ...more });
   text('reading-note', note, box.x + padding, box.y + padding, { color: muted, role: 'plot-reading-note', reference });
   if (caption) text('caption', caption, box.x + padding, captionY, { color: muted, role: 'caption' });
   text('unit', unit, plotX, unitY, { align: 'center', color: muted, role: 'plot-unit' });
