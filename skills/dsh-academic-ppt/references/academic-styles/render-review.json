@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "vision-model",
+  "reviewerRole": "assistant",
+  "reviewedAt": "2026-10-30T16:29:32.041304+00:00",
+  "status": "reviewed-with-scoped-findings",
+  "subject": "12 authored plugin-renderer study pages, not a DSH model-generated benchmark",
+  "inputType": "actual PPTX-render PNG from @deepseek-ai/libreoffice-kit 0.1.5 (WASM)",
+  "resolution": {
+    "width": 1601,
+    "height": 901
+  },
+  "coverage": {
+    "pages": 12,
+    "allPagesOpenedAcrossRevisions": true,
+    "finalChangedPagesReopened": 8,
+    "unchangedPagesVerifiedByExactPngSha256": 4,
+    "montageOpened": true
+  },
+  "fixesDuringReview": [
+    "Replaced the unsupported Unicode subscript s glyph with editable d(s) notation after observing missing-glyph boxes. The renderer missingFonts array alone did not identify this glyph-coverage issue.",
+    "Recomposed thesis-defense result page from a crowded side note into a full-width plot with two numbered judgments below.",
+    "Reflowed two final-line fragments into complete lines in the methods assumption and paper-club claim-boundary notes.",
+    "The final independent review identified missing Serif Bold. A same-PPTX rerender with the official Bold face confirmed the title previously used a Regular-named face in PDF. Supplied both Regular and Bold for both Noto families, rerendered all six decks, reopened all eight changed pages, and verified the remaining four PNGs are identical. PPTX contents did not change."
+  ],
+  "pages": [
+    {
+      "id": "research-seminar-1",
+      "image": "research-seminar/render/artifacts/pages/page-0001.png",
+      "imageSha256": "c60cb3fc8d0676b9af47528600c812f3884ca5a8fc6d5315e7d135f92981012f",
+      "pptx": "research-seminar/research-seminar.pptx",
+      "pptxSha256": "03fcb77ad147e31ccd23c92e10be40c1befdf70e93058eb688cc1915bcfca64d",
+      "reviewMethod": "opened actual PPTX-render PNG in preceding review; final PNG remains byte-identical by SHA-256 after complete font rerender",
+      "priorReviewedImageSha256": "c60cb3fc8d0676b9af47528600c812f3884ca5a8fc6d5315e7d135f92981012f",
+      "finding": "Large two-row interval plot leads the reading. The zero line, units, negative random estimate and zero-crossing held-out interval are legible. Short interpretations are placed alongside without covering marks.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "research-seminar-2",
+      "image": "research-seminar/render/artifacts/pages/page-0002.png",
+      "imageSha256": "220ed8524287604f1129f8d1bf4714a99d9976cd5c86e63d8ccbbf22dc5e8359",
+      "pptx": "research-seminar/research-seminar.pptx",
+      "pptxSha256": "03fcb77ad147e31ccd23c92e10be40c1befdf70e93058eb688cc1915bcfca64d",
+      "reviewMethod": "opened actual PPTX-render PNG in preceding review; final PNG remains byte-identical by SHA-256 after complete font rerender",
+      "priorReviewedImageSha256": "220ed8524287604f1129f8d1bf4714a99d9976cd5c86e63d8ccbbf22dc5e8359",
+      "finding": "Native three-line table and calculation steps have separate reading columns. The notation d(s) renders without missing-glyph boxes; the two-line assumption statement stays inside its text region.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "thesis-defense-1",
+      "image": "thesis-defense/render/artifacts/pages/page-0001.png",
+      "imageSha256": "3f1ce448ef084a2d89754950060efab40ce1a3e278cb4438962c74076cdd8c39",
+      "pptx": "thesis-defense/thesis-defense.pptx",
+      "pptxSha256": "12e86f20026a680179ee015f4c91f43e5214bb5d7a4fb5b2d1ff03f97383324b",
+      "reviewMethod": "opened actual PPTX-render PNG in preceding review; final PNG remains byte-identical by SHA-256 after complete font rerender",
+      "priorReviewedImageSha256": "3f1ce448ef084a2d89754950060efab40ce1a3e278cb4438962c74076cdd8c39",
+      "finding": "Section navigation and a question frame a full-width interval comparison. The two numbered judgments sit beneath the plot; the former crowded side-note column has been removed.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "thesis-defense-2",
+      "image": "thesis-defense/render/artifacts/pages/page-0002.png",
+      "imageSha256": "7aec5dcf28171fbdacec6807504655bf8399b0245cf5b1aecc0cf3f9014af78b",
+      "pptx": "thesis-defense/thesis-defense.pptx",
+      "pptxSha256": "12e86f20026a680179ee015f4c91f43e5214bb5d7a4fb5b2d1ff03f97383324b",
+      "reviewMethod": "opened actual PPTX-render PNG in preceding review; final PNG remains byte-identical by SHA-256 after complete font rerender",
+      "priorReviewedImageSha256": "7aec5dcf28171fbdacec6807504655bf8399b0245cf5b1aecc0cf3f9014af78b",
+      "finding": "Site-delta table and examination conditions are aligned as two columns. The boundary statement is separate and visible above the repeated teaching-data note.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "methods-whiteboard-1",
+      "image": "methods-whiteboard/render/artifacts/pages/page-0001.png",
+      "imageSha256": "e6e4c198fa03e750ddbc2a1650f23572da38bb49db2b24c1e5d4089f375a36c8",
+      "pptx": "methods-whiteboard/methods-whiteboard.pptx",
+      "pptxSha256": "7044fca0bf0a80c0f4018cbca71a8d64870190d4f2bb305ff41fbdbb5747f639",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "cd8d23a00daa56d9d85b95de703d300c26bbfe440b1d6b83ef85b4cb4e8cc4e9",
+      "finding": "The left definition explains the sign of d(s), followed by the point/interval reading rule; the right interval plot shows the same values and unit. Equations are live text, not a raster formula. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "methods-whiteboard-2",
+      "image": "methods-whiteboard/render/artifacts/pages/page-0002.png",
+      "imageSha256": "80f2522dfa473b089f152909dda482fc9c4f4f392356b75f22c642d013800b83",
+      "pptx": "methods-whiteboard/methods-whiteboard.pptx",
+      "pptxSha256": "7044fca0bf0a80c0f4018cbca71a8d64870190d4f2bb305ff41fbdbb5747f639",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "d2a12d9ccf23ba8f9b1a1f0d6b4885befcb247c8e241ccfc22458dc92346f7e2",
+      "finding": "The derivation comes before the native table. Unicode subscript s was replaced by d(s). The final assumption note now uses two complete lines with no isolated final word. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "paper-club-1",
+      "image": "paper-club/render/artifacts/pages/page-0001.png",
+      "imageSha256": "09e86f0f472047b15cd24ab1e8b130fe8f7cf20b4ca5bdd9fdf8f94ddbb362c5",
+      "pptx": "paper-club/paper-club.pptx",
+      "pptxSha256": "7a63ec58a4e155bafb24dcc8f8c8449aec19d09750bbab5e8a2345ae1d158c9a",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "1c4da68f6d872ff48efe5d7cef3abeb4e029f11cfcb1547b998f4bcc1a6d21e4",
+      "finding": "Figure T1 and serif critical-reading margin are distinct. The zero line and both intervals remain clear. The revised three-line claim-boundary note fits above the discussion question. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "paper-club-2",
+      "image": "paper-club/render/artifacts/pages/page-0002.png",
+      "imageSha256": "9951792eadec7e2a1650960f0bd212c00e592f39ab50a1f2198f751692edf664",
+      "pptx": "paper-club/paper-club.pptx",
+      "pptxSha256": "7a63ec58a4e155bafb24dcc8f8c8449aec19d09750bbab5e8a2345ae1d158c9a",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "06a933e4afc15a62b946c08597e773ac4c238d583ee73f795a9ec499f677c4bc",
+      "finding": "A source-like site table sits beside explicitly labeled record, interpretation and limitation. The slide separates what was constructed from what the speaker infers. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "evidence-synthesis-1",
+      "image": "evidence-synthesis/render/artifacts/pages/page-0001.png",
+      "imageSha256": "7fd4146a04f07ded4d7fdbc1574bf794c83a31b40ef2a3b775f57036a9e82936",
+      "pptx": "evidence-synthesis/evidence-synthesis.pptx",
+      "pptxSha256": "e5c8885b9185499be473fec50a7b83a493c357555b4db206d4c1de9dafd22b06",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "5dddbb548f60011507ac444668dff7f2cd657f87ab70666784fcef352f16622a",
+      "finding": "The native summary matrix exposes baseline MAE, method MAE, difference and interval for both protocols. Protocol-specific judgments remain separate beneath the matrix. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "evidence-synthesis-2",
+      "image": "evidence-synthesis/render/artifacts/pages/page-0002.png",
+      "imageSha256": "0a3c95b78a7b48623f009e93dd366d8812cc8caf32f893abbfb5b9afa765bd6d",
+      "pptx": "evidence-synthesis/evidence-synthesis.pptx",
+      "pptxSha256": "e5c8885b9185499be473fec50a7b83a493c357555b4db206d4c1de9dafd22b06",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "13e97481739ab11df00b9db8779bbbf6e987b0d3199e6d6622a2f2fb281d1aae",
+      "finding": "A native comparability matrix precedes the conditional synthesis. Both intervals and their protocol labels remain present; the missing external-validation boundary is legible. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "field-report-1",
+      "image": "field-report/render/artifacts/pages/page-0001.png",
+      "imageSha256": "bb5dc530a8c16dd1841677103d5b066295168cc92d3bc76c0cc10b79f8b6fa89",
+      "pptx": "field-report/field-report.pptx",
+      "pptxSha256": "08f3685fd7bbfc287ca645a7f74cfdef4777f93d87584301c621eb2801331d8f",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "72db5f1e21143a71ad6dab73c3bd066a3344d3a2abb171afdaaba8589f5eb599",
+      "finding": "All four sites have separate blue and rust points on a shared difference axis. The zero reference and aggregate interval readout make the direction changes visible without changing color semantics. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    },
+    {
+      "id": "field-report-2",
+      "image": "field-report/render/artifacts/pages/page-0002.png",
+      "imageSha256": "68a28cbb221031f3464dfee1dd357539f3431b7681b50dfc1268f58af5dbc936",
+      "pptx": "field-report/field-report.pptx",
+      "pptxSha256": "08f3685fd7bbfc287ca645a7f74cfdef4777f93d87584301c621eb2801331d8f",
+      "reviewMethod": "opened final actual PPTX-render PNG after supplying the missing Noto Serif CJK SC Bold face",
+      "priorReviewedImageSha256": "5e721786c6256843af7c436af8b2c166b109192d76a836f4f061557f4d038f66",
+      "finding": "Four rows of six evenly spaced native dots show nesting by site. The accompanying native table retains each site delta. The caption distinguishes observation count from statistical unit. After adding the Serif Bold face, the requested bold serif glyphs render visibly; the whole changed page was reopened and checked for clipping, overlap and reflow.",
+      "outcome": "No visible clipping, overlap or missing glyphs identified at the inspected render size; scope limited to this fixture.",
+      "fontWeightAudit": "font-weight-audit.json"
+    }
+  ],
+  "limitations": [
+    "This is an assistant/vision-model review, not human review or user approval.",
+    "The reviewed images come from actual PPTX rendering, not HTML/SVG screenshots. Native PowerPoint and WPS applications were not opened or compared.",
+    "The six studies are authored fixtures that exercise the plugin renderer. No DSH model authoring session or model-quality evaluation was run.",
+    "Subject-matter data are constructed, not reported research. The confidence intervals illustrate assumptions rather than validate them.",
+    "Rebuilding changes the artifact identity and requires fresh rendering and image review. This record is not inherited by future outputs."
+  ],
+  "automaticBuildReport": "build-quality.json remains visualReview=not-reviewed because the build script does not perform visual inspection.",
+  "fontWeightAudit": "font-weight-audit.json",
+  "montage": "montage.png",
+  "montageSha256": "54e4231c7baca29adb57ad0fbf219472f15613e054c9bff7acd95a8f3f5adbda"
+}

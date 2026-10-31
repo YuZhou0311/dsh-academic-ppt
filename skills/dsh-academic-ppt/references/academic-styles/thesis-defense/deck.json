@@ -1,0 +1,813 @@
+{
+  "title": "正式答辩：站点评估教学样例",
+  "design": {
+    "styleProfile": "thesis-defense",
+    "density": "balanced",
+    "chrome": {
+      "showSources": false,
+      "showBrand": false
+    }
+  },
+  "papers": [],
+  "claims": [],
+  "assets": [],
+  "slides": [
+    {
+      "id": "thesis-defense-1",
+      "layout": "academic",
+      "title": "随机划分误差较低，跨站点差异不确定",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "02",
+        "title": "评价结果"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "question",
+          "width": 1184,
+          "height": 48,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "验证问题：随机划分的误差优势能否延伸到未见站点？",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "effect-comparison",
+          "width": 1184,
+          "height": 308.20000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "ΔMAE = 方法 − 基线（t/ha）",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 34.76,
+              "fontSize": 26,
+              "bold": true,
+              "color": "#202A35",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 782.25,
+                  "y": 54
+                },
+                {
+                  "x": 782.25,
+                  "y": 255.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "随机划分",
+              "x": 0,
+              "y": 68,
+              "w": 136,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#202A35",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 317.8366017268379,
+                  "y": 84
+                },
+                {
+                  "x": 483.16339827316204,
+                  "y": 84
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "e5",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 317.8366017268379,
+                  "y": 77
+                },
+                {
+                  "x": 317.8366017268379,
+                  "y": 91
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e6",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 483.16339827316204,
+                  "y": 77
+                },
+                {
+                  "x": 483.16339827316204,
+                  "y": 91
+                }
+              ],
+              "stroke": "#245E86",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e7",
+              "kind": "ellipse",
+              "x": 394.5,
+              "y": 78,
+              "w": 12,
+              "h": 12,
+              "fill": "#245E86",
+              "stroke": "none",
+              "role": "data"
+            },
+            {
+              "id": "e8",
+              "kind": "text",
+              "text": "−0.300 [−0.365, −0.235]",
+              "x": 146,
+              "y": 102,
+              "w": 1018,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#245E86",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e9",
+              "kind": "text",
+              "text": "整站留出",
+              "x": 0,
+              "y": 162.60000000000002,
+              "w": 136,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#202A35",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e10",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 643.3918538262888,
+                  "y": 178.60000000000002
+                },
+                {
+                  "x": 1048.3581461737112,
+                  "y": 178.60000000000002
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "e11",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 643.3918538262888,
+                  "y": 171.60000000000002
+                },
+                {
+                  "x": 643.3918538262888,
+                  "y": 185.60000000000002
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e12",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 1048.3581461737112,
+                  "y": 171.60000000000002
+                },
+                {
+                  "x": 1048.3581461737112,
+                  "y": 185.60000000000002
+                }
+              ],
+              "stroke": "#A35332",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e13",
+              "kind": "ellipse",
+              "x": 839.875,
+              "y": 172.60000000000002,
+              "w": 12,
+              "h": 12,
+              "fill": "#A35332",
+              "stroke": "none",
+              "role": "data"
+            },
+            {
+              "id": "e14",
+              "kind": "text",
+              "text": "0.050 [−0.109, 0.209]",
+              "x": 146,
+              "y": 196.60000000000002,
+              "w": 1018,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#A35332",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e15",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 146,
+                  "y": 255.20000000000005
+                },
+                {
+                  "x": 1164,
+                  "y": 255.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e16",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 273.25,
+                  "y": 255.20000000000005
+                },
+                {
+                  "x": 273.25,
+                  "y": 261.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e17",
+              "kind": "text",
+              "text": "−0.4",
+              "x": 238.25,
+              "y": 268.20000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e18",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 527.75,
+                  "y": 255.20000000000005
+                },
+                {
+                  "x": 527.75,
+                  "y": 261.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e19",
+              "kind": "text",
+              "text": "−0.2",
+              "x": 492.75,
+              "y": 268.20000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e20",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 782.25,
+                  "y": 255.20000000000005
+                },
+                {
+                  "x": 782.25,
+                  "y": 261.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e21",
+              "kind": "text",
+              "text": "0",
+              "x": 747.25,
+              "y": 268.20000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e22",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 1036.75,
+                  "y": 255.20000000000005
+                },
+                {
+                  "x": 1036.75,
+                  "y": 261.20000000000005
+                }
+              ],
+              "stroke": "#526170",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e23",
+              "kind": "text",
+              "text": "0.2",
+              "x": 1001.75,
+              "y": 268.20000000000005,
+              "w": 70,
+              "h": 32.24,
+              "fontSize": 24,
+              "bold": false,
+              "color": "#526170",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "numbered-findings",
+          "width": 1184,
+          "height": 45,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "1. 随机划分：误差较低",
+              "x": 0,
+              "y": 0,
+              "w": 560,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#245E86",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "2. 整站留出：差异不确定",
+              "x": 620,
+              "y": 0,
+              "w": 564,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#A35332",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "question",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 168.79999999999998,
+              "w": 1184,
+              "h": 48
+            },
+            "drawingIds": [
+              "question"
+            ]
+          },
+          {
+            "id": "effect-comparison",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 226.79999999999998,
+              "w": 1184,
+              "h": 308.20000000000005
+            },
+            "drawingIds": [
+              "effect-comparison"
+            ]
+          },
+          {
+            "id": "numbered-findings",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 551,
+              "w": 1184,
+              "h": 45
+            },
+            "drawingIds": [
+              "numbered-findings"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "thesis-defense-2",
+      "layout": "academic",
+      "title": "从观测误差到站点层面的比较",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "03",
+        "title": "分析单位与边界"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "table": {
+        "columns": [
+          "站点",
+          "随机 Δ",
+          "留站 Δ"
+        ],
+        "columnWeights": [
+          0.7,
+          1.2,
+          1.2
+        ],
+        "rows": [
+          [
+            "A",
+            "−0.300",
+            "0.100"
+          ],
+          [
+            "B",
+            "−0.250",
+            "−0.100"
+          ],
+          [
+            "C",
+            "−0.350",
+            "0.100"
+          ],
+          [
+            "D",
+            "−0.300",
+            "0.100"
+          ]
+        ],
+        "caption": "Δ = 方法 − 基线，单位 t/ha；每格来自同站 6 个观测",
+        "sourceClaimIds": []
+      },
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "defense-conditions",
+          "width": 554,
+          "height": 355.20000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "评委可追问的条件",
+              "x": 0,
+              "y": 0,
+              "w": 554,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "同一协议内，方法与基线比较同一组观测。",
+              "x": 0,
+              "y": 59.28,
+              "w": 554,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "先按站点聚合，再计算四个配对差值。",
+              "x": 0,
+              "y": 114.56,
+              "w": 554,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "区间依赖站点独立性与差值分布假设。",
+              "x": 0,
+              "y": 169.84,
+              "w": 554,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "scope-answer",
+          "width": 1184,
+          "height": 54,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "外推范围：本例没有真实训练与测试，结论只描述这套构造数值。",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "table",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 168.79999999999998,
+              "w": 580,
+              "h": 355.20000000000005
+            },
+            "table": true
+          },
+          {
+            "id": "defense-conditions",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 678,
+              "y": 168.79999999999998,
+              "w": 554,
+              "h": 355.20000000000005
+            },
+            "drawingIds": [
+              "defense-conditions"
+            ]
+          },
+          {
+            "id": "scope-answer",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 542,
+              "w": 1184,
+              "h": 54
+            },
+            "drawingIds": [
+              "scope-answer"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

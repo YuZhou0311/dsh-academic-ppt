@@ -1,0 +1,424 @@
+{
+  "title": "证据综合：站点评估教学样例",
+  "design": {
+    "styleProfile": "evidence-synthesis",
+    "density": "balanced",
+    "chrome": {
+      "showSources": false,
+      "showBrand": false
+    }
+  },
+  "papers": [],
+  "claims": [],
+  "assets": [],
+  "slides": [
+    {
+      "id": "evidence-synthesis-1",
+      "layout": "academic",
+      "title": "随机划分误差较低，跨站点差异不确定",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "02",
+        "title": "评价结果"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "table": {
+        "columns": [
+          "评价协议",
+          "基线 MAE",
+          "方法 MAE",
+          "ΔMAE",
+          "95% t 区间"
+        ],
+        "columnWeights": [
+          1.2,
+          1,
+          1,
+          1,
+          1.9
+        ],
+        "rows": [
+          [
+            "随机划分",
+            "0.850",
+            "0.550",
+            "−0.300",
+            "[−0.365, −0.235]"
+          ],
+          [
+            "整站留出",
+            "1.050",
+            "1.100",
+            "0.050",
+            "[−0.109, 0.209]"
+          ]
+        ],
+        "caption": "Δ = 方法 − 基线，单位 t/ha。区间以 4 个站点差值计算。",
+        "sourceClaimIds": []
+      },
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "comparison-verdict",
+          "width": 1184,
+          "height": 166.94000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "随机划分",
+              "x": 0,
+              "y": 0,
+              "w": 562,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#245E86",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "差值为负，区间未跨零。\n支持本套数值下误差较低。",
+              "x": 0,
+              "y": 48,
+              "w": 562,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "整站留出",
+              "x": 622,
+              "y": 0,
+              "w": 562,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#A35332",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "差值略正，区间跨零。\n不能确认跨站点优势。",
+              "x": 622,
+              "y": 48,
+              "w": 562,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "table",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 171.06,
+              "w": 1184,
+              "h": 230
+            },
+            "table": true
+          },
+          {
+            "id": "comparison-verdict",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 429.06,
+              "w": 1184,
+              "h": 166.94000000000005
+            },
+            "drawingIds": [
+              "comparison-verdict"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "evidence-synthesis-2",
+      "layout": "academic",
+      "title": "从观测误差到站点层面的比较",
+      "kicker": "教学构造数据，非真实科研结果",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "section": {
+        "number": "03",
+        "title": "分析单位与边界"
+      },
+      "notes": "本页为插件的原创、可编辑设计研究，不是实际模型或田间试验结果。\n数据见 teaching-data.json，可由 scripts/build-academic-styles.mjs 重算。\n共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位。\n仅演示统计与排版；未训练模型，不能推断真实跨站点泛化。\n随机划分：−0.300 [−0.365, −0.235] t/ha；整站留出：0.050 [−0.109, 0.209] t/ha。\n先说明比较和零线，再读点估计与区间，最后解释外推边界。",
+      "table": {
+        "columns": [
+          "比较前核对",
+          "本例约定"
+        ],
+        "columnWeights": [
+          1.1,
+          2.2
+        ],
+        "rows": [
+          [
+            "比较对象",
+            "方法与同协议基线"
+          ],
+          [
+            "指标与单位",
+            "绝对误差，t/ha"
+          ],
+          [
+            "统计单位",
+            "4 个站点差值"
+          ],
+          [
+            "站点内观测",
+            "每站 6 个，共 24 个"
+          ]
+        ],
+        "caption": "协议之间可比的是误差定义；划分方式不同不能混为同一验证。",
+        "sourceClaimIds": []
+      },
+      "drawings": [
+        {
+          "id": "study-qualification",
+          "width": 1184,
+          "height": 56,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "共 24 个构造观测，聚合为 4 个站点差值；95% t 区间以站点为统计单位",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "仅演示统计与排版；未训练模型，不能推断真实跨站点泛化",
+              "x": 0,
+              "y": 28,
+              "w": 1184,
+              "h": 24.68,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#526170",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        },
+        {
+          "id": "synthesis-rule",
+          "width": 512,
+          "height": 424.94000000000005,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "综合结论保留协议条件",
+              "x": 0,
+              "y": 0,
+              "w": 512,
+              "h": 37.28,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "随机划分：\n−0.300 [−0.365, −0.235] t/ha",
+              "x": 0,
+              "y": 59.28,
+              "w": 512,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e3",
+              "kind": "text",
+              "text": "整站留出：\n0.050 [−0.109, 0.209] t/ha",
+              "x": 0,
+              "y": 153.84,
+              "w": 512,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": false,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "跨站点差异不确定。进一步的真实外部验证仍缺失。",
+              "x": 0,
+              "y": 248.4,
+              "w": 512,
+              "h": 72.56,
+              "fontSize": 28,
+              "bold": true,
+              "color": "#202A35",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.24
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "study-qualification",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 614,
+              "w": 1184,
+              "h": 56
+            },
+            "drawingIds": [
+              "study-qualification"
+            ]
+          },
+          {
+            "id": "table",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 171.06,
+              "w": 620,
+              "h": 424.94000000000005
+            },
+            "table": true
+          },
+          {
+            "id": "synthesis-rule",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 720,
+              "y": 171.06,
+              "w": 512,
+              "h": 424.94000000000005
+            },
+            "drawingIds": [
+              "synthesis-rule"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

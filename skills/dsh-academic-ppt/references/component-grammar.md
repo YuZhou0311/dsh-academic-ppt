@@ -28,7 +28,7 @@ composition的surface、heading与padding控制外层表达；heading:hidden可�
 
 新卡片先按[card-design.md](card-design.md)中的内容关系查询`academic_ppt_cards`，实际查看适合本稿的预览，再从7族48款中选择或改造`card.preset`。图册提供浮签、标题带、折角、编号、侧栏和不同读数、条件、对照、流程组织，另有12种[图片嵌入式卡片](image-cards.md)。卡内论文图同样可以承载主证据；按实际图片比例与阅读大小决定独立开放大图、图卡或二者组合。样式数量不决定一页应放多少卡片。按工具详情填写实际题名、正文、条目和限定，不把示例事实带入研究。
 
-显式`preset`决定内部布局、题签和条目关系，不继承项目`cardDefaults`中的内部布局或装饰模式，旧`style`也不叠加；外表面paint字段可继承并由逐卡覆盖。预设接受`appearance.padding/radius/elevation`，也接受`fill/stroke/strokeWidth/dash/shadow`调整外框；12种图片卡使用同一组外框参数。开放括线、双横线或双框保留其原有几何，外框参数不会把它们统一变成矩形。`card.accent`控制实际强调色；不要另提交`appearance.layout/surface/accent`来覆盖配方。不要同时设置`templateComponentId`；模板组件与原生配方选择一种。自主drawing不必套preset，但仍须学习与记录相关组件。
+显式`preset`决定内部布局、题签和条目关系，不继承项目`cardDefaults`中的内部布局或装饰模式，旧`style`也不叠加；外表面paint字段可继承并由逐卡覆盖。预设接受`appearance.padding/radius/elevation`，也接受`fill/stroke/strokeWidth/dash/shadow`调整外框；12种图片卡使用同一组外框参数。开放括线、双横线或双框保留其原有几何，外框参数不会把它们统一变成矩形。`card.accent`控制实际强调色；不要另提交`appearance.layout/surface/accent`来覆盖配方。不要同时设置`templateComponentId`；模板组件与原生配方选择一种。自主drawing不必套preset；用它重建具体组件时记录组件观察，开放科学排版可用designStudies记录整页与证据表达。
 
 既有`card.appearance.layout`改变题签与内容的实际几何关系，`surface`控制表面，两者独立选择：
 

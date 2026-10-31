@@ -151,7 +151,7 @@ function templateSummary(profile, profilePath) {
     study: profile.study, suggestedDesign:profile.suggestedDesign, designInference:profile.designInference, components,
     componentIndex: { total: profile.components?.length ?? 0, returned: components.length, truncated: (profile.components?.length ?? 0) > components.length },
     scope: profile.scope, visualReview: profile.visualReview,
-    instructions: ['结构推断尚未视觉确认。查看实际代表页，学习主辅证据、局部分组、图旁解释、密度与阅读层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；按研究关系选择浅底、题签、边界或开放标注，避免机械卡片阵列与无组织文字堆叠。短旁注仅在不造成大空区时align=start。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式保留正文证据页的占幅门槛；封面、目录和章节留白只提醒看图判断，不为填空添加图片或装饰。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
+    instructions: ['结构推断尚未视觉确认。查看实际代表页，学习主辅证据、局部分组、图旁解释、密度与阅读层级；模板的页序、卡片数量、封面家具和图文比例不自动成为约束。', 'suggestedDesign 是可编辑候选，默认 mode=reference-guided。审定并按当前内容调整后作为recordsPath批次的design保存。仅用户明确要求沿用版式时改为template-faithful；它也不保证任意母版无损复刻。', 'content-led/reference-guided先写argument和visualPlan，再用composition组织当前证据。panel.surface控制区域分组，card.appearance控制独立小卡片；按研究关系选择浅底、题签、边界或开放标注，避免机械卡片阵列与无组织文字堆叠。短旁注可align=start以贴近所解释证据；留白按阅读作用判断，不为填满而拉伸文字组。完整字段见contract(topic=slide)。', '封面、结尾、标题线和角标按当前场合重新设计；slide.chrome可关闭无用元素并回收空间。compact模式保留正文证据页的占幅门槛；封面、目录和章节留白只提醒看图判断，不为填空添加图片或装饰。', '仅确有需要的局部原生背景才通过templateProfilePaths导入。模板机构、旧正文、数据与图像不能移入当前研究；图标与情境图片需承担明确的信息职责。'],
   }
 }
 
@@ -227,6 +227,11 @@ export function formatToolResult(name, result) {
       if(decision.referencePaths?.length)lines.push(`当时参考：${decision.referencePaths.slice(0,2).map(path=>clip(path,400)).join('；')}`)
     }
     if(dialogue.recordedDecisions?.length)lines.push('以上是已保存的决定摘要，沿用其范围；长回答、理由及其余预览见结构化recordedDecisions或工程design.consultation，不得把未决项补写为批准。')
+  }
+  if(name==='academic_ppt_context'&&data.resolvedDesign){
+    const d=data.resolvedDesign;
+    lines.push(`当前实际设计：${JSON.stringify({styleProfile:data.design?.styleProfile||'legacy-explicit',density:d.density,fontFamily:d.fontFamily,titleFontFamily:d.titleFontFamily,annotationFontFamily:d.annotationFontFamily,system:d.system,tableStyle:d.tableStyle})}`)
+    lines.push('design是已保存的显式选择；resolvedDesign包含当前profile默认。只改变未覆盖的默认请更新styleProfile，不把解析结果全量写回。')
   }
   const repairs=(data.repairQueue??[]).filter(item=>item.severity==='error')
   for(const repair of repairs.slice(0,6))lines.push(`优先修复 ${clip(repair.target,120)} [${clip(repair.codes?.join(', '),220)}]：${clip(repair.messages?.[0],500)}`)
@@ -349,6 +354,8 @@ export function formatToolResult(name, result) {
     if (data.schema) lines.push(`完整JSON Schema：${JSON.stringify(data.schema)}`)
     if (data.capabilityRecord) lines.push(`图像输入能力记录：${JSON.stringify(data.capabilityRecord)}`)
     if (data.academicPalettes) lines.push(`学术配色候选（默认${data.defaultPalette}）：${JSON.stringify(data.academicPalettes)}`)
+    if (data.academicStyles) lines.push(`可执行学术风格（默认${data.defaultStyleProfile}）：${JSON.stringify(data.academicStyles)}`)
+    if (data.styleSuggestions) lines.push(`内容相关的方向建议：${JSON.stringify(data.styleSuggestions)}`)
   }
   if(name==='academic_ppt_layouts'){
     if(data.recipe)lines.push('整页语法：'+JSON.stringify(data.recipe))

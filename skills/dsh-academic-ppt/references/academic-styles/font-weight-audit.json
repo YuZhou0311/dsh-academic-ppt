@@ -1,0 +1,661 @@
+{
+  "schemaVersion": 1,
+  "test": "Same existing PPTX files rendered before and after adding the official Noto Serif CJK SC Bold face; no PPTX contents changed.",
+  "reviewer": "vision-model",
+  "conclusion": "The original environment lacked the requested Serif Bold face. The PDF named the title face NotoSerifCJKsc-Regular before the change and NotoSerifCJKsc-Bold after it. The corrected render now uses the intended weight. Do not infer font-weight availability from missingFonts=[] alone.",
+  "missingFontsBefore": [],
+  "missingFontsAfter": [],
+  "pptxFilesUnchanged": true,
+  "pixelComparison": [
+    {
+      "profile": "evidence-synthesis",
+      "page": 1,
+      "oldSha256": "5dddbb548f60011507ac444668dff7f2cd657f87ab70666784fcef352f16622a",
+      "newSha256": "7fd4146a04f07ded4d7fdbc1574bf794c83a31b40ef2a3b775f57036a9e82936",
+      "pixelDiffBoundingBox": [
+        63,
+        74,
+        952,
+        134
+      ],
+      "diffPixelCount": 15650
+    },
+    {
+      "profile": "evidence-synthesis",
+      "page": 2,
+      "oldSha256": "13e97481739ab11df00b9db8779bbbf6e987b0d3199e6d6622a2f2fb281d1aae",
+      "newSha256": "0a3c95b78a7b48623f009e93dd366d8812cc8caf32f893abbfb5b9afa765bd6d",
+      "pixelDiffBoundingBox": [
+        61,
+        74,
+        743,
+        127
+      ],
+      "diffPixelCount": 12562
+    },
+    {
+      "profile": "field-report",
+      "page": 1,
+      "oldSha256": "72db5f1e21143a71ad6dab73c3bd066a3344d3a2abb171afdaaba8589f5eb599",
+      "newSha256": "bb5dc530a8c16dd1841677103d5b066295168cc92d3bc76c0cc10b79f8b6fa89",
+      "pixelDiffBoundingBox": [
+        63,
+        74,
+        911,
+        131
+      ],
+      "diffPixelCount": 14263
+    },
+    {
+      "profile": "field-report",
+      "page": 2,
+      "oldSha256": "5e721786c6256843af7c436af8b2c166b109192d76a836f4f061557f4d038f66",
+      "newSha256": "68a28cbb221031f3464dfee1dd357539f3431b7681b50dfc1268f58af5dbc936",
+      "pixelDiffBoundingBox": [
+        61,
+        74,
+        712,
+        125
+      ],
+      "diffPixelCount": 11443
+    },
+    {
+      "profile": "methods-whiteboard",
+      "page": 1,
+      "oldSha256": "cd8d23a00daa56d9d85b95de703d300c26bbfe440b1d6b83ef85b4cb4e8cc4e9",
+      "newSha256": "e6e4c198fa03e750ddbc2a1650f23572da38bb49db2b24c1e5d4089f375a36c8",
+      "pixelDiffBoundingBox": [
+        63,
+        27,
+        911,
+        83
+      ],
+      "diffPixelCount": 14901
+    },
+    {
+      "profile": "methods-whiteboard",
+      "page": 2,
+      "oldSha256": "d2a12d9ccf23ba8f9b1a1f0d6b4885befcb247c8e241ccfc22458dc92346f7e2",
+      "newSha256": "80f2522dfa473b089f152909dda482fc9c4f4f392356b75f22c642d013800b83",
+      "pixelDiffBoundingBox": [
+        61,
+        27,
+        712,
+        77
+      ],
+      "diffPixelCount": 11811
+    },
+    {
+      "profile": "paper-club",
+      "page": 1,
+      "oldSha256": "1c4da68f6d872ff48efe5d7cef3abeb4e029f11cfcb1547b998f4bcc1a6d21e4",
+      "newSha256": "09e86f0f472047b15cd24ab1e8b130fe8f7cf20b4ca5bdd9fdf8f94ddbb362c5",
+      "pixelDiffBoundingBox": [
+        60,
+        17,
+        1546,
+        658
+      ],
+      "diffPixelCount": 23950
+    },
+    {
+      "profile": "paper-club",
+      "page": 2,
+      "oldSha256": "06a933e4afc15a62b946c08597e773ac4c238d583ee73f795a9ec499f677c4bc",
+      "newSha256": "9951792eadec7e2a1650960f0bd212c00e592f39ab50a1f2198f751692edf664",
+      "pixelDiffBoundingBox": [
+        61,
+        17,
+        1360,
+        620
+      ],
+      "diffPixelCount": 24360
+    },
+    {
+      "profile": "research-seminar",
+      "page": 1,
+      "oldSha256": "c60cb3fc8d0676b9af47528600c812f3884ca5a8fc6d5315e7d135f92981012f",
+      "newSha256": "c60cb3fc8d0676b9af47528600c812f3884ca5a8fc6d5315e7d135f92981012f",
+      "pixelDiffBoundingBox": null,
+      "diffPixelCount": 0
+    },
+    {
+      "profile": "research-seminar",
+      "page": 2,
+      "oldSha256": "220ed8524287604f1129f8d1bf4714a99d9976cd5c86e63d8ccbbf22dc5e8359",
+      "newSha256": "220ed8524287604f1129f8d1bf4714a99d9976cd5c86e63d8ccbbf22dc5e8359",
+      "pixelDiffBoundingBox": null,
+      "diffPixelCount": 0
+    },
+    {
+      "profile": "thesis-defense",
+      "page": 1,
+      "oldSha256": "3f1ce448ef084a2d89754950060efab40ce1a3e278cb4438962c74076cdd8c39",
+      "newSha256": "3f1ce448ef084a2d89754950060efab40ce1a3e278cb4438962c74076cdd8c39",
+      "pixelDiffBoundingBox": null,
+      "diffPixelCount": 0
+    },
+    {
+      "profile": "thesis-defense",
+      "page": 2,
+      "oldSha256": "7aec5dcf28171fbdacec6807504655bf8399b0245cf5b1aecc0cf3f9014af78b",
+      "newSha256": "7aec5dcf28171fbdacec6807504655bf8399b0245cf5b1aecc0cf3f9014af78b",
+      "pixelDiffBoundingBox": null,
+      "diffPixelCount": 0
+    }
+  ],
+  "pdfFontSpanComparison": [
+    {
+      "profile": "research-seminar",
+      "page": 1,
+      "fontSpanChanges": []
+    },
+    {
+      "profile": "research-seminar",
+      "page": 2,
+      "fontSpanChanges": []
+    },
+    {
+      "profile": "thesis-defense",
+      "page": 1,
+      "fontSpanChanges": []
+    },
+    {
+      "profile": "thesis-defense",
+      "page": 2,
+      "fontSpanChanges": []
+    },
+    {
+      "profile": "methods-whiteboard",
+      "page": 1,
+      "fontSpanChanges": [
+        {
+          "text": "随机划分误差较低，跨站点差异不确定",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 29.990999221801758,
+          "sizeAfter": 29.990999221801758,
+          "bboxBefore": [
+            36.0,
+            8.340343475341797,
+            545.8469848632812,
+            51.43741226196289
+          ],
+          "bboxAfter": [
+            36.0,
+            8.340343475341797,
+            545.8469848632812,
+            51.43741226196289
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "methods-whiteboard",
+      "page": 2,
+      "fontSpanChanges": [
+        {
+          "text": "从观测误差到站点层面的比较",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 29.990999221801758,
+          "sizeAfter": 29.990999221801758,
+          "bboxBefore": [
+            36.0,
+            8.340343475341797,
+            425.8829650878906,
+            51.43741226196289
+          ],
+          "bboxAfter": [
+            36.0,
+            8.340343475341797,
+            425.8829650878906,
+            51.43741226196289
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "paper-club",
+      "page": 1,
+      "fontSpanChanges": [
+        {
+          "text": "02  评价结果",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 19.50200080871582,
+          "sizeAfter": 19.50200080871582,
+          "bboxBefore": [
+            36.0,
+            5.588199615478516,
+            150.635009765625,
+            33.61257553100586
+          ],
+          "bboxAfter": [
+            36.0,
+            5.588199615478516,
+            151.7969970703125,
+            33.61257553100586
+          ]
+        },
+        {
+          "text": "图 T1  配对误差差值（t/ha ）",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            36.0,
+            125.94622802734375,
+            327.2879943847656,
+            156.1304168701172
+          ],
+          "bboxAfter": [
+            36.0,
+            125.94622802734375,
+            331.0870056152344,
+            156.1304168701172
+          ]
+        },
+        {
+          "text": "随机划分",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 18.0,
+          "sizeAfter": 18.0,
+          "bboxBefore": [
+            35.97200012207031,
+            187.7989959716797,
+            107.97200012207031,
+            213.6649932861328
+          ],
+          "bboxAfter": [
+            35.97200012207031,
+            187.7989959716797,
+            107.97200012207031,
+            213.6649932861328
+          ]
+        },
+        {
+          "text": "整站留出",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 18.0,
+          "sizeAfter": 18.0,
+          "bboxBefore": [
+            35.97200012207031,
+            296.1390075683594,
+            107.97200012207031,
+            322.0050048828125
+          ],
+          "bboxAfter": [
+            35.97200012207031,
+            296.1390075683594,
+            107.97200012207031,
+            322.0050048828125
+          ]
+        },
+        {
+          "text": "读图批注",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            684.0,
+            125.94622802734375,
+            767.9990234375,
+            156.1304168701172
+          ],
+          "bboxAfter": [
+            684.0,
+            125.94622802734375,
+            767.9990234375,
+            156.1304168701172
+          ]
+        },
+        {
+          "text": "问：只有 4 个站点时，结",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            684.0,
+            341.69122314453125,
+            926.4560546875,
+            371.8753967285156
+          ],
+          "bboxAfter": [
+            684.0,
+            341.69122314453125,
+            927.0230102539062,
+            371.8753967285156
+          ]
+        },
+        {
+          "text": "果对站点组成有多敏感？",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            684.0,
+            367.7412414550781,
+            915.0130615234375,
+            397.9254150390625
+          ],
+          "bboxAfter": [
+            684.0,
+            367.7412414550781,
+            915.0130615234375,
+            397.9254150390625
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "paper-club",
+      "page": 2,
+      "fontSpanChanges": [
+        {
+          "text": "03  分析单位与边界",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 19.50200080871582,
+          "sizeAfter": 19.50200080871582,
+          "bboxBefore": [
+            36.0,
+            5.588199615478516,
+            209.23001098632812,
+            33.61257553100586
+          ],
+          "bboxAfter": [
+            36.0,
+            5.588199615478516,
+            210.39199829101562,
+            33.61257553100586
+          ]
+        },
+        {
+          "text": "站点",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            43.483001708984375,
+            130.79324340820312,
+            85.47199249267578,
+            160.97743225097656
+          ],
+          "bboxAfter": [
+            43.483001708984375,
+            130.79324340820312,
+            85.47199249267578,
+            160.97743225097656
+          ]
+        },
+        {
+          "text": "随机 Δ",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            134.9290008544922,
+            130.79324340820312,
+            201.7644500732422,
+            160.97743225097656
+          ],
+          "bboxAfter": [
+            134.9290008544922,
+            130.79324340820312,
+            201.98751831054688,
+            160.97743225097656
+          ]
+        },
+        {
+          "text": "留站 Δ",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            291.68499755859375,
+            130.79324340820312,
+            358.52044677734375,
+            160.97743225097656
+          ],
+          "bboxAfter": [
+            291.68499755859375,
+            130.79324340820312,
+            358.7434997558594,
+            160.97743225097656
+          ]
+        },
+        {
+          "text": "原始信息与讲者判断分开",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            481.4649963378906,
+            125.94622802734375,
+            712.47802734375,
+            156.1304168701172
+          ],
+          "bboxAfter": [
+            481.4649963378906,
+            125.94622802734375,
+            712.47802734375,
+            156.1304168701172
+          ]
+        },
+        {
+          "text": "边界：统计单位是站点。24 个观测",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            481.4649963378906,
+            318.9852294921875,
+            814.2319946289062,
+            349.1694030761719
+          ],
+          "bboxAfter": [
+            481.4649963378906,
+            318.9852294921875,
+            815.677001953125,
+            349.1694030761719
+          ]
+        },
+        {
+          "text": "不能替代更多独立站点。",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            481.4649963378906,
+            345.0362548828125,
+            712.47802734375,
+            375.2204284667969
+          ],
+          "bboxAfter": [
+            481.4649963378906,
+            345.0362548828125,
+            712.47802734375,
+            375.2204284667969
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "evidence-synthesis",
+      "page": 1,
+      "fontSpanChanges": [
+        {
+          "text": "随机划分误差较低，跨站点差异不确定",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 31.493000030517578,
+          "sizeAfter": 31.493000030517578,
+          "bboxBefore": [
+            36.0,
+            36.545562744140625,
+            570.4362182617188,
+            81.8010025024414
+          ],
+          "bboxAfter": [
+            36.0,
+            36.545562744140625,
+            570.4362182617188,
+            81.8010025024414
+          ]
+        },
+        {
+          "text": "随机划分",
+          "before": "NotoSansCJKsc-Bold",
+          "after": "NotoSansCJKsc-Regular",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            35.97200012207031,
+            319.25018310546875,
+            119.97098541259766,
+            349.6654357910156
+          ],
+          "bboxAfter": [
+            43.483001708984375,
+            166.74620056152344,
+            127.48198699951172,
+            197.16143798828125
+          ]
+        },
+        {
+          "text": "整站留出",
+          "before": "NotoSansCJKsc-Bold",
+          "after": "NotoSansCJKsc-Regular",
+          "sizeBefore": 21.0049991607666,
+          "sizeAfter": 21.0049991607666,
+          "bboxBefore": [
+            502.468994140625,
+            319.25018310546875,
+            586.468017578125,
+            349.6654357910156
+          ],
+          "bboxAfter": [
+            43.483001708984375,
+            202.88819885253906,
+            127.48198699951172,
+            233.30343627929688
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "evidence-synthesis",
+      "page": 2,
+      "fontSpanChanges": [
+        {
+          "text": "从观测误差到站点层面的比较",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 31.493000030517578,
+          "sizeAfter": 31.493000030517578,
+          "bboxBefore": [
+            36.0,
+            36.545562744140625,
+            444.6846923828125,
+            81.8010025024414
+          ],
+          "bboxAfter": [
+            36.0,
+            36.545562744140625,
+            444.6846923828125,
+            81.8010025024414
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "field-report",
+      "page": 1,
+      "fontSpanChanges": [
+        {
+          "text": "随机划分误差较低，跨站点差异不确定",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 29.990999221801758,
+          "sizeAfter": 29.990999221801758,
+          "bboxBefore": [
+            36.0,
+            36.85636520385742,
+            545.8469848632812,
+            79.95343017578125
+          ],
+          "bboxAfter": [
+            36.0,
+            36.85636520385742,
+            545.8469848632812,
+            79.95343017578125
+          ]
+        }
+      ]
+    },
+    {
+      "profile": "field-report",
+      "page": 2,
+      "fontSpanChanges": [
+        {
+          "text": "从观测误差到站点层面的比较",
+          "before": "NotoSerifCJKsc-Regular",
+          "after": "NotoSerifCJKsc-Bold",
+          "sizeBefore": 29.990999221801758,
+          "sizeAfter": 29.990999221801758,
+          "bboxBefore": [
+            36.0,
+            36.85636520385742,
+            425.8829650878906,
+            79.95343017578125
+          ],
+          "bboxAfter": [
+            36.0,
+            36.85636520385742,
+            425.8829650878906,
+            79.95343017578125
+          ]
+        }
+      ]
+    }
+  ],
+  "fonts": [
+    {
+      "fileName": "NotoSansCJKsc-Regular.otf",
+      "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "source": "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf",
+      "includedInRepository": false
+    },
+    {
+      "fileName": "NotoSansCJKsc-Bold.otf",
+      "sha256": "b5f0d1a190a7f9b43c310a8850630af12553df32c4c050543f9059732d9b4c0a",
+      "source": "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Bold.otf",
+      "includedInRepository": false
+    },
+    {
+      "fileName": "NotoSerifCJKsc-Regular.otf",
+      "sha256": "2a2eae2628df83556c54018c41e20fa532c1b862c5256ae8b3f23feb918d12ca",
+      "source": "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Regular.otf",
+      "includedInRepository": false
+    },
+    {
+      "fileName": "NotoSerifCJKsc-Bold.otf",
+      "sha256": "8af07d4b6c2e82bcc72a30e066eaf295f11b9424f4aad2eaa9fe0e9c3b38fc73",
+      "source": "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Serif/OTF/SimplifiedChinese/NotoSerifCJKsc-Bold.otf",
+      "includedInRepository": false
+    }
+  ]
+}

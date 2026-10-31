@@ -39,7 +39,7 @@ test('source, story, and real pilot choices are separate while palette layout an
   assert.equal(pilot.requiresUserResponse,false,'Real candidates must be produced before asking for their approval.');
   assert.equal(pilot.questionTiming,'after-actual-pilot-render');
   for(const topic of ['palette','shape','texture','cover','layout'])assert.ok(pilot.questions[0].topics.includes(topic),topic);
-  for(const expected of ['深/浅色','卡片尺寸','留白','阅读顺序'])assert.ok(pilot.questions[0].recommendation.includes(expected),expected);
+  for(const expected of ['配色与对比','字体角色','开放分组','留白','阅读顺序'])assert.ok(pilot.questions[0].recommendation.includes(expected),expected);
   assert.equal(designDialoguePlan(complete()).readyForFinalDesign,true);
 });
 

@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises'
 import { resolve, join } from 'node:path'
 import { buildAcademicTools, formatToolResult } from '../src/tools.mjs'
 import { toolContract, jsonSafeResult } from '../src/tool-contract.mjs'
-import { briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designSchema, assessmentSchema } from '../src/schema.mjs'
+import { briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designPatchSchema, assessmentSchema } from '../src/schema.mjs'
 
 test('registered init and record omit bulky repeated record schemas while retaining exact routing', () => {
   const tools = buildAcademicTools()
@@ -19,16 +19,16 @@ test('registered init and record omit bulky repeated record schemas while retain
 })
 
 test('each on-demand contract returns the complete schema without silently truncating it', async () => {
-  const schemas = { brief: briefSchema, paper: paperSchema, claim: claimSchema, asset: assetSchema, slide: slideSchema, design: designSchema, assessment: assessmentSchema }
+  const schemas = { brief: briefSchema, paper: paperSchema, claim: claimSchema, asset: assetSchema, slide: slideSchema, design: designPatchSchema, assessment: assessmentSchema }
   const tool = buildAcademicTools().find(tool => tool.name === 'academic_ppt_contract')
   for (const [topic, expected] of Object.entries(schemas)) {
     const result = await tool.execute({ topic })
     assert.deepEqual(result.schema, expected)
     // The opt-in slide contract includes native drawings, regions and reading roles.
     // Keep the always-registered budget unchanged; never truncate the full authoring API.
-    // v0.9.1 adds explicit collaboration scope and usable tonal surface recipes
-    // only to this on-demand contract. The always-registered 18 KB gate remains.
-    assert.ok(Buffer.byteLength(JSON.stringify(result)) < (topic === 'slide' ? 36000 : topic === 'design' ? 26000 : 18000), topic)
+    // v0.10 adds six executable academic directions only to the opt-in design
+    // contract. The always-registered 18 KB gate remains unchanged.
+    assert.ok(Buffer.byteLength(JSON.stringify(result)) < (topic === 'slide' || topic === 'design' ? 36000 : 18000), topic)
     const rendered = formatToolResult(tool.name, result)
     assert.ok(rendered.includes(JSON.stringify(expected)), `${topic} schema was truncated`)
     result.schema.type = 'changed locally'

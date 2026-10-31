@@ -2,6 +2,7 @@
  * it never asks the user, infers consent, or independently verifies a review. */
 import { CARD_PRESET_IDS, getCardPreset } from './card-catalog.mjs';
 import { PAGE_RECIPE_IDS } from './page-recipes.mjs';
+import { ACADEMIC_STYLE_IDS } from './academic-styles.mjs';
 
 const text=(maxLength=1800)=>({type:'string',minLength:1,maxLength,pattern:'\\S'});
 const en=values=>({type:'string',enum:values});
@@ -44,11 +45,18 @@ export const componentStudySchema=obj({
   frame:text(1800),titleTreatment:text(1600),spacing:text(1600),adaptation:text(2000),colorHierarchy:text(1600),
 },COMPONENT_FIELDS);
 
+const DESIGN_STUDY_SOURCES=['page-recipe','academic-style','user-template','scientific-reference'];
+const DESIGN_STUDY_FIELDS=['source','referenceId','previewPath','readingOrder','evidenceHierarchy','adaptation'];
+export const designStudySchema=obj({
+  source:en(DESIGN_STUDY_SOURCES),referenceId:text(3000),previewPath:text(3000),
+  readingOrder:text(1800),evidenceHierarchy:text(1800),adaptation:text(2000),typography:text(1600),grouping:text(1600),
+},DESIGN_STUDY_FIELDS);
+
 export const referenceStudySchema=obj({
   status:en(['reviewed','not-applicable']),catalogIds:arr(text(100),CARD_PRESET_IDS.length,1),previewPaths:arr(text(3000),CARD_PRESET_IDS.length,1),
   pageRecipeIds:arr(text(100),32,1),templateReferences:arr(text(3000),8,1),
   observations:text(4000),selectedPresets:arr(text(100),CARD_PRESET_IDS.length),adaptations:arr(text(1400),16,1),reason:text(2400),
-  componentStudies:arr(componentStudySchema,12,1),paletteRationale:text(2400),
+  componentStudies:arr(componentStudySchema,12,1),designStudies:arr(designStudySchema,12,1),paletteRationale:text(2400),
 },['status']);
 
 const hasTemplatePage=record=>{
@@ -68,6 +76,24 @@ export function componentStudyIssues(study,{severity='error'}={}){
     else if(record.source==='card-library'&&!CARD_PRESET_IDS.includes(record.referenceId))add('component-reference-unknown-card',path+'.referenceId','卡片组件引用需来自原48款原生卡片的真实ID；查询academic_ppt_cards后查看对应预览，不编造目录名。');
     else if(record.source==='editorial'&&!EDITORIAL_IDS.has(record.referenceId))add('component-reference-unknown-editorial',path+'.referenceId','编辑式组件引用使用原20款中的精确编号 C01–C20，并保留实际查看的预览位置。');
     else if(record.source==='user-template'&&!hasTemplatePage(record))add('component-reference-template-page-missing',path+'.referenceId','用户模板组件须在referenceId或previewPath明确定位源页（第几页、slide N或page N）；adaptation中的本稿目标页及观察正文不能代替源页出处。');
+  }
+  return issues;
+}
+
+/** Whole-page research is a first-class alternative to studying card frames.
+ * Identifier checks establish traceability only, never visual understanding.
+ */
+export function designStudyIssues(study,{severity='error'}={}){
+  const issues=[],add=(code,path,message)=>issues.push({severity,code,path,message});
+  for(const [index,record]of list(study?.designStudies).entries()){
+    const path='design.referenceStudy.designStudies.'+index;
+    const missing=DESIGN_STUDY_FIELDS.filter(key=>!meaningful(record?.[key]));
+    if(missing.length)add('design-reference-study-incomplete',path,'设计细读需要真实来源与预览、阅读顺序、证据层级和本稿适配：'+missing.join('、')+'。');
+    if(!DESIGN_STUDY_SOURCES.includes(record?.source))add('design-reference-unknown-source',path+'.source','使用整页语法、学术风格、用户模板或公开科学演示作为可定位参考。');
+    else if(record.source==='page-recipe'&&!PAGE_RECIPE_IDS.includes(record.referenceId))add('design-reference-unknown-page',path+'.referenceId','page-recipe须使用layouts目录中的真实ID，并查看对应页面。');
+    else if(record.source==='academic-style'&&!ACADEMIC_STYLE_IDS.includes(record.referenceId))add('design-reference-unknown-style',path+'.referenceId','academic-style须使用contract(design).academicStyles中的真实ID，并查看该方向的实际样张。');
+    else if(record.source==='user-template'&&!hasTemplatePage(record))add('design-reference-template-page-missing',path+'.referenceId','用户模板须定位实际源页，如slide 3或第3页；本稿目标页不能代替出处。');
+    else if(record.source==='scientific-reference'&&!/^https?:\/\/\S+/i.test(record.referenceId||''))add('design-reference-url-missing',path+'.referenceId','公开科学参考的referenceId须含实际来源URL；previewPath定位实际查看的页面或图片。');
   }
   return issues;
 }
@@ -160,8 +186,8 @@ export function designDialoguePlan(consultation={mode:'collaborative'}){
       recommendation:'展示已填入真实材料的问题路线、核心证据与必须保留的条件，并说明推荐。将使用场景、语言深度与路线一起确认；已有答案直接沿用。必须等待真实回答，普通制作请求不表示用户已委托研究取舍。',
       options:TOPICS.storyline.options}]:[{id:'design_pilot_direction',topic:'cover',topics:pendingDesignTopics,label:'配色、排版与风格的真实样张',
       text:'看过封面、困难正文和连续三页后，哪套配色、布局与风格更合适？哪些地方需要调整？',
-      recommendation:'先展示同尺度的真实候选再问，逐项说明深/浅色与局部填色、主图面积、卡片尺寸及留白、阅读顺序、边框/阴影、字级与封面的差异。可以一轮确认整套方案，也可只改用户不满意的部分；不能把笼统“方向”替代具体设计讨论。',
-      options:[option('evidence-editorial','开放图证','大图与近邻解释，深色结构锚点、局部填色和清晰的学术字级。'),option('formal-defense','正式答辩','深色题签与白底证据分工，比较条件充分，卡片按内容调整。'),option('focused-talk','聚焦短讲','聚焦主证据和关键边界，减少次要区块并扩大主体，避免为留白而缩小图文。')]}];
+      recommendation:'先展示同尺度的真实候选再问，说明配色与对比、阅读顺序、主证据、就近解释、字体角色、开放分组或必要边界、表格规则、章节定位和留白如何支持阅读。按观看任务选择相关academicStyles候选，不必展示全部六类。可以一轮确认整套方案，也可只改用户不满意的部分；不能把笼统“方向”替代具体设计讨论。',
+      options:[option('research-seminar','开放研讨','主图与就近解释先被读到，开放白底减少无用容器。'),option('thesis-defense','正式答辩','可见章节定位、稳定字级和完整比较条件支持评委追问。'),option('adapt-from-evidence','按证据调整','沿用已展示的真实材料，具体调整公式推导、论文细读、跨研究比较或空间观测的阅读关系。')]}];
   }
   if(sourcePending){
     stageId=consultation.source?.status==='awaiting-upload'?'source-upload':'source';
@@ -225,8 +251,9 @@ export function designDialogueReport(project){
   const consultation=project.design?.consultation,study=project.design?.referenceStudy;
   const legacy=!consultation,slides=list(project.slides),issues=[];
   const plannedPages=list(project.storyboard?.pages).length;
-  const componentLearningRequired=(guided(consultation)||consultation?.interaction==='checkpoints')&&Math.max(slides.length,plannedPages)>=6;
-  const componentSeverity=componentLearningRequired?'error':'warning';
+  const designLearningRequired=(guided(consultation)||consultation?.interaction==='checkpoints')&&Math.max(slides.length,plannedPages)>=6;
+  const componentLearningRequired=designLearningRequired; // compatibility alias: now any relevant design study qualifies
+  const componentSeverity=designLearningRequired?'error':'warning';
   const plan=legacy?{mode:'legacy',stage:'legacy',pendingTopics:[],resolvedTopics:[],questions:[],readyForFinalDesign:true,
     nextAction:'review-existing-preferences',instructions:['旧工程继续可读；整稿重新设计时按当前用户意向补充协商记录，局部修改不强制重问全部偏好。']}:designDialoguePlan(consultation);
   const add=(code,path,message,details={},severity=legacy?'warning':'error')=>issues.push({severity,code,path,message,...details});
@@ -251,27 +278,28 @@ export function designDialogueReport(project){
   const cards=slides.flatMap(s=>list(s.cards));
   const usedPresets=distinct(cards.map(c=>c.preset).filter(Boolean));
   const imageCards=cards.filter(c=>list(c.figureIds).length);
-  const componentStudies=list(study?.componentStudies);
+  const componentStudies=list(study?.componentStudies),designStudies=list(study?.designStudies),detailedStudies=[...componentStudies,...designStudies];
   const referenceStudy={status:study?.status||'missing',usedPresets,pageRecipeIds:list(study?.pageRecipeIds),imageCardCount:imageCards.length,
-    imagePresetIds:usedPresets.filter(id=>getCardPreset(id)?.family==='figure'),componentLearningRequired,
+    imagePresetIds:usedPresets.filter(id=>getCardPreset(id)?.family==='figure'),componentLearningRequired,designLearningRequired,
+    designStudyCount:designStudies.length,designSources:distinct(designStudies.map(record=>record.source)),
     componentStudyCount:componentStudies.length,componentSources:distinct(componentStudies.map(record=>record.source)),
     paletteRationaleRecorded:meaningful(study?.paletteRationale)};
   if(!study){
-    if(!legacy&&(slides.length||componentLearningRequired))add('card-reference-study-required','design.referenceStudy',
-      '先看原48款卡片与20款编辑式参考中适合本稿的实际候选，并细读已提供模板的代表组件。记录边框/填充/虚线/阴影、题签、间距与本稿改造，再自主设计；不用preset或卡片也不能用整页语法ID替代组件学习。');
-    if(componentLearningRequired)add('component-reference-study-required','design.referenceStudy.componentStudies','计划或实际达到六页的新checkpoints整稿，在困难样张阶段就需可定位的组件细读记录和配色理由；不要等整稿完成后反填。');
-    else if(legacy&&slides.length)add('component-reference-legacy','design.referenceStudy.componentStudies','旧工程未保存组件细读记录；本次局部编辑继续兼容。整稿重设计时补充实际查看的组件、细节与配色依据。',{},'warning');
+    if(designLearningRequired)add('design-reference-study-required','design.referenceStudy',
+      '整稿样张阶段需可定位、与本次证据有关的设计研究。用designStudies记录整页/学术风格/科学参考的阅读顺序和证据层级，或用componentStudies记录确实相关的组件；开放科学排版不必先学卡片。保留paletteRationale。');
+    if(usedPresets.length)add('card-reference-used-unreviewed','design.referenceStudy','实际使用的卡片preset尚无查看记录；查看对应真实预览后保存catalogIds或同ID的card-library组件细读。',{presetIds:usedPresets});
+    if(legacy&&slides.length)add('design-reference-legacy','design.referenceStudy','旧工程继续可编辑；整稿重新设计时补充内容相关的真实参考和配色依据。',{},'warning');
   }else if(study.status==='reviewed'){
     const missing=[];
-    if(!meaningful(study.observations)&&!componentStudies.length)missing.push('observations');
-    if(!list(study.previewPaths).length&&!componentStudies.some(record=>meaningful(record.previewPath)))missing.push('previewPaths');
-    if(!list(study.adaptations).length&&!componentStudies.some(record=>meaningful(record.adaptation)))missing.push('adaptations');
-    if(!list(study.catalogIds).length&&!list(study.pageRecipeIds).length&&!list(study.templateReferences).length&&!componentStudies.length)missing.push('catalogIds/pageRecipeIds/templateReferences/componentStudies');
+    if(!meaningful(study.observations)&&!detailedStudies.length)missing.push('observations');
+    if(!list(study.previewPaths).length&&!detailedStudies.some(record=>meaningful(record.previewPath)))missing.push('previewPaths');
+    if(!list(study.adaptations).length&&!detailedStudies.some(record=>meaningful(record.adaptation)))missing.push('adaptations');
+    if(!list(study.catalogIds).length&&!list(study.pageRecipeIds).length&&!list(study.templateReferences).length&&!detailedStudies.length)missing.push('catalogIds/pageRecipeIds/templateReferences/componentStudies/designStudies');
     if(missing.length)add('card-reference-study-incomplete','design.referenceStudy','参考学习缺少实际目录、预览观察或内容适配记录：'+missing.join('、')+'。');
-    if(!componentStudies.length)add(componentLearningRequired?'component-reference-study-required':'component-reference-legacy','design.referenceStudy.componentStudies',
-      componentLearningRequired?'完整新稿需componentStudies记录具体组件的frame、titleTreatment、spacing和adaptation；只填pageRecipeIds、笼统观察或“不用preset”不能替代。可采用已细读用户模板，不要求额外目录打卡或使用卡片。':'旧记录没有逐组件细读字段，本次兼容继续；整稿重设计时补充真实预览、边框/题签/间距观察与本稿改造。',{},componentSeverity);
+    if(!detailedStudies.length&&designLearningRequired)add('design-reference-study-required','design.referenceStudy',
+      '完整新稿需designStudies或componentStudies中的内容相关细读。记录实际预览、阅读顺序/证据层级及本稿改造；仅列目录ID不等于学习，也不要求使用卡片。');
     if(!meaningful(study.paletteRationale))add('reference-palette-rationale-missing','design.referenceStudy.paletteRationale','记录本稿配色理由：文字/底色对比、主辅层级、与原图颜色的关系及已确定色义；模板配色不自动成为固定要求。',{},componentSeverity);
-    issues.push(...componentStudyIssues(study,{severity:legacy?'warning':'error'}));
+    issues.push(...componentStudyIssues(study,{severity:legacy?'warning':'error'}),...designStudyIssues(study,{severity:legacy?'warning':'error'}));
     const unknown=distinct([...list(study.catalogIds),...list(study.selectedPresets)]).filter(id=>!CARD_PRESET_IDS.includes(id));
     if(unknown.length)add('card-reference-unknown-preset','design.referenceStudy','目录/选中配方需来自实际卡片索引，未知ID：'+unknown.join('、')+'。');
     const unknownPages=distinct(list(study.pageRecipeIds)).filter(id=>!PAGE_RECIPE_IDS.includes(id));
@@ -285,11 +313,11 @@ export function designDialogueReport(project){
     if(slides.length&&unused.length)add('card-reference-adaptation-review','design.referenceStudy',
       '部分选中配方未以原生preset出现；核对是否已按记录改造成实际drawings，还是参考选择尚未落实。数量不作为强制卡片配额。',{presetIds:unused},'warning');
   }else if(study.status==='not-applicable'){
-    if(componentLearningRequired)add('reference-study-exception-full-redesign','design.referenceStudy','not-applicable只适用于明确范围的局部修改或科学图直接排版；六页及以上的新checkpoints整稿即使全用drawings，也须先记录真实组件细读与配色理由，不能借此省略学习。');
+    if(designLearningRequired)add('reference-study-exception-full-redesign','design.referenceStudy','完整新稿请用designStudies记录与证据有关的实际页面、科学表达或学术风格参考及配色理由。开放排版完全有效，无需额外学习卡片；not-applicable不能替代整稿设计研究。');
     if(!meaningful(study.reason)||study.reason.trim().length<18)add('card-reference-exception-too-thin','design.referenceStudy.reason','限定本次局部修改的页/对象或科学图直接排版范围，说明实际载体和不适用原因；“自由设计”“没有preset”不能代替具体范围。');
-    if(cards.length)add('card-reference-exception-conflict','design.referenceStudy','当前页面实际使用卡片，请完成与这些卡片相关的参考学习，不能同时声明卡片不适用。');
+    if(usedPresets.length)add('card-reference-exception-conflict','design.referenceStudy','当前实际使用卡片preset，须查看对应参考；普通开放文字组不属于preset要求。');
   }
   return {...plan,referenceStudy,summary:{pendingTopics:plan.pendingTopics.length,confirmedTopics:plan.resolvedTopics.length,
-    nativeCardCount:cards.length,imageCardCount:imageCards.length,usedPresetCount:usedPresets.length,componentStudyCount:componentStudies.length,blockingIssues:issues.filter(i=>i.severity==='error').length},issues,
+    nativeCardCount:cards.length,imageCardCount:imageCards.length,usedPresetCount:usedPresets.length,componentStudyCount:componentStudies.length,designStudyCount:designStudies.length,blockingIssues:issues.filter(i=>i.severity==='error').length},issues,
     limits:'这些字段是可审查的会话与看图记录；插件不会替用户确认，不独立验证聊天原话、参考图观察或审美质量。'};
 }

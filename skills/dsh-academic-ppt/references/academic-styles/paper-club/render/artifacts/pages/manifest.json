@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/workspace/scratch/ca5fe89f4906/dsh-academic-ppt/skills/dsh-academic-ppt/references/academic-styles/paper-club/paper-club.pptx",
+  "sourceSha256": "7a63ec58a4e155bafb24dcc8f8c8449aec19d09750bbab5e8a2345ae1d158c9a",
+  "dpi": 120,
+  "pageCount": 2,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/paper-club/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 193164
+    },
+    {
+      "index": 2,
+      "page": 2,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/paper-club/artifacts/pages/page-0002.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 211691
+    }
+  ],
+  "missingFonts": []
+}

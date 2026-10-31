@@ -1,0 +1,251 @@
+{
+  "identity": "constructed-teaching-data-not-research-results",
+  "fixtureType": "authored-plugin-renderer-study-not-model-evaluation",
+  "profiles": [
+    {
+      "id": "research-seminar",
+      "label": "研究研讨",
+      "description": "开放白底、大证据与就近解释；标题直接给出研究对象或受证据支持的发现。",
+      "useWhen": [
+        "组会、会议口头报告",
+        "需要快速读清一张关键图"
+      ],
+      "avoidWhen": [
+        "机构模板要求固定母版"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "research-seminar/research-seminar.pptx",
+      "pptxSha256": "03fcb77ad147e31ccd23c92e10be40c1befdf70e93058eb688cc1915bcfca64d",
+      "html": "research-seminar/index.html",
+      "deck": "research-seminar/deck.json",
+      "pages": [
+        {
+          "id": "research-seminar-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "research-seminar/svg/research-seminar-1.svg",
+          "png": "research-seminar/render/artifacts/pages/page-0001.png",
+          "pngSha256": "c60cb3fc8d0676b9af47528600c812f3884ca5a8fc6d5315e7d135f92981012f"
+        },
+        {
+          "id": "research-seminar-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "research-seminar/svg/research-seminar-2.svg",
+          "png": "research-seminar/render/artifacts/pages/page-0002.png",
+          "pngSha256": "220ed8524287604f1129f8d1bf4714a99d9976cd5c86e63d8ccbbf22dc5e8359"
+        }
+      ],
+      "renderReceipt": "research-seminar/render/artifacts/render-receipt.json",
+      "pdf": "research-seminar/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    },
+    {
+      "id": "thesis-defense",
+      "label": "正式答辩",
+      "description": "可见章节、克制细线分组与完整条件；用稳定定位支持评委追问。",
+      "useWhen": [
+        "学位答辩、开题",
+        "较长报告需要章节定位"
+      ],
+      "avoidWhen": [
+        "短闪电报告不需要持续导航"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "thesis-defense/thesis-defense.pptx",
+      "pptxSha256": "12e86f20026a680179ee015f4c91f43e5214bb5d7a4fb5b2d1ff03f97383324b",
+      "html": "thesis-defense/index.html",
+      "deck": "thesis-defense/deck.json",
+      "pages": [
+        {
+          "id": "thesis-defense-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "thesis-defense/svg/thesis-defense-1.svg",
+          "png": "thesis-defense/render/artifacts/pages/page-0001.png",
+          "pngSha256": "3f1ce448ef084a2d89754950060efab40ce1a3e278cb4438962c74076cdd8c39"
+        },
+        {
+          "id": "thesis-defense-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "thesis-defense/svg/thesis-defense-2.svg",
+          "png": "thesis-defense/render/artifacts/pages/page-0002.png",
+          "pngSha256": "7aec5dcf28171fbdacec6807504655bf8399b0245cf5b1aecc0cf3f9014af78b"
+        }
+      ],
+      "renderReceipt": "thesis-defense/render/artifacts/render-receipt.json",
+      "pdf": "thesis-defense/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    },
+    {
+      "id": "methods-whiteboard",
+      "label": "理论与方法",
+      "description": "开放推导区、较大正文、衬线标题和较清楚的注释；适合定义、公式与逐步建模。",
+      "useWhen": [
+        "方法讲解、模型假设、公式推导"
+      ],
+      "avoidWhen": [
+        "需要原样保留的期刊多面板图不应改画为白板"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "methods-whiteboard/methods-whiteboard.pptx",
+      "pptxSha256": "7044fca0bf0a80c0f4018cbca71a8d64870190d4f2bb305ff41fbdbb5747f639",
+      "html": "methods-whiteboard/index.html",
+      "deck": "methods-whiteboard/deck.json",
+      "pages": [
+        {
+          "id": "methods-whiteboard-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "methods-whiteboard/svg/methods-whiteboard-1.svg",
+          "png": "methods-whiteboard/render/artifacts/pages/page-0001.png",
+          "pngSha256": "e6e4c198fa03e750ddbc2a1650f23572da38bb49db2b24c1e5d4089f375a36c8"
+        },
+        {
+          "id": "methods-whiteboard-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "methods-whiteboard/svg/methods-whiteboard-2.svg",
+          "png": "methods-whiteboard/render/artifacts/pages/page-0002.png",
+          "pngSha256": "80f2522dfa473b089f152909dda482fc9c4f4f392356b75f22c642d013800b83"
+        }
+      ],
+      "renderReceipt": "methods-whiteboard/render/artifacts/render-receipt.json",
+      "pdf": "methods-whiteboard/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    },
+    {
+      "id": "paper-club",
+      "label": "论文精读",
+      "description": "清楚区分原文证据与讲者解释；衬线正文、无填充分组与可定位图注支持细读。",
+      "useWhen": [
+        "单篇论文精读",
+        "方法与原图之间往返讨论"
+      ],
+      "avoidWhen": [
+        "跨论文排名不能套用单篇因果链"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "paper-club/paper-club.pptx",
+      "pptxSha256": "7a63ec58a4e155bafb24dcc8f8c8449aec19d09750bbab5e8a2345ae1d158c9a",
+      "html": "paper-club/index.html",
+      "deck": "paper-club/deck.json",
+      "pages": [
+        {
+          "id": "paper-club-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "paper-club/svg/paper-club-1.svg",
+          "png": "paper-club/render/artifacts/pages/page-0001.png",
+          "pngSha256": "09e86f0f472047b15cd24ab1e8b130fe8f7cf20b4ca5bdd9fdf8f94ddbb362c5"
+        },
+        {
+          "id": "paper-club-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "paper-club/svg/paper-club-2.svg",
+          "png": "paper-club/render/artifacts/pages/page-0002.png",
+          "pngSha256": "9951792eadec7e2a1650960f0bd212c00e592f39ab50a1f2198f751692edf664"
+        }
+      ],
+      "renderReceipt": "paper-club/render/artifacts/render-receipt.json",
+      "pdf": "paper-club/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    },
+    {
+      "id": "evidence-synthesis",
+      "label": "证据综合",
+      "description": "衬线标题、共同尺度、细线分组与三线表；比较对象和不可比条件同时可见。",
+      "useWhen": [
+        "综述、跨研究证据矩阵",
+        "冲突结果与有效性边界"
+      ],
+      "avoidWhen": [
+        "研究口径不一致时不能自动汇总或排名"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "evidence-synthesis/evidence-synthesis.pptx",
+      "pptxSha256": "e5c8885b9185499be473fec50a7b83a493c357555b4db206d4c1de9dafd22b06",
+      "html": "evidence-synthesis/index.html",
+      "deck": "evidence-synthesis/deck.json",
+      "pages": [
+        {
+          "id": "evidence-synthesis-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "evidence-synthesis/svg/evidence-synthesis-1.svg",
+          "png": "evidence-synthesis/render/artifacts/pages/page-0001.png",
+          "pngSha256": "7fd4146a04f07ded4d7fdbc1574bf794c83a31b40ef2a3b775f57036a9e82936"
+        },
+        {
+          "id": "evidence-synthesis-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "evidence-synthesis/svg/evidence-synthesis-2.svg",
+          "png": "evidence-synthesis/render/artifacts/pages/page-0002.png",
+          "pngSha256": "0a3c95b78a7b48623f009e93dd366d8812cc8caf32f893abbfb5b9afa765bd6d"
+        }
+      ],
+      "renderReceipt": "evidence-synthesis/render/artifacts/render-receipt.json",
+      "pdf": "evidence-synthesis/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    },
+    {
+      "id": "field-report",
+      "label": "田间与空间观测",
+      "description": "开放图面、短组名与局部浅底条件区；真实照片、地图和时间地点信息形成同一证据组。",
+      "useWhen": [
+        "田间实验、遥感、生态或空间观测",
+        "需要同时读清地点、时段与对照"
+      ],
+      "avoidWhen": [
+        "学科名称不自动要求绿色，也不允许装饰照片代替数据"
+      ],
+      "scientificContent": "Identical constructed data, site-level paired mean differences and 95% t intervals. Two pages per profile; no cover-only variants.",
+      "pptx": "field-report/field-report.pptx",
+      "pptxSha256": "08f3685fd7bbfc287ca645a7f74cfdef4777f93d87584301c621eb2801331d8f",
+      "html": "field-report/index.html",
+      "deck": "field-report/deck.json",
+      "pages": [
+        {
+          "id": "field-report-1",
+          "title": "随机划分误差较低，跨站点差异不确定",
+          "svg": "field-report/svg/field-report-1.svg",
+          "png": "field-report/render/artifacts/pages/page-0001.png",
+          "pngSha256": "bb5dc530a8c16dd1841677103d5b066295168cc92d3bc76c0cc10b79f8b6fa89"
+        },
+        {
+          "id": "field-report-2",
+          "title": "从观测误差到站点层面的比较",
+          "svg": "field-report/svg/field-report-2.svg",
+          "png": "field-report/render/artifacts/pages/page-0002.png",
+          "pngSha256": "68a28cbb221031f3464dfee1dd357539f3431b7681b50dfc1268f58af5dbc936"
+        }
+      ],
+      "renderReceipt": "field-report/render/artifacts/render-receipt.json",
+      "pdf": "field-report/render/artifacts/document.pdf",
+      "renderer": {
+        "package": "@deepseek-ai/libreoffice-kit",
+        "version": "0.1.5",
+        "backend": "wasm",
+        "missingFonts": []
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@
 import { getReferenceTemplate } from './reference-catalog.mjs';
 import { assessFigurePlacement, FIGURE_LABEL_TARGET_PX, FIGURE_LABEL_FLOOR_PX } from './figure-planning.mjs';
 import { resolveAcademicSystem } from './design-system.mjs';
+import { applyAcademicStyle } from './academic-styles.mjs';
 import { academicHeader, academicCover, academicSection, academicClosing, resolveChrome } from './academic-chrome.mjs';
 import { renderAcademicComposition } from './academic-composition.mjs';
 import { renderScientificPlot } from './scientific-plot.mjs';
@@ -12,7 +13,7 @@ import { renderCardSurface } from './card-surface.mjs';
 import { renderNativeDrawing, drawingAssetIds, drawingClaimIds } from './native-drawing.mjs';
 import { renderAuthoredHeading } from './authored-heading.mjs';
 import { renderBibliography } from './free-composition.mjs';
-import { projectionIssues } from './projection-quality.mjs';
+import { projectionIssues, readingRole } from './projection-quality.mjs';
 import { scientificTextTokens, glueTextPunctuation, scientificWrappingIssues } from './scientific-text.mjs';
 import { resolveNarrativeSlide, renderNarrativeRoadmap, renderNarrativeSection } from './narrative.mjs';
 export const CANVAS = Object.freeze({ width: 1280, height: 720 });
@@ -71,8 +72,11 @@ function emphasizedLines(content, lines, phrases, color) {
 }
 
 export function resolveDesign(input = {}) {
+  input=applyAcademicStyle(input);
   const palette = Object.fromEntries(Object.entries(DEFAULT_DESIGN.palette).map(([key, value]) => [key, safeColor(input.palette?.[key] || (key === 'tint' ? input.palette?.soft : undefined), value)]));
-  return { ...DEFAULT_DESIGN, ...input, palette, system:resolveAcademicSystem(input.system), hasAcademicSystem:Boolean(input.system), fontFamily: asText(input.fontFamily).trim() || DEFAULT_DESIGN.fontFamily };
+  const fontFamily=asText(input.fontFamily).trim()||DEFAULT_DESIGN.fontFamily;
+  return { ...DEFAULT_DESIGN, ...input, palette, system:resolveAcademicSystem(input.system), hasAcademicSystem:Boolean(input.system), fontFamily,
+    titleFontFamily:asText(input.titleFontFamily).trim()||fontFamily,annotationFontFamily:asText(input.annotationFontFamily).trim()||fontFamily };
 }
 
 const graphemeSegmenter = new Intl.Segmenter('zh-CN', { granularity: 'grapheme' });
@@ -159,7 +163,8 @@ function pageBuilder(slide, index, total, design) {
     if (needed > box.h + 2) page.issues.push({ severity: 'error', code: 'text-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, requiredHeight: Math.ceil(needed), availableHeight: box.h, message: `文字估计需要 ${Math.ceil(needed)} px，分配 ${box.h} px。保留文字与字号，扩大区域、调整布局或拆页后再构建。` });
     if (Math.max(...lineWidths) > box.w + 2) page.issues.push({ severity: 'error', code: 'text-width-overflow-estimate', slideId: page.id, objectId: `${page.id}/${key}`, message: `不可拆分字符宽度超过 ${box.w} px 的文字区域；扩大区域，不能裁掉原文。` });
     for(const phrase of emphasis)if(!content.includes(phrase))page.issues.push({severity:'error',code:'unmatched-emphasis',slideId:page.id,objectId:`${page.id}/${key}`,message:'强调片段必须完整出现在正文中，不能另造结论。'});
-    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily: design.fontFamily, color: p.ink, lineHeight, estimatedTextHeight:needed, estimatedLineWidths:lineWidths, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
+    const role=readingRole(more),fontFamily=role==='title'?design.titleFontFamily:role==='note'?design.annotationFontFamily:design.fontFamily;
+    return add('text', key, { ...box, text: content, lines, fontSize, fontFamily, color: p.ink, lineHeight, estimatedTextHeight:needed, estimatedLineWidths:lineWidths, ...more, ...(emphasis.length?{richLines:emphasizedLines(content,lines,emphasis,more.emphasisColor||p.accent)}:{}) }, cardId);
   };
   const chrome=resolveChrome(design,slide);
   if (!['cover','section'].includes(slide.layout)) {
@@ -582,7 +587,7 @@ function table(b, data, box, fontFamily) {
   const h=rowHeights.reduce((sum,value)=>sum+value,0),captionH=data.caption?wrapText(data.caption,box.w,captionSize).length*captionSize*1.24+7:0;
   b.region('data-table-region',{x:box.x,y:box.y,w:box.w,h:h+captionH},'table');
   if(h+captionH>box.h+2)b.page.issues.push({severity:'error',code:'table-overflow-estimate',slideId:b.page.id,objectId:`${b.page.id}/data-table`,message:`表格按${fontSize*.75}pt正文需要 ${Math.ceil(h+captionH)} px，区域只有 ${box.h} px；减少行列或拆页，不能缩小正文隐藏内容。`});
-  b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p),academicStyle:b.design?.hasAcademicSystem?b.system.panel:'line'});
+  b.add('table','data-table',{x:box.x,y:box.y,w:box.w,h,table:clone(data),colWidths,rowHeights,cellLines,fontFamily,fontSize,lineHeight,padX,padY,wrapReserve,palette:clone(b.p),academicStyle:b.design?.hasAcademicSystem?b.system.panel:'line',...(b.design.tableStyle?{tableStyle:b.design.tableStyle}:{})});
   if(data.caption)b.text('table-caption',data.caption,{x:box.x,y:box.y+h+7,w:box.w,h:Math.max(22,captionH-7)},captionSize,{color:b.p.muted,lineHeight:1.24,role:'caption'});
   return {bottom:box.y+h+captionH,height:h+captionH};
 }
@@ -707,7 +712,11 @@ function inspectLayout(b) {
 }
 
 export function buildScenes(project) {
-  const design = resolveDesign(project.design), slides = arr(project.slides).map(slide => resolveNarrativeSlide(project, slide));
+  const design = resolveDesign(project.design);
+  // Every downstream renderer reads the same resolved profile. Saved records
+  // remain sparse overrides; no inferred tokens are written back to a project.
+  project={...project,design};
+  const slides = arr(project.slides).map(slide => resolveNarrativeSlide(project, slide));
   const pages = slides.map((slide, index) => {
     const b = pageBuilder(slide, index, slides.length, design), cards = arr(slide.cards), figures = arr(slide.figureIds);
     if(slide.figureBoxes?.length&&(slide.referenceTemplateId||!['figure-focus','figure-split'].includes(slide.layout)||slide.figureBoxes.length!==figures.length||cards.some(c=>!c.box)))b.page.issues.push({severity:'error',code:'invalid-custom-figure-layout',slideId:b.page.id,message:'自定义图框只用于无参考模板的 figure-focus / figure-split，图框与原图一一对应，所有解释卡片必须指定区域。'});

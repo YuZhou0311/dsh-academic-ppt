@@ -7,7 +7,7 @@ import { contentCoverageReport, evidenceDesignReport } from '../src/evidence-des
 import { createProject, updateRecords, studyProject, portfolioProjects, evidenceIssues, slideClaimIds, slideAssetIds } from '../src/core.mjs';
 import { compareProjectStructures } from '../src/portfolio.mjs';
 import { buildAcademicTools, formatToolResult } from '../src/tools.mjs';
-import { buildScenes } from '../src/scene.mjs';
+import { resolveDesign, buildScenes } from '../src/scene.mjs';
 import { fixtureDesign, brief, paper, claim, asset, slides } from './fixtures.mjs';
 
 const clone=structuredClone;
@@ -169,11 +169,11 @@ test('new default projection policy remains attached on record updates while exp
   const o=await fixture(t); const first=await readState(o); assert.equal(first.design.projection,undefined);
   const created=await createProject({cwd:o.cwd,projectDir:'new-default',title:'Projection default fixture'});
   let current=JSON.parse(await readFile(created.projectPath,'utf8'));
-  assert.deepEqual(current.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
-  assert.equal(current.design.cardDefaults.surface,'outline');
-  await updateRecords({cwd:o.cwd,projectPath:created.projectPath,expectedRevision:0,design:{fontFamily:current.design.fontFamily,palette:current.design.palette}});
+  assert.deepEqual(resolveDesign(current.design).projection,{bodyMin:28,labelMin:24,noteMin:18});
+  assert.equal(resolveDesign(current.design).cardDefaults.surface,'plain');
+  await updateRecords({cwd:o.cwd,projectPath:created.projectPath,expectedRevision:0,design:{styleProfile:current.design.styleProfile}});
   current=JSON.parse(await readFile(created.projectPath,'utf8'));
-  assert.deepEqual(current.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
+  assert.deepEqual(resolveDesign(current.design).projection,{bodyMin:28,labelMin:24,noteMin:18});
 });
 
 test('drawing evidence and visible custom bibliographies preserve source gates',async t=>{

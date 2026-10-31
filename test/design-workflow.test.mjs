@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {mkdir,mkdtemp,readFile,rm} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createProject,updateRecords,checkProject,buildProject,editProject,contextProject,evidenceIssues,DEFAULT_DESIGN} from '../src/core.mjs';
-import {buildScenes} from '../src/scene.mjs';
+import {buildScenes,resolveDesign} from '../src/scene.mjs';
 import {brief,paper,claim,asset,slides,fixtureDesign} from './fixtures.mjs';
 
 async function setup(t,design){
@@ -16,15 +16,16 @@ async function setup(t,design){
 }
 const state=async options=>JSON.parse(await readFile(options.projectPath,'utf8'));
 
-test('new projects expose authored surfaces and compact diagnostics through public check and build',async t=>{
+test('new projects expose balanced open design with actionable whitespace review',async t=>{
   const options=await setup(t),p=await state(options);
-  assert.equal(p.design.density,'compact');
-  assert.equal(p.design.cardDefaults.surface,'outline');
-  assert.deepEqual(p.design.projection,{bodyMin:28,labelMin:24,noteMin:18});
+  assert.equal(p.design.density,'balanced');
+  assert.equal(p.design.styleProfile,'research-seminar');
+  assert.equal(resolveDesign(p.design).cardDefaults.surface,'plain');
+  assert.deepEqual(resolveDesign(p.design).projection,{bodyMin:28,labelMin:24,noteMin:18});
   const checked=await checkProject(options);
-  const empty=checked.issues.find(issue=>issue.code==='large-unused-region');
-  assert.ok(empty,'the deliberately sparse protocol fixture must not pass compact delivery');
-  assert.equal(empty.severity,'error');
+  const empty=checked.issues.find(issue=>issue.code==='unused-region-review');
+  assert.ok(empty,'Sparse pages remain visible to actual-render review.');
+  assert.equal(empty.severity,'warning');
   assert.ok(empty.box.w>0&&empty.box.h>0);
   assert.equal(checked.designDiagnostics.slides.length,slides.length);
   assert.equal(checked.designDiagnostics.basis,'scene-geometry-estimate-not-aesthetic-score');
@@ -33,11 +34,11 @@ test('new projects expose authored surfaces and compact diagnostics through publ
   assert.equal((await state(options)).artifact,undefined);
   const context=await contextProject(options);
   assert.equal(context.stage,'design');
-  assert.ok(context.issues.some(issue=>issue.code==='large-unused-region'));
+  assert.ok(context.issues.some(issue=>issue.code==='unused-region-review'));
 });
 
 test('token updates retain selected card and density rules; changing colors cannot relax delivery',async t=>{
-  const options=await setup(t),p=await state(options),tokens={fontFamily:p.design.fontFamily,palette:{...p.design.palette,accent:'#28435A'}};
+  const options=await setup(t,{...structuredClone(fixtureDesign),density:'compact'}),p=await state(options),tokens={fontFamily:p.design.fontFamily,palette:{...p.design.palette,accent:'#28435A'}};
   await updateRecords({...options,expectedRevision:1,design:tokens});
   const after=await state(options);
   assert.equal(after.design.density,'compact');

@@ -1,0 +1,52 @@
+{
+  "identity": "constructed-teaching-data-not-research-results",
+  "renderedPptx": true,
+  "visualReview": "not-reviewed",
+  "fontFamilies": [
+    "Noto Sans CJK SC",
+    "Noto Serif CJK SC"
+  ],
+  "profiles": [
+    {
+      "profile": "research-seminar",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    },
+    {
+      "profile": "thesis-defense",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    },
+    {
+      "profile": "methods-whiteboard",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    },
+    {
+      "profile": "paper-club",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    },
+    {
+      "profile": "evidence-synthesis",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    },
+    {
+      "profile": "field-report",
+      "sceneErrors": [],
+      "sceneWarnings": []
+    }
+  ],
+  "limitations": [
+    "This script does not visually inspect images.",
+    "These authored records exercise the plugin renderer, not the DSH model authoring loop.",
+    "SVG/HTML previews do not establish PowerPoint/WPS fidelity.",
+    "A missingFonts=[] result does not certify font-weight selection or glyph coverage; inspect the actual render.",
+    "A regenerated bundle needs a new image review; prior approval is not inherited."
+  ],
+  "requiredFontWeights": [
+    "Regular",
+    "Bold"
+  ]
+}

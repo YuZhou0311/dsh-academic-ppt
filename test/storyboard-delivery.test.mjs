@@ -47,7 +47,7 @@ function originalImage({vertical=false}={}) {
 }
 
 function fixtures() {
-  const design={...structuredClone(DEFAULT_DESIGN),density:'balanced',fontFamily:'DejaVu Sans',
+  const design={...structuredClone(DEFAULT_DESIGN),density:'balanced',fontFamily:'DejaVu Sans',titleFontFamily:'DejaVu Sans',annotationFontFamily:'DejaVu Sans',
     system:{...DEFAULT_DESIGN.system,header:'plain'},
     consultation:{...structuredClone(fixtureDesign.consultation),workflowVersion:2,interaction:'checkpoints',delegation:TEST_ONLY+' The fixture explicitly delegates original design, all design topics and final review.'},
     referenceStudy:{status:'reviewed',componentStudies:[{source:'user-template',

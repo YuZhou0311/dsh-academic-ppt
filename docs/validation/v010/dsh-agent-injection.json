@@ -1,0 +1,134 @@
+{
+  "ok": true,
+  "pluginVersion": "0.10.0-rc.1",
+  "runtimeVersion": "0.2.1-rc.3",
+  "versions": {
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/dsh-agent": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-agent-loop": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-session-projection": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-system-prompt": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-skill": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tool-skill": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-working-directory": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-fs-local": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-tool-fs": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-skill-filesystem": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-sandbox": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-sandbox-policy": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-fs-sandbox": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-attachment": "0.2.1-rc.3",
+    "@deepseek-ai/dsh-attachment-local": "0.2.1-rc.3"
+  },
+  "node": "v24.22.1",
+  "mode": "native",
+  "providerRequests": 31,
+  "toolPipelineCalls": 24,
+  "successfulToolResults": 16,
+  "rejectedToolResults": 8,
+  "academicToolCount": 19,
+  "skillBodyCharacters": 5567,
+  "skillBodySha256": "209aa6305daa4f4f35c753e5c0d18de390ca9fc89ab1d9384bd9ef50c68d74be",
+  "workflowSha256": "7a0a5edad17672867cb3d2cde8774534272ad40c48717734dd4815dd4980e071",
+  "sourceHashes": {
+    "src/index.mjs": "372d6e1943304895bb4a5683af626f46c977326a225562eec4276da89dcde56a",
+    "src/tools.mjs": "c88be2183a770602d437786224361ab7a06bd47ae73dcffd29a605d5e01b4872",
+    "src/host-access.mjs": "264e5bdc249808fc7c7ee2041c580e2786a1a23aee9fff7ce9153a6190898776",
+    "src/core.mjs": "4c6a6d2932a78a38792ac0f1e727a9a1b0ad39f832f9fd1113fa7b431bc47445",
+    "src/design-intake.mjs": "c3723835ad24345c4a420708a38a466b8ba592e376cfa6966d11069f64b99ff3",
+    "src/design-dialogue.mjs": "a6cae8964445189af72d4aa0043f7b2882388433d43231def7e05a1afe90e4cc",
+    "src/storyboard.mjs": "25ff1bcaf6187f4124fe5ebe31d84272b08fc4bc70ce887beb4059e5ccc4a0a0",
+    "src/tool-contract.mjs": "6b8fd66c82a7456c21e1e644c309599badabe7e43088a86b7ac0eb9f34ec3d85",
+    "src/academic-styles.mjs": "fbe31a1433f8770a5935a8a28c3902435d297911b8dee19938b8645db68d394e",
+    "src/schema.mjs": "148ea4da012a75a59a6217350b9187b10956de8fc5621b7363e4b2c79b1b9339",
+    "src/scene.mjs": "9a990e55f4e84dbfc8b9871d77b7670fe4d794044e11fb84c031f4d3a3c7cb3a",
+    "src/render.mjs": "9d785452f26f344c327d5b94ac79110a57c5c3344d0b57896bc713dc113038ab",
+    "skills/dsh-academic-ppt/SKILL.md": "3790f0e4e5e23763ed85ccea8a08e3ef65208400e0ec9071ec9ee93426a37e67",
+    "skills/dsh-academic-ppt/references/workflow-v010.md": "7a0a5edad17672867cb3d2cde8774534272ad40c48717734dd4815dd4980e071",
+    "skills/dsh-academic-ppt/references/academic-styles.md": "132f12a2d8cf5a928640819104c5193efb7b575bca21f39941824e1cc1b2b06a",
+    "skills/dsh-academic-ppt/references/deepseek.md": "119b226f091a6a400111ed3e2b6823f1ac5ec4687b201237261c2f519551af5c"
+  },
+  "imageTransport": {
+    "fixture": {
+      "width": 8,
+      "height": 6,
+      "sourceBytes": 115,
+      "sourceSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+      "rgbaSha256": "7fd13983dce660368bbf4e1b0347452795a769062ff8b2dc188782e84d13c18e"
+    },
+    "nativeToolCallId": "read-image-fixture",
+    "nativeImageBlockCount": 1,
+    "attachment": {
+      "attachmentId": "sha256:ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+      "mediaType": "image/png",
+      "bytes": 115,
+      "width": 8,
+      "height": 6,
+      "name": "native-image-fixture.png"
+    },
+    "storedSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+    "requestTarget": {
+      "width": 8,
+      "height": 6,
+      "maxBytes": 115
+    },
+    "requestVariantId": "sha256:8ada0d598bdd66c27c2ec27a1adfe1a163b476d6e6cda1276a0341323c12abd2",
+    "requestMediaType": "image/png",
+    "providerResolvedBytes": 115,
+    "providerResolvedSha256": "ffa6650fb60c1adba5b3fde8c856f34cc5e45ecfd12d8ee61651b3621bd44ad4",
+    "sourceBytesPreserved": true,
+    "boundary": "The real native request delivered an image attachment reference to the scripted provider adapter, which resolved verified bytes through the official attachment store. No provider HTTP request or visual interpretation was performed."
+  },
+  "filePolicyModes": [
+    "workspace-write",
+    "read-only",
+    "danger-full-access"
+  ],
+  "checks": [
+    "Official AgentLoop -> skill catalog -> native skill tool -> complete wrapped body/resourceBase -> real read tool -> workflow text -> native academic tools -> rendered results in next provider requests",
+    "Exactly 19 unchanged academic schemas are visible at the native provider boundary; 48-card and 32-layout results plus storyboard contract are reachable",
+    "Official read_image returns a native image block in the next provider request; its exact attachment identity resolves to verified original-fixture pixels and request bytes through the isolated real attachment store",
+    "The official read_image route gate rejects both explicitly text-only and unknown input modalities; each refusal reaches the next provider request without an image block",
+    "After an official workingDirectory.set change, a model-requested relative init writes in the effective current directory while the immutable Session header stays unchanged",
+    "Changing cwd to controlled sibling directory B does not expand the original workspace A: academic init and official sandboxed write both deny and leave no artifact",
+    "A real per-session read-only switch rejects academic init and official write while cards/context remain readable and the existing project stays byte-identical",
+    "Switching the same session back to workspace-write immediately restores academic and official filesystem writes inside the original workspace",
+    "An explicit danger-full-access override on the disposable Session permits both academic and official writes to controlled directory B; the test then restores workspace-write",
+    "Malformed native tool arguments and project-path escapes are rejected by the real pipeline and retained as model-visible errors",
+    "An explicit /dsh-academic-ppt user gesture injects the full instructions before the first request and deduplicates repeated names",
+    "Real agent-scope tool restrictions suppress native loader and catalog together; explicit user invocation remains governed by userInvocable",
+    "Duplicate runtime skill registration is first-wins; disposing the duplicate preserves the winner and unchanged catalog is not republished",
+    "Unload/remount changes the next real request schemas and durable replacement catalog without stale registrations; prior instruction history is intentionally retained",
+    "Official filesystem skill discovery reads only the explicitly supplied package directory; filesystem/runtime overlap produces one catalog winner and does not create tools",
+    "A package missing its actual SKILL.md fails official Cordis activation and leaves neither academic tools nor a partial skill registration"
+  ],
+  "checkedAt": "2026-10-30T16:20:44.410Z",
+  "boundaries": {
+    "real": [
+      "published official Cordis lifecycle",
+      "AgentRegistry and AgentLoop",
+      "SessionStore and session projections",
+      "system prompt and native tool schema assembly",
+      "skill registry/catalog/loader/explicit user invocation",
+      "native tool execution and output rendering",
+      "official read/read_image/write tools and SandboxedFileSystem backend",
+      "official LocalAttachmentStore normalization, immutable storage and request-image byte resolution",
+      "official SandboxPolicyService with logged per-session mode switches",
+      "official filesystem skill discovery"
+    ],
+    "scripted": [
+      "provider capability metadata and response chunks only; tool selections and final assistant text are deterministic fixtures"
+    ],
+    "notClaimed": [
+      "real model instruction following, visual understanding or presentation quality",
+      "provider HTTP image serialization or API compatibility",
+      "Desktop/Web UI, authentication or user profiles",
+      "OS process isolation, concurrent filesystem races or remote filesystem providers",
+      "PTC/run_code transport"
+    ],
+    "isolation": "All sessions are in memory. Working directories A/B, the attachment store/cache home and unused provider home paths are explicit disposable fixtures. Policy mode switches affect only the test Session. Default skill roots and watchers are disabled. No real model adapter or session-persistence provider is mounted."
+  }
+}

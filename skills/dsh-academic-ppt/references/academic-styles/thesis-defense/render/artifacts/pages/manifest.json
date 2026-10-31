@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/workspace/scratch/ca5fe89f4906/dsh-academic-ppt/skills/dsh-academic-ppt/references/academic-styles/thesis-defense/thesis-defense.pptx",
+  "sourceSha256": "12e86f20026a680179ee015f4c91f43e5214bb5d7a4fb5b2d1ff03f97383324b",
+  "dpi": 120,
+  "pageCount": 2,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/thesis-defense/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 159350
+    },
+    {
+      "index": 2,
+      "page": 2,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/thesis-defense/artifacts/pages/page-0002.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 192032
+    }
+  ],
+  "missingFonts": []
+}

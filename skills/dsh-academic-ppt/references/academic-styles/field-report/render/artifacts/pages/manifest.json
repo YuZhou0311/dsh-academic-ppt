@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/workspace/scratch/ca5fe89f4906/dsh-academic-ppt/skills/dsh-academic-ppt/references/academic-styles/field-report/field-report.pptx",
+  "sourceSha256": "08f3685fd7bbfc287ca645a7f74cfdef4777f93d87584301c621eb2801331d8f",
+  "dpi": 120,
+  "pageCount": 2,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/field-report/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 157678
+    },
+    {
+      "index": 2,
+      "page": 2,
+      "path": "/workspace/scratch/ca5fe89f4906/academic-serif-bold-renders/field-report/artifacts/pages/page-0002.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 165092
+    }
+  ],
+  "missingFonts": []
+}

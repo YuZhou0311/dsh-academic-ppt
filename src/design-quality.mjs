@@ -11,6 +11,7 @@
 export { designGeometryReport } from './design-geometry.mjs';
 import { resolveCardAppearance } from './card-surface.mjs';
 import { cardHasContent } from './card-content.mjs';
+import { applyAcademicStyle } from './academic-styles.mjs';
 
 const list = value => Array.isArray(value) ? value : [];
 const panelsOf = slide => [...list(slide.composition?.regions), ...list(slide.composition?.rows).flatMap(r => list(r.panels))];
@@ -211,6 +212,7 @@ function panelHasContent(slide,panel) {
  * New design modes ask for concise visual plans; old projects stay compatible.
  */
 export function designIssues(project) {
+  project={...project,design:applyAcademicStyle(project.design)};
   const issues = [], slides = list(project.slides), mode = project.design?.mode;
   const faithful = mode === 'template-faithful';
   const add = (severity, code, slide, field, message) => issues.push({

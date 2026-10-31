@@ -23,7 +23,7 @@ const slide = (id, layout, title, extra={}) => ({id,layout,title,paperIds:[],cla
 test('public authoring carries one outline into navigation, custom headings and both note exports',async t=>{
   const base=resolve('.test-output');await mkdir(base,{recursive:true});
   const cwd=await mkdtemp(join(base,'story-workflow-'));t.after(()=>rm(cwd,{recursive:true,force:true}));
-  const created=await createProject({cwd,projectDir:'project',title:'叙事传输测试',brief:{centralQuestion:'软件输出是否保留明确声明的信息？',audience:'软件验证',talkMinutes:3,targetPaperCount:0,requireFullText:false,requirePaperIntro:false,narrative}});
+  const created=await createProject({cwd,projectDir:'project',title:'叙事传输测试',design:{styleProfile:'research-seminar',chrome:{showSection:true}},brief:{centralQuestion:'软件输出是否保留明确声明的信息？',audience:'软件验证',talkMinutes:3,targetPaperCount:0,requireFullText:false,requirePaperIntro:false,narrative}});
   const options={cwd,projectPath:created.projectPath};
   const transition='输入保留已完成核对，下一节讨论这个用例尚未覆盖的真实研究条件。';
   const slides=[
@@ -74,7 +74,7 @@ test('public authoring carries one outline into navigation, custom headings and 
 
 test('the on-demand design contract exposes complete, isolated academic palettes to the host model',async()=>{
   const contract=await toolContract({topic:'design'});
-  assert.equal(contract.defaultPalette,'blue-slate');assert.equal(contract.academicPalettes.length,5);
+  assert.equal(contract.defaultPalette,'graphite-blue');assert.equal(contract.academicPalettes.length,5);
   const rendered=formatToolResult('academic_ppt_contract',contract);
   for(const value of contract.academicPalettes)assert.ok(rendered.includes(JSON.stringify(value)));
   contract.academicPalettes[0].palette.accent='#000000';

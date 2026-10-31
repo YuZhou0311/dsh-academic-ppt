@@ -182,7 +182,7 @@ test('all reference branches expose actionable adaptation and native reconstruct
     const result=await tool.execute({requestPath},{agent:{session:{header:{cwd}}}});
     const rendered=tool.output.render({},result).map(part=>part.text??'').join('\n');
     assert.deepEqual(result.designAdaptation.routes.map(route=>route.mode),['adapt-preset','compose-native']);
-    for(const expected of ['adaptive','drawings','composition.regions','card.accent','appearance.fill/stroke/strokeWidth/dash/shadow','design.direction','白字','原生设计：',result.nativeFallback.selection])assert.ok(rendered.includes(expected),expected);
+    for(const expected of ['adaptive','drawings','composition.regions','card.accent','appearance.fill/stroke/strokeWidth/dash/shadow','designStudies','白字','原生设计：',result.nativeFallback.selection])assert.ok(rendered.includes(expected),expected);
   }
 });
 
@@ -197,15 +197,15 @@ test('explicit card requests retain fallback while preparation without cards con
   await assert.rejects(prepare({...report,imageGeneration:{availability:'available',source:'No named host tool.'},cards:[card]}),/toolName/);
 });
 
-test('preparation restores actual component study guidance even when no preset or generated card is requested',async t=>{
+test('preparation favors whole-page evidence design when no card is requested',async t=>{
   const {prepare}=await fixture(t);
   const result=await prepare({...report,template:{status:'none'}});
   assert.equal(result.nextAction,'design-evidence-pages');assert.equal(result.imageGeneration.prompt,undefined);
   assert.equal(result.designRecords.referenceStudy,undefined,'Preparing guidance must not invent a viewing record.');
-  assert.equal(result.nativeFallback.tool,'academic_ppt_cards');
+  assert.equal(result.nativeFallback.tool,'academic_ppt_layouts');
   const text=formatToolResult('academic_ppt_prepare',result);
-  for(const expected of ['原48款','20款','C01–C20','componentStudies','frame','titleTreatment','spacing','adaptation','paletteRationale','drawings'])assert.ok(text.includes(expected),expected);
-  assert.match(text,/与是否采用preset.*无关|是否采用preset或最终是否出现卡片无关/);
+  for(const expected of ['academicStyles','designStudies','componentStudies','readingOrder','evidenceHierarchy','adaptation','paletteRationale','drawings'])assert.ok(text.includes(expected),expected);
+  assert.match(text,/开放科学排版不必读卡片|开放页面无需额外卡片学习/);
   assert.match(text,/同一模板可以提供多类组件/);
   assert.match(text,/不.*证明.*看图|不.*证明.*审美/);
 });

@@ -3,8 +3,8 @@ import {dirname,join,relative} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {assertToolArgs,assertProject,assertStoryboardRequest,contentOf} from './schema.mjs';
 import {normalizeTemplateProfiles} from './template-profile.mjs';
-import {DEFAULT_ACADEMIC_SYSTEM} from './design-system.mjs';
-import {getAcademicPalette,DEFAULT_ACADEMIC_PALETTE_ID} from './academic-palette.mjs';
+import {getAcademicStyle,DEFAULT_ACADEMIC_STYLE_ID} from './academic-styles.mjs';
+export {ACADEMIC_STYLES,ACADEMIC_STYLE_IDS,getAcademicStyle,applyAcademicStyle} from './academic-styles.mjs';
 import {narrativeIssues} from './narrative.mjs';
 import {getReferenceTemplate} from './reference-catalog.mjs';
 import {academicIssues,constraintRelaxations,expandClaimIds} from './academic-quality.mjs';
@@ -21,8 +21,15 @@ import {PAGE_RECIPE_IDS} from './page-recipes.mjs';
 export {PAGE_RECIPES,PAGE_RECIPE_IDS,getPageRecipe,listPageRecipes,recommendPageRecipes,compilePageRecipe} from './page-recipes.mjs';
 import {hash,clone,stable,abort,safePath,readBounded,readJson,atomicJson,locked,ensureNewDir,embedAssets} from './io.mjs';
 
-export const DEFAULT_DESIGN = {mode:'content-led',density:'compact',cardDefaults:{surface:'outline',radius:4,padding:16,accent:'none',elevation:false},chrome:{showTopRule:false},fontFamily:'Noto Sans CJK SC',palette:getAcademicPalette(DEFAULT_ACADEMIC_PALETTE_ID),system:{...DEFAULT_ACADEMIC_SYSTEM,header:'rule',cover:'minimal',panel:'band',coverTitleSize:72,titleSize:44,bodySize:28,panelTitleSize:30,captionSize:18},projection:{bodyMin:28,labelMin:24,noteMin:18}};
-const RENDERER_VERSION=18;
+// Resolved tokens remain exported for existing script clients. New records use
+// a sparse profile reference so defaults are not mistaken for user overrides.
+const defaultTokens=getAcademicStyle().defaults;
+// Existing clients often clone DEFAULT_DESIGN then set one fontFamily. Keep
+// that single-family contract; role fonts are opt-in through styleProfile or
+// explicit fields, rather than unexpectedly retaining a missing host font.
+delete defaultTokens.titleFontFamily;delete defaultTokens.annotationFontFamily;
+export const DEFAULT_DESIGN = {mode:'content-led',density:'balanced',...defaultTokens};
+const RENDERER_VERSION=19;
 const fields=['papers','claims','assets','slides'];
 const now=()=>new Date().toISOString();
 function argsFor(name,options){const {cwd,signal,...args}=options;assertToolArgs(name,args);abort(signal);return args;}
@@ -40,7 +47,11 @@ function decisionIndependentContent(p){
  return stable(content);
 }
 function initial(title,brief,design,capabilities){
- const initialDesign={mode:'content-led',density:'compact',cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome),...clone(design??DEFAULT_DESIGN)};
+ // A metadata-only or partial design is a new profile-based project. A complete
+ // legacy font/palette configuration remains an explicit legacy design; loading
+ // an existing project never introduces a profile or rewrites its overrides.
+ const legacy=design&&!design.styleProfile&&design.fontFamily&&['ink','paper','accent','secondary','muted','line','soft'].every(key=>Object.hasOwn(design.palette??{},key));
+ const initialDesign={mode:'content-led',density:'balanced',...(legacy?{cardDefaults:clone(DEFAULT_DESIGN.cardDefaults),chrome:clone(DEFAULT_DESIGN.chrome)}:{styleProfile:DEFAULT_ACADEMIC_STYLE_ID}),...clone(design??{})};
  initialDesign.consultation=withConsultationInteraction(initialDesign.consultation,'checkpoints');
  initialDesign.consultation.workflowVersion=2;
  return {schemaVersion:1,id:'deck-'+randomUUID(),revision:0,densityChoicePending:!(design&&Object.hasOwn(design,'density')&&designDecisionResolved(initialDesign.consultation,'density')),title,brief:{centralQuestion:'',audience:'学术同行',talkMinutes:13,targetPaperCount:0,requireFullText:true,genre:'literature-review',visualEvidence:{mode:'source-led'},...brief,qualityProfile:'academic'},design:initialDesign,capabilities:capabilities??{imageInput:'unknown',source:'host capability not yet verified'},papers:[],claims:[],assets:[],slides:[],history:[],createdAt:now(),updatedAt:now()};
@@ -88,7 +99,7 @@ export async function createProject(options={}){
   for(const sourcePath of source.templatePaths??[]){const file=await safePath(options.cwd,sourcePath,{mustExist:true});if(!(await stat(file)).isFile())throw new Error('TEMPLATE_SOURCE_FILE_REQUIRED: 模板来源须为本项目中实际提供的文件。');}
  }
  assertProject(p);await ensureNewDir(dir);try{await atomicJson(path,p,options.signal);}catch(e){await rm(dir,{recursive:true,force:true});throw e;}
- return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['0.9.1先读workflow-v091.md。新工程先询问默认原创或参考/套用用户模板，等待真实回答；再讨论故事线、实际样张的配色/布局/风格、最终成品审查。只复用具体已选事项或有范围的委托。六页以上用plan记录证据故事板与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','设计来源通过design.consultation.source保存；未回答不等于默认原创。已提供文件时明确学习语法还是保留版式，已选择但未上传时保留等待状态。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','先看原48款卡片与20款编辑式参考中适合本稿的实际候选，并细读已提供用户模板的具体页/组件，再自主设计。referenceStudy.componentStudies记录填充/线型/虚线/阴影、题签、间距和本稿改造，paletteRationale说明配色依据；不用preset或只用drawings也不能以pageRecipeIds代替学习。已有充分模板细读可沿用，不重复打卡无关目录。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','从contract(design)选择适合当前证据的学术色板；封面优先用题名、对齐与真实身份完成设计。有参考时只迁移原则，先做真实候选再完成全稿。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
+ return {ok:true,projectPath:path,revision:0,counts:counts(p),designDialogue:designDialoguePlan(p.design.consultation),nextActions:['先读SKILL.md与references/workflow-v010.md。新工程先询问默认原创或参考/套用用户模板，等待真实回答；再讨论故事线、实际样张的配色/布局/风格、最终成品审查。只复用具体已选事项或有范围的委托。六页以上用plan记录证据故事板与困难样张。','先使用宿主真实可用的检索、全文下载/PDF处理和看图能力，核对文献身份，取得与研究问题对应的论文图；用户没有上传PDF不代表可跳过获取。source-led新稿的查证与图源盘点见contract(paper)。','设计来源通过design.consultation.source保存；未回答不等于默认原创。已提供文件时明确学习语法还是保留版式，已选择但未上传时保留等待状态。先确定真实论文图和研究插图，可嵌入图卡组成主证据组，也可开放排版；卡片生图参考不能替代取图。','按本次证据任务实际查看整页语法、学术风格样张或用户参考，referenceStudy.designStudies记录来源、预览、阅读顺序、证据层级和本稿适配；局部组件可用componentStudies。paletteRationale保留数据色义与对比理由。开放排版无需卡片打卡，真正使用preset时须查看对应参考。','用brief.narrative记录贯穿问题与各节要回答的问题；以sectionId关联目录、分节和正文，再设计逐页证据与过渡。短稿可采用简化导航。','用contract(design).academicStyles选择内容相关的设计方向；styleProfile提供字体角色、页眉、开放分组与表格默认，显式覆盖优先。默认balanced密度，用真实证据检验留白与可读性。封面由题名、对齐与真实身份组织。','逐篇阅读并以academic_ppt_record登记；每次最多5篇论文或8页。']};
 }
 export async function updateRecords(options={}){
  let a=argsFor('academic_ppt_record',options);
@@ -117,7 +128,7 @@ export async function updateRecords(options={}){
   const densityConsultation=mergedConsultation(state.p.design.consultation,a.design.consultation);
   const initialDensityChoice=state.p.densityChoicePending===true&&designDecisionResolved(densityConsultation,'density');
   if(state.p.design.density==='compact'&&a.design.density==='balanced'&&!initialDensityChoice)throw new Error('DENSITY_REQUIREMENT_RELAXATION: 不能通过降低内容占幅要求消除大空区。调整实际内容与构图；仅在用户改变设计要求后另建工程。');
-  const retained=Object.fromEntries(['mode','density','cardDefaults','chrome','direction','projection','colorRoles','consultation','referenceStudy','system','branding','templateProfile'].filter(key=>Object.hasOwn(state.p.design,key)).map(key=>[key,clone(state.p.design[key])]));
+  const retained=Object.fromEntries(['mode','density','styleProfile','fontFamily','titleFontFamily','annotationFontFamily','tableStyle','palette','cardDefaults','chrome','direction','projection','colorRoles','consultation','referenceStudy','system','branding','templateProfile'].filter(key=>Object.hasOwn(state.p.design,key)).map(key=>[key,clone(state.p.design[key])]));
   next.design={...retained,...a.design};
   if(a.design.consultation){
    next.design.consultation=densityConsultation;
@@ -284,10 +295,10 @@ export async function contextProject(options={}){
  const nextActions={
   research:['使用实际宿主搜索工具核对题名、DOI、年份与发表版本，取得全文及图片后登记paper.sourceCheck和figureReview。搜索摘要、网页纯文本或verified:true均不证明已取得并看过原图。保留实际URL/本地路径、图号、图注和获取失败原因。','有参考时先看实际页面中的主辅证据、邻接解释和局部分组；没有参考文件则明确记录依据，不声称已看。'],
   evidence:['先处理researchEvidence列出的来源查证、图源盘点及已选图未上页问题。取得并实看原图后登记asset.reading、figureIds、card.figureIds或drawing.image，按图安排解释和条件；图片必须在实际导出scene中可见，不能仅登记asset或补文字卡。','核对reported/inference/proposal及推理前提。把关键结果、比较条件和边界分配到真实可见载体。','检查是否只摘了漂亮的单个数字而丢失分布、对照、时间变化和负结果；按问题修复，不为构图补造结果。'],
-  design:['先查看designDialogue中的待确认项和参考学习缺口；沿用已有反馈或明确委托。先看原48款卡片与20款编辑式参考中的相关实际候选，以及已提供模板的具体组件；记录frame、titleTreatment、spacing、adaptation和paletteRationale，再按研究关系设计整页。实际或故事板计划达到六页的新checkpoints稿，在样张阶段就需要这些记录，不能只填pageRecipeIds。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
-   '阅读references/visual-decision.md与space-and-tone.md；从contract(design).academicPalettes的surfaceOptions选择深色题签、局部填色、开放证据区，向用户展示真实配色/布局/风格样张，保留正文、图标签和注释层次。封面默认文字主导，只按信息需要加图。',
+  design:['沿用designDialogue中的真实反馈与明确委托。完整新稿在困难样张阶段用designStudies记录相关整页/学术风格/科学参考的真实预览、阅读顺序、证据层级和适配，或用componentStudies记录相关组件；paletteRationale说明色义与对比。目录ID本身不等于看图，不强制卡片来源。',`当前设计模式${mode}。reference-guided学习参考的证据组织、密度、分组与层级，实际坐标由本稿内容决定。`,
+   '阅读references/academic-styles.md与design-critique.md；选择适合观看任务的academicStyles方向，以开放证据、直接标注和必要分组建立层级。用同一真实内容展示样张，保留正文、图标签和注释的可读尺度；封面仅按识别研究对象的需要加图。',
    '已有方向或明确委托直接沿用。若完整方向仍有实质分歧，或困难样张暴露具体风险，用academic_ppt_study按同一真实内容比较必要的候选，render:true查看实际画面。把比较集中于样张阶段，不为每页制作备选，也不重复询问已经决定的事项。',
-   '用academic_ppt_cards查询48种原生配方（含12种嵌图卡），20款编辑式参考见references/editorial-v083/index.html（C01–C20）。看图学习与是否采用preset无关；已充分细读用户模板可直接沿用，不强迫无关目录打卡。需要信息卡时再按内容采用或用drawings重组，标题、单位和边界必须可见，不随机轮换或把整稿铺成卡片墙。旧appearance布局继续兼容。'],
+   '需要局部信息卡时调用academic_ppt_cards并查看实际采用的preset；只做开放图表/公式/原图页面时不用读卡片目录。已充分查看的相关参考可沿用。标题、单位和边界必须可见，变化由证据关系决定，不随机轮换。旧appearance布局继续兼容。'],
   storyboard:['六页及以上整稿先用academic_ppt_plan提交证据故事板，逐页写问题、判断、推理、边界、必须可见条件和承接，标出最难页与连续三页。已确认方向直接沿用；不能把资料易得性当作改题授权。','用brief.narrative记录贯穿问题及分节问题。sectionId统一目录、分节与正文标签，transition写具体承上启下句；不机械插入过多章节页。','先把已取得的原图、数据图和机制示意分配到对应页，写清看哪里、比较什么及成立条件，再写argument、内容覆盖与visualPlan，并用composition.rows/regions或drawings组合图文；不必选择referenceTemplateId。',
    '先盘点本页证据、解释、条件和方法关系，再分配区域。visualPlan.contentLayers可用role、panelIds和summary记录实际信息层，不规定层数或分栏；上下、主辅、跨栏和单一主载体均按内容选择。用contentChecks登记必须可见的关键条件，不能只留在notes。',
    'heading与cover自定题名位置和语义断行；heading.inheritChrome:true可保留章节带与身份层，作者题名box须避开保留区，不静默挪动或缩字。颜色、字号、线型对应真实研究关系。反馈、因果和无向关联分别表达，核对连线端点及标签。',
@@ -299,7 +310,7 @@ export async function contextProject(options={}){
   delivery:['academic_ppt_check核对delivery.blockers及repairQueue，先修复未完成证据、故事板、样张与当前逐页审查；不把draft路径当成正式交付。','academic_ppt_deliver创建新目录，打包同一hash的可编辑PPTX、PDF/实际预览、讲稿、来源、故事板、审查记录和可重建工程。交付后说明实际验证范围与未测宿主。'],
  }[stage];
  const selected=new Set(a.recordIds??[]);const records=fields.flatMap(k=>p[k].filter(x=>selected.has(x.id)).map(x=>{const v=clone(x);delete v.data;return {collection:k,record:v};}));
- return {ok:true,projectPath:path,revision:p.revision,stage,storyboard:evaluated.designDiagnostics.storyboard,repairQueue:repairQueue(issues),reviewTargets:evaluated.designDiagnostics.reviewTargets??[],...(finalState?{finalReview:finalState.finalReview,render:finalState.render,delivery:finalState.delivery}:{}),brief:p.brief,designMode:mode,capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:finalState?.designDiagnostics.designDialogue??evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
+ return {ok:true,projectPath:path,revision:p.revision,stage,storyboard:evaluated.designDiagnostics.storyboard,repairQueue:repairQueue(issues),reviewTargets:evaluated.designDiagnostics.reviewTargets??[],...(finalState?{finalReview:finalState.finalReview,render:finalState.render,delivery:finalState.delivery}:{}),brief:p.brief,designMode:mode,design:clone(p.design),resolvedDesign:clone(evaluated.scenes.design),capabilities:p.capabilities,counts:counts(p),summary,nextActions,evidenceDesign:evaluated.designDiagnostics.evidenceDesign,researchEvidence:evaluated.designDiagnostics.researchEvidence,designDialogue:finalState?.designDiagnostics.designDialogue??evaluated.designDiagnostics.designDialogue,layoutDiversity:evaluated.designDiagnostics.layoutDiversity,contentCoverage:evaluated.designDiagnostics.contentCoverage,issues:[...issues].sort((a,b)=>(a.severity==='error'?0:1)-(b.severity==='error'?0:1)).slice(0,20),records,recordIndex:Object.fromEntries(fields.map(k=>[k,p[k].map(x=>({id:x.id,title:(x.title??x.text??x.caption??'').slice(0,180)}))])),artifact:p.artifact?{pptxSha256:p.artifact.files.pptx.sha256,mode:p.artifact.mode}:null};
 }
 function speechMarkdown(p){let elapsed=0;return `# ${p.title}\n\n目标时长：${p.brief.talkMinutes} 分钟。以下为本次导出对应的备注，实际语速须排练。\n\n`+p.slides.map((s,i)=>{const start=elapsed;elapsed+=s.seconds;const t=n=>`${Math.floor(n/60)}:${String(Math.round(n%60)).padStart(2,'0')}`;return `## ${i+1}. ${s.title}\n\n页 ID：${s.id}。时间预算：${t(start)}–${t(elapsed)}。\n\n${s.notes||'此页尚无讲稿。'}${s.transition?'\n\n衔接下一页：'+s.transition:''}\n\n`}).join('');}
 export async function buildProject(options={}){

@@ -1,0 +1,137 @@
+{
+  "inspection": "OOXML structure of the delivered files",
+  "profiles": [
+    {
+      "profile": "research-seminar",
+      "pptx": "research-seminar/research-seminar.pptx",
+      "pptxSha256": "03fcb77ad147e31ccd23c92e10be40c1befdf70e93058eb688cc1915bcfca64d",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 33,
+          "tables": 0,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 12,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    },
+    {
+      "profile": "thesis-defense",
+      "pptx": "thesis-defense/thesis-defense.pptx",
+      "pptxSha256": "12e86f20026a680179ee015f4c91f43e5214bb5d7a4fb5b2d1ff03f97383324b",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 34,
+          "tables": 0,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 14,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    },
+    {
+      "profile": "methods-whiteboard",
+      "pptx": "methods-whiteboard/methods-whiteboard.pptx",
+      "pptxSha256": "7044fca0bf0a80c0f4018cbca71a8d64870190d4f2bb305ff41fbdbb5747f639",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 33,
+          "tables": 0,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 12,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    },
+    {
+      "profile": "paper-club",
+      "pptx": "paper-club/paper-club.pptx",
+      "pptxSha256": "7a63ec58a4e155bafb24dcc8f8c8449aec19d09750bbab5e8a2345ae1d158c9a",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 35,
+          "tables": 0,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 13,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    },
+    {
+      "profile": "evidence-synthesis",
+      "pptx": "evidence-synthesis/evidence-synthesis.pptx",
+      "pptxSha256": "e5c8885b9185499be473fec50a7b83a493c357555b4db206d4c1de9dafd22b06",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 13,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 13,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    },
+    {
+      "profile": "field-report",
+      "pptx": "field-report/field-report.pptx",
+      "pptxSha256": "08f3685fd7bbfc287ca645a7f74cfdef4777f93d87584301c621eb2801331d8f",
+      "pages": [
+        {
+          "slide": "slide1.xml",
+          "shapes": 32,
+          "tables": 0,
+          "pictures": 0,
+          "charts": 0
+        },
+        {
+          "slide": "slide2.xml",
+          "shapes": 37,
+          "tables": 1,
+          "pictures": 0,
+          "charts": 0
+        }
+      ],
+      "scope": "Charts use editable native PowerPoint shapes, lines and text, not native chart workbooks. Tables are native PowerPoint tables. No full-slide picture objects."
+    }
+  ]
+}

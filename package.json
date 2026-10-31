@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.9.1",
-  "description": "DeepSeek Harness学术汇报插件：真实用户协作、证据故事板、自适应卡片、深浅配色与逐页留白审查的可编辑PPTX工作流。",
+  "version": "0.10.0-rc.1",
+  "description": "DeepSeek Harness学术汇报插件：证据驱动叙事、六类可执行学术风格、真实困难页样张与逐页PPTX审稿。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {
@@ -19,6 +19,8 @@
     "skills",
     "examples",
     "docs",
+    "evals",
+    "test",
     "scripts",
     "cordis.patch.yml",
     "README.md",
@@ -34,7 +36,8 @@
     "release:build": "node scripts/build-release.mjs",
     "cards:editorial": "node scripts/build-editorial-cards.mjs skills/dsh-academic-ppt/references/editorial-v083",
     "layouts": "node scripts/build-page-recipes.mjs",
-    "frames": "node scripts/build-frame-studies.mjs"
+    "frames": "node scripts/build-frame-studies.mjs",
+    "styles": "node scripts/build-academic-styles.mjs"
   },
   "dsh": {
     "bundle": {
