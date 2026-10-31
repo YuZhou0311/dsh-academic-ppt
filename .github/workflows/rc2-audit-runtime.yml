@@ -20,10 +20,14 @@ jobs:
         run: npm ci --ignore-scripts --include=optional
       - name: Prepare isolated official Host
         run: |
-          mkdir -p .test-output/dsh-runtime
-          cd .test-output/dsh-runtime
-          npm init -y
-          npm install --ignore-scripts @deepseek-ai/cordis@4.0.5 @deepseek-ai/dsh-core@0.2.1-rc.3 @deepseek-ai/dsh-agent@0.2.1-rc.3 @deepseek-ai/dsh-tool-fs@0.2.1-rc.3
+          npm install --prefix .test-output/dsh-runtime --ignore-scripts --no-audit --no-fund \
+            @deepseek-ai/dsh-tools@0.2.1-rc.3 @deepseek-ai/dsh-skill@0.2.1-rc.3 \
+            @deepseek-ai/dsh-system-prompt@0.2.1-rc.3 @deepseek-ai/dsh-app-boot@0.2.1-rc.3 \
+            @deepseek-ai/dsh-agent-loop@0.2.1-rc.3 @deepseek-ai/dsh-tool-skill@0.2.1-rc.3 \
+            @deepseek-ai/dsh-fs-local@0.2.1-rc.3 @deepseek-ai/dsh-fs-sandbox@0.2.1-rc.3 \
+            @deepseek-ai/dsh-sandbox-policy@0.2.1-rc.3 @deepseek-ai/dsh-attachment-local@0.2.1-rc.3 \
+            @deepseek-ai/dsh-tool-fs@0.2.1-rc.3 @deepseek-ai/dsh-skill-filesystem@0.2.1-rc.3 \
+            @deepseek-ai/cordis@4.0.5
       - name: Archive source and dependencies, no credentials or font files
         run: |
           mkdir -p /tmp/rc2-audit
