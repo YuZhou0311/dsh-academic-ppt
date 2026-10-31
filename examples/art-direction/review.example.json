@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "target": "TODO: Describe the selected reference's hierarchy, density and evidence relationships.",
+  "pptx": {"file": "deck.pptx", "sha256": "FILL_AFTER_BUILD"},
+  "references": [
+    {"file": "reference/page.png", "sha256": "FILL_AFTER_INSPECTION", "observation": "TODO: Concrete observation tied to a page region."}
+  ],
+  "render": {
+    "renderer": "TODO: Actual engine and version; do not invent a receipt.",
+    "inputPptxSha256": "FILL_AFTER_RENDER",
+    "pageCount": 1,
+    "pages": [{"page": 1, "file": "render/slide-1.png", "sha256": "FILL_AFTER_RENDER"}]
+  },
+  "pages": [{
+    "page": 1,
+    "currentRenderSha256": "FILL_AFTER_INSPECTION",
+    "reviewer": null,
+    "status": "blocked",
+    "observations": {
+      "referenceMatch": null,
+      "hierarchy": null,
+      "relationships": null,
+      "evidenceLegibility": null,
+      "typography": null,
+      "color": null,
+      "density": null
+    },
+    "unresolved": ["Not yet inspected. Template intentionally fails validation."]
+  }],
+  "directionApproval": {"kind": "pending", "userQuote": null}
+}
