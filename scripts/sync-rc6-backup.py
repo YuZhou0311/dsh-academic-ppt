@@ -155,6 +155,15 @@ def main() -> int:
     # Keep this helper under backups, outside the byte-for-byte source snapshot.
     shutil.copyfile(Path(__file__).resolve(), backup / "sync-rc6-backup.py")
     git("add", "--all", cwd=checkout)
+    # The inherited .gitignore ignores *.tgz and *.log. Explicitly stage ONLY
+    # verified snapshot files and the intended backup files, not arbitrary files.
+    explicit = list(files) + [str(path.relative_to(checkout)).replace("\\", "/")
+                              for path in backup.iterdir() if path.is_file()]
+    for offset in range(0, len(explicit), 30):
+        git("add", "-f", "--", *explicit[offset:offset + 30], cwd=checkout)
+    tracked = set(git("-c", "core.quotepath=false", "ls-files", cwd=checkout).splitlines())
+    if not set(explicit).issubset(tracked):
+        raise ValueError("Some verified files were not staged; refusing incomplete backup.")
     git("-c", "user.name=DSH Backup", "-c", "user.email=backup@localhost",
         "commit", "-m", "backup: preserve exact rc.6 source and install package [skip ci]",
         cwd=checkout)
