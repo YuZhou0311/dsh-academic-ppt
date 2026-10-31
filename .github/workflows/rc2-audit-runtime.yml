@@ -1,0 +1,41 @@
+name: RC2 audit runtime
+on:
+  push:
+    branches: [experiment/layout-variation-20261031]
+    paths: [.github/workflows/rc2-audit-runtime.yml]
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 414317c3b1f09f4d02c840bc92ea00ccf236062f
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.19.0
+      - name: Install package dependencies
+        run: npm ci --ignore-scripts --include=optional
+      - name: Prepare isolated official Host
+        run: |
+          mkdir -p .test-output/dsh-runtime
+          cd .test-output/dsh-runtime
+          npm init -y
+          npm install --ignore-scripts @deepseek-ai/cordis@4.0.5 @deepseek-ai/dsh-core@0.2.1-rc.3 @deepseek-ai/dsh-agent@0.2.1-rc.3 @deepseek-ai/dsh-tool-fs@0.2.1-rc.3
+      - name: Archive source and dependencies, no credentials or font files
+        run: |
+          mkdir -p /tmp/rc2-audit
+          git rev-parse HEAD > /tmp/rc2-audit/commit.txt
+          git archive HEAD -- . ':!.publication' > /tmp/rc2-source.tar
+          gzip /tmp/rc2-source.tar
+          mv /tmp/rc2-source.tar.gz /tmp/rc2-audit/source.tar.gz
+          tar -czf /tmp/rc2-audit/dependencies.tar.gz node_modules .test-output/dsh-runtime
+          cp "$(command -v node)" /tmp/rc2-audit/node
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rc2-audit-runtime
+          path: /tmp/rc2-audit/
+          retention-days: 3
+          compression-level: 1
