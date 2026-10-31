@@ -1,0 +1,29 @@
+name: Layout study runtime
+on:
+  push:
+    branches: [experiment/layout-variation-20261031]
+    paths: [.github/workflows/layout-lab-runtime.yml]
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.19.0'
+          cache: npm
+      - run: npm ci --ignore-scripts --omit=optional
+      - name: Archive the existing runtime for local sample generation
+        run: |
+          mkdir -p runtime-export
+          git rev-parse HEAD > runtime-export/commit.txt
+          tar -czf runtime-export/plugin-runtime.tgz src scripts skills examples package.json package-lock.json node_modules LICENSE THIRD_PARTY_NOTICES.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layout-study-runtime
+          path: runtime-export/
+          retention-days: 3
+          if-no-files-found: error
