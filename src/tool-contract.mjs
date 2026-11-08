@@ -1,3 +1,7 @@
+import {ART_DIRECTIONS} from './art-direction.mjs';
+import {pageNodeSchema,composePageRequestSchema,composeOpeningRequestSchema} from './page-authoring-schema.mjs';
+import {fileURLToPath} from 'node:url'
+import {installedPlugin,designCases} from './authoring-guidance.mjs'
 import {
   briefSchema, paperSchema, claimSchema, assetSchema, slideSchema, designPatchSchema,
   assessmentSchema, capabilitiesSchema, assertToolArgs,
@@ -8,9 +12,22 @@ import { preparationRequestSchema } from './design-intake.mjs'
 import {storyboardRequestSchema} from './storyboard.mjs'
 
 const contracts = {
+  authoring:{visualLanguages:ART_DIRECTIONS,schema:composePageRequestSchema,openingSchema:composeOpeningRequestSchema,referencedSchemas:[pageNodeSchema],recordKey:'request',
+   guidePath:fileURLToPath(new URL('../skills/dsh-academic-ppt/references/content-authoring.md',import.meta.url)),
+   examplesPath:fileURLToPath(new URL('../examples/content-authoring/',import.meta.url)),
+   compositionLessons:['compact-loop','count-ledger'].map(id=>({id,previewPath:fileURLToPath(new URL('../skills/dsh-academic-ppt/references/reference-composition/'+id+'.png',import.meta.url)),requestPath:fileURLToPath(new URL('../examples/content-authoring/'+id+'.json',import.meta.url)),identity:'original-synthetic-teaching-not-research'})),
+   instructions:[
+    '新原创工程默认artDirection=structured：明确题签、色面和文字层级。editorial用局部色签与衬线题名；open保留细线开放关系。它们不是整页模板，palette与显式system仍优先。不要把科学克制误写成全部白底无框。',
+    'plan(kind=compose-page)：split编排关系；group的headingStyle=band/tab/rail/rule/text；figure的图注贴合实际图像，align=top/center/bottom；comparison把2–4种方法的相同指标按共享行直接比较；statement用于有内容的短命题带。不要把每页变成相同卡片阵列。',
+    '封面用同一plan工具的kind=compose-opening（契约openingSchema），完整题名只出现一次，不拿正文列框当封面；首轮困难样张不因有封面入口而多做封面。split纵向短文本默认自然高度，有意伸展用weight；flow默认紧凑并可auto/vertical；text.emphasis只强调实际短语；comparison.metrics.scale显式刻度才画对应条。',
+    '先登记paper/claim/asset；figure仅引用已登记assetId并保持contain，viewport只来自已核对资产。本入口不搜索、不补数据、不代填review或confirmed。',
+    'mode=create新页，replace整页重排且须changeNote；局部改样式继续edit。溢出报节点和所需高度，不自动缩字。保留返回planPath用于下轮修改。',
+    '同时支持现有drawings/composition精细定制及原生chart。旧figure-focus是兼容入口，不是默认困难页创作方案。文案中的证据/解释/边界是编辑检查，不是必画的三栏。']},
+
   storyboard: {
     schema:storyboardRequestSchema,recordKey:'request',
     notes:[
+      'kind=figure-inventory 盘点已下载原图：sources:[{paperId,directory,filenamePrefix?}]。目录必须在当前工作区，paperId已登记；返回inventoryPath、单文件ID/SHA/像素和联系表。按paper.figureReview.candidates的inventoryId逐图selected/not-used/pending，captionStatus独立。缺图注不等于图没下载。',
       'kind=storyboard 写入完整storyboard：先确定objective/audienceTakeaway/throughline，再写pages的问题、主张标题、claimIds/assetIds、warrant、boundary、transition、seconds、layoutFamily/layoutReason。layoutFamily使用layouts中32种语法ID或custom，名称不自动变成版式。',
       'mustShow用于主画面必须保留的短条件/单位/判断，后续删除contentChecks、drawings或visualPlan不能解除故事板中的约束。论文图ID必须既分配又真正进入导出画面。',
       'decision为真实故事线选择：proposed可继续研究和样张，confirmed/delegated须userResponse保存回答或明确委托。不要编造批准、自动填通用推理或把材料可得性当作替换研究目标的授权。',
@@ -31,10 +48,11 @@ const contracts = {
       'PPTX必须是本工作区明确提供的文件。prepare核实路径与格式并返回academic_ppt_template调用计划，尚未解析或查看页面；按现有工具渲染并看实际代表页。旧.ppt先转换为.pptx，不能伪称已支持解析。',
       '提取并实际看过模板后，填写template.review.profilePaths与visualObservations，可补renderReferences；在referenceStudy.designStudies中定位源页，记录阅读顺序、证据层级与适配，或用componentStudies记录相关组件。prepare核对profile与当前PPTX一致，但字符串观察不证明真实看图。',
       'imageGeneration.availability由宿主工具清单或实际能力决定，source记依据；available须填实际toolName。cards填本次标题、正文、指标槽位、内容状态和来源说明，工具据此生成提示。该工具不读取密钥、不自行调用模型；宿主负责按真实工具契约调用。',
-      '成功生图并实际查看后才能写status=generated、resultReferences与visualObservations；失败记failed及原因，用户拒绝记declined。unknown/unavailable/failed/declined均继续内置卡片库。引用和看图记录是宿主声明，不冒充插件独立视觉验证。',
+      '生图能力与是否需要分开：imageGeneration.requested缺省false。只有本次明确选择额外设计探索才设true；available与已有cards不自动触发生图。保留当前模型和用户授权，不索取密钥。',
+      '成功生图并实际查看后才能写status=generated、resultReferences与visualObservations；失败记failed及原因，用户拒绝记declined。unknown/unavailable/failed/declined均按内容继续原生图表、方法图、源图和自由composition，卡片仅按需。引用和看图记录是宿主声明，不冒充插件独立视觉验证。',
       'paletteMode默认adaptive，palette为可修改的候选色；允许根据当前内容改变参考色的色相、明暗、饱和度及占比，保持全稿色义与文字对比。只有用户明确固定配色时使用fixed，并同时提供palette。',
-      '先按研究任务查看相关整页语法、academicStyles真实样张、用户模板或科学报告，学习证据主次、阅读路径和直接标注。需要局部组件时才看cards；开放科学页面不必先研究卡片。已有相关观察可复用。',
-      'referenceStudy.designStudies最多12条，必填source（page-recipe/academic-style/user-template/scientific-reference）、referenceId、previewPath、readingOrder、evidenceHierarchy、adaptation，可选typography/grouping。page-recipe与academic-style使用真实目录ID，user-template定位源页，scientific-reference使用真实来源URL。原componentStudies继续可用；实际用preset必须查看其对应预览。paletteRationale保留配色和比较色义理由。',
+      '先按研究任务查看相关整页语法、designCases实际PNG与对应设计解释（旧academicStyles样张仅兼容测试）、用户模板或科学报告，学习证据主次、阅读路径和直接标注。需要局部组件时才看cards；开放科学页面不必先研究卡片。已有相关观察可复用。',
+      'referenceStudy.designStudies最多12条，必填source（page-recipe/academic-style/design-case/user-template/scientific-reference）、referenceId、previewPath、readingOrder、evidenceHierarchy、adaptation，可选typography/grouping。page-recipe、academic-style与design-case使用各自真实目录ID，user-template定位源页，scientific-reference使用真实来源URL。原componentStudies继续可用；实际用preset必须查看其对应预览。paletteRationale保留配色和比较色义理由。',
       '根据实际内容保留、合并、拆分或重排区块；不只换字照搬，不为凑原创强制改变每张卡。生成图只指导设计，最终以原始内容重建可编辑文字、数据与形状。outputPath可保存独立准备记录，已有不同内容会拒绝覆盖，使用新文件名保存下一次选择。',
     ],
   },
@@ -44,7 +62,7 @@ const contracts = {
   },
   paper: {
     schema: paperSchema, recordKey: 'papers', maxItems: 5,
-    notes: ['source-led正文使用的article/preprint须有sourceCheck与figureReview。sourceCheck写实际核对时间、metadataSource、fullTextSource和身份/版本核对结果；只有实际核实后才填verified，搜索摘要/DOI格式/下载成功不等于已读全文。插件检查记录，不自行联网验真。', 'figureReview按实际全文/出版页图号盘点：checkedSources写真实查看位置，candidates记录figure、locator、caption、decision。selected必须给本篇assetId并实际用于正文；not-used/unavailable写具体reason。真正没有合适原图时填no-suitable-figure并说明逐图判断及替代科学图/表，不能以未上传PDF或抓取只有文字代替获取尝试。', '论文题名、版本、实际阅读章节、分析单位及比较条件须来自实际查阅；取得或抽取全文不等于逐页精读。', 'analysis 记录问题、缺口、机制、设计、比较、效度与可定位原文；未核实内容如实说明。'],
+    notes: ['source-led正文使用的article/preprint须有sourceCheck与figureReview。sourceCheck写实际核对时间、metadataSource、fullTextSource和身份/版本核对结果；只有实际核实后才填verified，搜索摘要/DOI格式/下载成功不等于已读全文。插件检查记录，不自行联网验真。', 'figureReview可先pending，candidates逐文件关联inventoryId或localPath；captionStatus=verified/partial/unavailable独立于decision。整稿核对figure-inventory的下载清单，不能只登记已选图，也不能用Fig.1–8一条不可用覆盖未查看文件。', 'figureReview按实际全文/出版页图号盘点：checkedSources写真实查看位置，candidates记录figure、locator、caption、decision。selected必须给本篇assetId并实际用于正文；not-used/unavailable写具体reason。真正没有合适原图时填no-suitable-figure并说明逐图判断及替代科学图/表，不能以未上传PDF或抓取只有文字代替获取尝试。', '论文题名、版本、实际阅读章节、分析单位及比较条件须来自实际查阅；取得或抽取全文不等于逐页精读。', 'analysis 记录问题、缺口、机制、设计、比较、效度与可定位原文；未核实内容如实说明。'],
   },
   claim: {
     schema: claimSchema, recordKey: 'claims', maxItems: 20,
@@ -64,31 +82,22 @@ const contracts = {
     academicPalettes: Object.values(ACADEMIC_PALETTES),
     defaultStyleProfile: DEFAULT_ACADEMIC_STYLE_ID,
     academicStyles: Object.values(ACADEMIC_STYLES),
+    designPriority:"用户参考优先。designCases教迁移，styleProfile仅为基底；旧稀疏图册不是审美正例。",
     styleSuggestions: {
       basis:'观看任务与证据关系的候选建议，不能按学科或页码自动轮换',
       byGenre:{'research-progress':['research-seminar','field-report'],'paper-reading':['paper-club'],'literature-review':['evidence-synthesis','research-seminar'],proposal:['methods-whiteboard','thesis-defense'],defense:['thesis-defense','research-seminar']},
       reference:'references/academic-styles.md',
     },
     notes: [
-      "新init自动consultation.workflowVersion:2，mode默认collaborative。source先选择content-led/reference-guided/template-faithful，保存status/userResponse及实际templatePaths；随后讨论故事线和真实样张配色/风格/layout。confirmed/delegated主题须selected与真实userResponse；全局委托须delegation和delegationTopics，只覆盖明确范围。未答不可代填，提问后等待；旧已存无标记工程兼容。",
-      "仅记录consultation决定而其他科学/设计内容完全不变时，record保留经哈希校验的当前成品、实际渲染和原逐页审查；保留原build修订及审查时间/result，needs-fix不会变passed。实际设计、能力或referenceStudy变化仍使成品失效。v2的局部consultation更新保留省略的字段，decisions按topic更新；显式空数组可清空。context恢复具体source、recordedDecisions与delegationTopics，不只看主题名。",
-      "完整新稿样张阶段保存designStudies或相关componentStudies及paletteRationale。前者记录可定位整页/科学参考的阅读顺序、证据层级与本稿适配，后者适用于实际相关组件。开放排版无需卡片打卡；使用preset须有catalogIds或同ID的card-library细读。仅列pageRecipeIds不证明真实看图。旧工程与局部修改保持兼容。",
-      "颜色用#RRGGBB；academicPalettes是5套可编辑候选；surfaceOptions给出深色题签、深底重点面、中间色面和开放证据区的可执行配置，选中后完整写入palette，以paletteRationale解释对比、原图色义和主辅比例，不按学科自动选色。fontFamily填写实际字体。",
-      "封面保留完整题名、语义断行与真实身份；minimal/editorial可无图，custom+boxes支持自主构图，图片须承担研究识别任务。",
-      "mode新稿content-led，有参考reference-guided；明确保留版式才用template-faithful。模式不生成布局或保证任意模板无损复刻。",
-      "新工程density默认balanced，空区进入实际画面复核，不按面积逼迫添加内容。用户明确选择compact时保留正文大空区门禁；旧工程既有compact与用户密度选择不因升级或改profile而放松。科学含义、证据与可读性仍须独立通过。",
-      "新默认research-seminar采用开放plain分组与无阴影文字组。styleProfile提供标题/正文/注释字体、system、chrome、tableStyle及局部分组默认；tableStyle独立为three-line/ruled/banded，不再要求随panel表面换色。按真实证据关系选页面，不按页轮换profile。",
-      "design输入是局部更新，可只记录consultation、density或一个视觉字段；最终保存仍校验完整工程。新建时只有元信息或局部覆盖也采用默认profile，完整旧fontFamily+palette配置保留legacy语义；读取已有工程不自动迁移。",
-      "新工程可只写design:{styleProfile:ID}，其余defaults在渲染时解析；不要为选方向而展开全部DEFAULT_DESIGN。fontFamily覆盖正文，titleFontFamily覆盖标题，annotationFontFamily覆盖图注/来源；显式palette/system/chrome等按字段覆盖profile，原图不重新着色。字体安装仍需实际渲染核对。",
-      "切换styleProfile仅改变未显式覆盖的默认。record省略的design字段与consultation/来源/委托继续保留；旧工程原有fontFamily、palette或system也是显式值，不静默清除。若希望完整迁移，先核对用户固定要求，再将所选academicStyles.defaults中需要替换的字段明确写入design；不要用迁移删除科研或审查记录。样式变化使旧成品审查失效。",
-      "当前流程见references/workflow-v010.md，设计方向见academic-styles.md，科学图表见scientific-figures.md，文字审稿见academic-writing.md，实际画面审阅见design-critique.md。profile只是起点，真实内容与用户模板优先。",
-      "finalReview仅在成品实际render且全页自审修复完成后记录：status、真实userResponse、当前pptxSha256和renderReceiptSha256。check/context返回状态与双哈希。只有明确授权final-review时使用delegated；未授权时先展示成品并等待反馈。Agent自查passed不代表用户接受，旧哈希确认不继承。",
-      "academic_ppt_template.suggestedDesign仅是候选，须看真实代表页再适配。system.bodySize为22–40px；先去重复、调列宽或重排，不靠降低关键字级通过。templateProfilePaths只按需导入局部背景，旧文字、机构与数据不作当前研究内容。",
-    ],
+      '用户模板/显式参数优先，旧工程不自动改写。artDirection执行字级、题签和色面；styleProfile只定阅读基底。palette用#RRGGBB，不重着色原图；字体须实际可用。',
+      '正文先contract(authoring)再compose-page；先看相关designCases的PNG与解释。planned六页以上先真实困难页pilot-review后扩稿。卡片仅按需，不复制教学数字。',
+      'consultation只记真实回答/明确委托，普通继续不是认可；已有选择不重问。实际设计变化后重建、重渲染、逐页read_image。最终反馈先present并结束本轮，不弹阻塞框。',
+      '全字段更新/协作见workflow-v010.md；视觉工艺见visual-craft.md；原图见figure-inventory.md。合并当前design，不重填全部默认值。已明确字号/来源要求不得为消除错误降低。'
+],
   },
   assessment: {
     schema: assessmentSchema, recordKey: 'observations',
-    notes: ['每条对应实际查看的当前PPTX页面，填写contentCheck/legibilityCheck/issue；v2还须spaceCheck说明内部空腔、主体占幅和整页空区，colorCheck说明深浅职责及实际对比。当前reviewTargets逐项用diagnosticChecks的targetId/decision/reason回应；有意留白写intentional及作用，缺陷写needs-fix，不能带缺陷passed。', '通过academic_ppt_review提交observations及同一产物pptxSha256、reviewedSlides、basis、reviewer、result。跨版本已看页面不能冒充对最终同一hash的逐页检查。'],
+    notes: ['每条对应实际查看的当前PPTX页面，填写contentCheck/legibilityCheck/issue；v2还须spaceCheck说明内部空腔、主体占幅和整页空区，colorCheck说明深浅职责及实际对比。当前reviewTargets逐项用diagnosticChecks的targetId/decision/reason回应；有意留白写intentional及作用，缺陷写needs-fix，不能带缺陷passed。', 'Host内vision-model/pptx-render须有同会话成功read_image的当前单页字节收据；联系表、失败调用、text路径不能算，未改字节可复用。预览present后用最终消息附链接并结束本轮，等自然语言反馈，不弹阻塞视觉确认框。', '通过academic_ppt_review提交observations及同一产物pptxSha256、reviewedSlides、basis、reviewer、result。跨版本已看页面不能冒充对最终同一hash的逐页检查。'],
     capabilityRecord: {
       schema: capabilitiesSchema, recordKey: 'capabilities',
       submission: '可在init时提供，或以recordsPath批次的根级capabilities登记；这是有修订的内容更新。',
@@ -103,8 +112,10 @@ export async function toolContract({ topic, signal } = {}) {
   assertToolArgs('academic_ppt_contract', { topic })
   const contract = structuredClone(contracts[topic])
   return {
-    ok: true, topic, ...contract,
-    submission: topic === 'storyboard'
+    ok: true, topic, ...contract, installedPlugin, ...(topic==='design'?{visualLanguages:Object.fromEntries(Object.entries(ART_DIRECTIONS).map(([id,{label,description,defaults}])=>[id,{label,description,defaults}]))}:{}), ...(topic==='design'?{designCases:designCases(),authoringHelpers:{modulePath:fileURLToPath(new URL('./authoring-primitives.mjs',import.meta.url)),guidePath:fileURLToPath(new URL('../skills/dsh-academic-ppt/references/authoring-primitives.md',import.meta.url)),scope:'Geometry helpers only; output to recordsPath, keep normal evidence/check/build/render pipeline.'}} : {}),
+    submission: topic === 'authoring'
+      ? {tool:'academic_ppt_plan',transport:'requestPath',maxBytes:1024*1024,note:'正文根对象含kind:compose-page、mode、slide、intent、body；开场根对象用kind:compose-opening、mode、slide、cover。分别见schema/openingSchema；部件见referencedSchemas。只传requestPath。'}
+      : topic === 'storyboard'
       ? {tool:'academic_ppt_plan',transport:'requestPath',maxBytes:1024*1024,root:'{ "kind": "storyboard", "storyboard": { "version": 1, "objective": "...", "pages": [] } }',note:'先按完整schema填齐内容。requestPath是UTF-8 JSON文件；不放projectPath/expectedRevision。查询状态时省略requestPath。'}
       : topic === 'preparation'
       ? {tool:'academic_ppt_prepare',transport:'requestPath',maxBytes:1024*1024,root:'{ "topic": "本次汇报主题", "consultation": { "mode": "collaborative", "interaction": "checkpoints" }, "template": { "status": "unasked" } }',note:'准备请求是单独的UTF-8 JSON对象，不是recordsPath批次，不加入project.json。outputPath可保存本次计划；宿主实际完成提问或生图后更新请求状态并另存下一份计划。'}

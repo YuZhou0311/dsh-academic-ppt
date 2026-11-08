@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: a new dialogue offers only the next related questions and preserves earlier responses
+ok 1 - a new dialogue offers only the next related questions and preserves earlier responses
+  ---
+  duration_ms: 2.610236
+  type: 'test'
+  ...
+# Subtest: proposals, missing responses and duplicate answers do not pass as user confirmation
+ok 2 - proposals, missing responses and duplicate answers do not pass as user confirmation
+  ---
+  duration_ms: 1.853457
+  type: 'test'
+  ...
+# Subtest: explicit delegation skips repeated questions but needs its real basis
+ok 3 - explicit delegation skips repeated questions but needs its real basis
+  ---
+  duration_ms: 0.786799
+  type: 'test'
+  ...
+# Subtest: reference learning needs real candidate identities and observations, while native adaptation stays possible
+ok 4 - reference learning needs real candidate identities and observations, while native adaptation stays possible
+  ---
+  duration_ms: 1.48055
+  type: 'test'
+  ...
+# Subtest: legacy whole-page records retain recipe validation and compatibility without forcing a card preset
+ok 5 - legacy whole-page records retain recipe validation and compatibility without forcing a card preset
+  ---
+  duration_ms: 0.267321
+  type: 'test'
+  ...
+# Subtest: new whole-report planning needs actual design observations beyond page recipe names, even before pilot slides exist
+ok 6 - new whole-report planning needs actual design observations beyond page recipe names, even before pilot slides exist
+  ---
+  duration_ms: 0.506122
+  type: 'test'
+  ...
+# Subtest: specific template, card-library and editorial studies support native composition without adopting presets
+ok 7 - specific template, card-library and editorial studies support native composition without adopting presets
+  ---
+  duration_ms: 1.821192
+  type: 'test'
+  ...
+# Subtest: component identities, page locations, required detail fields and palette rationale remain inspectable
+ok 8 - component identities, page locations, required detail fields and palette rationale remain inspectable
+  ---
+  duration_ms: 59.206792
+  type: 'test'
+  ...
+# Subtest: legacy detail omissions remain warnings and not-applicable cannot waive a complete new redesign
+ok 9 - legacy detail omissions remain warnings and not-applicable cannot waive a complete new redesign
+  ---
+  duration_ms: 0.544639
+  type: 'test'
+  ...
+# Subtest: new delegated create and record defaults enforce relevant design learning for a short pilot of a longer report
+ok 10 - new delegated create and record defaults enforce relevant design learning for a short pilot of a longer report
+  ---
+  duration_ms: 447.163407
+  type: 'test'
+  ...
+# Subtest: explicit topics survive create and record while loading and updating a serialized legacy record never adds interaction
+ok 11 - explicit topics survive create and record while loading and updating a serialized legacy record never adds interaction
+  ---
+  duration_ms: 33.980852
+  type: 'test'
+  ...
+# Subtest: checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction
+ok 12 - checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction
+  ---
+  duration_ms: 0.899685
+  type: 'test'
+  ...
+# Subtest: prepare defaults to dialogue and waits for design choices before proposing an imagegen call
+ok 13 - prepare defaults to dialogue and waits for design choices before proposing an imagegen call
+  ---
+  duration_ms: 34.724734
+  type: 'test'
+  ...
+# Subtest: initial density can follow an actual answer before building; omitted dialogue fields are retained
+ok 14 - initial density can follow an actual answer before building; omitted dialogue fields are retained
+  ---
+  duration_ms: 17.588553
+  type: 'test'
+  ...
+# Subtest: unanswered design topics block review construction while a labelled draft remains recoverable
+ok 15 - unanswered design topics block review construction while a labelled draft remains recoverable
+  ---
+  duration_ms: 229.271146
+  type: 'test'
+  ...
+# Subtest: a provisional density survives drafts and separately recorded answers until its first actual choice
+ok 16 - a provisional density survives drafts and separately recorded answers until its first actual choice
+  ---
+  duration_ms: 111.592542
+  type: 'test'
+  ...
+# Subtest: delegated initial design can choose density, while explicit density and review builds settle it
+ok 17 - delegated initial design can choose density, while explicit density and review builds settle it
+  ---
+  duration_ms: 59.645501
+  type: 'test'
+  ...
+# Subtest: confirmed preferences shape generated references without copying raw replies or treating proposals as choices
+ok 18 - confirmed preferences shape generated references without copying raw replies or treating proposals as choices
+  ---
+  duration_ms: 13.043601
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2281.77923

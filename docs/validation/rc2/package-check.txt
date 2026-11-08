@@ -1,0 +1,29 @@
+
+> dsh-academic-ppt@0.10.0-rc.2 check
+> node scripts/check-package.mjs
+
+{
+  "ok": true,
+  "name": "dsh-academic-ppt",
+  "version": "0.10.0-rc.2",
+  "toolCount": 19,
+  "currentDesignCases": 4,
+  "guidanceRevision": "evidence-art-direction-cases-rc2",
+  "academicStyles": 6,
+  "academicStyleStudySlides": 12,
+  "academicStylePptxDigestsChecked": 6,
+  "academicStylePngDigestsChecked": 12,
+  "nativeEditableStylePages": 12,
+  "pageRecipes": 32,
+  "pageRecipeAtlasSlides": 32,
+  "frameStudySlides": 4,
+  "cardPresets": 48,
+  "cardPreviewDigestsChecked": 48,
+  "imageCardReferenceSlides": 12,
+  "referenceTemplates": 48,
+  "referencePptxDigestsChecked": 10,
+  "skill": "dsh-academic-ppt",
+  "markdownFiles": 121,
+  "localLinksChecked": 509,
+  "scope": "package structure, reference asset hashes and record bindings, native object inventory, module loading and documentation links; no scientific or visual approval, glyph verification, or end-to-end model evaluation"
+}

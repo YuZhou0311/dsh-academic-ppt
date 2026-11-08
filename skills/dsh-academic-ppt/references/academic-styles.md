@@ -1,6 +1,10 @@
+# 视觉语言先于旧风格基底
+
+新工程优先按 `design.artDirection` 选择structured/editorial/open，再用palette匹配任务和原图。其字体、页眉与组题签默认值覆盖旧styleProfile的默认值，用户显式system、字体和chrome仍优先。旧styleProfile只为兼容与语义起点。不要从下文“开放、无填充”推导出所有科研页面必须素白。详见 [visual-craft.md](visual-craft.md)。
+
 # 学术风格：全稿规则与内容表达
 
-先选择适合材料、听众和观看方式的方向，再制作实际困难页。六种方向是可覆盖的起点，名称不是学科标签，也不是质量等级。不要按页轮换方向。院校模板、用户具体参考和明确参数优先。
+先按用户参考和当前证据确定构图、层级与颜色职责，再选择可覆盖的运行时基底。六种方向是可覆盖的起点，名称不是学科标签，也不是质量等级。不要按页轮换方向。院校模板、用户具体参考和明确参数优先。
 
 ## 六种方向
 
@@ -41,7 +45,7 @@
 4. 标题、正文、变量、图注与来源怎样形成层级？
 5. 哪个原则能迁移到本次材料，哪个效果依赖原参考内容而不能搬用？
 
-需要设计研究记录时，用 `referenceStudy.designStudies` 保存 `source`、`referenceId`、`previewPath`、`readingOrder`、`evidenceHierarchy`、`adaptation`。支持 `page-recipe`、`academic-style`、`user-template`、`scientific-reference`。必须填写实际看过的文件/页面定位；目录名、截图路径或好听的形容词都不证明看过。旧 `componentStudies` 继续适用于具体卡片和边框细读。
+需要设计研究记录时，用 `referenceStudy.designStudies` 保存 `source`、`referenceId`、`previewPath`、`readingOrder`、`evidenceHierarchy`、`adaptation`。支持 `page-recipe`、`academic-style`、`design-case`、`user-template`、`scientific-reference`。必须填写实际看过的文件/页面定位；目录名、截图路径或好听的形容词都不证明看过。旧 `componentStudies` 继续适用于具体卡片和边框细读。
 
 不要为满足记录而下载无关模板。选择最有帮助的参考，写清本稿怎样吸收它。原生开放排版也可形成专业风格。
 
@@ -51,4 +55,4 @@
 
 先看困难页能否讲清，再检查前后两页。全稿保持变量颜色、图例、字体角色与轴处理稳定；允许内容的关系改变布局。相同实验连续使用相同骨架有利于比较，不因重复次数强制换版。
 
-原创样张见 [academic-styles/index.html](academic-styles/index.html)。其中数据只用于教学与软件验证，不是科研结果；实际渲染和可编辑PPTX是观察材料，不能证明任何模型在任意题目上都能达到同等质量。
+当前审美学习入口是 [构图案例与迁移说明](design-cases/README.md)，由 `contract(design).designCases` 给出可读取的实际PNG路径。旧 [六类图册](academic-styles/index.html) 仅保留为兼容、数据及可编辑性测试，不能作为当前审美正样本。案例不是新枚举styleProfile，也不是待套用的整页模板；科学内容必须来自本次材料。

@@ -1,7 +1,7 @@
 {
   "name": "dsh-academic-ppt",
-  "version": "0.10.0-rc.1",
-  "description": "DeepSeek Harness学术汇报插件：证据驱动叙事、六类可执行学术风格、真实困难页样张与逐页PPTX审稿。",
+  "version": "0.10.0-rc.7",
+  "description": "DeepSeek Harness学术汇报插件：内容关系构图、原图与原生图协同、实际困难页精修、可追溯用户预览。",
   "type": "module",
   "main": "src/index.mjs",
   "exports": {
@@ -30,14 +30,16 @@
   "scripts": {
     "test": "node --test --test-concurrency=2 test/*.test.mjs",
     "demo": "node scripts/build-demo.mjs",
-    "check": "node scripts/check-package.mjs",
+    "check": "node scripts/check-package.mjs && node scripts/check-composition-lessons.mjs",
     "references": "node scripts/build-references.mjs",
     "cards": "node scripts/build-card-library.mjs",
     "release:build": "node scripts/build-release.mjs",
     "cards:editorial": "node scripts/build-editorial-cards.mjs skills/dsh-academic-ppt/references/editorial-v083",
     "layouts": "node scripts/build-page-recipes.mjs",
     "frames": "node scripts/build-frame-studies.mjs",
-    "styles": "node scripts/build-academic-styles.mjs"
+    "styles": "node scripts/build-academic-styles.mjs",
+    "cases": "node scripts/build-design-cases.mjs",
+    "doctor": "node scripts/check-installation.mjs"
   },
   "dsh": {
     "bundle": {

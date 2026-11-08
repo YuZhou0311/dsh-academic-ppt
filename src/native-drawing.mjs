@@ -7,7 +7,7 @@ const finite=v=>typeof v==='number'&&Number.isFinite(v);
 const boxOK=b=>b&&['x','y','w','h'].every(k=>finite(b[k]))&&b.w>0&&b.h>0;
 const within=(b,w,h)=>boxOK(b)&&b.x>=0&&b.y>=0&&b.x+b.w<=w+1e-6&&b.y+b.h<=h+1e-6;
 export const drawingAssetIds=slide=>[...new Set(list(slide.drawings).flatMap(d=>list(d.elements).filter(e=>e.kind==='image').map(e=>e.assetId)))];
-export const drawingClaimIds=slide=>[...new Set(list(slide.drawings).flatMap(d=>[...list(d.claimIds),...list(d.elements).flatMap(e=>list(e.claimIds))]))];
+export const drawingClaimIds=slide=>[...new Set(list(slide.drawings).flatMap(d=>[...list(d.claimIds),...list(d.evidenceTables).flatMap(t=>list(t.sourceClaimIds)),...list(d.elements).flatMap(e=>list(e.claimIds))]))];
 function segmentCrossesBox(a,z,b){
   // Intersect the open interior; touching a label border is not an overlap.
   const pad=2, minX=b.x+pad,maxX=b.x+b.w-pad,minY=b.y+pad,maxY=b.y+b.h-pad;
@@ -64,6 +64,25 @@ export function renderNativeDrawing(b,project,drawing,target,{wrapText}={}){
   if(!meaningful)issue('drawing-empty-content','背景与空框不能单独构成自由绘图，须保留实际研究内容。');
   for(const e of elements.filter(e=>e.kind==='line'&&e.role==='relationship'))for(const label of elements.filter(e=>e.kind==='text')){
     if(list(e.points).slice(1).some((p,i)=>segmentCrossesBox(e.points[i],p,label)))issue('drawing-line-label-overlap','关系线穿过文字区域；重排端口或折点，并同步移动线标签。',{elementId:e.id,relatedElementId:label.id});
+  }
+  // Record structured authored tables only when every declared non-empty cell
+  // resolves to a real rendered text object. Metadata alone is not evidence.
+  const drawnText=new Map(rendered.filter(n=>n.kind==='text').map(n=>[n.drawingElementId,n]));
+  const tableIds=new Set();
+  for(const table of list(drawing.evidenceTables)){
+    const cells=list(table.cellIds),cols=cells[0]?.length??0,used=new Set();
+    const valid=!tableIds.has(table.id)&&cells.length>=2&&cols>0&&cells[0].every(id=>id!==null)&&cells.every(row=>Array.isArray(row)&&row.length===cols&&row.some(id=>id!==null))&&cells.flat().every(id=>id===null||drawnText.has(id)&&!used.has(id)&&(used.add(id),true));
+    if(!valid){issue('drawing-table-binding','读数表必须逐格对应实际可见文本，不能用元数据伪造表格。',{tableId:table.id});continue;}
+    const headings=cells[0].map(id=>drawnText.get(id));let previousY=-Infinity;
+    const aligned=headings.every((n,i)=>i===0||n.x>headings[i-1].x)&&cells.every(row=>{
+      const texts=row.map(id=>id===null?null:drawnText.get(id)),ys=texts.filter(Boolean).map(n=>n.y),y=Math.min(...ys);
+      const ok=y>previousY&&Math.max(...ys)-y<2.1&&texts.every((n,i)=>!n||Math.abs(n.x-headings[i].x)<2.1);previousY=y;return ok;
+    });
+    if(!aligned){issue('drawing-table-alignment','声明的表格单元格必须实际共享行列，不能把零散文字标为读数表。',{tableId:table.id});continue;}
+    tableIds.add(table.id);
+    const rows=cells.map(row=>row.map(id=>id===null?'':drawnText.get(id).text));
+    const cellObjectIds=cells.flat().filter(id=>id!==null).map(id=>drawnText.get(id).id);
+    b.page.authoredTables??=[];b.page.authoredTables.push({id:drawing.id+'/'+table.id,columns:rows[0],rows:rows.slice(1),cellObjectIds,sourceClaimIds:list(table.sourceClaimIds),basis:'actual-native-text-cells-not-PowerPoint-table-object'});
   }
   b.page.drawings??=[];b.page.drawings.push({id:drawing.id,box:{x:x0,y:y0,w:drawing.width*scale,h:drawing.height*scale},scale,elementCount:elements.length,renderedObjectCount:rendered.length});
   return rendered;

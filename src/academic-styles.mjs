@@ -4,6 +4,7 @@
  * its defaults without discarding the user's explicit choices.
  */
 import { getAcademicPalette } from './academic-palette.mjs';
+import {getArtDirection} from './art-direction.mjs';
 
 const freeze=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
 const sans='Noto Sans CJK SC',serif='Noto Serif CJK SC';
@@ -14,7 +15,7 @@ const base={fontFamily:sans,titleFontFamily:sans,annotationFontFamily:sans,
 const direction=(id,label,description,useWhen,avoidWhen,overrides)=>({id,label,description,useWhen,avoidWhen,
   paletteId:overrides.paletteId||'graphite-blue',
   defaults:{...base,...overrides,system:{...base.system,...overrides.system},cardDefaults:{...base.cardDefaults,...overrides.cardDefaults},chrome:{...base.chrome,...overrides.chrome},palette:getAcademicPalette(overrides.paletteId||'graphite-blue')},
-  reference:'references/academic-styles/index.html',
+  reference:'references/design-cases/README.md',
 });
 
 export const DEFAULT_ACADEMIC_STYLE_ID='research-seminar';
@@ -50,9 +51,11 @@ export function getAcademicStyle(id=DEFAULT_ACADEMIC_STYLE_ID){
  * of a profile. This function never mutates the saved record.
  */
 export function applyAcademicStyle(input={}){
-  if(!input.styleProfile)return {...input};
-  const defaults=getAcademicStyle(input.styleProfile).defaults,result={...defaults,...input};
-  for(const key of ['system','palette','chrome','cardDefaults','projection'])result[key]={...defaults[key],...input[key]};
+  if(!input.styleProfile&&!input.artDirection)return {...input};
+  const style=input.styleProfile?getAcademicStyle(input.styleProfile).defaults:{};
+  const art=input.artDirection?getArtDirection(input.artDirection).defaults:{};
+  const defaults={...style,...art},result={...defaults,...input};
+  for(const key of ['system','palette','chrome','cardDefaults','projection'])result[key]={...style[key],...art[key],...input[key]};
   // A legacy fontFamily override intentionally changes body only; role-specific
   // families remain independently editable and must exist in the render host.
   return result;

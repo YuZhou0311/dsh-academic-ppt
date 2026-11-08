@@ -41,6 +41,7 @@ export function researchEvidenceReport(project, scenes, visualReport = evidenceD
     const checkedSources=list(review.checkedSources).filter(nonempty),candidates=list(review.candidates);
     let validReview=checkedSources.length>0&&nonempty(review.note);
     if(!validReview)add('source-figure-review-incomplete',path+'.figureReview','图像盘点需要实际查看的checkedSources和具体note；图号清单或“已看过”不能代替来源位置。',{paperId:paper.id});
+    if(review.status==='pending')add('source-figure-review-pending',path+'.figureReview','已发现候选图但还未完成逐图选择；先检查实际图像，不用无法获取掩盖未处理。',{paperId:paper.id});
     const selected=candidates.filter(c=>c.decision==='selected');
     if(review.status==='selected'&&!selected.length){validReview=false;add('selected-source-figure-missing',path+'.figureReview','figureReview标记selected，但没有已选择的候选图。登记真实候选及assetId，并在正文实际使用。',{paperId:paper.id});}
     if(review.status!=='selected'&&selected.length){validReview=false;add('source-figure-review-conflict',path+'.figureReview','盘点状态与selected候选冲突。按实际获取和采用情况统一记录，不能用无合适图状态隐藏已选原图。',{paperId:paper.id});}

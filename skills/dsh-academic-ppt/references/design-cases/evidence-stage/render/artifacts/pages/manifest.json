@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/plugin-audit/cases-build/evidence-stage/case.pptx",
+  "sourceSha256": "b0bb4cf86aefefd482ed91073738266a6baa494e7f84dd8adb3f7ecb847dab34",
+  "dpi": 120,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/plugin-audit/cases-build/evidence-stage/render/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 147777
+    }
+  ],
+  "missingFonts": []
+}

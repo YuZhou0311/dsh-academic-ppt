@@ -10,6 +10,8 @@ import {REFERENCE_TEMPLATES,REFERENCE_CATEGORIES} from '../src/reference-catalog
 import {CARD_PRESETS} from '../src/card-catalog.mjs';
 import {PAGE_RECIPES,PAGE_RECIPE_IDS} from '../src/page-recipes.mjs';
 import {ACADEMIC_STYLE_IDS} from '../src/academic-styles.mjs';
+import {designCases,installedPlugin} from '../src/authoring-guidance.mjs';
+import {readRenderReceipt} from '../src/vendor/dsh-ppt-render.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
 const packageJson=JSON.parse(await readFile(join(root,'package.json'),'utf8'));
@@ -182,7 +184,22 @@ for(const [profileIndex,profile] of styleCatalog.profiles.entries()){
  assert.ok((await stat(styleFile(profile.html))).isFile(),'per-style HTML preview '+profile.id);
 }
 for(const name of ['README.md','index.html','montage.png','build-quality.json'])assert.ok((await stat(styleFile(name))).isFile(),'academic style reference '+name);
-const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','docs/RESEARCH_V010.md','docs/VALIDATION_V010.md','evals/README.md','evals/academic-cases.json','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs','scripts/build-frame-studies.mjs','scripts/build-academic-styles.mjs'];
+// Current content-related examples are separate from historical compatibility fixtures.
+const currentCaseRoot=join(root,'skills/dsh-academic-ppt/references/design-cases');
+const currentCases=JSON.parse(await readFile(join(currentCaseRoot,'catalog.json'),'utf8'));
+assert.equal(currentCases.publicSafe,true);assert.equal(currentCases.cases.length,8);
+assert.equal(installedPlugin.version,packageJson.version);
+for(const c of currentCases.cases){
+ for(const [field,hashField] of [['preview','previewSha256'],['pptx','pptxSha256'],['input','inputSha256'],['receipt','receiptSha256']]){
+  assert.ok(!isAbsolute(c[field])&&!c[field].split('/').includes('..'));
+  assert.equal(studyDigest(await readFile(join(currentCaseRoot,c[field]))),c[hashField],'current case digest '+c.id+'/'+field);
+ }
+ const input=JSON.parse(await readFile(join(currentCaseRoot,c.input),'utf8'));
+ assert.deepEqual(input.assets,[]);assert.deepEqual(input.claims,[]);assert.deepEqual(input.papers,[]);assert.equal(input.slides.length,1);
+ assert.equal(readRenderReceipt(join(currentCaseRoot,c.pptx),join(currentCaseRoot,c.receipt)).status,'rendered');
+}
+for(const c of designCases()){assert.ok((await stat(c.previewPath)).isFile());assert.ok((await stat(c.explanationPath)).isFile());}
+const required=['README.md','LICENSE','THIRD_PARTY_NOTICES.md','cordis.patch.yml','docs/INSTALL.md','docs/DESIGN.md','docs/VALIDATION.md','docs/VALIDATION_V090.md','docs/DESIGN_RATIONALE_V090.md','docs/MIGRATION_V090.md','docs/RELEASE_NOTES.md','docs/RESEARCH_V010.md','docs/VALIDATION_V010.md','evals/README.md','evals/academic-cases.json','scripts/build-demo.mjs','scripts/build-release.mjs','scripts/build-page-recipes.mjs','scripts/build-frame-studies.mjs','scripts/build-academic-styles.mjs','scripts/build-design-cases.mjs','scripts/check-installation.mjs','docs/INSTALL_RC2.md','docs/AUDIT_RC2.md'];
 for(const name of required)assert.ok((await stat(join(root,name))).isFile(),name);
 assert.equal(REFERENCE_TEMPLATES.length,48);
 const templateRoot=join(root,'skills/dsh-academic-ppt/references/templates');
@@ -215,4 +232,4 @@ for(const path of markdown){
 for(const ref of ['research','evidence','design','visual-decision','component-grammar','template-learning','composition','revision','deepseek','delivery','workflow-v090','storyboard-v090','page-recipes','academic-visual-language','workflow-v010','academic-styles','academic-writing','scientific-figures','design-critique']){
  const value=await readFile(join(root,'skills/dsh-academic-ppt/references/'+ref+'.md'),'utf8');assert.ok(value.trim().length>200);
 }
-process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,academicStyles:styleCatalog.profiles.length,academicStyleStudySlides:stylePages.length,academicStylePptxDigestsChecked:stylePptxDigests,academicStylePngDigestsChecked:stylePngDigests,nativeEditableStylePages:styleEditablePages,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,frameStudySlides:frameSlides.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset hashes and record bindings, native object inventory, module loading and documentation links; no scientific or visual approval, glyph verification, or end-to-end model evaluation'},null,2)+'\n');
+process.stdout.write(JSON.stringify({ok:true,name:packageJson.name,version:packageJson.version,toolCount:tools.length,currentDesignCases:currentCases.cases.length,guidanceRevision:installedPlugin.guidanceRevision,academicStyles:styleCatalog.profiles.length,academicStyleStudySlides:stylePages.length,academicStylePptxDigestsChecked:stylePptxDigests,academicStylePngDigestsChecked:stylePngDigests,nativeEditableStylePages:styleEditablePages,pageRecipes:PAGE_RECIPES.length,pageRecipeAtlasSlides:pagePaths.length,frameStudySlides:frameSlides.length,cardPresets:CARD_PRESETS.length,cardPreviewDigestsChecked:cardManifest.cards.length,imageCardReferenceSlides:figureDeck.slideCount,referenceTemplates:48,referencePptxDigestsChecked:10,skill:skill.name,markdownFiles:markdown.length,localLinksChecked:links,scope:'package structure, reference asset hashes and record bindings, native object inventory, module loading and documentation links; no scientific or visual approval, glyph verification, or end-to-end model evaluation'},null,2)+'\n');

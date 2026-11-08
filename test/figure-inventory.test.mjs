@@ -1,0 +1,26 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {PNG} from 'pngjs';
+import Ajv from 'ajv';
+import {scanFigureInventory,figureInventoryReport,inventorySchema,inventoryRequestSchema} from '../src/figure-inventory.mjs';
+async function fixture(t){const cwd=await mkdtemp(join(tmpdir(),'figure-inventory-'));t.after(()=>rm(cwd,{recursive:true,force:true}));const dir=join(cwd,'sources');await mkdir(dir);const png=new PNG({width:10,height:8});png.data.fill(255);const bytes=PNG.sync.write(png);await writeFile(join(dir,'a-F1.png'),bytes);await writeFile(join(dir,'b-F1.png'),bytes);return {cwd,dir,bytes};}
+const scan=f=>scanFigureInventory({cwd:f.cwd,projectDir:f.cwd,paperIds:['a','b'],sources:[{paperId:'a',directory:f.dir,filenamePrefix:'a-'},{paperId:'b',directory:f.dir,filenamePrefix:'b-'}]});
+test('explicit source prefixes produce validated per-file inventory and contact sheets',async t=>{const f=await fixture(t);const {inventory,path}=await scan(f);assert.equal(inventory.items.length,2);assert.deepEqual(inventory.items.map(x=>x.paperId),['a','b']);assert.equal(inventory.contactSheetPaths.length,1);const ajv=new Ajv();assert.equal(ajv.validate(inventorySchema,inventory),true,JSON.stringify(ajv.errors));assert.deepEqual(JSON.parse(await readFile(path,'utf8')),inventory);assert.equal(ajv.validate(inventoryRequestSchema,{kind:'figure-inventory',sources:inventory.sources}),true);});
+test('not registering a downloaded figure is observable, not hidden by selected assets',async t=>{const f=await fixture(t);const {inventory}=await scan(f);const r=figureInventoryReport({figureInventory:inventory,papers:[],assets:[]});assert.equal(r.pendingCount,2);assert.equal(r.issues.filter(x=>x.code==='downloaded-figure-undecided').length,2);});
+test('missing caption is distinct from failed download and may justify not-used',async t=>{const f=await fixture(t);const {inventory}=await scan(f);const p={figureInventory:inventory,papers:inventory.items.map(i=>({id:i.paperId,figureReview:{candidates:[{inventoryId:i.id,decision:'not-used',captionStatus:'unavailable',reason:'缺图注，无法确定控制器与曲线对应关系；未将定量图当作可验证证据。'}]}}))};assert.equal(figureInventoryReport(p).status,'accounted');p.papers[0].figureReview.candidates[0].decision='unavailable';assert.equal(figureInventoryReport(p).issues[0].code,'downloaded-figure-marked-unavailable');});
+test('selected images can be reconciled by verified bytes',async t=>{const f=await fixture(t);const {inventory}=await scan(f);const p={figureInventory:inventory,assets:[{id:'asset',sha256:inventory.items[0].sha256}],papers:[{id:'a',figureReview:{candidates:[{assetId:'asset',decision:'selected',captionStatus:'verified'}]}}]};const r=figureInventoryReport(p);assert.equal(r.selectedCount,1);assert.equal(r.pendingCount,1);});
+test('ambiguous source ownership and unknown paper IDs are rejected',async t=>{const f=await fixture(t);await assert.rejects(scanFigureInventory({cwd:f.cwd,projectDir:f.cwd,paperIds:['a','b'],sources:[{paperId:'a',directory:f.dir},{paperId:'b',directory:f.dir}]}),/INVENTORY_PAPER_CONFLICT/);await assert.rejects(scanFigureInventory({cwd:f.cwd,projectDir:f.cwd,paperIds:[],sources:[{paperId:'a',directory:f.dir}]}),/INVENTORY_UNKNOWN_PAPER/);});
+test('directory escape and symlinks fail without scanning elsewhere',async t=>{const f=await fixture(t);await assert.rejects(scanFigureInventory({cwd:f.cwd,projectDir:f.cwd,paperIds:['a'],sources:[{paperId:'a',directory:'/etc'}]}),/PATH_OUTSIDE_WORKSPACE/);await symlink('/etc/passwd',join(f.dir,'link'));await assert.rejects(scan(f),/INVENTORY_SYMLINK_REJECTED/);});
+test('empty legitimate directory is a recorded zero, not invented source evidence',async t=>{const f=await fixture(t);const empty=join(f.cwd,'empty');await mkdir(empty);const {inventory}=await scanFigureInventory({cwd:f.cwd,projectDir:f.cwd,paperIds:['a'],sources:[{paperId:'a',directory:empty}]});assert.equal(inventory.items.length,0);assert.equal(figureInventoryReport({figureInventory:inventory}).downloadedCount,0);});
+test('public plan API persists the inventory and context exposes unassigned files',async t=>{
+ const f=await fixture(t);const {createProject,updateRecords,planProject,contextProject}=await import('../src/core.mjs');const {brief,paper,fixtureDesign}=await import('./fixtures.mjs');
+ const init=await createProject({cwd:f.cwd,projectDir:'deck',title:'Inventory API fixture',brief,design:fixtureDesign});
+ const base={cwd:f.cwd,projectPath:init.projectPath};await updateRecords({...base,expectedRevision:0,papers:[{...paper,id:'a'},{...paper,id:'b'}]});
+ const requestPath=join(f.cwd,'inventory-request.json');await writeFile(requestPath,JSON.stringify({kind:'figure-inventory',sources:[{paperId:'a',directory:f.dir,filenamePrefix:'a-'},{paperId:'b',directory:f.dir,filenamePrefix:'b-'}]}));
+ const planned=await planProject({...base,expectedRevision:1,requestPath});assert.equal(planned.revision,2);assert.equal(planned.figureInventory.pendingCount,2);
+ const state=JSON.parse(await readFile(base.projectPath,'utf8'));assert.equal(state.figureInventory.items.length,2);
+ const context=await contextProject(base);assert.equal(context.figureInventory.pendingCount,2);
+});

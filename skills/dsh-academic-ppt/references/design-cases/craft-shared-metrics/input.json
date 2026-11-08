@@ -1,0 +1,706 @@
+{
+  "title": "把同一指标放在同一行，而不是逐段报数",
+  "design": {
+    "mode": "content-led",
+    "density": "balanced",
+    "styleProfile": "research-seminar",
+    "artDirection": "editorial",
+    "chrome": {
+      "showSources": false,
+      "showBrand": false,
+      "showFooter": false
+    },
+    "palette": {
+      "ink": "#202A35",
+      "paper": "#FFFFFF",
+      "background": "#FCFCFB",
+      "accent": "#315A4B",
+      "secondary": "#814838",
+      "muted": "#56616A",
+      "line": "#CAD3D7",
+      "soft": "#EFF3F2",
+      "tint": "#EFF3F2"
+    },
+    "authoringMode": "content-tree",
+    "consultation": {
+      "mode": "collaborative",
+      "interaction": "checkpoints",
+      "workflowVersion": 2
+    }
+  },
+  "assets": [],
+  "papers": [],
+  "claims": [],
+  "slides": [
+    {
+      "id": "sample",
+      "title": "把同一指标放在同一行，而不是逐段报数",
+      "section": {
+        "number": "DESIGN",
+        "title": "原创教学 · 非科研结果"
+      },
+      "paperIds": [],
+      "claimIds": [],
+      "notes": "# 从段落到共享比较\n\n这是原创教学数值，不是真实研究。观看左、右两组相同信息：左侧是分段叙述，右侧的 comparison 按指标共享行。右侧得到更多面积，题签/底色服务于读数，而非做两张同权卡片。\n\n重用的是比较关系：方法变为三种就增加 items 和每项指标的 values；没有误差或耗时数据就不补造。单位不一致时不能放在同一指标行。extent:content 只收紧实测文字高度，不删条件、不缩字号。标题必须随真实数据重写。\n\n输入 request.json 经普通 init/plan/build/render 工具生成；input.json 是编译结果，仅用于重建。不是真实模型端到端测试。\n",
+      "seconds": 60,
+      "layout": "academic",
+      "figureIds": [],
+      "cards": [],
+      "authoringMap": {
+        "compiler": "content-composition-2",
+        "primaryNodeId": "comparison",
+        "readingOrder": [
+          "comparison"
+        ],
+        "nodes": [
+          {
+            "nodeId": "body",
+            "kind": "split",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 538.54
+            },
+            "elementIds": [
+              "premise-1",
+              "premise-rail-2",
+              "premise-label-3",
+              "premise-message-4",
+              "before-5",
+              "before-heading-rail-6",
+              "before-title-7",
+              "a-8",
+              "b-9",
+              "cost-10",
+              "comparison-labels-11",
+              "comparison-label-12",
+              "comparison-head0-13",
+              "comparison-headtext0-14",
+              "comparison-head1-15",
+              "comparison-headtext1-16",
+              "comparison-row0-17",
+              "comparison-metric0-18",
+              "comparison-value0-0-19",
+              "comparison-value0-1-20",
+              "comparison-rule0-21",
+              "comparison-row1-22",
+              "comparison-metric1-23",
+              "comparison-value1-0-24",
+              "comparison-value1-1-25",
+              "comparison-rule1-26",
+              "boundary-27"
+            ]
+          },
+          {
+            "nodeId": "premise",
+            "kind": "statement",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 62.6
+            },
+            "elementIds": [
+              "premise-1",
+              "premise-rail-2",
+              "premise-label-3",
+              "premise-message-4"
+            ]
+          },
+          {
+            "nodeId": "comparison-area",
+            "kind": "split",
+            "box": {
+              "x": 0,
+              "y": 86.6,
+              "w": 1184,
+              "h": 328.8
+            },
+            "elementIds": [
+              "before-5",
+              "before-heading-rail-6",
+              "before-title-7",
+              "a-8",
+              "b-9",
+              "cost-10",
+              "comparison-labels-11",
+              "comparison-label-12",
+              "comparison-head0-13",
+              "comparison-headtext0-14",
+              "comparison-head1-15",
+              "comparison-headtext1-16",
+              "comparison-row0-17",
+              "comparison-metric0-18",
+              "comparison-value0-0-19",
+              "comparison-value0-1-20",
+              "comparison-rule0-21",
+              "comparison-row1-22",
+              "comparison-metric1-23",
+              "comparison-value1-0-24",
+              "comparison-value1-1-25",
+              "comparison-rule1-26"
+            ]
+          },
+          {
+            "nodeId": "before",
+            "kind": "group",
+            "box": {
+              "x": 0,
+              "y": 86.6,
+              "w": 385.333,
+              "h": 328.8
+            },
+            "elementIds": [
+              "before-5",
+              "before-heading-rail-6",
+              "before-title-7",
+              "a-8",
+              "b-9",
+              "cost-10"
+            ]
+          },
+          {
+            "nodeId": "paragraphs",
+            "kind": "split",
+            "box": {
+              "x": 16,
+              "y": 148.4,
+              "w": 353.333,
+              "h": 251
+            },
+            "elementIds": [
+              "a-8",
+              "b-9",
+              "cost-10"
+            ]
+          },
+          {
+            "nodeId": "a",
+            "kind": "text",
+            "box": {
+              "x": 16,
+              "y": 148.4,
+              "w": 353.333,
+              "h": 72.2
+            },
+            "elementIds": [
+              "a-8"
+            ]
+          },
+          {
+            "nodeId": "b",
+            "kind": "text",
+            "box": {
+              "x": 16,
+              "y": 242.6,
+              "w": 353.333,
+              "h": 72.2
+            },
+            "elementIds": [
+              "b-9"
+            ]
+          },
+          {
+            "nodeId": "cost",
+            "kind": "text",
+            "box": {
+              "x": 16,
+              "y": 336.8,
+              "w": 353.333,
+              "h": 62.6
+            },
+            "elementIds": [
+              "cost-10"
+            ]
+          },
+          {
+            "nodeId": "comparison",
+            "kind": "comparison",
+            "box": {
+              "x": 413.333,
+              "y": 86.6,
+              "w": 770.667,
+              "h": 328.8
+            },
+            "elementIds": [
+              "comparison-labels-11",
+              "comparison-label-12",
+              "comparison-head0-13",
+              "comparison-headtext0-14",
+              "comparison-head1-15",
+              "comparison-headtext1-16",
+              "comparison-row0-17",
+              "comparison-metric0-18",
+              "comparison-value0-0-19",
+              "comparison-value0-1-20",
+              "comparison-rule0-21",
+              "comparison-row1-22",
+              "comparison-metric1-23",
+              "comparison-value1-0-24",
+              "comparison-value1-1-25",
+              "comparison-rule1-26"
+            ]
+          },
+          {
+            "nodeId": "boundary",
+            "kind": "text",
+            "box": {
+              "x": 0,
+              "y": 439.4,
+              "w": 1184,
+              "h": 33.8
+            },
+            "elementIds": [
+              "boundary-27"
+            ]
+          }
+        ]
+      },
+      "drawings": [
+        {
+          "id": "authored-body",
+          "width": 1184,
+          "height": 538.54,
+          "elements": [
+            {
+              "id": "premise-1",
+              "kind": "rect",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 62.6,
+              "fill": "#EFF3F2",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "premise-rail-2",
+              "kind": "rect",
+              "x": 0,
+              "y": 0,
+              "w": 5,
+              "h": 62.6,
+              "fill": "#315A4B",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "premise-label-3",
+              "kind": "text",
+              "x": 18,
+              "y": 12,
+              "w": 120,
+              "h": 33.8,
+              "text": "教学任务",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#315A4B",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "premise-message-4",
+              "kind": "text",
+              "x": 154,
+              "y": 12,
+              "w": 1012,
+              "h": 38.6,
+              "text": "下列数值仅用于软件教学：让观众比较速度与误差，不制造“全面更优”。",
+              "fontSize": 28,
+              "role": "body",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "before-5",
+              "kind": "rect",
+              "x": 0,
+              "y": 86.6,
+              "w": 385.3333333333333,
+              "h": 328.8,
+              "fill": "#EFF3F2",
+              "stroke": "#CAD3D7",
+              "strokeWidth": 0.8,
+              "role": "group"
+            },
+            {
+              "id": "before-heading-rail-6",
+              "kind": "rect",
+              "x": 0,
+              "y": 102.6,
+              "w": 4,
+              "h": 33.8,
+              "fill": "#315A4B",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "before-title-7",
+              "kind": "text",
+              "x": 16,
+              "y": 102.6,
+              "w": 353.3333333333333,
+              "h": 33.8,
+              "text": "常见初稿：各自叙述",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#315A4B",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "a-8",
+              "kind": "text",
+              "x": 16,
+              "y": 148.39999999999998,
+              "w": 353.3333333333333,
+              "h": 72.2,
+              "text": "方法 A\n耗时 4.2 s，误差 0.41。",
+              "fontSize": 28,
+              "role": "body",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "b-9",
+              "kind": "text",
+              "x": 16,
+              "y": 242.59999999999997,
+              "w": 353.3333333333333,
+              "h": 72.2,
+              "text": "方法 B\n耗时 7.8 s，误差 0.38。",
+              "fontSize": 28,
+              "role": "body",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "cost-10",
+              "kind": "text",
+              "x": 16,
+              "y": 336.79999999999995,
+              "w": 353.3333333333333,
+              "h": 62.599999999999994,
+              "text": "听众必须记住上一组数字，再回头比较。",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-labels-11",
+              "kind": "rect",
+              "x": 413.3333333333333,
+              "y": 86.6,
+              "w": 208.08,
+              "h": 231,
+              "fill": "#EFF3F2",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "comparison-label-12",
+              "kind": "text",
+              "x": 425.3333333333333,
+              "y": 98.6,
+              "w": 184.08,
+              "h": 33.8,
+              "text": "同一评价口径",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#315A4B",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-head0-13",
+              "kind": "rect",
+              "x": 621.4133333333333,
+              "y": 86.6,
+              "w": 281.2933333333333,
+              "h": 57.8,
+              "fill": "#315A4B",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "comparison-headtext0-14",
+              "kind": "text",
+              "x": 633.4133333333333,
+              "y": 98.6,
+              "w": 257.2933333333333,
+              "h": 33.8,
+              "text": "方法 A",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-head1-15",
+              "kind": "rect",
+              "x": 902.7066666666666,
+              "y": 86.6,
+              "w": 281.2933333333333,
+              "h": 57.8,
+              "fill": "#814838",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "comparison-headtext1-16",
+              "kind": "text",
+              "x": 914.7066666666666,
+              "y": 98.6,
+              "w": 257.2933333333333,
+              "h": 33.8,
+              "text": "方法 B",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-row0-17",
+              "kind": "rect",
+              "x": 621.4133333333333,
+              "y": 144.39999999999998,
+              "w": 562.5866666666666,
+              "h": 86.6,
+              "fill": "#FFFFFF",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "comparison-metric0-18",
+              "kind": "text",
+              "x": 425.3333333333333,
+              "y": 156.39999999999998,
+              "w": 184.08,
+              "h": 62.599999999999994,
+              "text": "计算时间\ns",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-value0-0-19",
+              "kind": "text",
+              "x": 633.4133333333333,
+              "y": 156.39999999999998,
+              "w": 257.2933333333333,
+              "h": 48.199999999999996,
+              "text": "4.2",
+              "fontSize": 36,
+              "role": "label",
+              "bold": true,
+              "color": "#315A4B",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-value0-1-20",
+              "kind": "text",
+              "x": 914.7066666666666,
+              "y": 156.39999999999998,
+              "w": 257.2933333333333,
+              "h": 48.199999999999996,
+              "text": "7.8",
+              "fontSize": 36,
+              "role": "label",
+              "bold": true,
+              "color": "#814838",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-rule0-21",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 413.3333333333333,
+                  "y": 230.99999999999997
+                },
+                {
+                  "x": 1184,
+                  "y": 230.99999999999997
+                }
+              ],
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "decoration",
+              "endArrow": false
+            },
+            {
+              "id": "comparison-row1-22",
+              "kind": "rect",
+              "x": 621.4133333333333,
+              "y": 230.99999999999997,
+              "w": 562.5866666666666,
+              "h": 86.6,
+              "fill": "#EFF3F2",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "comparison-metric1-23",
+              "kind": "text",
+              "x": 425.3333333333333,
+              "y": 242.99999999999997,
+              "w": 184.08,
+              "h": 62.599999999999994,
+              "text": "误差 MAE\n教学单位",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-value1-0-24",
+              "kind": "text",
+              "x": 633.4133333333333,
+              "y": 242.99999999999997,
+              "w": 257.2933333333333,
+              "h": 48.199999999999996,
+              "text": "0.41",
+              "fontSize": 36,
+              "role": "label",
+              "bold": true,
+              "color": "#315A4B",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-value1-1-25",
+              "kind": "text",
+              "x": 914.7066666666666,
+              "y": 242.99999999999997,
+              "w": 257.2933333333333,
+              "h": 48.199999999999996,
+              "text": "0.38",
+              "fontSize": 36,
+              "role": "label",
+              "bold": true,
+              "color": "#814838",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "comparison-rule1-26",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 413.3333333333333,
+                  "y": 317.59999999999997
+                },
+                {
+                  "x": 1184,
+                  "y": 317.59999999999997
+                }
+              ],
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "decoration",
+              "endArrow": false
+            },
+            {
+              "id": "boundary-27",
+              "kind": "text",
+              "x": 0,
+              "y": 439.4,
+              "w": 1184,
+              "h": 33.8,
+              "text": "设计决定：区域不等宽；数字共用行与字号，单位就近。增加比较对象时重分配列宽，不整体缩小。",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            }
+          ],
+          "evidenceTables": [
+            {
+              "id": "comparison",
+              "cellIds": [
+                [
+                  "comparison-label-12",
+                  "comparison-headtext0-14",
+                  "comparison-headtext1-16"
+                ],
+                [
+                  "comparison-metric0-18",
+                  "comparison-value0-0-19",
+                  "comparison-value0-1-20"
+                ],
+                [
+                  "comparison-metric1-23",
+                  "comparison-value1-0-24",
+                  "comparison-value1-1-25"
+                ]
+              ],
+              "sourceClaimIds": []
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "authored-body",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 131.45999999999998,
+              "w": 1184,
+              "h": 538.54
+            },
+            "drawingIds": [
+              "authored-body"
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "comparison",
+        "primaryPanelId": "authored-body",
+        "readingOrder": [
+          "authored-body"
+        ],
+        "rationale": "用字级、题签、比例与共享对齐组织信息；不是装饰数量或用户批准。"
+      }
+    }
+  ]
+}

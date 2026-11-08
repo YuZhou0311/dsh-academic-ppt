@@ -1,0 +1,1079 @@
+{
+  "title": "读数与图形共享行（构造数据设计案例）",
+  "design": {
+    "styleProfile": "research-seminar",
+    "mode": "content-led",
+    "density": "balanced",
+    "fontFamily": "Noto Sans CJK SC",
+    "titleFontFamily": "Noto Sans CJK SC",
+    "annotationFontFamily": "Noto Sans CJK SC",
+    "projection": {
+      "bodyMin": 22,
+      "labelMin": 18,
+      "noteMin": 14
+    },
+    "chrome": {
+      "header": "plain",
+      "showBrand": false,
+      "showSection": false,
+      "showPageNumber": false,
+      "showFooter": false,
+      "showSources": false,
+      "showTopRule": false
+    },
+    "palette": {
+      "background": "#F8F5EC",
+      "paper": "#F8F5EC",
+      "ink": "#303435",
+      "accent": "#795019",
+      "secondary": "#2C5C60",
+      "muted": "#626357",
+      "line": "#CDC4B1",
+      "soft": "#ECE2CE",
+      "tint": "#F3EEE2",
+      "gold": "#2C5C60"
+    },
+    "system": {
+      "preset": "plain",
+      "header": "plain",
+      "panel": "plain",
+      "titleSize": 38,
+      "bodySize": 24,
+      "panelTitleSize": 24,
+      "captionSize": 16
+    }
+  },
+  "papers": [],
+  "claims": [],
+  "assets": [],
+  "slides": [
+    {
+      "id": "lab-7",
+      "layout": "academic",
+      "title": "随机划分误差较低，跨站点差异仍不确定",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "seconds": 90,
+      "heading": {
+        "box": {
+          "x": 48,
+          "y": 34,
+          "w": 1184,
+          "h": 55
+        },
+        "fontSize": 38,
+        "color": "#303435"
+      },
+      "notes": "样张 7/12。赭金 · 工程证据。构图：原始站点与均值共尺度账本。\n本页由助手按插件SKILL设计，调用原插件renderProject生成；不是DSH真实模型端到端自主创作实验。\n全部数值来自插件teaching-data.json的构造数据；不是科研结果。两协议每站6个观测，同一24样本48记录。均值与区间按4站点差值计算。95% t区间，df=3；站点独立和分布假设未验证。\n科学内容不因配色改变。不得把审美候选描述为用户已认可。\n本页从十二页实验中独立提取；仅用于学习构图，不可当作当前科研证据。独立PPTX须重新渲染。",
+      "drawings": [
+        {
+          "id": "page-7",
+          "width": 1184,
+          "height": 585,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "text": "01  结果对照  /  把原始读数与汇总放在同一账本",
+              "x": 0,
+              "y": 0,
+              "w": 1000,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": true,
+              "color": "#795019",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e2",
+              "kind": "text",
+              "text": "07 / 12",
+              "x": 1060,
+              "y": 0,
+              "w": 124,
+              "h": 24.06,
+              "fontSize": 17,
+              "bold": false,
+              "color": "#626357",
+              "role": "note",
+              "align": "right",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e3",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 33
+                },
+                {
+                  "x": 1184,
+                  "y": 33
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1,
+              "role": "decoration"
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "text": "ΔMAE = 方法 − 基线（t/ha）；负值表示方法误差更低。",
+              "x": 0,
+              "y": 50,
+              "w": 1184,
+              "h": 31.139999999999997,
+              "fontSize": 23,
+              "bold": true,
+              "color": "#303435",
+              "role": "body",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e5",
+              "kind": "rect",
+              "x": 0,
+              "y": 94,
+              "w": 1184,
+              "h": 42,
+              "fill": "#303435",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e6",
+              "kind": "text",
+              "text": "分析层级",
+              "x": 20,
+              "y": 103,
+              "w": 175,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": true,
+              "color": "#FFFFFF",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e7",
+              "kind": "text",
+              "text": "随机划分",
+              "x": 215,
+              "y": 103,
+              "w": 175,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": true,
+              "color": "#C3E5EE",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e8",
+              "kind": "text",
+              "text": "整站留出",
+              "x": 432,
+              "y": 103,
+              "w": 175,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": true,
+              "color": "#FFD1B3",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e9",
+              "kind": "text",
+              "text": "共同尺度  /  原始站点差值",
+              "x": 666,
+              "y": 103,
+              "w": 498,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": true,
+              "color": "#FFFFFF",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e10",
+              "kind": "rect",
+              "x": 0,
+              "y": 144,
+              "w": 1184,
+              "h": 46,
+              "fill": "#FFFFFF",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e11",
+              "kind": "text",
+              "text": "站点 A",
+              "x": 20,
+              "y": 153,
+              "w": 165,
+              "h": 29.959999999999997,
+              "fontSize": 22,
+              "bold": true,
+              "color": "#303435",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e12",
+              "kind": "text",
+              "text": "−0.300",
+              "x": 215,
+              "y": 153,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#246E88",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e13",
+              "kind": "text",
+              "text": "+0.100",
+              "x": 432,
+              "y": 153,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#A54F2C",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e14",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 962.4,
+                  "y": 145
+                },
+                {
+                  "x": 962.4,
+                  "y": 189
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e15",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 780.8,
+                  "y": 168
+                },
+                {
+                  "x": 1022.9333333333334,
+                  "y": 168
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e16",
+              "kind": "ellipse",
+              "x": 774.8,
+              "y": 162,
+              "w": 12,
+              "h": 12,
+              "fill": "#246E88",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e17",
+              "kind": "ellipse",
+              "x": 1016.9333333333334,
+              "y": 162,
+              "w": 12,
+              "h": 12,
+              "fill": "#A54F2C",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e18",
+              "kind": "rect",
+              "x": 0,
+              "y": 190,
+              "w": 1184,
+              "h": 46,
+              "fill": "#F8F5EC",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e19",
+              "kind": "text",
+              "text": "站点 B",
+              "x": 20,
+              "y": 199,
+              "w": 165,
+              "h": 29.959999999999997,
+              "fontSize": 22,
+              "bold": true,
+              "color": "#303435",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e20",
+              "kind": "text",
+              "text": "−0.250",
+              "x": 215,
+              "y": 199,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#246E88",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e21",
+              "kind": "text",
+              "text": "−0.100",
+              "x": 432,
+              "y": 199,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#A54F2C",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e22",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 962.4,
+                  "y": 191
+                },
+                {
+                  "x": 962.4,
+                  "y": 235
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e23",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 811.0666666666666,
+                  "y": 214
+                },
+                {
+                  "x": 901.8666666666667,
+                  "y": 214
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e24",
+              "kind": "ellipse",
+              "x": 805.0666666666666,
+              "y": 208,
+              "w": 12,
+              "h": 12,
+              "fill": "#246E88",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e25",
+              "kind": "ellipse",
+              "x": 895.8666666666667,
+              "y": 208,
+              "w": 12,
+              "h": 12,
+              "fill": "#A54F2C",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e26",
+              "kind": "rect",
+              "x": 0,
+              "y": 236,
+              "w": 1184,
+              "h": 46,
+              "fill": "#FFFFFF",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e27",
+              "kind": "text",
+              "text": "站点 C",
+              "x": 20,
+              "y": 245,
+              "w": 165,
+              "h": 29.959999999999997,
+              "fontSize": 22,
+              "bold": true,
+              "color": "#303435",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e28",
+              "kind": "text",
+              "text": "−0.350",
+              "x": 215,
+              "y": 245,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#246E88",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e29",
+              "kind": "text",
+              "text": "+0.100",
+              "x": 432,
+              "y": 245,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#A54F2C",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e30",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 962.4,
+                  "y": 237
+                },
+                {
+                  "x": 962.4,
+                  "y": 281
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e31",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 750.5333333333333,
+                  "y": 260
+                },
+                {
+                  "x": 1022.9333333333334,
+                  "y": 260
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e32",
+              "kind": "ellipse",
+              "x": 744.5333333333333,
+              "y": 254,
+              "w": 12,
+              "h": 12,
+              "fill": "#246E88",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e33",
+              "kind": "ellipse",
+              "x": 1016.9333333333334,
+              "y": 254,
+              "w": 12,
+              "h": 12,
+              "fill": "#A54F2C",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e34",
+              "kind": "rect",
+              "x": 0,
+              "y": 282,
+              "w": 1184,
+              "h": 46,
+              "fill": "#F8F5EC",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e35",
+              "kind": "text",
+              "text": "站点 D",
+              "x": 20,
+              "y": 291,
+              "w": 165,
+              "h": 29.959999999999997,
+              "fontSize": 22,
+              "bold": true,
+              "color": "#303435",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e36",
+              "kind": "text",
+              "text": "−0.300",
+              "x": 215,
+              "y": 291,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#246E88",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e37",
+              "kind": "text",
+              "text": "+0.100",
+              "x": 432,
+              "y": 291,
+              "w": 180,
+              "h": 32.32,
+              "fontSize": 24,
+              "bold": true,
+              "color": "#A54F2C",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e38",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 962.4,
+                  "y": 283
+                },
+                {
+                  "x": 962.4,
+                  "y": 327
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e39",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 780.8,
+                  "y": 306
+                },
+                {
+                  "x": 1022.9333333333334,
+                  "y": 306
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1.5,
+              "role": "data"
+            },
+            {
+              "id": "e40",
+              "kind": "ellipse",
+              "x": 774.8,
+              "y": 300,
+              "w": 12,
+              "h": 12,
+              "fill": "#246E88",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e41",
+              "kind": "ellipse",
+              "x": 1016.9333333333334,
+              "y": 300,
+              "w": 12,
+              "h": 12,
+              "fill": "#A54F2C",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e42",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 339
+                },
+                {
+                  "x": 1184,
+                  "y": 339
+                }
+              ],
+              "stroke": "#795019",
+              "strokeWidth": 2,
+              "role": "decoration"
+            },
+            {
+              "id": "e43",
+              "kind": "text",
+              "text": "站点等权汇总",
+              "x": 20,
+              "y": 357,
+              "w": 175,
+              "h": 31.139999999999997,
+              "fontSize": 23,
+              "bold": true,
+              "color": "#795019",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e44",
+              "kind": "text",
+              "text": "−0.300\n[−0.365, −0.235]",
+              "x": 215,
+              "y": 355,
+              "w": 198,
+              "h": 71.2,
+              "fontSize": 21,
+              "bold": false,
+              "color": "#246E88",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.6
+            },
+            {
+              "id": "e45",
+              "kind": "text",
+              "text": "+0.050\n[−0.109, 0.209]",
+              "x": 432,
+              "y": 355,
+              "w": 218,
+              "h": 71.2,
+              "fontSize": 21,
+              "bold": false,
+              "color": "#A54F2C",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.6
+            },
+            {
+              "id": "e46",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 741.4766912209398,
+                  "y": 368
+                },
+                {
+                  "x": 820.1233087790602,
+                  "y": 368
+                }
+              ],
+              "stroke": "#246E88",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "e47",
+              "kind": "ellipse",
+              "x": 774.8,
+              "y": 362,
+              "w": 12,
+              "h": 12,
+              "fill": "#246E88",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e48",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 741.4766912209398,
+                  "y": 362
+                },
+                {
+                  "x": 741.4766912209398,
+                  "y": 374
+                }
+              ],
+              "stroke": "#246E88",
+              "strokeWidth": 1.6,
+              "role": "data"
+            },
+            {
+              "id": "e49",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 820.1233087790602,
+                  "y": 362
+                },
+                {
+                  "x": 820.1233087790602,
+                  "y": 374
+                }
+              ],
+              "stroke": "#246E88",
+              "strokeWidth": 1.6,
+              "role": "data"
+            },
+            {
+              "id": "e50",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 896.344625160063,
+                  "y": 406
+                },
+                {
+                  "x": 1088.9887081732704,
+                  "y": 406
+                }
+              ],
+              "stroke": "#A54F2C",
+              "strokeWidth": 3,
+              "role": "data"
+            },
+            {
+              "id": "e51",
+              "kind": "ellipse",
+              "x": 986.6666666666666,
+              "y": 400,
+              "w": 12,
+              "h": 12,
+              "fill": "#A54F2C",
+              "stroke": "none",
+              "strokeWidth": 2,
+              "role": "data"
+            },
+            {
+              "id": "e52",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 896.344625160063,
+                  "y": 400
+                },
+                {
+                  "x": 896.344625160063,
+                  "y": 412
+                }
+              ],
+              "stroke": "#A54F2C",
+              "strokeWidth": 1.6,
+              "role": "data"
+            },
+            {
+              "id": "e53",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 1088.9887081732704,
+                  "y": 400
+                },
+                {
+                  "x": 1088.9887081732704,
+                  "y": 412
+                }
+              ],
+              "stroke": "#A54F2C",
+              "strokeWidth": 1.6,
+              "role": "data"
+            },
+            {
+              "id": "e54",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 962.4,
+                  "y": 350
+                },
+                {
+                  "x": 962.4,
+                  "y": 427
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data",
+              "dash": "dash"
+            },
+            {
+              "id": "e55",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 690,
+                  "y": 437
+                },
+                {
+                  "x": 1144,
+                  "y": 437
+                }
+              ],
+              "stroke": "#626357",
+              "strokeWidth": 1,
+              "role": "data"
+            },
+            {
+              "id": "e56",
+              "kind": "text",
+              "text": "−0.4",
+              "x": 696.2666666666667,
+              "y": 446,
+              "w": 48,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#626357",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e57",
+              "kind": "text",
+              "text": "−0.2",
+              "x": 817.3333333333333,
+              "y": 446,
+              "w": 48,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#626357",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e58",
+              "kind": "text",
+              "text": "0",
+              "x": 938.4,
+              "y": 446,
+              "w": 48,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#626357",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e59",
+              "kind": "text",
+              "text": "0.2",
+              "x": 1059.4666666666667,
+              "y": 446,
+              "w": 48,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#626357",
+              "role": "label",
+              "align": "center",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e60",
+              "kind": "text",
+              "text": "95% t 区间",
+              "x": 20,
+              "y": 403,
+              "w": 175,
+              "h": 25.24,
+              "fontSize": 18,
+              "bold": false,
+              "color": "#626357",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e61",
+              "kind": "rect",
+              "x": 0,
+              "y": 490,
+              "w": 1184,
+              "h": 49,
+              "fill": "#ECE2CE",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e62",
+              "kind": "text",
+              "text": "统计边界",
+              "x": 15,
+              "y": 503,
+              "w": 105,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": true,
+              "color": "#795019",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e63",
+              "kind": "text",
+              "text": "4 个构造站点 × 每站 6 个观测；同一 24 个样本在两种协议下评价。不能推出真实泛化结论。",
+              "x": 130,
+              "y": 503,
+              "w": 1035,
+              "h": 26.419999999999998,
+              "fontSize": 19,
+              "bold": false,
+              "color": "#303435",
+              "role": "label",
+              "align": "left",
+              "lineHeight": 1.18
+            },
+            {
+              "id": "e64",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 549
+                },
+                {
+                  "x": 1184,
+                  "y": 549
+                }
+              ],
+              "stroke": "#CDC4B1",
+              "strokeWidth": 1,
+              "role": "decoration"
+            },
+            {
+              "id": "e65",
+              "kind": "text",
+              "text": "教学构造数据  |  95% t 区间以 4 站点计算，依赖独立性与分布假设；配对连线表示协议比较，不是时间趋势。",
+              "x": 0,
+              "y": 559,
+              "w": 1184,
+              "h": 20.52,
+              "fontSize": 14,
+              "bold": false,
+              "color": "#626357",
+              "role": "note",
+              "align": "left",
+              "lineHeight": 1.18
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "main",
+            "title": "原始站点与均值共尺度账本",
+            "box": {
+              "x": 48,
+              "y": 105,
+              "w": 1184,
+              "h": 585
+            },
+            "padding": 0,
+            "heading": "hidden",
+            "surface": "plain",
+            "drawingIds": [
+              "page-7"
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "comparison",
+        "primaryPanelId": "main",
+        "readingOrder": [
+          "main"
+        ],
+        "rationale": "原始站点与均值共尺度账本"
+      }
+    }
+  ]
+}

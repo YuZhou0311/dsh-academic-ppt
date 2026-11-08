@@ -1,3 +1,4 @@
+import {DESIGN_CASE_IDS} from './authoring-guidance.mjs';
 /** Recorded design dialogue and reference learning. This module plans questions;
  * it never asks the user, infers consent, or independently verifies a review. */
 import { CARD_PRESET_IDS, getCardPreset } from './card-catalog.mjs';
@@ -14,7 +15,7 @@ const distinct=values=>[...new Set(values)];
 
 export const DESIGN_TOPICS=Object.freeze(['density','storyline','palette','shape','language','texture','cover']);
 export const GUIDED_DESIGN_TOPICS=Object.freeze([...DESIGN_TOPICS,'layout']);
-export const DELEGATION_TOPICS=Object.freeze([...GUIDED_DESIGN_TOPICS,'source','final-review']);
+export const DELEGATION_TOPICS=Object.freeze([...GUIDED_DESIGN_TOPICS,'source','pilot-review','final-review']);
 const digest={type:'string',pattern:'^[a-f0-9]{64}$'};
 export const consultationSchema=obj({
   mode:en(['collaborative','delegated']),delegation:text(2400),interaction:en(['checkpoints','topics']),
@@ -45,7 +46,7 @@ export const componentStudySchema=obj({
   frame:text(1800),titleTreatment:text(1600),spacing:text(1600),adaptation:text(2000),colorHierarchy:text(1600),
 },COMPONENT_FIELDS);
 
-const DESIGN_STUDY_SOURCES=['page-recipe','academic-style','user-template','scientific-reference'];
+const DESIGN_STUDY_SOURCES=['page-recipe','academic-style','design-case','user-template','scientific-reference'];
 const DESIGN_STUDY_FIELDS=['source','referenceId','previewPath','readingOrder','evidenceHierarchy','adaptation'];
 export const designStudySchema=obj({
   source:en(DESIGN_STUDY_SOURCES),referenceId:text(3000),previewPath:text(3000),
@@ -92,6 +93,7 @@ export function designStudyIssues(study,{severity='error'}={}){
     if(!DESIGN_STUDY_SOURCES.includes(record?.source))add('design-reference-unknown-source',path+'.source','使用整页语法、学术风格、用户模板或公开科学演示作为可定位参考。');
     else if(record.source==='page-recipe'&&!PAGE_RECIPE_IDS.includes(record.referenceId))add('design-reference-unknown-page',path+'.referenceId','page-recipe须使用layouts目录中的真实ID，并查看对应页面。');
     else if(record.source==='academic-style'&&!ACADEMIC_STYLE_IDS.includes(record.referenceId))add('design-reference-unknown-style',path+'.referenceId','academic-style须使用contract(design).academicStyles中的真实ID，并查看该方向的实际样张。');
+    else if(record.source==='design-case'&&!DESIGN_CASE_IDS.includes(record.referenceId))add('design-reference-unknown-case',path+'.referenceId','design-case须使用contract(design).designCases中的真实ID，打开previewPath实际PNG并说明本稿迁移。');
     else if(record.source==='user-template'&&!hasTemplatePage(record))add('design-reference-template-page-missing',path+'.referenceId','用户模板须定位实际源页，如slide 3或第3页；本稿目标页不能代替出处。');
     else if(record.source==='scientific-reference'&&!/^https?:\/\/\S+/i.test(record.referenceId||''))add('design-reference-url-missing',path+'.referenceId','公开科学参考的referenceId须含实际来源URL；previewPath定位实际查看的页面或图片。');
   }
@@ -187,7 +189,7 @@ export function designDialoguePlan(consultation={mode:'collaborative'}){
       options:TOPICS.storyline.options}]:[{id:'design_pilot_direction',topic:'cover',topics:pendingDesignTopics,label:'配色、排版与风格的真实样张',
       text:'看过封面、困难正文和连续三页后，哪套配色、布局与风格更合适？哪些地方需要调整？',
       recommendation:'先展示同尺度的真实候选再问，说明配色与对比、阅读顺序、主证据、就近解释、字体角色、开放分组或必要边界、表格规则、章节定位和留白如何支持阅读。按观看任务选择相关academicStyles候选，不必展示全部六类。可以一轮确认整套方案，也可只改用户不满意的部分；不能把笼统“方向”替代具体设计讨论。',
-      options:[option('research-seminar','开放研讨','主图与就近解释先被读到，开放白底减少无用容器。'),option('thesis-defense','正式答辩','可见章节定位、稳定字级和完整比较条件支持评委追问。'),option('adapt-from-evidence','按证据调整','沿用已展示的真实材料，具体调整公式推导、论文细读、跨研究比较或空间观测的阅读关系。')]}];
+      options:[option('keep-shown','保留刚展示的具体样张','仅针对已提供的当前预览，不以风格名称代替画面。'),option('revise-shown','修改当前样张','听取页码和具体问题，修订后重新展示。'),option('show-alternative','再看同材料另一种构图','保留证据与条件，改变主辅分配或阅读关系，不只是换色。')]}];
   }
   if(sourcePending){
     stageId=consultation.source?.status==='awaiting-upload'?'source-upload':'source';

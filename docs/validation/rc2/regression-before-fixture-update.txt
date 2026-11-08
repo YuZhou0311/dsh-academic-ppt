@@ -1,0 +1,3536 @@
+TAP version 13
+# Subtest: all academic cover variants retain complete metadata, authored title breaks and native title sizes
+ok 1 - all academic cover variants retain complete metadata, authored title breaks and native title sizes
+  ---
+  duration_ms: 240.542683
+  type: 'test'
+  ...
+# Subtest: cover titleLines cannot substitute a shorter or different research title
+ok 2 - cover titleLines cannot substitute a shorter or different research title
+  ---
+  duration_ms: 4.415581
+  type: 'test'
+  ...
+# Subtest: project cover keeps the authorized logo separate from date and affiliation
+ok 3 - project cover keeps the authorized logo separate from date and affiliation
+  ---
+  duration_ms: 3.760106
+  type: 'test'
+  ...
+# Subtest: academic branding rejects unregistered or evidence assets as logos
+ok 4 - academic branding rejects unregistered or evidence assets as logos
+  ---
+  duration_ms: 25.329866
+  type: 'test'
+  ...
+# Subtest: explicit band and rule headers apply title tokens and keep branding visible on existing layouts
+ok 5 - explicit band and rule headers apply title tokens and keep branding visible on existing layouts
+  ---
+  duration_ms: 9.058634
+  type: 'test'
+  ...
+# Subtest: section headers reserve actual wrapped title height before composition evidence
+ok 6 - section headers reserve actual wrapped title height before composition evidence
+  ---
+  duration_ms: 15.128157
+  type: 'test'
+  ...
+# Subtest: chapter agenda preserves every item and applies explicit section, title and panel tokens
+ok 7 - chapter agenda preserves every item and applies explicit section, title and panel tokens
+  ---
+  duration_ms: 7.863654
+  type: 'test'
+  ...
+# Subtest: missing system preserves the legacy header while explicit cover and body token ranges remain usable
+ok 8 - missing system preserves the legacy header while explicit cover and body token ranges remain usable
+  ---
+  duration_ms: 4.016167
+  type: 'test'
+  ...
+# Subtest: weighted panels preserve all authored text, evidence identities and full-width strips
+ok 9 - weighted panels preserve all authored text, evidence identities and full-width strips
+  ---
+  duration_ms: 32.347242
+  type: 'test'
+  ...
+# Subtest: comparison evidence and two-row mechanisms use the production content callbacks
+ok 10 - comparison evidence and two-row mechanisms use the production content callbacks
+  ---
+  duration_ms: 14.479333
+  type: 'test'
+  ...
+# Subtest: native tables keep weighted columns, every cell, caption and following interpretation
+ok 11 - native tables keep weighted columns, every cell, caption and following interpretation
+  ---
+  duration_ms: 7.542319
+  type: 'test'
+  ...
+# Subtest: figures remain separate source objects and their captions clear explanatory text
+ok 12 - figures remain separate source objects and their captions clear explanatory text
+  ---
+  duration_ms: 6.904245
+  type: 'test'
+  ...
+# Subtest: chart and scientific plot are independent native primary objects with intact numeric payloads
+ok 13 - chart and scientific plot are independent native primary objects with intact numeric payloads
+  ---
+  duration_ms: 5.951801
+  type: 'test'
+  ...
+# Subtest: named distribution and interval plots coexist with all native observations, bounds and sources
+ok 14 - named distribution and interval plots coexist with all native observations, bounds and sources
+  ---
+  duration_ms: 37.7493
+  type: 'test'
+  ...
+# Subtest: valid public typography tokens render unchanged instead of rejecting the academic page
+ok 15 - valid public typography tokens render unchanged instead of rejecting the academic page
+  ---
+  duration_ms: 5.656732
+  type: 'test'
+  ...
+# Subtest: shared plot measurement reserves a multiline caption before distributing row heights
+ok 16 - shared plot measurement reserves a multiline caption before distributing row heights
+  ---
+  duration_ms: 24.563973
+  type: 'test'
+  ...
+# Subtest: legacy and named plot identities coexist independently of panel order
+ok 17 - legacy and named plot identities coexist independently of panel order
+  ---
+  duration_ms: 21.644205
+  type: 'test'
+  ...
+# Subtest: multiple rows honor measured long headings before placing actual card bodies
+ok 18 - multiple rows honor measured long headings before placing actual card bodies
+  ---
+  duration_ms: 16.139912
+  type: 'test'
+  ...
+# Subtest: all three panel treatments retain native content without registering background overlaps
+ok 19 - all three panel treatments retain native content without registering background overlaps
+  ---
+  duration_ms: 7.266043
+  type: 'test'
+  ...
+# Subtest: explicit plain and compact card styles stay meaningful and unsupported frames are blocked
+ok 20 - explicit plain and compact card styles stay meaningful and unsupported frames are blocked
+  ---
+  duration_ms: 9.553884
+  type: 'test'
+  ...
+# Subtest: missing, duplicate, conflicting and unassigned references are explicit blocking errors
+ok 21 - missing, duplicate, conflicting and unassigned references are explicit blocking errors
+  ---
+  duration_ms: 4.435769
+  type: 'test'
+  ...
+# Subtest: overfull text and unusually long source captions retain their exact content and font sizes
+ok 22 - overfull text and unusually long source captions retain their exact content and font sizes
+  ---
+  duration_ms: 57.948309
+  type: 'test'
+  ...
+# Subtest: explicit card boxes stay exact and the evidence flow reserves their occupied interval
+ok 23 - explicit card boxes stay exact and the evidence flow reserves their occupied interval
+  ---
+  duration_ms: 5.219355
+  type: 'test'
+  ...
+# Subtest: all metric qualifications survive compact panel text and impossible metric widths fail
+ok 24 - all metric qualifications survive compact panel text and impossible metric widths fail
+  ---
+  duration_ms: 11.857745
+  type: 'test'
+  ...
+# Subtest: invalid ratios, unsupported fields and too many semantic panels cannot pass silently
+ok 25 - invalid ratios, unsupported fields and too many semantic panels cannot pass silently
+  ---
+  duration_ms: 1.118355
+  type: 'test'
+  ...
+# Subtest: composition allocates the shared full diagram-label minimum before reporting page overflow
+ok 26 - composition allocates the shared full diagram-label minimum before reporting page overflow
+  ---
+  duration_ms: 12.802933
+  type: 'test'
+  ...
+# Subtest: explicit stretch preserves content and surface inheritance while opting into a taller frame
+ok 27 - explicit stretch preserves content and surface inheritance while opting into a taller frame
+  ---
+  duration_ms: 15.645554
+  type: 'test'
+  ...
+# Subtest: authored panel surfaces preserve all scientific text and only change native furniture
+ok 28 - authored panel surfaces preserve all scientific text and only change native furniture
+  ---
+  duration_ms: 33.265
+  type: 'test'
+  ...
+# Subtest: a short content-sized sidebar shares the baseline while the main evidence retains its full area
+ok 29 - a short content-sized sidebar shares the baseline while the main evidence retains its full area
+  ---
+  duration_ms: 5.086712
+  type: 'test'
+  ...
+# Subtest: content-sized panels keep multi-line headings, qualifiers and stacked card text inside their frame
+ok 30 - content-sized panels keep multi-line headings, qualifiers and stacked card text inside their frame
+  ---
+  duration_ms: 5.147545
+  type: 'test'
+  ...
+# Subtest: unsupported surfaces and alignment conflicts produce blocking diagnostics without moving absolute cards
+ok 31 - unsupported surfaces and alignment conflicts produce blocking diagnostics without moving absolute cards
+  ---
+  duration_ms: 3.33319
+  type: 'test'
+  ...
+# Subtest: content-sized diagram panels reject absolute nodes and preserve their authored geometry
+ok 32 - content-sized diagram panels reject absolute nodes and preserve their authored geometry
+  ---
+  duration_ms: 10.678821
+  type: 'test'
+  ...
+# Subtest: content-sized alignment cannot hide overfull scientific qualifiers
+ok 33 - content-sized alignment cannot hide overfull scientific qualifiers
+  ---
+  duration_ms: 155.867731
+  type: 'test'
+  ...
+# Subtest: independent crossed row mappings do not become an invented shared bus and remain native arrows
+ok 34 - independent crossed row mappings do not become an invented shared bus and remain native arrows
+  ---
+  duration_ms: 223.735824
+  type: 'test'
+  ...
+# Subtest: an authored split and join retain exactly the four supplied edges and all branch labels
+ok 35 - an authored split and join retain exactly the four supplied edges and all branch labels
+  ---
+  duration_ms: 10.289865
+  type: 'test'
+  ...
+# Subtest: same-order independent mappings with overlapping horizontal spans remain distinct
+ok 36 - same-order independent mappings with overlapping horizontal spans remain distinct
+  ---
+  duration_ms: 4.721261
+  type: 'test'
+  ...
+# Subtest: association and feedback keep their declared meaning with and without row layout
+ok 37 - association and feedback keep their declared meaning with and without row layout
+  ---
+  duration_ms: 59.628244
+  type: 'test'
+  ...
+# Subtest: explicit node and edge typography and full detail strings survive row layout
+ok 38 - explicit node and edge typography and full detail strings survive row layout
+  ---
+  duration_ms: 5.295249
+  type: 'test'
+  ...
+# Subtest: row membership, label count and authored box conflicts are blocking rather than silently rearranged
+ok 39 - row membership, label count and authored box conflicts are blocking rather than silently rearranged
+  ---
+  duration_ms: 10.639677
+  type: 'test'
+  ...
+# Subtest: routes through unrelated nodes and self loops cannot pass as valid mechanism relationships
+ok 40 - routes through unrelated nodes and self loops cannot pass as valid mechanism relationships
+  ---
+  duration_ms: 5.577818
+  type: 'test'
+  ...
+# Subtest: dense mechanisms report overflow while preserving every authored node detail and font size
+ok 41 - dense mechanisms report overflow while preserving every authored node detail and font size
+  ---
+  duration_ms: 118.337597
+  type: 'test'
+  ...
+# Subtest: fractional-size adjacent-row labels clear complete detail panels while unlabelled gaps stay compact
+ok 42 - fractional-size adjacent-row labels clear complete detail panels while unlabelled gaps stay compact
+  ---
+  duration_ms: 8.469092
+  type: 'test'
+  ...
+# Subtest: multiline labels beside a vertical stem wrap at the declared font and are included in minimum height
+ok 43 - multiline labels beside a vertical stem wrap at the declared font and are included in minimum height
+  ---
+  duration_ms: 7.714038
+  type: 'test'
+  ...
+# Subtest: same-row labels receive complete overhead space while ordinary neighboring edges remain direct
+ok 44 - same-row labels receive complete overhead space while ordinary neighboring edges remain direct
+  ---
+  duration_ms: 4.43665
+  type: 'test'
+  ...
+# Subtest: labelled split and merge paths reserve multiple lanes without covering nodes, labels or connecting strokes
+ok 45 - labelled split and merge paths reserve multiple lanes without covering nodes, labels or connecting strokes
+  ---
+  duration_ms: 9.976011
+  type: 'test'
+  ...
+# Subtest: labelled independent crossings keep distinct authored paths and labels clear of diagonal strokes
+ok 46 - labelled independent crossings keep distinct authored paths and labels clear of diagonal strokes
+  ---
+  duration_ms: 18.629829
+  type: 'test'
+  ...
+# Subtest: a diagram without a usable label corridor fails explicitly and retains the authored wording and font
+ok 47 - a diagram without a usable label corridor fails explicitly and retains the authored wording and font
+  ---
+  duration_ms: 2.53986
+  type: 'test'
+  ...
+# Subtest: academic palettes supply readable text roles and visible subdued card boundaries
+ok 48 - academic palettes supply readable text roles and visible subdued card boundaries
+  ---
+  duration_ms: 3.379342
+  type: 'test'
+  ...
+# Subtest: palette lookup isolates per-deck changes and rejects unknown or inherited ids
+ok 49 - palette lookup isolates per-deck changes and rejects unknown or inherited ids
+  ---
+  duration_ms: 1.680603
+  type: 'test'
+  ...
+# Subtest: each academic palette offers usable dark, partial-fill and intermediate surfaces with readable native text
+ok 50 - each academic palette offers usable dark, partial-fill and intermediate surfaces with readable native text
+  ---
+  duration_ms: 105.069424
+  type: 'test'
+  ...
+# Subtest: full-text and verified flags alone cannot admit a shallow academic deck
+ok 51 - full-text and verified flags alone cannot admit a shallow academic deck
+  ---
+  duration_ms: 16.448452
+  type: 'test'
+  ...
+# Subtest: a non-experimental source can document its actual evidence without fabricating an experiment or DOI
+ok 52 - a non-experimental source can document its actual evidence without fabricating an experiment or DOI
+  ---
+  duration_ms: 2.254377
+  type: 'test'
+  ...
+# Subtest: inferences require traceable independent premises and an alternative explanation
+ok 53 - inferences require traceable independent premises and an alternative explanation
+  ---
+  duration_ms: 4.697721
+  type: 'test'
+  ...
+# Subtest: identical reasoning across independent sources is advisory while shared-study wording remains valid
+ok 54 - identical reasoning across independent sources is advisory while shared-study wording remains valid
+  ---
+  duration_ms: 3.500886
+  type: 'test'
+  ...
+# Subtest: indirect premises cannot hide unread or unanalysed sources from academic and brief gates
+ok 55 - indirect premises cannot hide unread or unanalysed sources from academic and brief gates
+  ---
+  duration_ms: 233.470534
+  type: 'test'
+  ...
+# Subtest: template demonstration prose and assets cannot serve as research evidence
+ok 56 - template demonstration prose and assets cannot serve as research evidence
+  ---
+  duration_ms: 3.725939
+  type: 'test'
+  ...
+# Subtest: reference panel headings must be authored for the current study
+ok 57 - reference panel headings must be authored for the current study
+  ---
+  duration_ms: 2.488658
+  type: 'test'
+  ...
+# Subtest: hard requirements cannot be relaxed or erased by replacing the brief
+ok 58 - hard requirements cannot be relaxed or erased by replacing the brief
+  ---
+  duration_ms: 44.239423
+  type: 'test'
+  ...
+# Subtest: default project adds no arbitrary paper count or per-paper introduction rule
+ok 59 - default project adds no arbitrary paper count or per-paper introduction rule
+  ---
+  duration_ms: 4.703723
+  type: 'test'
+  ...
+# Subtest: record files have the same bounded typed transaction contract as inline records
+ok 60 - record files have the same bounded typed transaction contract as inline records
+  ---
+  duration_ms: 26.271387
+  type: 'test'
+  ...
+# Subtest: slide-content removes optional layout fields explicitly and returns lossless JSON after commit
+ok 61 - slide-content removes optional layout fields explicitly and returns lossless JSON after commit
+  ---
+  duration_ms: 18.648135
+  type: 'test'
+  ...
+# Subtest: current review requires per-slide observations and cannot pass acknowledged defects
+ok 62 - current review requires per-slide observations and cannot pass acknowledged defects
+  ---
+  duration_ms: 223.588574
+  type: 'test'
+  ...
+# Subtest: default cover is text-led and keeps the full research title and metadata in editable objects
+ok 63 - default cover is text-led and keeps the full research title and metadata in editable objects
+  ---
+  duration_ms: 40.537896
+  type: 'test'
+  ...
+# Subtest: text-only editorial cover reclaims media width and has no empty colored side panel
+ok 64 - text-only editorial cover reclaims media width and has no empty colored side panel
+  ---
+  duration_ms: 8.018102
+  type: 'test'
+  ...
+# Subtest: restrained card surfaces survive SVG and native PPTX export, with explicit overrides retained
+ok 65 - restrained card surfaces survive SVG and native PPTX export, with explicit overrides retained
+  ---
+  duration_ms: 21.306242
+  type: 'test'
+  ...
+# Subtest: six profiles alter real reading surfaces and preserve every supplied table value
+ok 66 - six profiles alter real reading surfaces and preserve every supplied table value
+  ---
+  duration_ms: 57.226282
+  type: 'test'
+  ...
+# Subtest: profile overlays are explicit and a legacy design does not opt into new defaults
+ok 67 - profile overlays are explicit and a legacy design does not opt into new defaults
+  ---
+  duration_ms: 13.295601
+  type: 'test'
+  ...
+# Subtest: scientific plot labels and source captions retain independent body and annotation families
+ok 68 - scientific plot labels and source captions retain independent body and annotation families
+  ---
+  duration_ms: 12.88228
+  type: 'test'
+  ...
+# Subtest: native table style is independent of panel style in SVG and PowerPoint
+ok 69 - native table style is independent of panel style in SVG and PowerPoint
+  ---
+  duration_ms: 95.762998
+  type: 'test'
+  ...
+# Subtest: new projects keep sparse profile defaults and switching profiles preserves explicit choices
+ok 70 - new projects keep sparse profile defaults and switching profiles preserves explicit choices
+  ---
+  duration_ms: 114.226443
+  type: 'test'
+  ...
+# Subtest: metadata-only initialization and consultation patches preserve sparse defaults
+ok 71 - metadata-only initialization and consultation patches preserve sparse defaults
+  ---
+  duration_ms: 49.682598
+  type: 'test'
+  ...
+# Subtest: standalone quality and structure checks use the same profile defaults as scenes
+ok 72 - standalone quality and structure checks use the same profile defaults as scenes
+  ---
+  duration_ms: 3.76924
+  type: 'test'
+  ...
+# Subtest: pilot pages can be reordered with new pages in one typed record transaction
+ok 73 - pilot pages can be reordered with new pages in one typed record transaction
+  ---
+  duration_ms: 153.183502
+  type: 'test'
+  ...
+# Subtest: an incomplete, duplicated or foreign slide order is rejected without saving any part of a batch
+ok 74 - an incomplete, duplicated or foreign slide order is rejected without saving any part of a batch
+  ---
+  duration_ms: 33.071701
+  type: 'test'
+  ...
+# Subtest: reordering after export invalidates delivery until the current order is rebuilt and reviewed
+ok 75 - reordering after export invalidates delivery until the current order is rebuilt and reviewed
+  ---
+  duration_ms: 164.526423
+  type: 'test'
+  ...
+# Subtest: named scientific plots cannot conceal unread or missing source analysis behind their own source bindings
+ok 76 - named scientific plots cannot conceal unread or missing source analysis behind their own source bindings
+  ---
+  duration_ms: 2.403247
+  type: 'test'
+  ...
+# Subtest: candidate records can be consistent without user approval
+ok 77 - candidate records can be consistent without user approval
+  ---
+  duration_ms: 4.361426
+  type: 'test'
+  ...
+# Subtest: changed PPTX invalidates artifact binding
+ok 78 - changed PPTX invalidates artifact binding
+  ---
+  duration_ms: 6.520487
+  type: 'test'
+  ...
+# Subtest: old renderer input hash is rejected
+ok 79 - old renderer input hash is rejected
+  ---
+  duration_ms: 8.01175
+  type: 'test'
+  ...
+# Subtest: old page review hash is rejected
+ok 80 - old page review hash is rejected
+  ---
+  duration_ms: 2.514269
+  type: 'test'
+  ...
+# Subtest: missing reference is rejected
+ok 81 - missing reference is rejected
+  ---
+  duration_ms: 3.128532
+  type: 'test'
+  ...
+# Subtest: missing typography observation is rejected
+ok 82 - missing typography observation is rejected
+  ---
+  duration_ms: 2.421063
+  type: 'test'
+  ...
+# Subtest: generic praise is not a review observation
+ok 83 - generic praise is not a review observation
+  ---
+  duration_ms: 1.157269
+  type: 'test'
+  ...
+# Subtest: duplicate rendered page is rejected
+ok 84 - duplicate rendered page is rejected
+  ---
+  duration_ms: 1.389921
+  type: 'test'
+  ...
+# Subtest: thumbnail cannot replace readable render
+ok 85 - thumbnail cannot replace readable render
+  ---
+  duration_ms: 1.7304
+  type: 'test'
+  ...
+# Subtest: identical before and after cannot substantiate a revision
+ok 86 - identical before and after cannot substantiate a revision
+  ---
+  duration_ms: 1.6901
+  type: 'test'
+  ...
+# Subtest: different revision with actions is evidence-consistent
+ok 87 - different revision with actions is evidence-consistent
+  ---
+  duration_ms: 1.287826
+  type: 'test'
+  ...
+# Subtest: final does not infer approval from candidate
+ok 88 - final does not infer approval from candidate
+  ---
+  duration_ms: 2.006517
+  type: 'test'
+  ...
+# Subtest: final requires declared review readiness and approval scope
+ok 89 - final requires declared review readiness and approval scope
+  ---
+  duration_ms: 1.399617
+  type: 'test'
+  ...
+# Subtest: unresolved problems block final
+ok 90 - unresolved problems block final
+  ---
+  duration_ms: 1.182106
+  type: 'test'
+  ...
+# Subtest: path traversal is rejected
+ok 91 - path traversal is rejected
+  ---
+  duration_ms: 1.408412
+  type: 'test'
+  ...
+# Subtest: symlink escape is rejected
+ok 92 - symlink escape is rejected
+  ---
+  duration_ms: 1.386938
+  type: 'test'
+  ...
+# Subtest: malformed array members return errors rather than crash
+ok 93 - malformed array members return errors rather than crash
+  ---
+  duration_ms: 0.83897
+  type: 'test'
+  ...
+# Subtest: non-object manifest is rejected
+ok 94 - non-object manifest is rejected
+  ---
+  duration_ms: 0.682555
+  type: 'test'
+  ...
+# Subtest: contract exposes installed version and actual current case paths before full schemas
+ok 95 - contract exposes installed version and actual current case paths before full schemas
+  ---
+  duration_ms: 45.857643
+  type: 'test'
+  ...
+# Subtest: each current example retains native objects, construction identity, and actual render binding
+ok 96 - each current example retains native objects, construction identity, and actual render binding
+  ---
+  duration_ms: 42.311792
+  type: 'test'
+  ...
+# Subtest: current case source is a valid schema alternative, not an invented API field
+ok 97 - current case source is a valid schema alternative, not an invented API field
+  ---
+  duration_ms: 52.792253
+  type: 'test'
+  ...
+# Subtest: unknown case identities, missing adaptation and missing viewing paths are rejected
+ok 98 - unknown case identities, missing adaptation and missing viewing paths are rejected
+  ---
+  duration_ms: 0.735773
+  type: 'test'
+  ...
+# Subtest: new guidance does not mutate the saved consultation or silently upgrade viewing capability
+ok 99 - new guidance does not mutate the saved consultation or silently upgrade viewing capability
+  ---
+  duration_ms: 60.217168
+  type: 'test'
+  ...
+# Subtest: runtime recovery and render/review guidance survive truncation without erasing questions
+ok 100 - runtime recovery and render/review guidance survive truncation without erasing questions
+  ---
+  duration_ms: 1.751794
+  type: 'test'
+  ...
+# Subtest: legacy profile references no longer advertise sparse old galleries
+ok 101 - legacy profile references no longer advertise sparse old galleries
+  ---
+  duration_ms: 0.290561
+  type: 'test'
+  ...
+# Subtest: guidance does not change tool count or high-cost registered schemas
+ok 102 - guidance does not change tool count or high-cost registered schemas
+  ---
+  duration_ms: 2.729078
+  type: 'test'
+  ...
+# Subtest: current routes and historical warnings are shipped together
+ok 103 - current routes and historical warnings are shipped together
+  ---
+  duration_ms: 7.482585
+  type: 'test'
+  ...
+# Subtest: actual single-page PNG paths reach native model output before verbose risk records
+ok 104 - actual single-page PNG paths reach native model output before verbose risk records
+  ---
+  duration_ms: 1.348262
+  type: 'test'
+  ...
+# Subtest: 48 recipes retain 36 text designs and add 12 distinct figure relationships
+ok 105 - 48 recipes retain 36 text designs and add 12 distinct figure relationships
+  ---
+  duration_ms: 3.198118
+  type: 'test'
+  ...
+# Subtest: every catalog example fits measured bounds and exports as editable native objects
+ok 106 - every catalog example fits measured bounds and exports as editable native objects
+  ---
+  duration_ms: 1725.940256
+  type: 'test'
+  ...
+# Subtest: all authored fields, including zero values and rail badges, remain visible without text collisions
+ok 107 - all authored fields, including zero values and rail badges, remain visible without text collisions
+  ---
+  duration_ms: 114.806035
+  type: 'test'
+  ...
+# Subtest: insufficient boxes and conflicting sources fail instead of hiding content or falling back
+ok 108 - insufficient boxes and conflicting sources fail instead of hiding content or falling back
+  ---
+  duration_ms: 4.83417
+  type: 'test'
+  ...
+# Subtest: preset geometry overrides legacy defaults while honoring measured padding and authored color
+ok 109 - preset geometry overrides legacy defaults while honoring measured padding and authored color
+  ---
+  duration_ms: 2.865982
+  type: 'test'
+  ...
+# Subtest: default projection policy changes measured geometry without demoting necessary limitations
+ok 110 - default projection policy changes measured geometry without demoting necessary limitations
+  ---
+  duration_ms: 1426.172341
+  type: 'test'
+  ...
+# Subtest: scientific units remain intact in ledger and narrow metric columns without reducing type
+ok 111 - scientific units remain intact in ledger and narrow metric columns without reducing type
+  ---
+  duration_ms: 13.965202
+  type: 'test'
+  ...
+# Subtest: open decision branches terminate above the visible condition labels
+ok 112 - open decision branches terminate above the visible condition labels
+  ---
+  duration_ms: 3.490912
+  type: 'test'
+  ...
+# Subtest: claim support, observation layers and risk responses express different relationships without first-item weighting
+ok 113 - claim support, observation layers and risk responses express different relationships without first-item weighting
+  ---
+  duration_ms: 8.028318
+  type: 'test'
+  ...
+# Subtest: automatic text cards wrap at the target width and keep natural heights instead of equal empty cells
+ok 114 - automatic text cards wrap at the target width and keep natural heights instead of equal empty cells
+  ---
+  duration_ms: 26.240393
+  type: 'test'
+  ...
+# Subtest: a deliberately oversized explicit box remains editable and produces a positioned review target
+ok 115 - a deliberately oversized explicit box remains editable and produces a positioned review target
+  ---
+  duration_ms: 4.907794
+  type: 'test'
+  ...
+# Subtest: default image slots respond to destination height without shrinking fonts or changing source aspect ratio
+ok 116 - default image slots respond to destination height without shrinking fonts or changing source aspect ratio
+  ---
+  duration_ms: 125.597946
+  type: 'test'
+  ...
+# Subtest: default media fitting does not bypass source readability or insufficient destination checks
+ok 117 - default media fitting does not bypass source readability or insufficient destination checks
+  ---
+  duration_ms: 77.84424
+  type: 'test'
+  ...
+# Subtest: a full-width overview receives source-proportional height instead of a fixed half-row
+ok 118 - a full-width overview receives source-proportional height instead of a fixed half-row
+  ---
+  duration_ms: 86.924971
+  type: 'test'
+  ...
+# Subtest: free flow starts the next card one gap after the final fitted image frame at different widths
+ok 119 - free flow starts the next card one gap after the final fitted image frame at different widths
+  ---
+  duration_ms: 152.766982
+  type: 'test'
+  ...
+# Subtest: academic panel flow advances from fitted image geometry while preserving the following text
+ok 120 - academic panel flow advances from fitted image geometry while preserving the following text
+  ---
+  duration_ms: 69.672583
+  type: 'test'
+  ...
+# Subtest: public frame and drawing shadow contracts accept exact paint and reject ambiguous or unbounded inputs
+ok 121 - public frame and drawing shadow contracts accept exact paint and reject ambiguous or unbounded inputs
+  ---
+  duration_ms: 60.369233
+  type: 'test'
+  ...
+# Subtest: plain remains unframed by default but explicit paint creates a real frame; transparent dashed defaults do not elevate
+ok 122 - plain remains unframed by default but explicit paint creates a real frame; transparent dashed defaults do not elevate
+  ---
+  duration_ms: 501.905334
+  type: 'test'
+  ...
+# Subtest: all 48 presets retain their exact text and scientific image geometry when frame paint changes
+ok 123 - all 48 presets retain their exact text and scientific image geometry when frame paint changes
+  ---
+  duration_ms: 14836.958983
+  type: 'test'
+  ...
+# Subtest: preset defaults apply paint without flattening tab, open-rule or double-frame geometry
+ok 124 - preset defaults apply paint without flattening tab, open-rule or double-frame geometry
+  ---
+  duration_ms: 187.359151
+  type: 'test'
+  ...
+# Subtest: PPTX and SVG carry true noFill, exact line width and dash, outer shadow, and unchanged scientific image bytes
+ok 125 - PPTX and SVG carry true noFill, exact line width and dash, outer shadow, and unchanged scientific image bytes
+  ---
+  duration_ms: 321.765204
+  type: 'test'
+  ...
+# Subtest: native drawing shadows scale uniformly and export authored zero values and fractional angles exactly
+ok 126 - native drawing shadows scale uniformly and export authored zero values and fractional angles exactly
+  ---
+  duration_ms: 125.814577
+  type: 'test'
+  ...
+# Subtest: bounded blur on a thin native band is not clipped by SVG percentage filter bounds
+ok 127 - bounded blur on a thin native band is not clipped by SVG percentage filter bounds
+  ---
+  duration_ms: 1.548623
+  type: 'test'
+  ...
+# Subtest: explicit fill uses readable foreground on its actual backing while independent tabs and default colors remain intact
+ok 128 - explicit fill uses readable foreground on its actual backing while independent tabs and default colors remain intact
+  ---
+  duration_ms: 581.232666
+  type: 'test'
+  ...
+# Subtest: cut and fold surfaces export one closed editable contour with the complete diagonal triangle and one shadow
+ok 129 - cut and fold surfaces export one closed editable contour with the complete diagonal triangle and one shadow
+  ---
+  duration_ms: 153.058543
+  type: 'test'
+  ...
+# Subtest: actual native PPTX pixels preserve cut/fold fill, continuous single shadow and readable explicit surfaces
+ok 130 - actual native PPTX pixels preserve cut/fold fill, continuous single shadow and readable explicit surfaces
+  ---
+  duration_ms: 7080.365532
+  type: 'test'
+  ...
+# Subtest: card-only source IDs are visible to evidence collectors without duplicate slide figureIds
+ok 131 - card-only source IDs are visible to evidence collectors without duplicate slide figureIds
+  ---
+  duration_ms: 33.591045
+  type: 'test'
+  ...
+# Subtest: missing or unrelated card-only sources still block source validation
+ok 132 - missing or unrelated card-only sources still block source validation
+  ---
+  duration_ms: 30.704611
+  type: 'test'
+  ...
+# Subtest: embedded figures export as separate native pictures traceable to unchanged source bytes
+ok 133 - embedded figures export as separate native pictures traceable to unchanged source bytes
+  ---
+  duration_ms: 49.818485
+  type: 'test'
+  ...
+# Subtest: image-card frame styling never clips scientific pixels or disables readability checks
+ok 134 - image-card frame styling never clips scientific pixels or disables readability checks
+  ---
+  duration_ms: 8.812446
+  type: 'test'
+  ...
+# Subtest: nested image slots are not peer region overlaps but genuine card/image collisions remain errors
+ok 135 - nested image slots are not peer region overlaps but genuine card/image collisions remain errors
+  ---
+  duration_ms: 15.607236
+  type: 'test'
+  ...
+# Subtest: nested region validation catches internal slot overlap and out-of-card slots independently
+ok 136 - nested region validation catches internal slot overlap and out-of-card slots independently
+  ---
+  duration_ms: 1.445889
+  type: 'test'
+  ...
+# Subtest: wrong recipe counts and non-image recipes cannot silently discard referenced images
+ok 137 - wrong recipe counts and non-image recipes cannot silently discard referenced images
+  ---
+  duration_ms: 6.656863
+  type: 'test'
+  ...
+# Subtest: media-height and source-count input limits are explicit errors, not clamped preferences
+ok 138 - media-height and source-count input limits are explicit errors, not clamped preferences
+  ---
+  duration_ms: 38.444055
+  type: 'test'
+  ...
+# Subtest: stacked image explanations reserve their actual height before the following source row
+ok 139 - stacked image explanations reserve their actual height before the following source row
+  ---
+  duration_ms: 5.439139
+  type: 'test'
+  ...
+# Subtest: structured copy cannot be silently attached to a legacy card or competing template
+ok 140 - structured copy cannot be silently attached to a legacy card or competing template
+  ---
+  duration_ms: 107.259995
+  type: 'test'
+  ...
+# Subtest: structured items, zero values and notes participate in content and placeholder checks
+ok 141 - structured items, zero values and notes participate in content and placeholder checks
+  ---
+  duration_ms: 24.433571
+  type: 'test'
+  ...
+# Subtest: scoped preset edits retain structured values, units, notes and all non-card objects
+ok 142 - scoped preset edits retain structured values, units, notes and all non-card objects
+  ---
+  duration_ms: 107.314977
+  type: 'test'
+  ...
+# Subtest: card appearance shares measurement with rendering and retains long titles, metrics and native icons
+ok 143 - card appearance shares measurement with rendering and retains long titles, metrics and native icons
+  ---
+  duration_ms: 82.233544
+  type: 'test'
+  ...
+# Subtest: per-card plain override removes the frame without deleting its content or inheriting a left accent
+ok 144 - per-card plain override removes the frame without deleting its content or inheriting a left accent
+  ---
+  duration_ms: 5.272482
+  type: 'test'
+  ...
+# Subtest: native surfaces have observable boundaries and correct solid-card body ink
+ok 145 - native surfaces have observable boundaries and correct solid-card body ink
+  ---
+  duration_ms: 6.843029
+  type: 'test'
+  ...
+# Subtest: chrome can remove repeated furniture and recovers body height while preserving source notes
+ok 146 - chrome can remove repeated furniture and recovers body height while preserving source notes
+  ---
+  duration_ms: 10.24644
+  type: 'test'
+  ...
+# Subtest: split and editorial covers retain authored metadata and only accept registered context assets
+ok 147 - split and editorial covers retain authored metadata and only accept registered context assets
+  ---
+  duration_ms: 9.380729
+  type: 'test'
+  ...
+# Subtest: closing statement and evidence variants retain conclusion, question and editable supporting cards
+ok 148 - closing statement and evidence variants retain conclusion, question and editable supporting cards
+  ---
+  duration_ms: 5.836733
+  type: 'test'
+  ...
+# Subtest: cover and closing context images preserve the authored viewport in scene geometry and PPTX crop
+ok 149 - cover and closing context images preserve the authored viewport in scene geometry and PPTX crop
+  ---
+  duration_ms: 27.035036
+  type: 'test'
+  ...
+# Subtest: custom cover roles support independent geometry and reject omitted, overlapping or out-of-bounds content
+ok 150 - custom cover roles support independent geometry and reject omitted, overlapping or out-of-bounds content
+  ---
+  duration_ms: 46.235489
+  type: 'test'
+  ...
+# Subtest: public record schema exposes bounded card, chrome, cover and closing controls
+ok 151 - public record schema exposes bounded card, chrome, cover and closing controls
+  ---
+  duration_ms: 1.505365
+  type: 'test'
+  ...
+# Subtest: checkpoint B exposes candidate prompts before visual preferences, without inventing answers
+ok 152 - checkpoint B exposes candidate prompts before visual preferences, without inventing answers
+  ---
+  duration_ms: 34.686068
+  type: 'test'
+  ...
+# Subtest: recording explicit responses preserves the same real pilot artifact and existing review results only
+ok 153 - recording explicit responses preserves the same real pilot artifact and existing review results only
+  ---
+  duration_ms: 29226.192325
+  type: 'test'
+  ...
+# Subtest: decision metadata never preserves a changed design, evidence context, capability, interaction, reference study or storyboard page
+    # Subtest: palette
+    ok 1 - palette
+      ---
+      duration_ms: 94.387567
+      type: 'test'
+      ...
+    # Subtest: brief
+    ok 2 - brief
+      ---
+      duration_ms: 54.895341
+      type: 'test'
+      ...
+    # Subtest: capability
+    ok 3 - capability
+      ---
+      duration_ms: 51.054545
+      type: 'test'
+      ...
+    # Subtest: interaction
+    ok 4 - interaction
+      ---
+      duration_ms: 47.705038
+      type: 'test'
+      ...
+    # Subtest: reference-study
+    ok 5 - reference-study
+      ---
+      duration_ms: 47.737688
+      type: 'test'
+      ...
+    # Subtest: storyboard-page
+    ok 6 - storyboard-page
+      ---
+      duration_ms: 43.602103
+      type: 'test'
+      ...
+    1..6
+ok 154 - decision metadata never preserves a changed design, evidence context, capability, interaction, reference study or storyboard page
+  ---
+  duration_ms: 340.605998
+  type: 'test'
+  ...
+# Subtest: unchanged response recording cannot legitimize externally modified artifact bytes
+ok 155 - unchanged response recording cannot legitimize externally modified artifact bytes
+  ---
+  duration_ms: 65.39669
+  type: 'test'
+  ...
+# Subtest: delivery regenerates current decision, storyboard and quality records while reusing unchanged reviewed bytes
+ok 156 - delivery regenerates current decision, storyboard and quality records while reusing unchanged reviewed bytes
+  ---
+  duration_ms: 8150.730259
+  type: 'test'
+  ...
+# Subtest: bounded durable summaries retain recorded choices, next actions and late blocking repairs
+ok 157 - bounded durable summaries retain recorded choices, next actions and late blocking repairs
+  ---
+  duration_ms: 3.334214
+  type: 'test'
+  ...
+# Subtest: global CLI help exposes command discovery and preparation among the current contract topics
+ok 158 - global CLI help exposes command discovery and preparation among the current contract topics
+  ---
+  duration_ms: 1713.399598
+  type: 'test'
+  ...
+# Subtest: init, render and record help discover exact top-level fields without an argument file
+ok 159 - init, render and record help discover exact top-level fields without an argument file
+  ---
+  duration_ms: 6199.74837
+  type: 'test'
+  ...
+# Subtest: review discovery makes observations mandatory for current academic projects while keeping legacy schema compatibility
+ok 160 - review discovery makes observations mandatory for current academic projects while keeping legacy schema compatibility
+  ---
+  duration_ms: 2600.243027
+  type: 'test'
+  ...
+# Subtest: per-command schema is exactly its shared runtime schema, including existing CLI compatibility
+ok 161 - per-command schema is exactly its shared runtime schema, including existing CLI compatibility
+  ---
+  duration_ms: 5807.213926
+  type: 'test'
+  ...
+# Subtest: unknown commands fail before an args file is requested or read
+ok 162 - unknown commands fail before an args file is requested or read
+  ---
+  duration_ms: 4418.91369
+  type: 'test'
+  ...
+# Subtest: discovery rejects mixed execution flags and conflicting or repeated discovery modes
+ok 163 - discovery rejects mixed execution flags and conflicting or repeated discovery modes
+  ---
+  duration_ms: 8741.458708
+  type: 'test'
+  ...
+# Subtest: ordinary args execution still supports init, inline record and recordsPath batches
+ok 164 - ordinary args execution still supports init, inline record and recordsPath batches
+  ---
+  duration_ms: 7999.899825
+  type: 'test'
+  ...
+# Subtest: missing execution args points to the command discovery entry points
+ok 165 - missing execution args points to the command discovery entry points
+  ---
+  duration_ms: 11111.800046
+  type: 'test'
+  ...
+# Subtest: file-backed design decisions survive public recording and recovery without leaking into presentation copy
+ok 166 - file-backed design decisions survive public recording and recovery without leaking into presentation copy
+  ---
+  duration_ms: 706.709951
+  type: 'test'
+  ...
+# Subtest: scoped composition and plan edits invalidate artifacts while dangling panel decisions block review builds
+ok 167 - scoped composition and plan edits invalidate artifacts while dangling panel decisions block review builds
+  ---
+  duration_ms: 227.962708
+  type: 'test'
+  ...
+# Subtest: reference inference is an editable suggestion and older design records retain compatibility
+ok 168 - reference inference is an editable suggestion and older design records retain compatibility
+  ---
+  duration_ms: 148.007177
+  type: 'test'
+  ...
+# Subtest: new custom design tokens receive the same content-led default as an ordinary init
+ok 169 - new custom design tokens receive the same content-led default as an ordinary init
+  ---
+  duration_ms: 11.088988
+  type: 'test'
+  ...
+# Subtest: evidence gates reject incomplete reading, IF threshold and dangling source without creating a review build
+ok 170 - evidence gates reject incomplete reading, IF threshold and dangling source without creating a review build
+  ---
+  duration_ms: 173.208222
+  type: 'test'
+  ...
+# Subtest: upsert commits atomically, limits payloads and rejects stale revisions
+ok 171 - upsert commits atomically, limits payloads and rejects stale revisions
+  ---
+  duration_ms: 27.486332
+  type: 'test'
+  ...
+# Subtest: review build has native artifacts, stable sources and no automatic visual pass
+ok 172 - review build has native artifacts, stable sources and no automatic visual pass
+  ---
+  duration_ms: 153.716017
+  type: 'test'
+  ...
+# Subtest: card-only edit locks scientific values and preserves every non-target scene object and notes
+ok 173 - card-only edit locks scientific values and preserves every non-target scene object and notes
+  ---
+  duration_ms: 101.952597
+  type: 'test'
+  ...
+# Subtest: externally edited PPTX is detected and a rebuild preserves the external file
+ok 174 - externally edited PPTX is detected and a rebuild preserves the external file
+  ---
+  duration_ms: 107.744652
+  type: 'test'
+  ...
+# Subtest: review records require actual capabilities and hash; HTML review cannot certify PPTX
+ok 175 - review records require actual capabilities and hash; HTML review cannot certify PPTX
+  ---
+  duration_ms: 159.421383
+  type: 'test'
+  ...
+# Subtest: paths, symlinks and image hashes cannot escape the chosen workspace
+ok 176 - paths, symlinks and image hashes cannot escape the chosen workspace
+  ---
+  duration_ms: 14.60117
+  type: 'test'
+  ...
+# Subtest: context restores the actual revision and removes embedded image bytes
+ok 177 - context restores the actual revision and removes embedded image bytes
+  ---
+  duration_ms: 16.317258
+  type: 'test'
+  ...
+# Subtest: a chart cannot hide a source paper from visible citations and full-text coverage
+ok 178 - a chart cannot hide a source paper from visible citations and full-text coverage
+  ---
+  duration_ms: 19.613514
+  type: 'test'
+  ...
+# Subtest: template path and inline design both reject executable nodes, colors, geometry and unregistered sources atomically
+ok 179 - template path and inline design both reject executable nodes, colors, geometry and unregistered sources atomically
+  ---
+  duration_ms: 33.790986
+  type: 'test'
+  ...
+# Subtest: manually changed embedded bytes do not bypass project asset hashes on build or check
+ok 180 - manually changed embedded bytes do not bypass project asset hashes on build or check
+  ---
+  duration_ms: 10.233222
+  type: 'test'
+  ...
+# Subtest: a new dialogue offers only the next related questions and preserves earlier responses
+ok 181 - a new dialogue offers only the next related questions and preserves earlier responses
+  ---
+  duration_ms: 3.286195
+  type: 'test'
+  ...
+# Subtest: proposals, missing responses and duplicate answers do not pass as user confirmation
+ok 182 - proposals, missing responses and duplicate answers do not pass as user confirmation
+  ---
+  duration_ms: 1.769462
+  type: 'test'
+  ...
+# Subtest: explicit delegation skips repeated questions but needs its real basis
+ok 183 - explicit delegation skips repeated questions but needs its real basis
+  ---
+  duration_ms: 0.493991
+  type: 'test'
+  ...
+# Subtest: reference learning needs real candidate identities and observations, while native adaptation stays possible
+ok 184 - reference learning needs real candidate identities and observations, while native adaptation stays possible
+  ---
+  duration_ms: 1.50472
+  type: 'test'
+  ...
+# Subtest: legacy whole-page records retain recipe validation and compatibility without forcing a card preset
+ok 185 - legacy whole-page records retain recipe validation and compatibility without forcing a card preset
+  ---
+  duration_ms: 0.548882
+  type: 'test'
+  ...
+# Subtest: new whole-report planning needs actual design observations beyond page recipe names, even before pilot slides exist
+ok 186 - new whole-report planning needs actual design observations beyond page recipe names, even before pilot slides exist
+  ---
+  duration_ms: 1.466772
+  type: 'test'
+  ...
+# Subtest: specific template, card-library and editorial studies support native composition without adopting presets
+ok 187 - specific template, card-library and editorial studies support native composition without adopting presets
+  ---
+  duration_ms: 2.502442
+  type: 'test'
+  ...
+# Subtest: component identities, page locations, required detail fields and palette rationale remain inspectable
+ok 188 - component identities, page locations, required detail fields and palette rationale remain inspectable
+  ---
+  duration_ms: 51.680309
+  type: 'test'
+  ...
+# Subtest: legacy detail omissions remain warnings and not-applicable cannot waive a complete new redesign
+ok 189 - legacy detail omissions remain warnings and not-applicable cannot waive a complete new redesign
+  ---
+  duration_ms: 0.556551
+  type: 'test'
+  ...
+# Subtest: new delegated create and record defaults enforce relevant design learning for a short pilot of a longer report
+ok 190 - new delegated create and record defaults enforce relevant design learning for a short pilot of a longer report
+  ---
+  duration_ms: 377.048529
+  type: 'test'
+  ...
+# Subtest: explicit topics survive create and record while loading and updating a serialized legacy record never adds interaction
+ok 191 - explicit topics survive create and record while loading and updating a serialized legacy record never adds interaction
+  ---
+  duration_ms: 18.740155
+  type: 'test'
+  ...
+# Subtest: checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction
+ok 192 - checkpoint dialogue combines whole-direction choices and retains explicit older topic interaction
+  ---
+  duration_ms: 0.474892
+  type: 'test'
+  ...
+# Subtest: prepare defaults to dialogue and waits for design choices before proposing an imagegen call
+not ok 193 - prepare defaults to dialogue and waits for design choices before proposing an imagegen call
+  ---
+  duration_ms: 14.168126
+  type: 'test'
+  location: '/mnt/data/plugin-audit/repo/test/design-dialogue.test.mjs:247:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'design-evidence-pages'
+    - 'await-design-feedback'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'await-design-feedback'
+  actual: 'design-evidence-pages'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/plugin-audit/repo/test/design-dialogue.test.mjs:253:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: initial density can follow an actual answer before building; omitted dialogue fields are retained
+ok 194 - initial density can follow an actual answer before building; omitted dialogue fields are retained
+  ---
+  duration_ms: 18.151154
+  type: 'test'
+  ...
+# Subtest: unanswered design topics block review construction while a labelled draft remains recoverable
+ok 195 - unanswered design topics block review construction while a labelled draft remains recoverable
+  ---
+  duration_ms: 125.802836
+  type: 'test'
+  ...
+# Subtest: a provisional density survives drafts and separately recorded answers until its first actual choice
+ok 196 - a provisional density survives drafts and separately recorded answers until its first actual choice
+  ---
+  duration_ms: 49.879443
+  type: 'test'
+  ...
+# Subtest: delegated initial design can choose density, while explicit density and review builds settle it
+ok 197 - delegated initial design can choose density, while explicit density and review builds settle it
+  ---
+  duration_ms: 27.493967
+  type: 'test'
+  ...
+# Subtest: confirmed preferences shape generated references without copying raw replies or treating proposals as choices
+not ok 198 - confirmed preferences shape generated references without copying raw replies or treating proposals as choices
+  ---
+  duration_ms: 3.619274
+  type: 'test'
+  location: '/mnt/data/plugin-audit/repo/test/design-dialogue.test.mjs:323:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'includes')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///mnt/data/plugin-audit/repo/test/design-dialogue.test.mjs:329:85)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: a large unused lower content region is located and blocks only an explicit compact policy
+ok 199 - a large unused lower content region is located and blocks only an explicit compact policy
+  ---
+  duration_ms: 7.452839
+  type: 'test'
+  ...
+# Subtest: the compact body gate is one continuous unused quarter, with a just-below control
+ok 200 - the compact body gate is one continuous unused quarter, with a just-below control
+  ---
+  duration_ms: 3.872034
+  type: 'test'
+  ...
+# Subtest: a sparse compact cover receives a visual reminder without forcing an image
+ok 201 - a sparse compact cover receives a visual reminder without forcing an image
+  ---
+  duration_ms: 12.461649
+  type: 'test'
+  ...
+# Subtest: chapter and roadmap whitespace does not inherit the evidence-page density gate
+ok 202 - chapter and roadmap whitespace does not inherit the evidence-page density gate
+  ---
+  duration_ms: 1.721197
+  type: 'test'
+  ...
+# Subtest: a long diagonal relationship stroke does not fill its bounding rectangle
+ok 203 - a long diagonal relationship stroke does not fill its bounding rectangle
+  ---
+  duration_ms: 0.939128
+  type: 'test'
+  ...
+# Subtest: header, footer, identity and decorative text never become body content
+ok 204 - header, footer, identity and decorative text never become body content
+  ---
+  duration_ms: 6.984991
+  type: 'test'
+  ...
+# Subtest: inflating textbox height and width does not manufacture content coverage
+ok 205 - inflating textbox height and width does not manufacture content coverage
+  ---
+  duration_ms: 9.000376
+  type: 'test'
+  ...
+# Subtest: full-page frames, colours and icon shapes cannot conceal an empty content region
+ok 206 - full-page frames, colours and icon shapes cannot conceal an empty content region
+  ---
+  duration_ms: 6.93873
+  type: 'test'
+  ...
+# Subtest: evidence-image internal whitespace remains part of the figure instead of triggering crop pressure
+ok 207 - evidence-image internal whitespace remains part of the figure instead of triggering crop pressure
+  ---
+  duration_ms: 0.683024
+  type: 'test'
+  ...
+# Subtest: normal gutters between large evidence objects are not treated as content voids
+ok 208 - normal gutters between large evidence objects are not treated as content voids
+  ---
+  duration_ms: 1.268239
+  type: 'test'
+  ...
+# Subtest: scattered short text still requests a density review when no single void reaches the old threshold
+ok 209 - scattered short text still requests a density review when no single void reaches the old threshold
+  ---
+  duration_ms: 2.678296
+  type: 'test'
+  ...
+# Subtest: sparse marks inside a native scientific plot retain the complete plot coordinate space
+ok 210 - sparse marks inside a native scientific plot retain the complete plot coordinate space
+  ---
+  duration_ms: 1.029115
+  type: 'test'
+  ...
+# Subtest: closing pages do not receive a blanket whitespace exemption
+ok 211 - closing pages do not receive a blanket whitespace exemption
+  ---
+  duration_ms: 2.059934
+  type: 'test'
+  ...
+# Subtest: reference pages keep bibliography text and receive a consolidation reminder, not a density error
+ok 212 - reference pages keep bibliography text and receive a consolidation reminder, not a density error
+  ---
+  duration_ms: 1.93146
+  type: 'test'
+  ...
+# Subtest: a cover context visual is measured separately without becoming scientific content
+ok 213 - a cover context visual is measured separately without becoming scientific content
+  ---
+  duration_ms: 6.320597
+  type: 'test'
+  ...
+# Subtest: a body context illustration does not erase a missing explanation or evidence region
+ok 214 - a body context illustration does not erase a missing explanation or evidence region
+  ---
+  duration_ms: 2.186484
+  type: 'test'
+  ...
+# Subtest: a repeated-layout justification cannot waive the compact whitespace gate
+ok 215 - a repeated-layout justification cannot waive the compact whitespace gate
+  ---
+  duration_ms: 1.435902
+  type: 'test'
+  ...
+# Subtest: the declared current contentBox is used after header furniture is removed
+ok 216 - the declared current contentBox is used after header furniture is removed
+  ---
+  duration_ms: 1.027027
+  type: 'test'
+  ...
+# Subtest: render review exposes stable located targets for card whitespace, page voids and contrast
+ok 217 - render review exposes stable located targets for card whitespace, page voids and contrast
+  ---
+  duration_ms: 1.19619
+  type: 'test'
+  ...
+# Subtest: registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics
+ok 218 - registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics
+  ---
+  duration_ms: 42.77175
+  type: 'test'
+  ...
+# Subtest: existing-project preparation preserves legacy topics and answers without silently adding new checkpoints
+ok 219 - existing-project preparation preserves legacy topics and answers without silently adding new checkpoints
+  ---
+  duration_ms: 12.350121
+  type: 'test'
+  ...
+# Subtest: existing-project preparation retains v2 gates and default new preparation always enables them
+ok 220 - existing-project preparation retains v2 gates and default new preparation always enables them
+  ---
+  duration_ms: 7.333197
+  type: 'test'
+  ...
+# Subtest: prepare asks for design source once and preserves an explicit answer without inferring silence
+ok 221 - prepare asks for design source once and preserves an explicit answer without inferring silence
+  ---
+  duration_ms: 11.912482
+  type: 'test'
+  ...
+# Subtest: a supplied template routes to real inspection, while an explicit decline does not read it
+ok 222 - a supplied template routes to real inspection, while an explicit decline does not read it
+  ---
+  duration_ms: 7.513409
+  type: 'test'
+  ...
+# Subtest: legacy PPT requires conversion and does not masquerade as a supported PPTX
+ok 223 - legacy PPT requires conversion and does not masquerade as a supported PPTX
+  ---
+  duration_ms: 5.997745
+  type: 'test'
+  ...
+# Subtest: reviewed template profiles are reused only while bound to current source bytes
+ok 224 - reviewed template profiles are reused only while bound to current source bytes
+  ---
+  duration_ms: 84.404932
+  type: 'test'
+  ...
+# Subtest: available host image generation receives exact report content and a native fallback
+ok 225 - available host image generation receives exact report content and a native fallback
+  ---
+  duration_ms: 6.363318
+  type: 'test'
+  ...
+# Subtest: reference colors and preferred presets remain adaptable without changing authored content
+ok 226 - reference colors and preferred presets remain adaptable without changing authored content
+  ---
+  duration_ms: 4.955758
+  type: 'test'
+  ...
+# Subtest: an explicitly fixed palette is honored and requires the actual colors
+ok 227 - an explicitly fixed palette is honored and requires the actual colors
+  ---
+  duration_ms: 8.295207
+  type: 'test'
+  ...
+# Subtest: all reference branches expose actionable adaptation and native reconstruction to the host
+ok 228 - all reference branches expose actionable adaptation and native reconstruction to the host
+  ---
+  duration_ms: 24.945286
+  type: 'test'
+  ...
+# Subtest: explicit card requests retain fallback while preparation without cards continues whole-page design
+ok 229 - explicit card requests retain fallback while preparation without cards continues whole-page design
+  ---
+  duration_ms: 7.279646
+  type: 'test'
+  ...
+# Subtest: preparation favors whole-page evidence design when no card is requested
+ok 230 - preparation favors whole-page evidence design when no card is requested
+  ---
+  duration_ms: 3.087422
+  type: 'test'
+  ...
+# Subtest: specific component descriptions survive preparation intact and invalid identities are rejected
+ok 231 - specific component descriptions survive preparation intact and invalid identities are rejected
+  ---
+  duration_ms: 18.867339
+  type: 'test'
+  ...
+# Subtest: large card sets produce bounded independent prompt batches with complete content
+ok 232 - large card sets produce bounded independent prompt batches with complete content
+  ---
+  duration_ms: 3.908807
+  type: 'test'
+  ...
+# Subtest: failure and decline fall back without reattempting generation
+ok 233 - failure and decline fall back without reattempting generation
+  ---
+  duration_ms: 3.852442
+  type: 'test'
+  ...
+# Subtest: a generated reference needs explicit reference and viewing observations before native reconstruction
+ok 234 - a generated reference needs explicit reference and viewing observations before native reconstruction
+  ---
+  duration_ms: 3.862137
+  type: 'test'
+  ...
+# Subtest: decision output is reproducible, immutable, and cannot overwrite its request
+ok 235 - decision output is reproducible, immutable, and cannot overwrite its request
+  ---
+  duration_ms: 8.715454
+  type: 'test'
+  ...
+# Subtest: workspace boundaries, UTF-8, request contracts, and duplicate card IDs remain enforced
+ok 236 - workspace boundaries, UTF-8, request contracts, and duplicate card IDs remain enforced
+  ---
+  duration_ms: 6.652102
+  type: 'test'
+  ...
+# Subtest: registered preparation tool and its opt-in contract stay executable and bounded
+ok 237 - registered preparation tool and its opt-in contract stay executable and bounded
+  ---
+  duration_ms: 9.535571
+  type: 'test'
+  ...
+# Subtest: native card discovery exposes actual recipes and a useful compact context summary
+ok 238 - native card discovery exposes actual recipes and a useful compact context summary
+  ---
+  duration_ms: 4.767337
+  type: 'test'
+  ...
+# Subtest: host-facing preparation output preserves reviewed template and generated reference locations
+ok 239 - host-facing preparation output preserves reviewed template and generated reference locations
+  ---
+  duration_ms: 1.556347
+  type: 'test'
+  ...
+# Subtest: available image tool plus authored cards does not imply a request to generate
+ok 240 - available image tool plus authored cards does not imply a request to generate
+  ---
+  duration_ms: 4.611677
+  type: 'test'
+  ...
+# Subtest: a concise plan validates against actual panels without rewriting authored content
+ok 241 - a concise plan validates against actual panels without rewriting authored content
+  ---
+  duration_ms: 4.65769
+  type: 'test'
+  ...
+# Subtest: a visual plan must name an existing primary panel and every panel exactly once
+ok 242 - a visual plan must name an existing primary panel and every panel exactly once
+  ---
+  duration_ms: 1.044381
+  type: 'test'
+  ...
+# Subtest: plans without composition are errors even when faithful template use is requested
+ok 243 - plans without composition are errors even when faithful template use is requested
+  ---
+  duration_ms: 0.460413
+  type: 'test'
+  ...
+# Subtest: new authoring modes request a missing plan as a warning while legacy projects remain compatible
+ok 244 - new authoring modes request a missing plan as a warning while legacy projects remain compatible
+  ---
+  duration_ms: 0.37008
+  type: 'test'
+  ...
+# Subtest: the third adjacent repeated composition warns regardless of titles, source IDs, colours and surfaces
+ok 245 - the third adjacent repeated composition warns regardless of titles, source IDs, colours and surfaces
+  ---
+  duration_ms: 0.494309
+  type: 'test'
+  ...
+# Subtest: proportional weights are the same layout while genuine row and column reallocation differ
+ok 246 - proportional weights are the same layout while genuine row and column reallocation differ
+  ---
+  duration_ms: 0.557767
+  type: 'test'
+  ...
+# Subtest: carrier changes and intervening navigation break a repetition run
+ok 247 - carrier changes and intervening navigation break a repetition run
+  ---
+  duration_ms: 0.384396
+  type: 'test'
+  ...
+# Subtest: intentional repeated comparison can carry a reason without suppressing invalid references
+ok 248 - intentional repeated comparison can carry a reason without suppressing invalid references
+  ---
+  duration_ms: 0.388668
+  type: 'test'
+  ...
+# Subtest: three equal-area text panels prompt review without demanding decorative figures
+ok 249 - three equal-area text panels prompt review without demanding decorative figures
+  ---
+  duration_ms: 0.751021
+  type: 'test'
+  ...
+# Subtest: equal text panels in multiple rows count as an equal-area text grid
+ok 250 - equal text panels in multiple rows count as an equal-area text grid
+  ---
+  duration_ms: 0.734642
+  type: 'test'
+  ...
+# Subtest: faithful template mode skips design preference reminders while retaining structural plan errors
+ok 251 - faithful template mode skips design preference reminders while retaining structural plan errors
+  ---
+  duration_ms: 0.303195
+  type: 'test'
+  ...
+# Subtest: legacy fixed layouts retain repetition advice with no new required plan
+ok 252 - legacy fixed layouts retain repetition advice with no new required plan
+  ---
+  duration_ms: 0.159368
+  type: 'test'
+  ...
+# Subtest: repetition advice leads to a valid repair for each public slide contract
+ok 253 - repetition advice leads to a valid repair for each public slide contract
+  ---
+  duration_ms: 52.277422
+  type: 'test'
+  ...
+# Subtest: small weight nudges and additional empty cards cannot disguise a repeated structure
+ok 254 - small weight nudges and additional empty cards cannot disguise a repeated structure
+  ---
+  duration_ms: 0.339318
+  type: 'test'
+  ...
+# Subtest: whole-deck dominance detects a repeated structure separated by other pages
+ok 255 - whole-deck dominance detects a repeated structure separated by other pages
+  ---
+  duration_ms: 0.346725
+  type: 'test'
+  ...
+# Subtest: a generic short repetition slogan is not an inspectable justification
+ok 256 - a generic short repetition slogan is not an inspectable justification
+  ---
+  duration_ms: 0.826094
+  type: 'test'
+  ...
+# Subtest: a compact report exposes unframed explanatory stacks without requiring every paragraph to be boxed
+ok 257 - a compact report exposes unframed explanatory stacks without requiring every paragraph to be boxed
+  ---
+  duration_ms: 0.543559
+  type: 'test'
+  ...
+# Subtest: a complete open-science report can learn from an actual page without card study
+ok 258 - a complete open-science report can learn from an actual page without card study
+  ---
+  duration_ms: 2.939803
+  type: 'test'
+  ...
+# Subtest: whole-page research does not falsely attest that a used card preset was reviewed
+ok 259 - whole-page research does not falsely attest that a used card preset was reviewed
+  ---
+  duration_ms: 0.629844
+  type: 'test'
+  ...
+# Subtest: design research keeps source identifiers and preview observations independently checkable
+ok 260 - design research keeps source identifiers and preview observations independently checkable
+  ---
+  duration_ms: 1.461774
+  type: 'test'
+  ...
+# Subtest: missing system keeps the legacy tokens while explicit presets are complete and isolated
+ok 261 - missing system keeps the legacy tokens while explicit presets are complete and isolated
+  ---
+  duration_ms: 3.217809
+  type: 'test'
+  ...
+# Subtest: render-time token resolution remains finite and bounded without coercing malformed values
+ok 262 - render-time token resolution remains finite and bounded without coercing malformed values
+  ---
+  duration_ms: 0.454991
+  type: 'test'
+  ...
+# Subtest: PPTX structure produces directly usable palette and role sizes without source prose
+ok 263 - PPTX structure produces directly usable palette and role sizes without source prose
+  ---
+  duration_ms: 145.877321
+  type: 'test'
+  ...
+# Subtest: supported linked master bands are counted on displayed pages and their theme paint is resolved
+ok 264 - supported linked master bands are counted on displayed pages and their theme paint is resolved
+  ---
+  duration_ms: 26.357363
+  type: 'test'
+  ...
+# Subtest: footer strips do not become header bands and centered covers use the observed geometry
+ok 265 - footer strips do not become header bands and centered covers use the observed geometry
+  ---
+  duration_ms: 17.977777
+  type: 'test'
+  ...
+# Subtest: a cover identity band survives design inference even when the main title is centered
+ok 266 - a cover identity band survives design inference even when the main title is centered
+  ---
+  duration_ms: 22.944974
+  type: 'test'
+  ...
+# Subtest: token bounds are disclosed adaptations and source aspect ratio is not claimed to survive
+ok 267 - token bounds are disclosed adaptations and source aspect ratio is not claimed to survive
+  ---
+  duration_ms: 16.720976
+  type: 'test'
+  ...
+# Subtest: filename changes and source text changes do not choose a known-template branch
+ok 268 - filename changes and source text changes do not choose a known-template branch
+  ---
+  duration_ms: 36.746151
+  type: 'test'
+  ...
+# Subtest: new projects expose balanced open design with actionable whitespace review
+ok 269 - new projects expose balanced open design with actionable whitespace review
+  ---
+  duration_ms: 222.824866
+  type: 'test'
+  ...
+# Subtest: token updates retain selected card and density rules; changing colors cannot relax delivery
+ok 270 - token updates retain selected card and density rules; changing colors cannot relax delivery
+  ---
+  duration_ms: 45.779904
+  type: 'test'
+  ...
+# Subtest: balanced workflow fixtures remain buildable but retain honest geometry warnings in saved quality
+ok 271 - balanced workflow fixtures remain buildable but retain honest geometry warnings in saved quality
+  ---
+  duration_ms: 149.810149
+  type: 'test'
+  ...
+# Subtest: default chrome does not override an explicit header design
+ok 272 - default chrome does not override an explicit header design
+  ---
+  duration_ms: 15.282375
+  type: 'test'
+  ...
+# Subtest: scoped appearance edits preserve scientific records, other scene objects, and notes
+ok 273 - scoped appearance edits preserve scientific records, other scene objects, and notes
+  ---
+  duration_ms: 35.344097
+  type: 'test'
+  ...
+# Subtest: context visuals cannot refer to missing media or relabel evidence as cover decoration
+ok 274 - context visuals cannot refer to missing media or relabel evidence as cover decoration
+  ---
+  duration_ms: 11.434812
+  type: 'test'
+  ...
+# Subtest: custom figure bounds follow recovered chrome in the public workflow without relaxing old safe areas
+ok 275 - custom figure bounds follow recovered chrome in the public workflow without relaxing old safe areas
+  ---
+  duration_ms: 109.807848
+  type: 'test'
+  ...
+# Subtest: published DSH agent injection through scripted provider: /mnt/data/plugin-audit/repo/.test-output/dsh-runtime
+ok 276 - published DSH agent injection through scripted provider: /mnt/data/plugin-audit/repo/.test-output/dsh-runtime
+  ---
+  duration_ms: 1616.155825
+  type: 'test'
+  ...
+# Subtest: an explicit empty DSH integration matrix fails instead of running zero tests
+ok 277 - an explicit empty DSH integration matrix fails instead of running zero tests
+  ---
+  duration_ms: 2.195116
+  type: 'test'
+  ...
+# Subtest: DSH integration defaults retain both releases and explicit paths remain required
+ok 278 - DSH integration defaults retain both releases and explicit paths remain required
+  ---
+  duration_ms: 1.206857
+  type: 'test'
+  ...
+# Subtest: editorial references are 20 verified components with a native four-per-slide atlas
+ok 279 - editorial references are 20 verified components with a native four-per-slide atlas
+  ---
+  duration_ms: 22.457917
+  type: 'test'
+  ...
+# Subtest: required visible conditions retain numeric signs and boundaries, and exclude notes and footers
+ok 280 - required visible conditions retain numeric signs and boundaries, and exclude notes and footers
+  ---
+  duration_ms: 3.403782
+  type: 'test'
+  ...
+# Subtest: coverage sees native table values but does not synthesize a missing phrase from separate objects
+ok 281 - coverage sees native table values but does not synthesize a missing phrase from separate objects
+  ---
+  duration_ms: 0.285109
+  type: 'test'
+  ...
+# Subtest: coverage preserves scientific unit case and never matches an exponent fragment
+ok 282 - coverage preserves scientific unit case and never matches an exponent fragment
+  ---
+  duration_ms: 0.715247
+  type: 'test'
+  ...
+# Subtest: line breaks between distinct numbers never fuse a split ratio with the following year
+ok 283 - line breaks between distinct numbers never fuse a split ratio with the following year
+  ---
+  duration_ms: 0.869445
+  type: 'test'
+  ...
+# Subtest: quantitative carrier diagnostics do not count empty frames, isolated giant numbers or decorative images
+ok 284 - quantitative carrier diagnostics do not count empty frames, isolated giant numbers or decorative images
+  ---
+  duration_ms: 2.194115
+  type: 'test'
+  ...
+# Subtest: a dated qualitative table cannot replace a quantitative result carried by a different claim
+ok 285 - a dated qualitative table cannot replace a quantitative result carried by a different claim
+  ---
+  duration_ms: 16.367087
+  type: 'test'
+  ...
+# Subtest: a numeric table needs its own reviewed quantitative claim and an existing visible source
+    # Subtest: missing-binding
+    ok 1 - missing-binding
+      ---
+      duration_ms: 0.826583
+      type: 'test'
+      ...
+    # Subtest: unknown-claim
+    ok 2 - unknown-claim
+      ---
+      duration_ms: 0.375584
+      type: 'test'
+      ...
+    # Subtest: qualitative-source
+    ok 3 - qualitative-source
+      ---
+      duration_ms: 0.661171
+      type: 'test'
+      ...
+    # Subtest: unknown-paper
+    ok 4 - unknown-paper
+      ---
+      duration_ms: 0.418757
+      type: 'test'
+      ...
+    # Subtest: source-not-cited-on-slide
+    ok 5 - source-not-cited-on-slide
+      ---
+      duration_ms: 0.3453
+      type: 'test'
+      ...
+    # Subtest: unverified-source-claim
+    ok 6 - unverified-source-claim
+      ---
+      duration_ms: 0.261808
+      type: 'test'
+      ...
+    1..6
+ok 286 - a numeric table needs its own reviewed quantitative claim and an existing visible source
+  ---
+  duration_ms: 4.313038
+  type: 'test'
+  ...
+# Subtest: source figures and data marks are recognized from the actual scene and claim dependencies
+ok 287 - source figures and data marks are recognized from the actual scene and claim dependencies
+  ---
+  duration_ms: 0.885452
+  type: 'test'
+  ...
+# Subtest: qualitative synthesis pages are audited and a text wall is visible across consecutive body pages
+ok 288 - qualitative synthesis pages are audited and a text wall is visible across consecutive body pages
+  ---
+  duration_ms: 0.370119
+  type: 'test'
+  ...
+# Subtest: text cards and a relationship arrow cannot substitute for quantitative data
+ok 289 - text cards and a relationship arrow cannot substitute for quantitative data
+  ---
+  duration_ms: 0.35472
+  type: 'test'
+  ...
+# Subtest: only actual bound reviewed source figures count, including the drawing-image path
+ok 290 - only actual bound reviewed source figures count, including the drawing-image path
+  ---
+  duration_ms: 0.93227
+  type: 'test'
+  ...
+# Subtest: new default projection policy remains attached on record updates while explicit legacy designs remain valid
+ok 291 - new default projection policy remains attached on record updates while explicit legacy designs remain valid
+  ---
+  duration_ms: 163.344236
+  type: 'test'
+  ...
+# Subtest: drawing evidence and visible custom bibliographies preserve source gates
+ok 292 - drawing evidence and visible custom bibliographies preserve source gates
+  ---
+  duration_ms: 24.309932
+  type: 'test'
+  ...
+# Subtest: study creates real native artifacts without modifying project history, review state or existing output
+ok 293 - study creates real native artifacts without modifying project history, review state or existing output
+  ---
+  duration_ms: 170.167849
+  type: 'test'
+  ...
+# Subtest: study enforces the file contract, revision, text preservation and bounded workspace inputs
+ok 294 - study enforces the file contract, revision, text preservation and bounded workspace inputs
+  ---
+  duration_ms: 41.076511
+  type: 'test'
+  ...
+# Subtest: candidate preview rejects dangling evidence without imposing full-report administrative requirements
+ok 295 - candidate preview rejects dangling evidence without imposing full-report administrative requirements
+  ---
+  duration_ms: 11.371438
+  type: 'test'
+  ...
+# Subtest: ten renamed and repainted copies still trigger cross-deck structure review, without an originality score
+ok 296 - ten renamed and repainted copies still trigger cross-deck structure review, without an originality score
+  ---
+  duration_ms: 3.669655
+  type: 'test'
+  ...
+# Subtest: portfolio compares only distinct explicitly supplied projects and never overwrites a report
+ok 297 - portfolio compares only distinct explicitly supplied projects and never overwrites a report
+  ---
+  duration_ms: 61.010237
+  type: 'test'
+  ...
+# Subtest: paper-reading evidence stays in portfolio comparison while metadata-only pages do not
+ok 298 - paper-reading evidence stays in portfolio comparison while metadata-only pages do not
+  ---
+  duration_ms: 0.925717
+  type: 'test'
+  ...
+# Subtest: nearby custom cover title/image arrangements remain reviewable despite different footer furniture
+ok 299 - nearby custom cover title/image arrangements remain reviewable despite different footer furniture
+  ---
+  duration_ms: 3.682863
+  type: 'test'
+  ...
+# Subtest: tool summaries reveal unavailable candidate rendering and comparable project/page identities
+ok 300 - tool summaries reveal unavailable candidate rendering and comparable project/page identities
+  ---
+  duration_ms: 3.542291
+  type: 'test'
+  ...
+# Subtest: dense source with unreadable labels remains rejected without inventing or mutating a crop
+ok 301 - dense source with unreadable labels remains rejected without inventing or mutating a crop
+  ---
+  duration_ms: 8.427474
+  type: 'test'
+  ...
+# Subtest: a complete readable four-panel comparison is reviewed rather than blocked by its panel count
+ok 302 - a complete readable four-panel comparison is reviewed rather than blocked by its panel count
+  ---
+  duration_ms: 0.465314
+  type: 'test'
+  ...
+# Subtest: projection checks measure content after contain-fit, not container width or pixel count alone
+ok 303 - projection checks measure content after contain-fit, not container width or pixel count alone
+  ---
+  duration_ms: 0.392028
+  type: 'test'
+  ...
+# Subtest: a verified independent plot panel can fit while full source bytes remain outside this geometry function
+ok 304 - a verified independent plot panel can fit while full source bytes remain outside this geometry function
+  ---
+  duration_ms: 0.347909
+  type: 'test'
+  ...
+# Subtest: locator role cannot be used to evade a declared quantitative reading task
+ok 305 - locator role cannot be used to evade a declared quantitative reading task
+  ---
+  duration_ms: 2.873952
+  type: 'test'
+  ...
+# Subtest: unknown semantics remain unverified and invalid source windows are rejected
+ok 306 - unknown semantics remain unverified and invalid source windows are rejected
+  ---
+  duration_ms: 1.066162
+  type: 'test'
+  ...
+# Subtest: content-matched advice has no more than three real catalogue candidates
+ok 307 - content-matched advice has no more than three real catalogue candidates
+  ---
+  duration_ms: 0.348496
+  type: 'test'
+  ...
+# Subtest: custom composition requires matching explicit boxes and rejects overlap with evidence
+ok 308 - custom composition requires matching explicit boxes and rejects overlap with evidence
+  ---
+  duration_ms: 54.877567
+  type: 'test'
+  ...
+# Subtest: emphasis cannot introduce a word that is absent from the scientific body
+ok 309 - emphasis cannot introduce a word that is absent from the scientific body
+  ---
+  duration_ms: 11.961314
+  type: 'test'
+  ...
+# Subtest: three custom figure pages are compared by coarse composition instead of their shared layout name
+ok 310 - three custom figure pages are compared by coarse composition instead of their shared layout name
+  ---
+  duration_ms: 1.929136
+  type: 'test'
+  ...
+# Subtest: a large editable image card cannot certify an unmeasured thumbnail for a reading task
+ok 311 - a large editable image card cannot certify an unmeasured thumbnail for a reading task
+  ---
+  duration_ms: 157.218855
+  type: 'test'
+  ...
+# Subtest: measuring a tiny plot exposes its actual label failure instead of clearing the gate by adding a field
+ok 312 - measuring a tiny plot exposes its actual label failure instead of clearing the gate by adding a field
+  ---
+  duration_ms: 56.32881
+  type: 'test'
+  ...
+# Subtest: enlarging the actual source image recovers readable labels without changing its scientific pixels
+ok 313 - enlarging the actual source image recovers readable labels without changing its scientific pixels
+  ---
+  duration_ms: 84.902884
+  type: 'test'
+  ...
+# Subtest: an overview or a small source with genuinely large labels is not subject to a universal image-area quota
+ok 314 - an overview or a small source with genuinely large labels is not subject to a universal image-area quota
+  ---
+  duration_ms: 84.514529
+  type: 'test'
+  ...
+# Subtest: a drawing image cannot bypass the reading gate by avoiding figure-card metadata
+ok 315 - a drawing image cannot bypass the reading gate by avoiding figure-card metadata
+  ---
+  duration_ms: 37.437465
+  type: 'test'
+  ...
+# Subtest: public record keeps teaching source paths through embedding, loading and data-only re-registration
+    # Subtest: omitted provenance
+    ok 1 - omitted provenance
+      ---
+      duration_ms: 974.568635
+      type: 'test'
+      ...
+    # Subtest: source
+    ok 2 - source
+      ---
+      duration_ms: 145.763169
+      type: 'test'
+      ...
+    1..2
+ok 316 - public record keeps teaching source paths through embedding, loading and data-only re-registration
+  ---
+  duration_ms: 1145.031028
+  type: 'test'
+  ...
+# Subtest: resolved import path cannot be masked by caller sourcePath or a benign symlink name
+ok 317 - resolved import path cannot be masked by caller sourcePath or a benign symlink name
+  ---
+  duration_ms: 40.675389
+  type: 'test'
+  ...
+# Subtest: data supplied with a teaching path retains that path instead of erasing the teaching restriction
+ok 318 - data supplied with a teaching path retains that path instead of erasing the teaching restriction
+  ---
+  duration_ms: 25.546316
+  type: 'test'
+  ...
+# Subtest: ordinary path imports preserve image bytes, explicit provenance and rendered slide content
+ok 319 - ordinary path imports preserve image bytes, explicit provenance and rendered slide content
+  ---
+  duration_ms: 178.916306
+  type: 'test'
+  ...
+# Subtest: successful actual PPTX rerender invalidates earlier PPTX reviews while retaining unchanged HTML reviews
+ok 320 - successful actual PPTX rerender invalidates earlier PPTX reviews while retaining unchanged HTML reviews
+  ---
+  duration_ms: 19726.261748
+  type: 'test'
+  ...
+# Two actual wasm render operations completed for one unchanged PPTX; the second requires fresh PPTX-image reviews.
+# Subtest: the Host write classification covers all nineteen tools and conditional report outputs
+ok 321 - the Host write classification covers all nineteen tools and conditional report outputs
+  ---
+  duration_ms: 1.520486
+  type: 'test'
+  ...
+# Subtest: read-only permits inspection but denies every classified mutation before execution
+ok 322 - read-only permits inspection but denies every classified mutation before execution
+  ---
+  duration_ms: 25.382829
+  type: 'test'
+  ...
+# Subtest: workspace-write uses its independent canonical roots, not a changed current directory
+ok 323 - workspace-write uses its independent canonical roots, not a changed current directory
+  ---
+  duration_ms: 5.988643
+  type: 'test'
+  ...
+# Subtest: missing or invalid write policies fail closed and explicit full access stays distinct
+ok 324 - missing or invalid write policies fail closed and explicit full access stays distinct
+  ---
+  duration_ms: 5.334438
+  type: 'test'
+  ...
+# Subtest: new workflows start with a real design-source decision even when topics interaction is requested
+ok 325 - new workflows start with a real design-source decision even when topics interaction is requested
+  ---
+  duration_ms: 1.965019
+  type: 'test'
+  ...
+# Subtest: source, story, and real pilot choices are separate while palette layout and style share one concrete discussion
+ok 326 - source, story, and real pilot choices are separate while palette layout and style share one concrete discussion
+  ---
+  duration_ms: 1.270989
+  type: 'test'
+  ...
+# Subtest: delegation applies only to the declared topics and an ordinary production request never resolves them
+ok 327 - delegation applies only to the declared topics and an ordinary production request never resolves them
+  ---
+  duration_ms: 2.086392
+  type: 'test'
+  ...
+# Subtest: waiting for a selected template does not repeat the source question or pretend the template has been supplied
+ok 328 - waiting for a selected template does not repeat the source question or pretend the template has been supplied
+  ---
+  duration_ms: 0.431721
+  type: 'test'
+  ...
+# Subtest: a final human review is requested only after actual render and self review and is tied to both current hashes
+ok 329 - a final human review is requested only after actual render and self review and is tied to both current hashes
+  ---
+  duration_ms: 0.603654
+  type: 'test'
+  ...
+# Subtest: final review delegation needs final-stage scope and is not inherited from palette autonomy
+ok 330 - final review delegation needs final-stage scope and is not inherited from palette autonomy
+  ---
+  duration_ms: 0.301177
+  type: 'test'
+  ...
+# Subtest: an explicit earlier source or final-review delegation is recorded against current artifacts without asking again
+ok 331 - an explicit earlier source or final-review delegation is recorded against current artifacts without asking again
+  ---
+  duration_ms: 0.386873
+  type: 'test'
+  ...
+# Subtest: preparation does not invent an answer from absent or unanswered template status
+ok 332 - preparation does not invent an answer from absent or unanswered template status
+  ---
+  duration_ms: 31.503958
+  type: 'test'
+  ...
+# Subtest: preparation uses the actual chosen source and keeps reviewed template behavior behind that choice
+ok 333 - preparation uses the actual chosen source and keeps reviewed template behavior behind that choice
+  ---
+  duration_ms: 5.454148
+  type: 'test'
+  ...
+# Subtest: real PNG fixture passes strict CRC decoding and embedding retains its bytes and source metadata
+ok 334 - real PNG fixture passes strict CRC decoding and embedding retains its bytes and source metadata
+  ---
+  duration_ms: 4.857574
+  type: 'test'
+  ...
+# Subtest: truncated PNGs, missing IEND and corrupt CRC are rejected even with a valid PNG header
+ok 335 - truncated PNGs, missing IEND and corrupt CRC are rejected even with a valid PNG header
+  ---
+  duration_ms: 0.958548
+  type: 'test'
+  ...
+# Subtest: PNG image data must fully decode, not merely have valid chunks and CRCs
+ok 336 - PNG image data must fully decode, not merely have valid chunks and CRCs
+  ---
+  duration_ms: 3.740302
+  type: 'test'
+  ...
+# Subtest: interlaced PNGs retain support while their decompression budget is bounded
+ok 337 - interlaced PNGs retain support while their decompression budget is bounded
+  ---
+  duration_ms: 1.300105
+  type: 'test'
+  ...
+# Subtest: header dimensions and input size reject oversized images before pixel decoding
+ok 338 - header dimensions and input size reject oversized images before pixel decoding
+  ---
+  duration_ms: 0.719622
+  type: 'test'
+  ...
+# Subtest: JPEG bytes from a real encoder decode; truncated scan and missing EOI are rejected
+ok 339 - JPEG bytes from a real encoder decode; truncated scan and missing EOI are rejected
+  ---
+  duration_ms: 3.309088
+  type: 'test'
+  ...
+# Subtest: cached validation uses actual bytes and never trusts supplied hashes or caller-mutated results
+ok 340 - cached validation uses actual bytes and never trusts supplied hashes or caller-mutated results
+  ---
+  duration_ms: 1.268268
+  type: 'test'
+  ...
+# Subtest: invalid asset cannot save a revision; correcting it allows the same public API workflow to build
+ok 341 - invalid asset cannot save a revision; correcting it allows the same public API workflow to build
+  ---
+  duration_ms: 297.264382
+  type: 'test'
+  ...
+# Subtest: actual scene geometry detects the same left-visual scaffold across IDs, paint, box nudges and stack counts
+ok 342 - actual scene geometry detects the same left-visual scaffold across IDs, paint, box nudges and stack counts
+  ---
+  duration_ms: 27.561076
+  type: 'test'
+  ...
+# Subtest: whole-deck visual dominance survives intervening nonvisual and different-layout pages
+ok 343 - whole-deck visual dominance survives intervening nonvisual and different-layout pages
+  ---
+  duration_ms: 1.123443
+  type: 'test'
+  ...
+# Subtest: navigation and genuine rearrangements interrupt adjacent runs without imposing a variety quota
+ok 344 - navigation and genuine rearrangements interrupt adjacent runs without imposing a variety quota
+  ---
+  duration_ms: 0.975745
+  type: 'test'
+  ...
+# Subtest: specific comparison reasons and template fidelity allow intentional repetition
+ok 345 - specific comparison reasons and template fidelity allow intentional repetition
+  ---
+  duration_ms: 0.677525
+  type: 'test'
+  ...
+# Subtest: decorative images and chrome do not create evidence or interpretation carriers
+ok 346 - decorative images and chrome do not create evidence or interpretation carriers
+  ---
+  duration_ms: 0.307924
+  type: 'test'
+  ...
+# Subtest: zero-height native plot axes and their labels form one evidence group
+ok 347 - zero-height native plot axes and their labels form one evidence group
+  ---
+  duration_ms: 0.808417
+  type: 'test'
+  ...
+# Subtest: a shared native drawing ID does not absorb distant explanation into its chart
+ok 348 - a shared native drawing ID does not absorb distant explanation into its chart
+  ---
+  duration_ms: 0.315634
+  type: 'test'
+  ...
+# Subtest: declared outline supplies chapter labels and agendas without changing authored content or input
+ok 349 - declared outline supplies chapter labels and agendas without changing authored content or input
+  ---
+  duration_ms: 2.546751
+  type: 'test'
+  ...
+# Subtest: an explicit local agenda is preserved and its active item uses local rather than global order
+ok 350 - an explicit local agenda is preserved and its active item uses local rather than global order
+  ---
+  duration_ms: 0.268187
+  type: 'test'
+  ...
+# Subtest: a new narrative plan cannot replace authored roadmap content with an automatic agenda
+ok 351 - a new narrative plan cannot replace authored roadmap content with an automatic agenda
+  ---
+  duration_ms: 25.329918
+  type: 'test'
+  ...
+# Subtest: linked local agenda labels keep deck section numbers while highlighting by local position
+ok 352 - linked local agenda labels keep deck section numbers while highlighting by local position
+  ---
+  duration_ms: 6.348728
+  type: 'test'
+  ...
+# Subtest: navigation numbers follow label policy when body text has a larger reading minimum
+ok 353 - navigation numbers follow label policy when body text has a larger reading minimum
+  ---
+  duration_ms: 4.900937
+  type: 'test'
+  ...
+# Subtest: old projects get at most a long-talk advisory and no new narrative hard block
+ok 354 - old projects get at most a long-talk advisory and no new narrative hard block
+  ---
+  duration_ms: 0.693548
+  type: 'test'
+  ...
+# Subtest: structural contradictions in an explicit outline are actionable errors
+ok 355 - structural contradictions in an explicit outline are actionable errors
+  ---
+  duration_ms: 1.515072
+  type: 'test'
+  ...
+# Subtest: new chapter references require a declared plan but legacy section labels stay compatible
+ok 356 - new chapter references require a declared plan but legacy section labels stay compatible
+  ---
+  duration_ms: 0.28166
+  type: 'test'
+  ...
+# Subtest: active chapter and numbering cannot contradict the declared section while local agendas remain valid
+ok 357 - active chapter and numbering cannot contradict the declared section while local agendas remain valid
+  ---
+  duration_ms: 0.54924
+  type: 'test'
+  ...
+# Subtest: a complete outline does not require filler section pages or fixed scientific claim order
+ok 358 - a complete outline does not require filler section pages or fixed scientific claim order
+  ---
+  duration_ms: 0.988122
+  type: 'test'
+  ...
+# Subtest: missing content assignment and conclusion response are advisories without semantic overclaim
+ok 359 - missing content assignment and conclusion response are advisories without semantic overclaim
+  ---
+  duration_ms: 0.312953
+  type: 'test'
+  ...
+# Subtest: roadmap, active chapter and body breadcrumb are exported as editable text with all questions retained
+ok 360 - roadmap, active chapter and body breadcrumb are exported as editable text with all questions retained
+  ---
+  duration_ms: 127.140658
+  type: 'test'
+  ...
+# Subtest: eight concise chapter questions use two readable columns rather than shrinking text
+ok 361 - eight concise chapter questions use two readable columns rather than shrinking text
+  ---
+  duration_ms: 6.781917
+  type: 'test'
+  ...
+# Subtest: overlong navigation reports capacity failure while preserving every question and font size
+ok 362 - overlong navigation reports capacity failure while preserving every question and font size
+  ---
+  duration_ms: 72.747995
+  type: 'test'
+  ...
+# Subtest: authored question agendas work without a new narrative plan and reject a missing active item
+ok 363 - authored question agendas work without a new narrative plan and reject a missing active item
+  ---
+  duration_ms: 2.017424
+  type: 'test'
+  ...
+# Subtest: free native drawings retain geometry, scientific roles, exact strings and native PPTX objects
+ok 364 - free native drawings retain geometry, scientific roles, exact strings and native PPTX objects
+  ---
+  duration_ms: 138.73172
+  type: 'test'
+  ...
+# Subtest: projection checks final scale without replacing, truncating or shrinking source strings
+ok 365 - projection checks final scale without replacing, truncating or shrinking source strings
+  ---
+  duration_ms: 5.184697
+  type: 'test'
+  ...
+# Subtest: local bounds, line endpoints, hidden labels and empty carrier are explicit errors
+ok 366 - local bounds, line endpoints, hidden labels and empty carrier are explicit errors
+  ---
+  duration_ms: 13.513618
+  type: 'test'
+  ...
+# Subtest: free regions have no compulsory card frame, title band or inner margin
+ok 367 - free regions have no compulsory card frame, title band or inner margin
+  ---
+  duration_ms: 6.316479
+  type: 'test'
+  ...
+# Subtest: all declared payloads must have an actual consuming scene object
+ok 368 - all declared payloads must have an actual consuming scene object
+  ---
+  duration_ms: 1.928219
+  type: 'test'
+  ...
+# Subtest: full bibliographic titles and metadata reflow in free evidence regions
+ok 369 - full bibliographic titles and metadata reflow in free evidence regions
+  ---
+  duration_ms: 22.295271
+  type: 'test'
+  ...
+# Subtest: a paper heading reserves full wrapped title height before scientific content
+ok 370 - a paper heading reserves full wrapped title height before scientific content
+  ---
+  duration_ms: 9.158599
+  type: 'test'
+  ...
+# Subtest: native image cropping preserves source bytes, viewport and explicit provenance
+ok 371 - native image cropping preserves source bytes, viewport and explicit provenance
+  ---
+  duration_ms: 12.14638
+  type: 'test'
+  ...
+# Subtest: authored headings retain every title word and reserve a nonoverlapping body area
+ok 372 - authored headings retain every title word and reserve a nonoverlapping body area
+  ---
+  duration_ms: 6.694509
+  type: 'test'
+  ...
+# Subtest: schemas reject ambiguous composition, duplicate identities and filesystem images
+ok 373 - schemas reject ambiguous composition, duplicate identities and filesystem images
+  ---
+  duration_ms: 227.016892
+  type: 'test'
+  ...
+# Subtest: projection-aware scientific plots measure labels before layout and retain smaller caption typography
+ok 374 - projection-aware scientific plots measure labels before layout and retain smaller caption typography
+  ---
+  duration_ms: 50.768576
+  type: 'test'
+  ...
+# Subtest: projection-aware mechanism planning keeps all authored relations and allocates full edge-label height
+ok 375 - projection-aware mechanism planning keeps all authored relations and allocates full edge-label height
+  ---
+  duration_ms: 960.508976
+  type: 'test'
+  ...
+# Subtest: table cells and transcribed figure legends honor role floors during measurement
+ok 376 - table cells and transcribed figure legends honor role floors during measurement
+  ---
+  duration_ms: 45.550189
+  type: 'test'
+  ...
+# Subtest: new-project headers and closing questions allocate readable default typography without changing legacy tokens
+ok 377 - new-project headers and closing questions allocate readable default typography without changing legacy tokens
+  ---
+  duration_ms: 589.752866
+  type: 'test'
+  ...
+# Subtest: explicit native text and title sizes remain authored values when a projection policy rejects them
+ok 378 - explicit native text and title sizes remain authored values when a projection policy rejects them
+  ---
+  duration_ms: 355.293697
+  type: 'test'
+  ...
+# Subtest: authored titles opt into chapter chrome without changing their box or legacy behavior
+ok 379 - authored titles opt into chapter chrome without changing their box or legacy behavior
+  ---
+  duration_ms: 145.546217
+  type: 'test'
+  ...
+# Subtest: an inherited band can hold the authored title when no chapter identity is requested
+ok 380 - an inherited band can hold the authored title when no chapter identity is requested
+  ---
+  duration_ms: 3.021258
+  type: 'test'
+  ...
+# Subtest: card layout variants use measured title and body boxes and retain native editable output
+ok 381 - card layout variants use measured title and body boxes and retain native editable output
+  ---
+  duration_ms: 217.874848
+  type: 'test'
+  ...
+# Subtest: card layout is opt-in and narrow side labels report overflow without shrinking
+ok 382 - card layout is opt-in and narrow side labels report overflow without shrinking
+  ---
+  duration_ms: 5.414994
+  type: 'test'
+  ...
+# Subtest: twelve-region plans accept optional content roles and reject empty or foreign carriers
+ok 383 - twelve-region plans accept optional content roles and reject empty or foreign carriers
+  ---
+  duration_ms: 21.053662
+  type: 'test'
+  ...
+# Subtest: content layers distinguish drawing headings from pure textual explanation and qualifications
+ok 384 - content layers distinguish drawing headings from pure textual explanation and qualifications
+  ---
+  duration_ms: 1.056859
+  type: 'test'
+  ...
+# Subtest: free region and drawing repetition ignores small nudges, recoloring and observed mark lengths
+ok 385 - free region and drawing repetition ignores small nudges, recoloring and observed mark lengths
+  ---
+  duration_ms: 1.948999
+  type: 'test'
+  ...
+# Subtest: equal text groups include free regions and nested drawing leaves but exclude real relationships
+ok 386 - equal text groups include free regions and nested drawing leaves but exclude real relationships
+  ---
+  duration_ms: 1.157196
+  type: 'test'
+  ...
+# Subtest: original page grammars cover distinct academic relationships with selection and evidence guidance
+ok 387 - original page grammars cover distinct academic relationships with selection and evidence guidance
+  ---
+  duration_ms: 2.059514
+  type: 'test'
+  ...
+# Subtest: all 32 grammars compile to the existing public slide contract without generated content
+ok 388 - all 32 grammars compile to the existing public slide contract without generated content
+  ---
+  duration_ms: 66.236329
+  type: 'test'
+  ...
+# Subtest: selection reports capacity and shape tradeoffs rather than forcing a variety quota
+ok 389 - selection reports capacity and shape tradeoffs rather than forcing a variety quota
+  ---
+  duration_ms: 2.633387
+  type: 'test'
+  ...
+# Subtest: compiler accepts real carrier bindings but rejects empty, unsupported and duplicate consumption
+ok 390 - compiler accepts real carrier bindings but rejects empty, unsupported and duplicate consumption
+  ---
+  duration_ms: 1.829872
+  type: 'test'
+  ...
+# Subtest: authored geometry is preserved and collisions fail instead of squeezing carriers
+ok 391 - authored geometry is preserved and collisions fail instead of squeezing carriers
+  ---
+  duration_ms: 1.026669
+  type: 'test'
+  ...
+# Subtest: catalogue geometry renders as native editable shapes and text, not page screenshots
+ok 392 - catalogue geometry renders as native editable shapes and text, not page screenshots
+  ---
+  duration_ms: 119.831437
+  type: 'test'
+  ...
+# Subtest: contrast uses the actual local dark and medium surfaces, not the page white
+ok 393 - contrast uses the actual local dark and medium surfaces, not the page white
+  ---
+  duration_ms: 4.744708
+  type: 'test'
+  ...
+# Subtest: pale body text creates an actionable warning before it becomes unreadable
+ok 394 - pale body text creates an actionable warning before it becomes unreadable
+  ---
+  duration_ms: 0.527237
+  type: 'test'
+  ...
+# Subtest: allocated textbox whitespace cannot falsely move white title text outside its band
+ok 395 - allocated textbox whitespace cannot falsely move white title text outside its band
+  ---
+  duration_ms: 0.204302
+  type: 'test'
+  ...
+# Subtest: transparent fills are composited and nested opaque paper restores a known background
+ok 396 - transparent fills are composited and nested opaque paper restores a known background
+  ---
+  duration_ms: 0.5317
+  type: 'test'
+  ...
+# Subtest: text on images requests a rendered review without inventing image contrast
+ok 397 - text on images requests a rendered review without inventing image contrast
+  ---
+  duration_ms: 0.866036
+  type: 'test'
+  ...
+# Subtest: native emphasis runs are checked and legacy projects remain outside the projection gate
+ok 398 - native emphasis runs are checked and legacy projects remain outside the projection gate
+  ---
+  duration_ms: 2.575089
+  type: 'test'
+  ...
+# Subtest: unpainted frames and later overlay objects do not become text backing
+ok 399 - unpainted frames and later overlay objects do not become text backing
+  ---
+  duration_ms: 0.596136
+  type: 'test'
+  ...
+# Subtest: mixed known backings request review without a false uniform-background failure
+ok 400 - mixed known backings request review without a false uniform-background failure
+  ---
+  duration_ms: 0.342144
+  type: 'test'
+  ...
+# Subtest: reference catalogue has 48 usable semantic geometries with bounded, matched slots
+ok 401 - reference catalogue has 48 usable semantic geometries with bounded, matched slots
+  ---
+  duration_ms: 2.519636
+  type: 'test'
+  ...
+# Subtest: reference tool lists or selects only bundled layouts without changing the calling workspace
+ok 402 - reference tool lists or selects only bundled layouts without changing the calling workspace
+  ---
+  duration_ms: 33.240603
+  type: 'test'
+  ...
+# Subtest: reference layout requirements reject missing evidence instead of silently leaving template blanks
+ok 403 - reference layout requirements reject missing evidence instead of silently leaving template blanks
+  ---
+  duration_ms: 190.23964
+  type: 'test'
+  ...
+# Subtest: native table sources cannot bypass full-text, full-title or visible citation checks
+ok 404 - native table sources cannot bypass full-text, full-title or visible citation checks
+  ---
+  duration_ms: 42.275594
+  type: 'test'
+  ...
+# Subtest: table source binding is explicit even when the slide already cites a claim
+ok 405 - table source binding is explicit even when the slide already cites a claim
+  ---
+  duration_ms: 45.915563
+  type: 'test'
+  ...
+# Subtest: panel title overrides must correspond to actual reference panels
+ok 406 - panel title overrides must correspond to actual reference panels
+  ---
+  duration_ms: 21.679922
+  type: 'test'
+  ...
+# Subtest: invalid source crop and ragged tables are rejected atomically
+ok 407 - invalid source crop and ragged tables are rejected atomically
+  ---
+  duration_ms: 8.079371
+  type: 'test'
+  ...
+# Subtest: previous renderer artifacts cannot inherit current visual approval after renderer upgrade
+ok 408 - previous renderer artifacts cannot inherit current visual approval after renderer upgrade
+  ---
+  duration_ms: 139.176156
+  type: 'test'
+  ...
+# Subtest: DSH registers the academic skill and all nineteen bounded tools and disposes them
+ok 409 - DSH registers the academic skill and all nineteen bounded tools and disposes them
+  ---
+  duration_ms: 5.127292
+  type: 'test'
+  ...
+# Subtest: failed registration releases earlier contributions and invalid global config is explicit
+ok 410 - failed registration releases earlier contributions and invalid global config is explicit
+  ---
+  duration_ms: 1.761969
+  type: 'test'
+  ...
+# Subtest: a rejected required skill stops activation instead of exposing tools without their workflow
+ok 411 - a rejected required skill stops activation instead of exposing tools without their workflow
+  ---
+  duration_ms: 0.511302
+  type: 'test'
+  ...
+# Subtest: raw-schema calls reject malformed args before invoking an executor
+ok 412 - raw-schema calls reject malformed args before invoking an executor
+  ---
+  duration_ms: 1.838408
+  type: 'test'
+  ...
+# Subtest: registered wire schemas use the current DSH subset while runtime bounds remain enforced
+ok 413 - registered wire schemas use the current DSH subset while runtime bounds remain enforced
+  ---
+  duration_ms: 1.74809
+  type: 'test'
+  ...
+# Subtest: call identity uses session cwd and signal, does not mutate frozen args or process cwd
+ok 414 - call identity uses session cwd and signal, does not mutate frozen args or process cwd
+  ---
+  duration_ms: 9.301189
+  type: 'test'
+  ...
+# Subtest: Host tools follow the effective directory service and do not fall back after it rejects
+ok 415 - Host tools follow the effective directory service and do not fall back after it rejects
+  ---
+  duration_ms: 64.4253
+  type: 'test'
+  ...
+# Subtest: template access rejects escaping the calling workspace before reading a file
+ok 416 - template access rejects escaping the calling workspace before reading a file
+  ---
+  duration_ms: 3.646763
+  type: 'test'
+  ...
+# Subtest: tool summaries are bounded and never dump embedded asset data
+ok 417 - tool summaries are bounded and never dump embedded asset data
+  ---
+  duration_ms: 2.734991
+  type: 'test'
+  ...
+# Subtest: real registered init creates a project in session workspace and context/check can reopen it
+ok 418 - real registered init creates a project in session workspace and context/check can reopen it
+  ---
+  duration_ms: 24.289579
+  type: 'test'
+  ...
+# Subtest: native template tool persists reusable profile, reuses equal content and protects unequal files
+ok 419 - native template tool persists reusable profile, reuses equal content and protects unequal files
+  ---
+  duration_ms: 280.913643
+  type: 'test'
+  ...
+# Subtest: CLI consumes a JSON argument file in its working directory and reports invalid UTF-8
+ok 420 - CLI consumes a JSON argument file in its working directory and reports invalid UTF-8
+  ---
+  duration_ms: 2059.353303
+  type: 'test'
+  ...
+# Subtest: release packages bind one committed tree and exclude untracked files and historical transfer payloads
+ok 421 - release packages bind one committed tree and exclude untracked files and historical transfer payloads
+  ---
+  duration_ms: 1009.897433
+  type: 'test'
+  ...
+# Subtest: release refuses a mismatched tag or tracked edits before writing artifacts
+ok 422 - release refuses a mismatched tag or tracked edits before writing artifacts
+  ---
+  duration_ms: 52.977617
+  type: 'test'
+  ...
+# Subtest: native PPTX retains independent objects, exact text, figure, chart workbook and full-title notes
+ok 423 - native PPTX retains independent objects, exact text, figure, chart workbook and full-title notes
+  ---
+  duration_ms: 159.841099
+  type: 'test'
+  ...
+# Subtest: all academic layouts and eight native card structures compile with stable IDs
+ok 424 - all academic layouts and eight native card structures compile with stable IDs
+  ---
+  duration_ms: 109.288273
+  type: 'test'
+  ...
+# Subtest: style-only edits preserve every non-card scene node and all card words and metrics
+ok 425 - style-only edits preserve every non-card scene node and all card words and metrics
+  ---
+  duration_ms: 40.410918
+  type: 'test'
+  ...
+# Subtest: rendering aborts and rejects non-embedded figure data instead of fetching it
+ok 426 - rendering aborts and rejects non-embedded figure data instead of fetching it
+  ---
+  duration_ms: 1.920262
+  type: 'test'
+  ...
+# Subtest: shared text wrapping preserves scientific characters and flags excessive density
+ok 427 - shared text wrapping preserves scientific characters and flags excessive density
+  ---
+  duration_ms: 9.619385
+  type: 'test'
+  ...
+# Subtest: portrait source figures keep their aspect while gaining a usable explanatory column
+ok 428 - portrait source figures keep their aspect while gaining a usable explanatory column
+  ---
+  duration_ms: 1.358693
+  type: 'test'
+  ...
+# Subtest: native count charts preserve exact values and use the same rounded axes as SVG
+ok 429 - native count charts preserve exact values and use the same rounded axes as SVG
+  ---
+  duration_ms: 28.060447
+  type: 'test'
+  ...
+# Subtest: chart display precision formats labels while preserving full native and workbook data
+ok 430 - chart display precision formats labels while preserving full native and workbook data
+  ---
+  duration_ms: 30.98739
+  type: 'test'
+  ...
+# Subtest: native charts preserve supplied categories and request every category tick
+ok 431 - native charts preserve supplied categories and request every category tick
+  ---
+  duration_ms: 75.334203
+  type: 'test'
+  ...
+# Subtest: upright horizontal category labels retain native charts, exact workbook values and full label fonts
+ok 432 - upright horizontal category labels retain native charts, exact workbook values and full label fonts
+  ---
+  duration_ms: 27.928483
+  type: 'test'
+  ...
+# Subtest: figure-split displays two source figures and their own captions in SVG and native PPTX
+ok 433 - figure-split displays two source figures and their own captions in SVG and native PPTX
+  ---
+  duration_ms: 13.707225
+  type: 'test'
+  ...
+# Subtest: unsupported content combinations report every unrendered figure, card, chart and diagram
+ok 434 - unsupported content combinations report every unrendered figure, card, chart and diagram
+  ---
+  duration_ms: 5.184935
+  type: 'test'
+  ...
+# Subtest: all dynamic SVG attributes are XML-escaped and template colors cannot inject scripts or URLs
+ok 435 - all dynamic SVG attributes are XML-escaped and template colors cannot inject scripts or URLs
+  ---
+  duration_ms: 12.640324
+  type: 'test'
+  ...
+# Subtest: reference layouts consume every authored slot including three figures, native tables and manual node geometry
+ok 436 - reference layouts consume every authored slot including three figures, native tables and manual node geometry
+  ---
+  duration_ms: 369.238731
+  type: 'test'
+  ...
+# Subtest: source viewports are native non-destructive crops and preserve every original image byte
+ok 437 - source viewports are native non-destructive crops and preserve every original image byte
+  ---
+  duration_ms: 12.644147
+  type: 'test'
+  ...
+# Subtest: editable native tables retain scientific cell text, unit strings and fixed slide count
+ok 438 - editable native tables retain scientific cell text, unit strings and fixed slide count
+  ---
+  duration_ms: 45.682836
+  type: 'test'
+  ...
+# Subtest: academic defaults have a compact white header and semantic panels while explicit old styles remain supported
+ok 439 - academic defaults have a compact white header and semantic panels while explicit old styles remain supported
+  ---
+  duration_ms: 1.673347
+  type: 'test'
+  ...
+# Subtest: native text leading equals scene geometry and reverse loop rows remain direct connections
+ok 440 - native text leading equals scene geometry and reverse loop rows remain direct connections
+  ---
+  duration_ms: 26.993174
+  type: 'test'
+  ...
+# Subtest: CJK line breaking preserves every scientific character and keeps closing punctuation with content
+ok 441 - CJK line breaking preserves every scientific character and keeps closing punctuation with content
+  ---
+  duration_ms: 2.205668
+  type: 'test'
+  ...
+# Subtest: authored panel titles replace generic labels and size only their title tab
+ok 442 - authored panel titles replace generic labels and size only their title tab
+  ---
+  duration_ms: 3.469933
+  type: 'test'
+  ...
+# Subtest: reference reading labels reflect full text, abstract or metadata access in both SVG and native PPTX
+ok 443 - reference reading labels reflect full text, abstract or metadata access in both SVG and native PPTX
+  ---
+  duration_ms: 25.905585
+  type: 'test'
+  ...
+# Subtest: native table row geometry reserves glyph-width uncertainty before positioning its caption
+ok 444 - native table row geometry reserves glyph-width uncertainty before positioning its caption
+  ---
+  duration_ms: 17.265996
+  type: 'test'
+  ...
+# Subtest: long mixed-script figure licenses remain separate complete entries inside the reference column
+ok 445 - long mixed-script figure licenses remain separate complete entries inside the reference column
+  ---
+  duration_ms: 41.68324
+  type: 'test'
+  ...
+# Subtest: semantic roles survive local frame changes and authored emphasis stays native and exact
+ok 446 - semantic roles survive local frame changes and authored emphasis stays native and exact
+  ---
+  duration_ms: 42.640122
+  type: 'test'
+  ...
+# Subtest: figure paper treatment follows actual evidence bounds and keeps full provenance in notes
+ok 447 - figure paper treatment follows actual evidence bounds and keeps full provenance in notes
+  ---
+  duration_ms: 14.0487
+  type: 'test'
+  ...
+# Subtest: legacy kicker content becomes a readable subtitle and excessive headers require revision
+ok 448 - legacy kicker content becomes a readable subtitle and excessive headers require revision
+  ---
+  duration_ms: 3.970054
+  type: 'test'
+  ...
+# Subtest: diagram role uses color and line form while all scientific labels remain independent text
+ok 449 - diagram role uses color and line form while all scientific labels remain independent text
+  ---
+  duration_ms: 10.220254
+  type: 'test'
+  ...
+# Subtest: transcribed source legends remain editable, keep their own colors and reserve space above captions
+ok 450 - transcribed source legends remain editable, keep their own colors and reserve space above captions
+  ---
+  duration_ms: 15.917974
+  type: 'test'
+  ...
+# Subtest: short reference tables place their explanations after actual rows and captions without moving unrelated cards
+ok 451 - short reference tables place their explanations after actual rows and captions without moving unrelated cards
+  ---
+  duration_ms: 52.626733
+  type: 'test'
+  ...
+# Subtest: a complete metric block cannot silently exceed a shallow card even when each text box fits
+ok 452 - a complete metric block cannot silently exceed a shallow card even when each text box fits
+  ---
+  duration_ms: 3.256061
+  type: 'test'
+  ...
+# Subtest: source-led checks bind a reviewed real scene image to the selected paper and record
+ok 453 - source-led checks bind a reviewed real scene image to the selected paper and record
+  ---
+  duration_ms: 7.268416
+  type: 'test'
+  ...
+# Subtest: actual renderer figure and drawing-image paths both satisfy source use
+ok 454 - actual renderer figure and drawing-image paths both satisfy source use
+  ---
+  duration_ms: 21.682864
+  type: 'test'
+  ...
+# Subtest: source-bearing closing compositions and native drawings count as actual research pages
+    # Subtest: composition
+    ok 1 - composition
+      ---
+      duration_ms: 8.174923
+      type: 'test'
+      ...
+    # Subtest: drawing
+    ok 2 - drawing
+      ---
+      duration_ms: 1.396594
+      type: 'test'
+      ...
+    # Subtest: drawing-with-closing-context
+    ok 3 - drawing-with-closing-context
+      ---
+      duration_ms: 2.092211
+      type: 'test'
+      ...
+    1..3
+ok 455 - source-bearing closing compositions and native drawings count as actual research pages
+  ---
+  duration_ms: 12.290376
+  type: 'test'
+  ...
+# Subtest: pure closing contexts remain administrative rather than create research-image requirements
+ok 456 - pure closing contexts remain administrative rather than create research-image requirements
+  ---
+  duration_ms: 4.624279
+  type: 'test'
+  ...
+# Subtest: registered or declared figures that never enter the rendered body cannot satisfy a selected source
+ok 457 - registered or declared figures that never enter the rendered body cannot satisfy a selected source
+  ---
+  duration_ms: 0.711809
+  type: 'test'
+  ...
+# Subtest: decorative, locator, unverified, authored and unrelated-paper images never count as source figures
+    # Subtest: decorative
+    ok 1 - decorative
+      ---
+      duration_ms: 0.796645
+      type: 'test'
+      ...
+    # Subtest: locator
+    ok 2 - locator
+      ---
+      duration_ms: 0.501553
+      type: 'test'
+      ...
+    # Subtest: unverified
+    ok 3 - unverified
+      ---
+      duration_ms: 0.518761
+      type: 'test'
+      ...
+    # Subtest: author-created
+    ok 4 - author-created
+      ---
+      duration_ms: 0.668561
+      type: 'test'
+      ...
+    # Subtest: unrelated
+    ok 5 - unrelated
+      ---
+      duration_ms: 0.493954
+      type: 'test'
+      ...
+    # Subtest: template-demo
+    ok 6 - template-demo
+      ---
+      duration_ms: 0.353755
+      type: 'test'
+      ...
+    1..6
+ok 458 - decorative, locator, unverified, authored and unrelated-paper images never count as source figures
+  ---
+  duration_ms: 4.922121
+  type: 'test'
+  ...
+# Subtest: off-page, hidden or pixel-less images do not satisfy actual use
+    # Subtest: off-page
+    ok 1 - off-page
+      ---
+      duration_ms: 0.679977
+      type: 'test'
+      ...
+    # Subtest: hidden
+    ok 2 - hidden
+      ---
+      duration_ms: 0.249626
+      type: 'test'
+      ...
+    # Subtest: zero-size
+    ok 3 - zero-size
+      ---
+      duration_ms: 0.416135
+      type: 'test'
+      ...
+    # Subtest: missing-pixels
+    ok 4 - missing-pixels
+      ---
+      duration_ms: 0.51942
+      type: 'test'
+      ...
+    1..4
+ok 459 - off-page, hidden or pixel-less images do not satisfy actual use
+  ---
+  duration_ms: 2.422054
+  type: 'test'
+  ...
+# Subtest: source-led requires actual source-check references and complete full-text status
+    # Subtest: absent
+    ok 1 - absent
+      ---
+      duration_ms: 0.663727
+      type: 'test'
+      ...
+    # Subtest: partial
+    ok 2 - partial
+      ---
+      duration_ms: 0.640416
+      type: 'test'
+      ...
+    # Subtest: no-full-text
+    ok 3 - no-full-text
+      ---
+      duration_ms: 0.852506
+      type: 'test'
+      ...
+    # Subtest: invalid-date
+    ok 4 - invalid-date
+      ---
+      duration_ms: 0.3259
+      type: 'test'
+      ...
+    1..4
+ok 460 - source-led requires actual source-check references and complete full-text status
+  ---
+  duration_ms: 2.935375
+  type: 'test'
+  ...
+# Subtest: selected candidates require the correct asset and figure identity even if another source image is visible
+ok 461 - selected candidates require the correct asset and figure identity even if another source image is visible
+  ---
+  duration_ms: 0.996541
+  type: 'test'
+  ...
+# Subtest: documented no-suitable-figure sources may use actual source-linked mechanism or table alternatives
+ok 462 - documented no-suitable-figure sources may use actual source-linked mechanism or table alternatives
+  ---
+  duration_ms: 1.150934
+  type: 'test'
+  ...
+# Subtest: every no-suitable-figure core source needs its own binding to an actual scientific alternative
+ok 463 - every no-suitable-figure core source needs its own binding to an actual scientific alternative
+  ---
+  duration_ms: 0.677477
+  type: 'test'
+  ...
+# Subtest: one scientific synthesis may cover multiple sources only through actual carrier bindings
+ok 464 - one scientific synthesis may cover multiple sources only through actual carrier bindings
+  ---
+  duration_ms: 6.60818
+  type: 'test'
+  ...
+# Subtest: a generic no-figure claim or a text-only replacement does not unlock the exception
+ok 465 - a generic no-figure claim or a text-only replacement does not unlock the exception
+  ---
+  duration_ms: 0.785608
+  type: 'test'
+  ...
+# Subtest: unavailable figures remain an explicit gap rather than a no-suitable-figure exception
+ok 466 - unavailable figures remain an explicit gap rather than a no-suitable-figure exception
+  ---
+  duration_ms: 0.794524
+  type: 'test'
+  ...
+# Subtest: non-selected candidate reasons are substantive and review status cannot conceal a selected figure
+ok 467 - non-selected candidate reasons are substantive and review status cannot conceal a selected figure
+  ---
+  duration_ms: 0.428984
+  type: 'test'
+  ...
+# Subtest: flexible and legacy projects remain readable without pretending the source checks were completed
+ok 468 - flexible and legacy projects remain readable without pretending the source checks were completed
+  ---
+  duration_ms: 0.392434
+  type: 'test'
+  ...
+# Subtest: administrative and bibliography-only pages do not trigger research-image quotas
+ok 469 - administrative and bibliography-only pages do not trigger research-image quotas
+  ---
+  duration_ms: 0.20745
+  type: 'test'
+  ...
+# Subtest: source-led has no fixed per-page image quota while exposing a low-coverage text sequence
+ok 470 - source-led has no fixed per-page image quota while exposing a low-coverage text sequence
+  ---
+  duration_ms: 0.556421
+  type: 'test'
+  ...
+# Subtest: research progress based on non-article sources uses real scientific carriers without inventing a paper figure requirement
+    # Subtest: dataset
+    ok 1 - dataset
+      ---
+      duration_ms: 0.449626
+      type: 'test'
+      ...
+    # Subtest: report
+    ok 2 - report
+      ---
+      duration_ms: 0.756703
+      type: 'test'
+      ...
+    # Subtest: protocol
+    ok 3 - protocol
+      ---
+      duration_ms: 0.36338
+      type: 'test'
+      ...
+    # Subtest: thesis
+    ok 4 - thesis
+      ---
+      duration_ms: 0.290385
+      type: 'test'
+      ...
+    1..4
+ok 471 - research progress based on non-article sources uses real scientific carriers without inventing a paper figure requirement
+  ---
+  duration_ms: 2.640389
+  type: 'test'
+  ...
+# Subtest: the no-suitable-paper-figure exception cannot borrow an unrelated report chart
+ok 472 - the no-suitable-paper-figure exception cannot borrow an unrelated report chart
+  ---
+  duration_ms: 0.601617
+  type: 'test'
+  ...
+# Subtest: new academic projects retain source-led policy across ordinary brief edits
+ok 473 - new academic projects retain source-led policy across ordinary brief edits
+  ---
+  duration_ms: 143.210815
+  type: 'test'
+  ...
+# Subtest: a source-led all-text literature report is blocked in review and remains an explicit draft
+ok 474 - a source-led all-text literature report is blocked in review and remains an explicit draft
+  ---
+  duration_ms: 258.848765
+  type: 'test'
+  ...
+# Subtest: opt-in contracts expose source retrieval and figure-selection records without changing tool count
+ok 475 - opt-in contracts expose source retrieval and figure-selection records without changing tool count
+  ---
+  duration_ms: 0.957368
+  type: 'test'
+  ...
+# Subtest: historical template paths do not block unrelated feedback after source files move
+ok 476 - historical template paths do not block unrelated feedback after source files move
+  ---
+  duration_ms: 131.443256
+  type: 'test'
+  ...
+# Subtest: partial checkpoint updates use the same merged density decision and reject contradictory duplicate topics
+ok 477 - partial checkpoint updates use the same merged density decision and reject contradictory duplicate topics
+  ---
+  duration_ms: 29.032109
+  type: 'test'
+  ...
+# Subtest: v2 review demands space/color observations, risk responses and an exact final user decision without a rebuild loop
+ok 478 - v2 review demands space/color observations, risk responses and an exact final user decision without a rebuild loop
+  ---
+  duration_ms: 20163.465676
+  type: 'test'
+  ...
+# Subtest: unequal signed distributions preserve every observation and exact x mapping without connecting points
+ok 479 - unequal signed distributions preserve every observation and exact x mapping without connecting points
+  ---
+  duration_ms: 15.425317
+  type: 'test'
+  ...
+# Subtest: intervals draw literal estimates and bounds on one signed horizontal axis with zero reference
+ok 480 - intervals draw literal estimates and bounds on one signed horizontal axis with zero reference
+  ---
+  duration_ms: 3.873513
+  type: 'test'
+  ...
+# Subtest: explicit reference replaces default zero and expands the numeric domain without modifying data
+ok 481 - explicit reference replaces default zero and expands the numeric domain without modifying data
+  ---
+  duration_ms: 2.540935
+  type: 'test'
+  ...
+# Subtest: all-negative and degenerate constant distributions have finite ordered domains
+ok 482 - all-negative and degenerate constant distributions have finite ordered domains
+  ---
+  duration_ms: 9.510705
+  type: 'test'
+  ...
+# Subtest: eight groups of one hundred well-separated observations are all retained in a wide plot
+ok 483 - eight groups of one hundred well-separated observations are all retained in a wide plot
+  ---
+  duration_ms: 10.151171
+  type: 'test'
+  ...
+# Subtest: packing is deterministic, preserves duplicate values and never shifts numeric x
+ok 484 - packing is deterministic, preserves duplicate values and never shifts numeric x
+  ---
+  duration_ms: 4.454518
+  type: 'test'
+  ...
+# Subtest: invalid interval bounds, missing observations and nonfinite data fail without partial plots
+ok 485 - invalid interval bounds, missing observations and nonfinite data fail without partial plots
+  ---
+  duration_ms: 0.884483
+  type: 'test'
+  ...
+# Subtest: a dense cluster fails explicitly instead of dropping observations or reducing marker size
+ok 486 - a dense cluster fails explicitly instead of dropping observations or reducing marker size
+  ---
+  duration_ms: 0.792169
+  type: 'test'
+  ...
+# Subtest: wrapped captions, group names and literal interval values stay inside the assigned box
+ok 487 - wrapped captions, group names and literal interval values stay inside the assigned box
+  ---
+  duration_ms: 4.503704
+  type: 'test'
+  ...
+# Subtest: oversized captions and group labels trigger layout errors rather than clipping or smaller fonts
+ok 488 - oversized captions and group labels trigger layout errors rather than clipping or smaller fonts
+  ---
+  duration_ms: 16.946293
+  type: 'test'
+  ...
+# Subtest: system font sizes respect the 18px floor and the supplied font family
+ok 489 - system font sizes respect the 18px floor and the supplied font family
+  ---
+  duration_ms: 1.547856
+  type: 'test'
+  ...
+# Subtest: tick labels remain distinct for small and large numeric scales
+ok 490 - tick labels remain distinct for small and large numeric scales
+  ---
+  duration_ms: 3.620644
+  type: 'test'
+  ...
+# Subtest: ticks near a large baseline retain their distinct values rather than applying display rounding
+ok 491 - ticks near a large baseline retain their distinct values rather than applying display rounding
+  ---
+  duration_ms: 2.819892
+  type: 'test'
+  ...
+# Subtest: one semantic region and primitive shapes export through the shared SVG renderer
+ok 492 - one semantic region and primitive shapes export through the shared SVG renderer
+  ---
+  duration_ms: 3.096283
+  type: 'test'
+  ...
+# Subtest: integrated results pages export editable native observations, interval bounds and labels to PPTX
+ok 493 - integrated results pages export editable native observations, interval bounds and labels to PPTX
+  ---
+  duration_ms: 80.796496
+  type: 'test'
+  ...
+# Subtest: measured minimum height is sufficient for native rendering and one pixel less is rejected
+ok 494 - measured minimum height is sufficient for native rendering and one pixel less is rejected
+  ---
+  duration_ms: 54.74056
+  type: 'test'
+  ...
+# Subtest: minimum measurement includes wrapped group labels, reading note, numeric labels, unit and full caption
+ok 495 - minimum measurement includes wrapped group labels, reading note, numeric labels, unit and full caption
+  ---
+  duration_ms: 7.567542
+  type: 'test'
+  ...
+# Subtest: minimum measurement preserves input and reflects supplied system fonts without creating a builder
+ok 496 - minimum measurement preserves input and reflects supplied system fonts without creating a builder
+  ---
+  duration_ms: 1.977211
+  type: 'test'
+  ...
+# Subtest: minimum height accounts for actual point packing and rejects clusters that height cannot solve
+ok 497 - minimum height accounts for actual point packing and rejects clusters that height cannot solve
+  ---
+  duration_ms: 1.592846
+  type: 'test'
+  ...
+# Subtest: minimum measurement exposes invalid data, metrics and width as blocking issues without fallback heights
+ok 498 - minimum measurement exposes invalid data, metrics and width as blocking issues without fallback heights
+  ---
+  duration_ms: 0.23484
+  type: 'test'
+  ...
+# Subtest: public authoring carries one outline into navigation, custom headings and both note exports
+ok 499 - public authoring carries one outline into navigation, custom headings and both note exports
+  ---
+  duration_ms: 407.103698
+  type: 'test'
+  ...
+# Subtest: the on-demand design contract exposes complete, isolated academic palettes to the host model
+ok 500 - the on-demand design contract exposes complete, isolated academic palettes to the host model
+  ---
+  duration_ms: 2.152498
+  type: 'test'
+  ...
+# Subtest: registered authoring exposes the plan contract and preserves an authored argument before export
+ok 501 - registered authoring exposes the plan contract and preserves an authored argument before export
+  ---
+  duration_ms: 308.248719
+  type: 'test'
+  ...
+# Subtest: a readable-storyboard filename collision preserves both the existing file and the entire project state
+ok 502 - a readable-storyboard filename collision preserves both the existing file and the entire project state
+  ---
+  duration_ms: 178.600389
+  type: 'test'
+  ...
+# Subtest: storyboard content guards detect lost claims, images, important text and invalid pilot/order choices
+ok 503 - storyboard content guards detect lost claims, images, important text and invalid pilot/order choices
+  ---
+  duration_ms: 200.46785
+  type: 'test'
+  ...
+# Subtest: unknown page recipes and unrecorded direction stay actionable through the public plan/check tools
+ok 504 - unknown page recipes and unrecorded direction stay actionable through the public plan/check tools
+  ---
+  duration_ms: 93.137943
+  type: 'test'
+  ...
+# Subtest: missing future evidence remains an explicit planning gap and cannot be silently promoted into completed work
+ok 505 - missing future evidence remains an explicit planning gap and cannot be silently promoted into completed work
+  ---
+  duration_ms: 103.541246
+  type: 'test'
+  ...
+# Subtest: public pilot approval fails before a valid pilot is planned and implemented
+ok 506 - public pilot approval fails before a valid pilot is planned and implemented
+  ---
+  duration_ms: 89.38978
+  type: 'test'
+  ...
+# Subtest: a long deck requires a storyboard and an unknown vision capability cannot attest visual approval
+ok 507 - a long deck requires a storyboard and an unknown vision capability cannot attest visual approval
+  ---
+  duration_ms: 20495.039134
+  type: 'test'
+  ...
+# Subtest: pilot fingerprint follows science, source, design and story changes while permitting planned expansion
+ok 508 - pilot fingerprint follows science, source, design and story changes while permitting planned expansion
+  ---
+  duration_ms: 890.674042
+  type: 'test'
+  ...
+# Subtest: a genuine rendered pilot can be approved, expanded, fully reviewed and delivered without overwriting files
+ok 509 - a genuine rendered pilot can be approved, expanded, fully reviewed and delivered without overwriting files
+  ---
+  duration_ms: 36757.291995
+  type: 'test'
+  ...
+# Actual renderer used for cover/method/result/boundary pilot plus bibliography and 7-page final deck. Review entries were labelled software-state simulations, not human/vision QA.
+# Subtest: staged pilot defers only explicitly planned final bibliography and future source figures
+ok 510 - staged pilot defers only explicitly planned final bibliography and future source figures
+  ---
+  duration_ms: 18259.08176
+  type: 'test'
+  ...
+# Two actual pilot renders exercised valid stage deferral and rejection after removing only the future figure assignment. Final source errors remained visible throughout.
+# Subtest: pilot approval rejects a source error even when a draft really rendered and review state says passed
+    # Subtest: unverified-claim
+    ok 1 - unverified-claim
+      ---
+      duration_ms: 11254.681592
+      type: 'test'
+      ...
+    # Subtest: full-text-required
+    ok 2 - full-text-required
+      ---
+      duration_ms: 9337.698371
+      type: 'test'
+      ...
+    # Subtest: source-check-incomplete
+    ok 3 - source-check-incomplete
+      ---
+      duration_ms: 9994.973375
+      type: 'test'
+      ...
+    1..3
+ok 511 - pilot approval rejects a source error even when a draft really rendered and review state says passed
+  ---
+  duration_ms: 30588.39268
+  type: 'test'
+  ...
+# Subtest: CLI discovers the new workflow and reports a blocked delivery with a non-success status
+ok 512 - CLI discovers the new workflow and reports a blocked delivery with a non-success status
+  ---
+  duration_ms: 3824.579802
+  type: 'test'
+  ...
+# Subtest: the user-readable storyboard exposes the actual argument, indispensable conditions and resolved evidence
+ok 513 - the user-readable storyboard exposes the actual argument, indispensable conditions and resolved evidence
+  ---
+  duration_ms: 1.091878
+  type: 'test'
+  ...
+# Subtest: template study follows presentation order, resolves basic placeholder inheritance and excludes old content
+ok 514 - template study follows presentation order, resolves basic placeholder inheritance and excludes old content
+  ---
+  duration_ms: 69.368415
+  type: 'test'
+  ...
+# Subtest: unresolved styles remain unknown and external relationship targets are never read
+ok 515 - unresolved styles remain unknown and external relationship targets are never read
+  ---
+  duration_ms: 14.560137
+  type: 'test'
+  ...
+# Subtest: 200-slide study remains bounded and density is descriptive
+ok 516 - 200-slide study remains bounded and density is descriptive
+  ---
+  duration_ms: 253.875818
+  type: 'test'
+  ...
+# Subtest: newly inspected layout XML shares the DTD rejection gate
+ok 517 - newly inspected layout XML shares the DTD rejection gate
+  ---
+  duration_ms: 5.445179
+  type: 'test'
+  ...
+# Subtest: template native group transforms are flattened and selected backgrounds reach native PPTX
+ok 518 - template native group transforms are flattened and selected backgrounds reach native PPTX
+  ---
+  duration_ms: 109.120321
+  type: 'test'
+  ...
+# Subtest: component provenance uses presentation page order while retaining nonsequential XML part names
+ok 519 - component provenance uses presentation page order while retaining nonsequential XML part names
+  ---
+  duration_ms: 24.693037
+  type: 'test'
+  ...
+# Subtest: unsupported custom shapes are reported and DTD input is rejected
+ok 520 - unsupported custom shapes are reported and DTD input is rejected
+  ---
+  duration_ms: 11.587041
+  type: 'test'
+  ...
+# Subtest: two templates have disjoint component IDs and unsupported inherited or transformed colors are explicit
+ok 521 - two templates have disjoint component IDs and unsupported inherited or transformed colors are explicit
+  ---
+  duration_ms: 24.850906
+  type: 'test'
+  ...
+# Subtest: registered init and record omit bulky repeated record schemas while retaining exact routing
+ok 522 - registered init and record omit bulky repeated record schemas while retaining exact routing
+  ---
+  duration_ms: 5.04835
+  type: 'test'
+  ...
+# Subtest: each on-demand contract returns the complete schema without silently truncating it
+ok 523 - each on-demand contract returns the complete schema without silently truncating it
+  ---
+  duration_ms: 22.657683
+  type: 'test'
+  ...
+# Subtest: JSON output omits optional object undefined without changing executor-owned data
+ok 524 - JSON output omits optional object undefined without changing executor-owned data
+  ---
+  duration_ms: 0.52062
+  type: 'test'
+  ...
+# Subtest: JSON output rejects values that JSON.stringify would silently lose or coerce
+ok 525 - JSON output rejects values that JSON.stringify would silently lose or coerce
+  ---
+  duration_ms: 0.67099
+  type: 'test'
+  ...
+# Subtest: registered executor output is normalized and malformed array values fail explicitly
+ok 526 - registered executor output is normalized and malformed array values fail explicitly
+  ---
+  duration_ms: 2.625215
+  type: 'test'
+  ...
+# Subtest: file-backed records and a real slide-content edit return a committed JSON-safe revision once
+ok 527 - file-backed records and a real slide-content edit return a committed JSON-safe revision once
+  ---
+  duration_ms: 126.785578
+  type: 'test'
+  ...
+# Subtest: assessment exposes the public capability record without automatically upgrading an unknown host
+ok 528 - assessment exposes the public capability record without automatically upgrading an unknown host
+  ---
+  duration_ms: 11.393519
+  type: 'test'
+  ...
+# Subtest: formal and minimal covers have a large native title and only authored academic identity
+ok 529 - formal and minimal covers have a large native title and only authored academic identity
+  ---
+  duration_ms: 97.63741
+  type: 'test'
+  ...
+# Subtest: legacy covers keep title and subtitle without introducing paper identity or talk length
+ok 530 - legacy covers keep title and subtitle without introducing paper identity or talk length
+  ---
+  duration_ms: 0.979369
+  type: 'test'
+  ...
+# Subtest: an excessive cover title is blocked with complete text and unchanged size
+ok 531 - an excessive cover title is blocked with complete text and unchanged size
+  ---
+  duration_ms: 13.696846
+  type: 'test'
+  ...
+# Subtest: glyph advances distinguish wide capitals and preserve scientific symbols and graphemes
+ok 532 - glyph advances distinguish wide capitals and preserve scientific symbols and graphemes
+  ---
+  duration_ms: 4.724309
+  type: 'test'
+  ...
+# Subtest: a complete long English paper title wraps without losing its original title or font size
+ok 533 - a complete long English paper title wraps without losing its original title or font size
+  ---
+  duration_ms: 11.004676
+  type: 'test'
+  ...
+# Subtest: default body roles use flat text while explicit frames and title tabs remain supported
+ok 534 - default body roles use flat text while explicit frames and title tabs remain supported
+  ---
+  duration_ms: 5.470426
+  type: 'test'
+  ...
+# Subtest: a long card heading reflows its body inside the same authored frame
+ok 535 - a long card heading reflows its body inside the same authored frame
+  ---
+  duration_ms: 3.340282
+  type: 'test'
+  ...
+# Subtest: long Chinese body text fails the review gate without truncation or a smaller font
+ok 536 - long Chinese body text fails the review gate without truncation or a smaller font
+  ---
+  duration_ms: 56.776126
+  type: 'test'
+  ...
+# Subtest: overlapping explicit cards fail even when both short text blocks fit individually
+ok 537 - overlapping explicit cards fail even when both short text blocks fit individually
+  ---
+  duration_ms: 1.902058
+  type: 'test'
+  ...
+# Subtest: custom figure and text boxes stay independent and collisions identify the evidence object
+ok 538 - custom figure and text boxes stay independent and collisions identify the evidence object
+  ---
+  duration_ms: 4.63614
+  type: 'test'
+  ...
+# Subtest: native table cells do not cause false collisions, while a dense table remains a blocking error
+ok 539 - native table cells do not cause false collisions, while a dense table remains a blocking error
+  ---
+  duration_ms: 28.877694
+  type: 'test'
+  ...
+# Subtest: scientific numbers, units and scripted identifiers wrap as lossless semantic units
+ok 540 - scientific numbers, units and scripted identifiers wrap as lossless semantic units
+  ---
+  duration_ms: 2.388365
+  type: 'test'
+  ...
+# Subtest: an over-wide scientific unit is diagnosed rather than divided or scaled
+ok 541 - an over-wide scientific unit is diagnosed rather than divided or scaled
+  ---
+  duration_ms: 2.938369
+  type: 'test'
+  ...
+# Subtest: P11 narrow percentage cells require a wider column and keep the same SVG and native PPTX text
+ok 542 - P11 narrow percentage cells require a wider column and keep the same SVG and native PPTX text
+  ---
+  duration_ms: 36.418443
+  type: 'test'
+  ...
+# Subtest: short Chinese final lines and bad punctuation are review warnings without text edits
+ok 543 - short Chinese final lines and bad punctuation are review warnings without text edits
+  ---
+  duration_ms: 0.609025
+  type: 'test'
+  ...
+1..543
+# tests 581
+# suites 0
+# pass 579
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 374043.369999
+AUDIT_EXIT:1

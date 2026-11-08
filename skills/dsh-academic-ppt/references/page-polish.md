@@ -1,5 +1,11 @@
 # 每页精修：看得到的操作，而不是“再高级一点”
 
+> rc.5 先读 [视觉工艺](visual-craft.md)。实际默认已包括字级、题签和色面，不把审美留成一句要求。正常正文入口：`contract(authoring)` → `plan(kind:compose-page)`。先读 [内容关系构图](content-authoring.md)。模型选择关系与主次，工具编译原生几何；旧自动侧栏不是困难页默认。高级显式composition和用户模板继续支持。
+
+
+> **rc.3执行优先级：** [原图清单](figure-inventory.md)先于最终选图；[Host看图与展示](host-visual-workflow.md)区分模型图片输入和用户预览。视觉确认不用阻塞弹窗：present后在最终消息附文件链接、结束本轮，等待自然语言反馈。样张pilot-review在扩稿前完成，不在整稿末尾补。
+
+
 ## 先看整体，再查局部
 
 ### 第一层：整页构图
@@ -54,3 +60,14 @@
 `node scripts/check-art-direction.mjs review.json --mode candidate`
 
 检查路径、文件哈希、渲染输入绑定、参考图和逐项审查是否存在；声称已修订时检查前后图像确实不同。`--mode final` 还要求明确记录视觉方向的真实接受或委托。它不判断观察是否正确、不证明模型真的看图、不做美学评分、不检查原科学数据，也不自动接入宿主交付闸门。当前记录不能复用到修改后的PPTX。
+
+## 写回现有工具字段，不新增一套虚构API
+
+| 观察 | `academic_ppt_review` 中的位置 |
+| --- | --- |
+| 证据、条件、比较与结论 | `contentCheck` |
+| 字体字重、断词、图内标签、公式、数字单位 | `legibilityCheck` |
+| 视觉主角、功能分区、图文关联、对齐、组内外间距与有效密度 | `spaceCheck` |
+| 配色职责、层级权重、原图色义与实际文字对比 | `colorCheck` |
+
+任何未解决缺陷写入 `issue` 且结果为 `needs-fix`。`diagnosticChecks` 回应当前工具生成的复核ID，不编造目标。以上语义要求是作者指导；运行时检查字段、当前版本与风险回应，不会自动理解画面。额外详细笔记可在工作区保存，不能假装它已经成为工具schema或硬拦截。

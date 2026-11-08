@@ -1,0 +1,65 @@
+{
+  "kind": "compose-page",
+  "mode": "create",
+  "slide": {
+    "id": "teaching-comparison",
+    "title": "构造示例：比较条件与读数共享行",
+    "paperIds": [],
+    "claimIds": [],
+    "notes": "原创结构教学，全部内容仅为构造示意；不得作为真实研究。新任务必须替换内容和来源。",
+    "seconds": 60
+  },
+  "intent": {
+    "relationship": "comparison",
+    "primaryNodeId": "table",
+    "readingOrder": [
+      "table"
+    ],
+    "rationale": "当前内容需要对应关系而非相互分离的段落；示例不决定其他任务的布局。"
+  },
+  "body": {
+    "id": "all",
+    "kind": "split",
+    "axis": "y",
+    "gap": 18,
+    "children": [
+      {
+        "id": "table",
+        "kind": "table",
+        "columns": [
+          "情景",
+          "方法 A",
+          "方法 B",
+          "必要条件"
+        ],
+        "columnWeights": [
+          1,
+          1,
+          1,
+          1.8
+        ],
+        "rows": [
+          [
+            "构造情景甲",
+            "0.42",
+            "0.51",
+            "同一评价协议"
+          ],
+          [
+            "构造情景乙",
+            "0.58",
+            "0.54",
+            "未作统计检验"
+          ]
+        ]
+      },
+      {
+        "id": "note",
+        "kind": "text",
+        "text": "数值仅为构造示意；不代表真实实验，不添加显著性。",
+        "role": "note",
+        "extent": 50
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "producer": "dsh-ppt-render",
+  "status": "rendered",
+  "visual": "not-verified",
+  "createdAt": "2026-10-31T04:23:52.494Z",
+  "renderer": {
+    "package": "@deepseek-ai/libreoffice-kit",
+    "version": "0.1.5",
+    "backend": "wasm"
+  },
+  "source": {
+    "sha256": "43bbff70243a579d2ce711c10f939c520f68db0e609f226c8c6307da075fc6d5",
+    "byteLength": 18112
+  },
+  "format": "png",
+  "slideCount": 1,
+  "missingFonts": [],
+  "pngs": [
+    {
+      "page": 1,
+      "file": "pages/page-0001.png",
+      "byteLength": 174343,
+      "sha256": "86df9eee322bf1d726c716339b8cfa7ae922a91e754326a8542b242716d8e233",
+      "width": 1601,
+      "height": 901
+    }
+  ],
+  "manifest": {
+    "file": "pages/manifest.json",
+    "byteLength": 688,
+    "sha256": "40cd236d119d0e3d9ef72c115a604630674b232deddd8669d3f755e46f8c37d1"
+  }
+}

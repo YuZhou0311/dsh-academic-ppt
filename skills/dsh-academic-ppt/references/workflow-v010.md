@@ -1,5 +1,11 @@
 # 0.10 学术表达工作流
 
+> rc.5 先读 [视觉工艺](visual-craft.md)：字级、色面、题签、图注邻接与内容高度已进入运行时，不只登记设计意图。正常正文入口：`contract(authoring)` → `plan(kind:compose-page)`。先读 [内容关系构图](content-authoring.md)。模型选择关系与主次，工具编译原生几何；旧自动侧栏不是困难页默认。高级显式composition和用户模板继续支持。
+
+
+> **rc.3执行优先级：** [原图清单](figure-inventory.md)先于最终选图；[Host看图与展示](host-visual-workflow.md)区分模型图片输入和用户预览。视觉确认不用阻塞弹窗：present后在最终消息附文件链接、结束本轮，等待自然语言反馈。样张pilot-review在扩稿前完成，不在整稿末尾补。
+
+
 本文件说明现有工具如何协作；主执行顺序见 [SKILL.md](../SKILL.md)。保留0.9系列的证据、故事板、真实反馈和交付哈希约束，调整的是设计决策与运行时默认。
 
 ## 四个协作节点
@@ -20,8 +26,8 @@
 1. 初始化，确定真实genre与来源方式；查contract，盘点宿主全文、取图、图像输入和渲染能力。
 2. 阅读来源、核对数据与图，依次登记paper/claim/asset。保留reported/inference/proposal。
 3. 用已有字段形成逐页故事板，讨论具体路线。六页以上用plan保存；不在成稿后反填假装事前设计。
-4. 从academicStyles选择与证据相符的styleProfile。只查看相关全页、科学图表或模板参考，保存designStudies与paletteRationale；采用具体卡片时再查看该preset。
-5. 先做真实困难页、封面与连续片段，build(draft)、render、实际看图并修复。方向未决不阻止可撤销候选。
+4. 读visual-craft、art-direction及与当前任务有关的designCases/用户正文；先定视觉主角、功能区、证据组、对齐轴和色块职责，再选可覆盖的styleProfile基底与artDirection视觉语言。实际看PNG并保存designStudies与paletteRationale；design-case使用当前案例ID，采用具体卡片时再查看该preset。
+5. 先做真实困难正文与连续片段；有封面再纳入，三页试作不凑封面。build(draft)、render、实际看图，按page-polish审构图/证据整合/微排版并修复。方向未决不阻止可撤销候选。
 6. 保存真实样张选择或已有委托，再plan(pilot-review)。批量扩展时继续保留同一变量颜色和比较尺度。
 7. check、build(review)、render，逐页查看当前PPTX，修复并再次验证受影响页。review记录具体观察和diagnosticChecks。
 8. 收集最终意见或落实明确最终委托，绑定当前pptxSha256与renderReceiptSha256，再deliver。
@@ -44,6 +50,6 @@ v2 review仍需contentCheck、legibilityCheck、spaceCheck、colorCheck，并回
 
 ## 兼容与验证范围
 
-旧preset、componentStudies、已确认的协作与证据链继续可读；旧工程不会自动换风格或密度。0.10新增字段以contract为准。历史 [workflow-v091.md](workflow-v091.md) 保留作为版本记录，当前设计默认以本文件和academic-styles.md为准。
+旧preset、componentStudies、已确认的协作与证据链继续可读；旧工程不会自动换风格或密度。0.10新增字段以contract为准。历史 [workflow-v091.md](workflow-v091.md) 保留作为版本记录，当前执行以SKILL、art-direction、design-cases及本文件为准；academic-styles只说明运行时基底。
 
 教学图册、软件测试与独立Agent计划试作分别记录。只有实际在DSH运行创作、实际打开PowerPoint/WPS或真人排练，才能声称对应环节验证完成。

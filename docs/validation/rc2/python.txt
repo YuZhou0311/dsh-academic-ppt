@@ -1,0 +1,14 @@
+test_bounds (test_reference_inspect.GeometryTests.test_bounds) ... ok
+test_flip (test_reference_inspect.GeometryTests.test_flip) ... ok
+test_group_scale_extent (test_reference_inspect.GeometryTests.test_group_scale_extent) ... ok
+test_group_scale_origin (test_reference_inspect.GeometryTests.test_group_scale_origin) ... ok
+test_identity (test_reference_inspect.GeometryTests.test_identity) ... ok
+test_missing_bounds (test_reference_inspect.GeometryTests.test_missing_bounds) ... ok
+test_nested_scale (test_reference_inspect.GeometryTests.test_nested_scale) ... ok
+test_rotation (test_reference_inspect.GeometryTests.test_rotation) ... ok
+test_zero_extent (test_reference_inspect.GeometryTests.test_zero_extent) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.003s
+
+OK

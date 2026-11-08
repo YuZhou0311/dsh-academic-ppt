@@ -30,7 +30,7 @@ test('global CLI help exposes command discovery and preparation among the curren
   assert.equal(manifest.bin['dsh-academic-ppt'],'bin/academic-ppt.mjs');
   assert.doesNotMatch(result.stdout,/^  academic-ppt /m);
   const topics = toolSchemas.academic_ppt_contract.properties.topic.enum;
-  assert.deepEqual(topics, ['brief', 'paper', 'claim', 'asset', 'slide', 'design', 'assessment', 'preparation', 'storyboard']);
+  assert.deepEqual(topics, ['brief', 'paper', 'claim', 'asset', 'slide', 'design', 'assessment', 'preparation', 'storyboard','authoring']);
   assert.ok(result.stdout.includes(`topic 仅支持：${topics.join(' / ')}`));
   assert.match(result.stdout, /init、build、render.*--help.*--schema/);
   assert.deepEqual(await readdir(cwd), []);

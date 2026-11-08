@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/session-audit/source/dsh-academic-ppt-0.10.0-rc.2/skills/dsh-academic-ppt/references/design-cases/method-feedback/case.pptx",
+  "sourceSha256": "282b9822785bffc4a14630b06eb6fc97132043f8a3fed52d34a01938cd9a283a",
+  "dpi": 120,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/session-audit/source/dsh-academic-ppt-0.10.0-rc.2/skills/dsh-academic-ppt/references/design-cases/method-feedback/render/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 202044
+    }
+  ],
+  "missingFonts": []
+}

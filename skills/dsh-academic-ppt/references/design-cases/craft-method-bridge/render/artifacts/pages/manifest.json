@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/rc5-work/case-build/craft-method-bridge-v3/exports/r1-6698678d/preview-not-for-delivery.pptx",
+  "sourceSha256": "860e14cfe563614bd36a82c6199d17005916b0729cf1260a47d021ab0c125426",
+  "dpi": 108,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/rc5-work/case-build/craft-method-bridge-v3/exports/r1-6698678d/render-db9b8625/artifacts/pages/page-0001.png",
+      "width": 1441,
+      "height": 811,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 129807
+    }
+  ],
+  "missingFonts": []
+}

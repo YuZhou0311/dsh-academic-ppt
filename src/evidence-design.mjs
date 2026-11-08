@@ -8,7 +8,7 @@ const list = value => Array.isArray(value) ? value : [];
 const roots = slide => [...list(slide.claimIds), ...list(slide.cards).flatMap(c => list(c.claimIds)),
   ...(slide.chart ? [slide.chart.sourceClaimId] : []), ...list(slide.plot?.sourceClaimIds),
   ...list(slide.plots).flatMap(p => list(p.sourceClaimIds)), ...list(slide.table?.sourceClaimIds),
-  ...list(slide.drawings).flatMap(d => [...list(d.claimIds), ...list(d.elements).flatMap(e => list(e.claimIds))])];
+  ...list(slide.drawings).flatMap(d => [...list(d.claimIds), ...list(d.evidenceTables).flatMap(t=>list(t.sourceClaimIds)), ...list(d.elements).flatMap(e => list(e.claimIds))])];
 const textsOf = node => node.kind === 'text' ? [String(node.text || '')]
   : node.kind === 'table' ? [...list(node.table?.columns), ...list(node.table?.rows).flat()].map(String)
   : node.kind === 'chart' ? [...list(node.chart?.categories), ...list(node.chart?.series).flatMap(s => [s.name, ...list(s.values)]), node.chart?.unit].filter(v=>v!==undefined).map(String)
@@ -172,9 +172,13 @@ export function evidenceDesignReport(project, scenes) {
     if(authoredFigures.length)visibleCarriers.push('authored-figure');
     const charts=nodes.filter(n=>n.kind==='chart'&&list(n.chart?.series).some(s=>list(s.values).length));
     const tables=nodes.filter(n=>n.kind==='table'&&list(n.table?.rows).length);
+    const visibleNodeIds=new Set(nodes.map(n=>n.id));
+    const authoredTables=list(page.authoredTables).filter(t=>list(t.rows).length&&list(t.cellObjectIds).length&&t.cellObjectIds.every(id=>visibleNodeIds.has(id)));
+    const tableRecords=[...tables.map(n=>n.table),...authoredTables];
     const plotMarks=nodes.filter(n=>/\/data-plot\//.test(n.id||'')&&['ellipse','rect','line'].includes(n.kind));
     if(charts.length)visibleCarriers.push('chart');
     if(tables.length)visibleCarriers.push('table');
+    if(authoredTables.length)visibleCarriers.push('authored-table');
     if(plotMarks.length)visibleCarriers.push('scientific-plot');
     const marks = nodes.filter(n => n.role === 'data' && ['rect','ellipse','line'].includes(n.kind) &&
       list(n.claimIds).some(id=>list(claims.get(id)?.metrics).length));
@@ -189,8 +193,8 @@ export function evidenceDesignReport(project, scenes) {
     // table. Use this table's direct sources, not an unrelated quantitative
     // claim elsewhere on the page or a quantitative premise of a qualitative
     // claim. Source validity is also checked by the independent evidence gate.
-    if(tables.some(n=>list(n.table.rows).flat().some(value=>/\d/.test(String(value))) &&
-      list(n.table.sourceClaimIds).some(id=>{
+    if(tableRecords.some(table=>list(table.rows).flat().some(value=>/\d/.test(String(value))) &&
+      list(table.sourceClaimIds).some(id=>{
         const source=claims.get(id);
         return source?.verified===true && list(source.metrics).length>0 &&
           knownPapers.has(source.paperId) && list(slide.paperIds).includes(source.paperId);
@@ -200,7 +204,7 @@ export function evidenceDesignReport(project, scenes) {
     // simply because both papers are mentioned somewhere on the same page.
     const authoredImageIds=new Set(authoredFigures.map(f=>f.assetId));
     const carrierClaims=[...charts.flatMap(n=>[n.chart.sourceClaimId]),
-      ...tables.flatMap(n=>list(n.table.sourceClaimIds)),...plotMarks.flatMap(n=>list(n.sourceClaimIds)),
+      ...tableRecords.flatMap(table=>list(table.sourceClaimIds)),...plotMarks.flatMap(n=>list(n.sourceClaimIds)),
       ...nodes.filter(n=>n.kind==='image'&&authoredImageIds.has(n.assetId)).flatMap(n=>list(n.claimIds)),
       ...(visibleCarriers.includes('authored-data-marks')?marks.flatMap(n=>list(n.claimIds)):[]),
       ...(visibleCarriers.includes('authored-relationship')?relations.flatMap(n=>list(n.claimIds).length?list(n.claimIds):
@@ -218,7 +222,7 @@ export function evidenceDesignReport(project, scenes) {
     const textBurden=bodyCharacters>=420||!hasScientificVisual&&bodyCharacters>=220&&bodyTexts.length>=6;
     slides.push({slideId:slide.id,slideNumber:slideIndex+1,layout:slide.layout || null,paperIds:[...paperIds],quantitative,
       visibleCarriers,dataCarriers,scientificCarrierPaperIds,sourceFigureIds,authoredFigureIds,sourceFigures,authoredFigures,excludedImages,availableSourceFigures,
-      hasScientificVisual,hasNativeTable:tables.length>0,textOnly,bodyCharacters,bodyTextBlocks:bodyTexts.length,textBurden:textBurden?'needs-review':'not-flagged',
+      hasScientificVisual,hasNativeTable:tables.length>0,hasAuthoredTable:authoredTables.length>0,textOnly,bodyCharacters,bodyTextBlocks:bodyTexts.length,textBurden:textBurden?'needs-review':'not-flagged',
       sourceFigureAreaFraction:rounded(unionArea(sourceFigures.map(f=>f.box))/pageArea),
       primaryPanelId: slide.visualPlan?.primaryPanelId || null });
     if (quantitative && slide.argument?.role==='evidence' && !dataCarriers.length) issues.push({ severity: project.brief?.visualEvidence?.mode==='source-led'?'error':'warning', code: 'quantitative-evidence-text-only', slideId: slide.id,

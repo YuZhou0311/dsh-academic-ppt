@@ -273,8 +273,9 @@ test('missing future evidence remains an explicit planning gap and cannot be sil
   assert.equal((await env.invoke('build',{expectedRevision:env.revision,mode:'review'})).status,'blocked');
 });
 
-test('public pilot approval fails before a valid pilot is planned and implemented',async t=>{
-  const env=await author(t,{plan:false});await assert.rejects(env.pilot(),/PILOT_PLAN_REQUIRED/);
+test('public pilot approval distinguishes unrendered short candidates from long decks without a pilot plan',async t=>{
+  const long=await author(t,{plan:false,all:true});await assert.rejects(long.pilot(),/PILOT_PLAN_REQUIRED/);
+  const env=await author(t,{plan:false});await assert.rejects(env.pilot(),/PILOT_ACTUAL_RENDER_REQUIRED/);
   const missing=structuredClone(env.f.plan);missing.pilot.hardestSlideId='synthesis';
   await env.writePlan(missing);await assert.rejects(env.pilot(),/PILOT_SLIDES_MISSING/);
   const invalid=structuredClone(env.f.plan);invalid.pilot.sequenceSlideIds=['protocol','limits','result'];

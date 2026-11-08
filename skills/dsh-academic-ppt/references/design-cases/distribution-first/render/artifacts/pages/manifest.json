@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/plugin-audit/cases-build/distribution-first/case.pptx",
+  "sourceSha256": "a436a591ac6053e136e4451c4461c7e55816685bd8945b06e5c2d5c39e2dc0ed",
+  "dpi": 120,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/plugin-audit/cases-build/distribution-first/render/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 170129
+    }
+  ],
+  "missingFonts": []
+}

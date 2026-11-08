@@ -1,0 +1,218 @@
+{
+  "ok": true,
+  "installedPlugin": {
+    "name": "dsh-academic-ppt",
+    "version": "0.10.0-rc.2",
+    "guidanceRevision": "evidence-art-direction-cases-rc2"
+  },
+  "checks": [
+    {
+      "name": "node",
+      "ok": true,
+      "detail": "v22.19.0"
+    },
+    {
+      "name": "skill",
+      "ok": true,
+      "detail": "dsh-academic-ppt"
+    },
+    {
+      "name": "tools",
+      "ok": true,
+      "detail": [
+        "academic_ppt_init",
+        "academic_ppt_record",
+        "academic_ppt_context",
+        "academic_ppt_build",
+        "academic_ppt_edit",
+        "academic_ppt_undo",
+        "academic_ppt_check",
+        "academic_ppt_template",
+        "academic_ppt_reference",
+        "academic_ppt_contract",
+        "academic_ppt_render",
+        "academic_ppt_review",
+        "academic_ppt_study",
+        "academic_ppt_portfolio",
+        "academic_ppt_prepare",
+        "academic_ppt_cards",
+        "academic_ppt_plan",
+        "academic_ppt_layouts",
+        "academic_ppt_deliver"
+      ]
+    },
+    {
+      "name": "case:shared-scale:preview",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/preview.png"
+    },
+    {
+      "name": "case:shared-scale:pptx",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/case.pptx"
+    },
+    {
+      "name": "case:shared-scale:input",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/input.json"
+    },
+    {
+      "name": "case:shared-scale:receipt",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/render/artifacts/render-receipt.json"
+    },
+    {
+      "name": "case:distribution-first:preview",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/preview.png"
+    },
+    {
+      "name": "case:distribution-first:pptx",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/case.pptx"
+    },
+    {
+      "name": "case:distribution-first:input",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/input.json"
+    },
+    {
+      "name": "case:distribution-first:receipt",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/render/artifacts/render-receipt.json"
+    },
+    {
+      "name": "case:evidence-ledger:preview",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/preview.png"
+    },
+    {
+      "name": "case:evidence-ledger:pptx",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/case.pptx"
+    },
+    {
+      "name": "case:evidence-ledger:input",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/input.json"
+    },
+    {
+      "name": "case:evidence-ledger:receipt",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/render/artifacts/render-receipt.json"
+    },
+    {
+      "name": "case:evidence-stage:preview",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/preview.png"
+    },
+    {
+      "name": "case:evidence-stage:pptx",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/case.pptx"
+    },
+    {
+      "name": "case:evidence-stage:input",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/input.json"
+    },
+    {
+      "name": "case:evidence-stage:receipt",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/render/artifacts/render-receipt.json"
+    },
+    {
+      "name": "optional-renderer-installed",
+      "ok": true,
+      "detail": "0.1.5"
+    },
+    {
+      "name": "actual-pptx-render",
+      "ok": true,
+      "detail": {
+        "ok": true,
+        "status": "rendered",
+        "backend": "wasm",
+        "rendererVersion": "0.1.5",
+        "slideCount": 1,
+        "sourceSha256": "43bbff70243a579d2ce711c10f939c520f68db0e609f226c8c6307da075fc6d5",
+        "missingFonts": [],
+        "pngPaths": [
+          "/mnt/data/plugin-audit/clean-smoke/render/artifacts/pages/page-0001.png"
+        ],
+        "receiptPath": "/mnt/data/plugin-audit/clean-smoke/render/artifacts/render-receipt.json",
+        "outputDir": "/mnt/data/plugin-audit/clean-smoke/render",
+        "visual": "not-verified"
+      }
+    },
+    {
+      "name": "actual-render-binding",
+      "ok": true,
+      "detail": "/mnt/data/plugin-audit/clean-smoke/render/artifacts/render-receipt.json"
+    }
+  ],
+  "designCases": [
+    {
+      "id": "shared-scale",
+      "title": "共享尺度与原始读数",
+      "task": "result-comparison",
+      "when": "需要同屏读趋势与精确值，且比较对象有限。",
+      "transfer": "比较对象增加时延展行，标签变长时调列宽；图表共用色义，不能照抄固定高度。",
+      "previewPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/preview.png",
+      "explanationPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/shared-scale/README.md",
+      "identity": "constructed-teaching-data-not-research-results"
+    },
+    {
+      "id": "distribution-first",
+      "title": "分布先行与主次对比",
+      "task": "result-comparison",
+      "when": "观众需要理解总体结论是否掩盖个体差异。",
+      "transfer": "新数据有离群点或区间冲突时保留它，不能把案例中的判断复制过去；正文增加时重排侧栏而非缩字。",
+      "previewPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/preview.png",
+      "explanationPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/distribution-first/README.md",
+      "identity": "constructed-teaching-data-not-research-results"
+    },
+    {
+      "id": "evidence-ledger",
+      "title": "读数与图形共享行",
+      "task": "result-comparison",
+      "when": "既要看趋势，也要逐项复核读数的结果页。",
+      "transfer": "增加指标时确定主指标与附列；保持同尺度和行对应，标签长时扩首列，列数过多时拆任务。",
+      "previewPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/preview.png",
+      "explanationPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-ledger/README.md",
+      "identity": "constructed-teaching-data-not-research-results"
+    },
+    {
+      "id": "evidence-stage",
+      "title": "主证据与支撑底栏",
+      "task": "result-comparison",
+      "when": "投影对比条件适宜，主结果适合大图且支撑信息较少。",
+      "transfer": "源图是白底时允许保留白色图面；不反色科研图；增加限制时重排底栏或改浅色页，而非藏到notes。",
+      "previewPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/preview.png",
+      "explanationPath": "/mnt/data/plugin-audit/clean-install/package/skills/dsh-academic-ppt/references/design-cases/evidence-stage/README.md",
+      "identity": "constructed-teaching-data-not-research-results"
+    }
+  ],
+  "actualRender": {
+    "ok": true,
+    "status": "rendered",
+    "backend": "wasm",
+    "rendererVersion": "0.1.5",
+    "slideCount": 1,
+    "sourceSha256": "43bbff70243a579d2ce711c10f939c520f68db0e609f226c8c6307da075fc6d5",
+    "missingFonts": [],
+    "pngPaths": [
+      "/mnt/data/plugin-audit/clean-smoke/render/artifacts/pages/page-0001.png"
+    ],
+    "receiptPath": "/mnt/data/plugin-audit/clean-smoke/render/artifacts/render-receipt.json",
+    "outputDir": "/mnt/data/plugin-audit/clean-smoke/render",
+    "visual": "not-verified"
+  },
+  "unverified": [
+    "DSH Desktop/Web installation and current profile registration",
+    "Actual provider/model image serialization and understanding",
+    "Real DeepSeek autonomous composition and visual refinement",
+    "PowerPoint/WPS page-by-page rendering"
+  ],
+  "scope": "Local package, dependencies and optional render only; no model call, credentials, user approval or aesthetic certification."
+}

@@ -1,0 +1,208 @@
+TAP version 13
+# Subtest: contract exposes installed version and actual current case paths before full schemas
+ok 1 - contract exposes installed version and actual current case paths before full schemas
+  ---
+  duration_ms: 12.630876
+  type: 'test'
+  ...
+# Subtest: each current example retains native objects, construction identity, and actual render binding
+ok 2 - each current example retains native objects, construction identity, and actual render binding
+  ---
+  duration_ms: 50.727151
+  type: 'test'
+  ...
+# Subtest: current case source is a valid schema alternative, not an invented API field
+ok 3 - current case source is a valid schema alternative, not an invented API field
+  ---
+  duration_ms: 40.898625
+  type: 'test'
+  ...
+# Subtest: unknown case identities, missing adaptation and missing viewing paths are rejected
+ok 4 - unknown case identities, missing adaptation and missing viewing paths are rejected
+  ---
+  duration_ms: 0.508221
+  type: 'test'
+  ...
+# Subtest: new guidance does not mutate the saved consultation or silently upgrade viewing capability
+ok 5 - new guidance does not mutate the saved consultation or silently upgrade viewing capability
+  ---
+  duration_ms: 68.158102
+  type: 'test'
+  ...
+# Subtest: runtime recovery and render/review guidance survive truncation without erasing questions
+ok 6 - runtime recovery and render/review guidance survive truncation without erasing questions
+  ---
+  duration_ms: 2.02163
+  type: 'test'
+  ...
+# Subtest: legacy profile references no longer advertise sparse old galleries
+ok 7 - legacy profile references no longer advertise sparse old galleries
+  ---
+  duration_ms: 0.249194
+  type: 'test'
+  ...
+# Subtest: guidance does not change tool count or high-cost registered schemas
+ok 8 - guidance does not change tool count or high-cost registered schemas
+  ---
+  duration_ms: 2.068534
+  type: 'test'
+  ...
+# Subtest: current routes and historical warnings are shipped together
+ok 9 - current routes and historical warnings are shipped together
+  ---
+  duration_ms: 10.678643
+  type: 'test'
+  ...
+# Subtest: actual single-page PNG paths reach native model output before verbose risk records
+ok 10 - actual single-page PNG paths reach native model output before verbose risk records
+  ---
+  duration_ms: 1.638816
+  type: 'test'
+  ...
+# Subtest: registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics
+ok 11 - registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics
+  ---
+  duration_ms: 69.330461
+  type: 'test'
+  ...
+# Subtest: existing-project preparation preserves legacy topics and answers without silently adding new checkpoints
+ok 12 - existing-project preparation preserves legacy topics and answers without silently adding new checkpoints
+  ---
+  duration_ms: 24.516218
+  type: 'test'
+  ...
+# Subtest: existing-project preparation retains v2 gates and default new preparation always enables them
+ok 13 - existing-project preparation retains v2 gates and default new preparation always enables them
+  ---
+  duration_ms: 8.007952
+  type: 'test'
+  ...
+# Subtest: prepare asks for design source once and preserves an explicit answer without inferring silence
+ok 14 - prepare asks for design source once and preserves an explicit answer without inferring silence
+  ---
+  duration_ms: 10.371475
+  type: 'test'
+  ...
+# Subtest: a supplied template routes to real inspection, while an explicit decline does not read it
+ok 15 - a supplied template routes to real inspection, while an explicit decline does not read it
+  ---
+  duration_ms: 34.459153
+  type: 'test'
+  ...
+# Subtest: legacy PPT requires conversion and does not masquerade as a supported PPTX
+ok 16 - legacy PPT requires conversion and does not masquerade as a supported PPTX
+  ---
+  duration_ms: 3.095068
+  type: 'test'
+  ...
+# Subtest: reviewed template profiles are reused only while bound to current source bytes
+ok 17 - reviewed template profiles are reused only while bound to current source bytes
+  ---
+  duration_ms: 167.514417
+  type: 'test'
+  ...
+# Subtest: available host image generation receives exact report content and a native fallback
+ok 18 - available host image generation receives exact report content and a native fallback
+  ---
+  duration_ms: 5.685419
+  type: 'test'
+  ...
+# Subtest: reference colors and preferred presets remain adaptable without changing authored content
+ok 19 - reference colors and preferred presets remain adaptable without changing authored content
+  ---
+  duration_ms: 3.388603
+  type: 'test'
+  ...
+# Subtest: an explicitly fixed palette is honored and requires the actual colors
+ok 20 - an explicitly fixed palette is honored and requires the actual colors
+  ---
+  duration_ms: 6.625214
+  type: 'test'
+  ...
+# Subtest: all reference branches expose actionable adaptation and native reconstruction to the host
+ok 21 - all reference branches expose actionable adaptation and native reconstruction to the host
+  ---
+  duration_ms: 32.410557
+  type: 'test'
+  ...
+# Subtest: explicit card requests retain fallback while preparation without cards continues whole-page design
+ok 22 - explicit card requests retain fallback while preparation without cards continues whole-page design
+  ---
+  duration_ms: 8.560336
+  type: 'test'
+  ...
+# Subtest: preparation favors whole-page evidence design when no card is requested
+ok 23 - preparation favors whole-page evidence design when no card is requested
+  ---
+  duration_ms: 2.00619
+  type: 'test'
+  ...
+# Subtest: specific component descriptions survive preparation intact and invalid identities are rejected
+ok 24 - specific component descriptions survive preparation intact and invalid identities are rejected
+  ---
+  duration_ms: 13.817313
+  type: 'test'
+  ...
+# Subtest: large card sets produce bounded independent prompt batches with complete content
+ok 25 - large card sets produce bounded independent prompt batches with complete content
+  ---
+  duration_ms: 2.938888
+  type: 'test'
+  ...
+# Subtest: failure and decline fall back without reattempting generation
+ok 26 - failure and decline fall back without reattempting generation
+  ---
+  duration_ms: 5.486081
+  type: 'test'
+  ...
+# Subtest: a generated reference needs explicit reference and viewing observations before native reconstruction
+ok 27 - a generated reference needs explicit reference and viewing observations before native reconstruction
+  ---
+  duration_ms: 2.400881
+  type: 'test'
+  ...
+# Subtest: decision output is reproducible, immutable, and cannot overwrite its request
+ok 28 - decision output is reproducible, immutable, and cannot overwrite its request
+  ---
+  duration_ms: 8.484263
+  type: 'test'
+  ...
+# Subtest: workspace boundaries, UTF-8, request contracts, and duplicate card IDs remain enforced
+ok 29 - workspace boundaries, UTF-8, request contracts, and duplicate card IDs remain enforced
+  ---
+  duration_ms: 4.803451
+  type: 'test'
+  ...
+# Subtest: registered preparation tool and its opt-in contract stay executable and bounded
+ok 30 - registered preparation tool and its opt-in contract stay executable and bounded
+  ---
+  duration_ms: 17.24374
+  type: 'test'
+  ...
+# Subtest: native card discovery exposes actual recipes and a useful compact context summary
+ok 31 - native card discovery exposes actual recipes and a useful compact context summary
+  ---
+  duration_ms: 4.578722
+  type: 'test'
+  ...
+# Subtest: host-facing preparation output preserves reviewed template and generated reference locations
+ok 32 - host-facing preparation output preserves reviewed template and generated reference locations
+  ---
+  duration_ms: 1.411769
+  type: 'test'
+  ...
+# Subtest: available image tool plus authored cards does not imply a request to generate
+ok 33 - available image tool plus authored cards does not imply a request to generate
+  ---
+  duration_ms: 3.47449
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2731.115527

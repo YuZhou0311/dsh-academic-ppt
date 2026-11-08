@@ -246,7 +246,7 @@ test('checkpoint dialogue combines whole-direction choices and retains explicit 
 
 test('prepare defaults to dialogue and waits for design choices before proposing an imagegen call',async t=>{
   const cwd=await fixture(t),requestPath=join(cwd,'request.json');
-  const request={topic:'Synthetic study of observation uncertainty',template:{status:'none'},imageGeneration:{availability:'available',source:'Synthetic host capabilities only.',toolName:'synthetic_image_tool'},cards:[{id:'q',purpose:'Question',title:'Synthetic comparison',body:'No scientific facts in this fixture.',evidenceStatus:'illustrative'}]};
+  const request={topic:'Synthetic study of observation uncertainty',template:{status:'none'},imageGeneration:{availability:'available',requested:true,source:'Synthetic host capabilities only.',toolName:'synthetic_image_tool'},cards:[{id:'q',purpose:'Question',title:'Synthetic comparison',body:'No scientific facts in this fixture.',evidenceStatus:'illustrative'}]};
   await writeFile(requestPath,JSON.stringify(request));
   const first=await prepareDesign({cwd,requestPath});
   assert.equal(first.nextAction,'ask-design-questions');assert.equal(first.imageGeneration.prompt,undefined);
@@ -322,7 +322,7 @@ test('delegated initial design can choose density, while explicit density and re
 
 test('confirmed preferences shape generated references without copying raw replies or treating proposals as choices',async t=>{
   const cwd=await fixture(t),requestPath=join(cwd,'preferences.json');
-  const request={topic:'Synthetic image reference',template:{status:'none'},consultation:structuredClone(guidedCollaborative),imageGeneration:{availability:'available',source:'Synthetic host interface.',toolName:'synthetic_image_tool'},cards:[{id:'card',purpose:'Compare source images',title:'Synthetic comparison',body:'No research result.',evidenceStatus:'illustrative'}]};
+  const request={topic:'Synthetic image reference',template:{status:'none'},consultation:structuredClone(guidedCollaborative),imageGeneration:{availability:'available',requested:true,source:'Synthetic host interface.',toolName:'synthetic_image_tool'},cards:[{id:'card',purpose:'Compare source images',title:'Synthetic comparison',body:'No research result.',evidenceStatus:'illustrative'}]};
   const choices={palette:'墨绿与暖灰',shape:'温和圆润',language:'解释型学术',texture:'浅底分组'};
   for(const decision of request.consultation.decisions){decision.userResponse='RAW_REPLY_SHOULD_NOT_BE_SENT';if(choices[decision.topic])decision.selected=choices[decision.topic];}
   await writeFile(requestPath,JSON.stringify(request));const first=await prepareDesign({cwd,requestPath});

@@ -1,0 +1,128 @@
+{
+  "kind": "compose-page",
+  "mode": "create",
+  "slide": {
+    "id": "sample",
+    "title": "把同一指标放在同一行，而不是逐段报数",
+    "section": {
+      "number": "DESIGN",
+      "title": "原创教学 · 非科研结果"
+    },
+    "paperIds": [],
+    "claimIds": [],
+    "notes": "# 从段落到共享比较\n\n这是原创教学数值，不是真实研究。观看左、右两组相同信息：左侧是分段叙述，右侧的 comparison 按指标共享行。右侧得到更多面积，题签/底色服务于读数，而非做两张同权卡片。\n\n重用的是比较关系：方法变为三种就增加 items 和每项指标的 values；没有误差或耗时数据就不补造。单位不一致时不能放在同一指标行。extent:content 只收紧实测文字高度，不删条件、不缩字号。标题必须随真实数据重写。\n\n输入 request.json 经普通 init/plan/build/render 工具生成；input.json 是编译结果，仅用于重建。不是真实模型端到端测试。\n",
+    "seconds": 60
+  },
+  "intent": {
+    "relationship": "comparison",
+    "primaryNodeId": "comparison",
+    "readingOrder": [
+      "comparison"
+    ],
+    "rationale": "用字级、题签、比例与共享对齐组织信息；不是装饰数量或用户批准。"
+  },
+  "body": {
+    "id": "body",
+    "kind": "split",
+    "axis": "y",
+    "children": [
+      {
+        "id": "premise",
+        "kind": "statement",
+        "label": "教学任务",
+        "text": "下列数值仅用于软件教学：让观众比较速度与误差，不制造“全面更优”。",
+        "extent": "content"
+      },
+      {
+        "id": "comparison-area",
+        "kind": "split",
+        "axis": "x",
+        "children": [
+          {
+            "id": "before",
+            "kind": "group",
+            "title": "常见初稿：各自叙述",
+            "child": {
+              "id": "paragraphs",
+              "kind": "split",
+              "axis": "y",
+              "children": [
+                {
+                  "id": "a",
+                  "kind": "text",
+                  "text": "方法 A\n耗时 4.2 s，误差 0.41。",
+                  "role": "body",
+                  "extent": "content"
+                },
+                {
+                  "id": "b",
+                  "kind": "text",
+                  "text": "方法 B\n耗时 7.8 s，误差 0.38。",
+                  "role": "body",
+                  "extent": "content"
+                },
+                {
+                  "id": "cost",
+                  "kind": "text",
+                  "text": "听众必须记住上一组数字，再回头比较。",
+                  "role": "label",
+                  "extent": "content"
+                }
+              ],
+              "gap": 22
+            },
+            "weight": 1,
+            "headingStyle": "rail",
+            "tone": "soft"
+          },
+          {
+            "id": "comparison",
+            "kind": "comparison",
+            "weight": 2,
+            "label": "同一评价口径",
+            "items": [
+              {
+                "id": "a",
+                "label": "方法 A",
+                "tone": "accent"
+              },
+              {
+                "id": "b",
+                "label": "方法 B",
+                "tone": "secondary"
+              }
+            ],
+            "metrics": [
+              {
+                "label": "计算时间",
+                "unit": "s",
+                "values": [
+                  "4.2",
+                  "7.8"
+                ]
+              },
+              {
+                "label": "误差 MAE",
+                "unit": "教学单位",
+                "values": [
+                  "0.41",
+                  "0.38"
+                ]
+              }
+            ]
+          }
+        ],
+        "gap": 28,
+        "extent": "content"
+      },
+      {
+        "id": "boundary",
+        "kind": "text",
+        "text": "设计决定：区域不等宽；数字共用行与字号，单位就近。增加比较对象时重分配列宽，不整体缩小。",
+        "role": "label",
+        "extent": "content"
+      }
+    ],
+    "gap": 24
+  }
+}

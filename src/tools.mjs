@@ -1,3 +1,5 @@
+import {attachExecutionIdentity} from './run-identity.mjs'
+import {installedPlugin,authoringGuidance} from './authoring-guidance.mjs'
 import {
   createProject, updateRecords, contextProject, buildProject, editProject,
   undoProject, checkProject, recordReview, renderProjectArtifact, studyProject, portfolioProjects,
@@ -35,8 +37,8 @@ export const TOOL_COMMANDS = Object.freeze({
 })
 
 const descriptions = {
-  academic_ppt_init: '新建协作工程；先问默认原创或用户模板，再讨论故事线和真实样张。',
-  academic_ppt_record: '从recordsPath登记≤1MiB UTF-8记录批次；先查contract并登记被引用记录。',
+  academic_ppt_init: '新建协作工程；沿用已给参考和委托，缺项才问；先证据与构图，再实际困难样张。',
+  academic_ppt_record: '登记paper/claim/asset与设计决定；正文优先plan(compose-page)，旧slides批次仍兼容。先登记被引用证据。',
   academic_ppt_context: '读取阶段、阻断项及稳定ID；recordIds最多4条，无图片base64。',
   academic_ppt_build: '导出可编辑PPTX；draft仅预览，review仍须真实渲染和审查后deliver。',
   academic_ppt_edit: '按稳定ID局部修改；card-style保留内容/其他对象，slide-content可改内容及布局。',
@@ -44,14 +46,14 @@ const descriptions = {
   academic_ppt_check: '检查证据、几何、图像、故事板与当前审查，返回阻断项和可交付状态。',
   academic_ppt_template: '提取所提供PPTX的设计变量；render:true供实看，旧内容/媒体不作新证据。',
   academic_ppt_reference: '查询48种旧版页型/图片几何；新稿优先layouts与自主composition。',
-  academic_ppt_contract: '按topic查询完整schema、说明与提交方式。',
-  academic_ppt_render: '渲染当前PPTX并记录哈希；无引擎如实返回，HTML/SVG不代替实际渲染。',
+  academic_ppt_contract: '按topic查询完整schema、说明与提交方式；design含安装版本与当前构图案例路径。',
+  academic_ppt_render: '真实渲染并默认present用户预览；确认时附链接结束本轮，不弹无图确认框。publishPreview:false仅内部迭代。',
   academic_ppt_study: '比较candidatesPath中的2–6个真实候选；render:true供实看，不改工程或批准。',
   academic_ppt_portfolio: '只读比较明确提供的2–12份工程结构；不扫描文件或给原创评分。',
-  academic_ppt_review: '逐页核对内容、留白、配色与当前风险；真实看图后记录，缺陷记needs-fix。',
-  academic_ppt_prepare: '用requestPath规划模板/组件学习与可选生图；详见preparation契约和references/academic-visual-language.md，不调用模型或读取密钥。',
+  academic_ppt_review: '实看当前PPTX，分别审科学与构图/图文/微排版；缺陷记needs-fix，不以静态通过代替审美。',
+  academic_ppt_prepare: '用requestPath规划内容相关参考、构图与可选生图；详见preparation契约和references/art-direction.md，不调用模型或读取密钥。',
   academic_ppt_cards: '查询48种局部卡片（含12种嵌图卡）；presetId给完整配方，不能当整页模板。',
-  academic_ppt_plan: '用requestPath读写故事板/真实样张记录，先查contract(storyboard)；六页以上交付须完成。',
+  academic_ppt_plan: '创作入口：compose-page编排正文，compose-opening编排单题名封面；先查authoring契约。也支持figure-inventory/storyboard/pilot-review。',
   academic_ppt_layouts: '查询32种整页语法与槽位/适配范围，允许自创，不强凑多样性。',
   academic_ppt_deliver: '核验构建、渲染、全页自查和最终用户反馈后打包；禁止草稿冒充交付。',
 }
@@ -67,7 +69,9 @@ const coreExecutors = {
     return {ok:true,totalCount:PAGE_RECIPES.length,recipes:listPageRecipes({purpose,relationship,limit:limit??12}),guidePath,
       instructions:['先匹配本页要让听众看见的比较、因果、时序或综合关系，再查recipeId。共同实验/尺度可保持同构，不随机轮换或强凑32种。']}
   },
-  academic_ppt_init: createProject,
+  // The registered Agent path opts into authored body composition by default.
+  // Low-level core callers and loaded legacy projects retain their old semantics.
+  academic_ppt_init: options => createProject({...options,design:{...(!(options.design?.authoringMode==='legacy'||options.design?.mode==='template-faithful')?{artDirection:'structured'}:{}),...options.design,authoringMode:options.design?.authoringMode??'content-tree'}}),
   academic_ppt_record: updateRecords,
   academic_ppt_context: contextProject,
   academic_ppt_build: buildProject,
@@ -187,9 +191,19 @@ export function formatToolResult(name, result) {
   const dialogue=data.designDialogue??data.designDiagnostics?.designDialogue??data.quality?.designDiagnostics?.designDialogue
   const storyboard=data.storyboard??data.designDiagnostics?.storyboard
   const lines = [`${name}：${data.ok === false ? '需要处理下列问题' : '已完成本次操作'}`]
+  if(data.collaboration)lines.push('本轮是否须停下等反馈：'+data.collaboration.mustStopForFeedback)
+  if(data.executionIdentity){const d=data.executionIdentity;lines.push('执行身份：'+d.plugin.version+' / '+d.plugin.guidanceRevision+'；artDirection='+d.requestedDesign.artDirection+'；实际页眉='+d.effectiveDesign.system.header+'；构图='+d.pages.map(x=>x.slideId+':'+x.route).join(', '));for(const w of d.warnings)lines.push('设计覆盖提醒：'+w);if(data.executionIdentityPath)lines.push('执行诊断文件：'+data.executionIdentityPath)}
+  if(data.collaboration)lines.push('协作状态：'+data.collaboration.stage+'；'+data.collaboration.nextAction)
   for (const [key, label] of [['projectPath', '工程'], ['revision', '修订号'], ['title', '标题'], ['slideCount', '页数'], ['status', '状态']]) {
     if (data[key] !== undefined) lines.push(`${label}：${clip(data[key])}`)
   }
+  if(data.userPreview){lines.push('用户预览：'+data.userPreview.status+'；'+(data.userPreview.reason??'文件已交给宿主present，不代表用户打开或同意。'));for(const f of data.userPreview.files??[])lines.push('可见预览文件：'+f.path);if(data.userPreview.nextAction)lines.push('预览反馈：'+data.userPreview.nextAction)}
+  const inventory=data.figureInventory??data.designDiagnostics?.figureInventory
+  if(inventory?.downloadedCount!==undefined){lines.push(`取图去向：下载${inventory.downloadedCount}，选择${inventory.selectedCount}，排除${inventory.notUsedCount}，待处理${inventory.pendingCount}；未选不等于未下载。`);for(const row of (inventory.rows??[]).filter(r=>r.decision==='pending'||r.decision==='unavailable').slice(0,8))lines.push('待核图 '+row.inventoryId+' '+row.paperId+' '+row.path);if(data.inventoryPath)lines.push('完整逐图清单：'+data.inventoryPath)}
+  if(data.pageGeometry)lines.push('本版实际内容区（px）：'+JSON.stringify(data.pageGeometry))
+  if(data.compositionBuild){const c=data.compositionBuild;lines.push('内容树构图：'+c.compiler+'；尚未看图批准。');if(c.planPath)lines.push('下轮修改的构图输入：'+c.planPath);if(c.reportPath)lines.push('完整几何报告：'+c.reportPath);lines.push('视觉语言：'+(c.artDirection??'legacy'));lines.push('区域分配：'+JSON.stringify((c.nodes??[]).map(({nodeId,kind,box,elementIds})=>({nodeId,kind,box,objectCount:elementIds?.length??0}))));lines.push('实际图像范围：'+JSON.stringify(c.figureFits));if(c.flowFits?.length)lines.push('方法图自适应：'+JSON.stringify(c.flowFits.map(f=>({nodeId:f.nodeId,orientation:f.orientation,requiredHeight:f.requiredHeight,unusedHeight:f.unusedHeight}))));for(const w of (c.warnings??[]).slice(0,12))lines.push('构图提醒 '+(w.nodeId??'')+' ['+w.code+'] '+w.message);}
+  const craft=data.compositionCraft??data.designDiagnostics?.compositionCraft;if(craft)for(const i of craft.issues??[])lines.push('构图路径 '+i.severity+' '+(i.slideId??'')+'：'+i.message);
+
   if (data.message) lines.push(clip(data.message, 800))
   if (typeof data.summary === 'string') lines.push(clip(data.summary, 2400))
   if (Number.isInteger(data.summary?.errors)) lines.push(`证据/版式检查：${data.summary.errors} 个错误，${data.summary.warnings ?? 0} 个提醒。`)
@@ -206,6 +220,17 @@ export function formatToolResult(name, result) {
     lines.push(`最终用户审查：${data.finalReview.status}；下一步 ${data.finalReview.nextAction}。`)
     for(const q of data.finalReview.questions??[])lines.push(`成品展示后询问：${JSON.stringify(q)}`)
     for(const action of data.finalReview.nextActions??[])lines.push(clip(action,600))
+  }
+  if(data.installedPlugin)lines.push(`当前插件：${data.installedPlugin.name}@${data.installedPlugin.version}；指导 ${data.installedPlugin.guidanceRevision}`)
+  const guidance=data.authoringGuidance??authoringGuidance(name)
+  if(guidance){lines.push(`设计执行：${guidance.instruction}`);lines.push(`阶段指导：${guidance.guidePath}；当前案例：${guidance.caseIndexPath}`)}
+  if(data.designPriority)lines.push(data.designPriority)
+  if(data.designCases)for(const c of data.designCases)lines.push(`构图案例 ${c.id}：${c.title}；用途：${c.when}；实际PNG：${c.previewPath}；解释：${c.explanationPath}`)
+  // Readable single pages must reach the native model boundary, not only a contact sheet.
+  const pageImages=data.pngPaths??data.render?.pngPaths??data.rendering?.pngPaths??data.preview?.pngPaths
+  if(Array.isArray(pageImages)){
+    pageImages.slice(0,16).forEach((path,index)=>{if(typeof path==='string')lines.push(`实际PPTX单页PNG ${index+1}：${path}`)})
+    if(pageImages.length>16)lines.push(`共${pageImages.length}页；其余单页路径见结构化pngPaths或实际render-receipt.json中的pngs（相对收据所在目录），逐页看图不能只查联系表。`)
   }
   // Recovery decisions and concrete next actions must precede verbose records;
   // clipping the tail must not strand the agent or erase an existing choice.
@@ -284,7 +309,7 @@ export function formatToolResult(name, result) {
     if(data.planPath)lines.push(`设计准备记录：${clip(data.planPath,3000)}`)
     if(data.designAdaptation){
       const a=data.designAdaptation
-      lines.push(`卡片适配：${a.mode}；配色策略 ${a.colorPolicy.mode}`)
+      lines.push(`页面设计适配：${a.mode}；配色策略 ${a.colorPolicy.mode}`)
       lines.push(a.colorPolicy.instruction)
       if(a.resolvedPreferences?.length)lines.push(`已采纳设计选择：${JSON.stringify(a.resolvedPreferences)}`)
       for(const route of a.routes??[])lines.push(`设计路径 ${route.mode}：${route.instruction}`)
@@ -350,7 +375,15 @@ export function formatToolResult(name, result) {
   if (name === 'academic_ppt_contract') {
     lines.push(`字段主题：${data.topic}；记录键：${data.recordKey}${data.maxItems ? `；每批最多${data.maxItems}条` : ''}`)
     if (data.submission) lines.push(`提交方式：${JSON.stringify(data.submission)}`)
+    // These fields must survive the model-facing renderer, not only JSON value.
+    if(data.visualLanguages)lines.push('视觉语言（可组合，不是整页模板）：'+JSON.stringify(data.visualLanguages));
+    for(const instruction of data.instructions??[])lines.push('构图执行：'+instruction);
+    for(const lesson of data.compositionLessons??[])lines.push('构图教材 '+lesson.id+'：实图 '+lesson.previewPath+'；输入 '+lesson.requestPath+'；'+lesson.identity);
+    if(data.openingSchema)lines.push('开场JSON Schema（同一plan工具）：'+JSON.stringify(data.openingSchema));
     if (Array.isArray(data.notes)) lines.push(...data.notes)
+    if(data.referencedSchemas)lines.push('递归部件定义（同一完整契约）：'+JSON.stringify(data.referencedSchemas));
+    if(data.examplesPath)lines.push('可执行结构示例：'+data.examplesPath);
+    if(data.guidePath)lines.push('构图说明：'+data.guidePath);
     if (data.schema) lines.push(`完整JSON Schema：${JSON.stringify(data.schema)}`)
     if (data.capabilityRecord) lines.push(`图像输入能力记录：${JSON.stringify(data.capabilityRecord)}`)
     if (data.academicPalettes) lines.push(`学术配色候选（默认${data.defaultPalette}）：${JSON.stringify(data.academicPalettes)}`)
@@ -411,7 +444,7 @@ export function formatToolResult(name, result) {
   if(dialogue){
     lines.push(`设计协商：${dialogue.mode} / ${dialogue.stage}；待确认${(dialogue.pendingTopics??[]).join('、')||'无'}。提议不等于已询问或已确认。`)
     for(const instruction of dialogue.instructions??[])lines.push(instruction)
-    if(dialogue.referenceStudy)lines.push(`卡片参考学习：${dialogue.referenceStudy.status}；当前原生配方${dialogue.referenceStudy.usedPresets.join('、')||'无'}；嵌图卡${dialogue.referenceStudy.imageCardCount}张。`)
+    if(dialogue.referenceStudy)lines.push(`内容相关参考学习：${dialogue.referenceStudy.status}；当前原生配方${dialogue.referenceStudy.usedPresets.join('、')||'无'}；嵌图卡${dialogue.referenceStudy.imageCardCount}张。`)
   }
   const layouts=data.layoutDiversity??data.designDiagnostics?.layoutDiversity??data.quality?.designDiagnostics?.layoutDiversity
   if(layouts?.summary){const l=layouts.summary;lines.push(`实际构图复核：${l.visualSlideCount}张含图证正文，${l.reviewSignals}个重复骨架提醒；按证据关系检查，保持可比尺度的页面可以一致。`)}
@@ -435,7 +468,7 @@ export function formatToolResult(name, result) {
 }
 
 /** Raw-schema registrations validate at this boundary; callers may use the same API directly. */
-export function buildAcademicTools(overrides = {}, { resolveCwd, beforeExecute } = {}) {
+export function buildAcademicTools(overrides = {}, { resolveCwd, beforeExecute, afterExecute } = {}) {
   return Object.values(TOOL_COMMANDS).map(name => ({
     name,
     description: descriptions[name],
@@ -469,6 +502,14 @@ export function buildAcademicTools(overrides = {}, { resolveCwd, beforeExecute }
         }
       } else value = await coreExecutors[name](options)
       exec?.signal?.throwIfAborted()
+      // Test adapters keep their canonical results unchanged; real entrypoints
+      // expose the same bounded guidance in structured and model-visible output.
+      if(!overrides[name]&&value&&typeof value==='object'&&!Array.isArray(value)){
+        const guidance=authoringGuidance(name)
+        if(guidance)value={...value,installedPlugin,authoringGuidance:guidance}
+      }
+      if(!overrides[name])value=await attachExecutionIdentity(name,value,cwd)
+      if(afterExecute)value=await afterExecute({name,args:rawArgs,cwd,exec,value})
       return jsonSafeResult(value)
     },
   }))

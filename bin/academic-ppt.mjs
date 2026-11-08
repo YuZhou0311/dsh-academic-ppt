@@ -4,6 +4,7 @@ import { stat } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { buildAcademicTools, TOOL_COMMANDS, formatToolResult } from '../src/tools.mjs'
 import { toolSchemas } from '../src/schema.mjs'
+import { installedPlugin } from '../src/authoring-guidance.mjs'
 
 const CONTRACT_TOPICS = toolSchemas.academic_ppt_contract.properties.topic.enum.join(' / ')
 const CLI_NAME = 'dsh-academic-ppt'
@@ -11,6 +12,7 @@ const CLI_NAME = 'dsh-academic-ppt'
 const HELP = `DSH Academic PPT — 学术汇报工程工具
 
 用法：
+  ${CLI_NAME} --version
   ${CLI_NAME} <命令> --args <JSON 文件> [--json]
   ${CLI_NAME} <命令> --help
   ${CLI_NAME} <命令> --schema
@@ -77,6 +79,7 @@ function commandHelp(command, tool, schema) {
 
 async function main() {
   const args = process.argv.slice(2)
+  if(args.length===1&&args[0]==='--version'){process.stdout.write(`${installedPlugin.name}@${installedPlugin.version}\n`);return}
   if (!args.length || args.length === 1 && ['--help', '-h', 'help'].includes(args[0])) { process.stdout.write(HELP); return }
   const command = args.shift()
   const toolName = Object.hasOwn(TOOL_COMMANDS, command) ? TOOL_COMMANDS[command] : undefined

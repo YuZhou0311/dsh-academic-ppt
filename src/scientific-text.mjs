@@ -16,7 +16,9 @@ const script = `(?:_[A-Za-z0-9]+|_\\{[A-Za-z0-9+−-]+\\}|\\^[A-Za-z0-9+−-]+|\
 const identifier = `${letters}[A-Za-z0-9\\u0370-\\u03ff]*(?:${script})*`;
 const scriptedIdentifier = `${letters}[A-Za-z0-9\\u0370-\\u03ff]*(?:${script})+`;
 const expression = `${identifier}${hspace}(?:[=<>≤≥≈≠])${hspace}${measurement}`;
-const scientific = `${expression}|${scriptedIdentifier}|${measurement}`;
+// Dates are indivisible typography units, not arithmetic ranges.
+const isoDate = '\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])(?![0-9])';
+const scientific = `${isoDate}|${expression}|${scriptedIdentifier}|${measurement}`;
 const tokens = new RegExp(`(?<scientific>${scientific})|(?<word>[A-Za-z0-9]+(?:[.'’:/+%−–-][A-Za-z0-9]+)*)|(?<space>\\s+)|(?<glyph>[^A-Za-z0-9\\s])`, 'gu');
 
 export function scientificTextTokens(value) {

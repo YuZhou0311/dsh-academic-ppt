@@ -69,7 +69,7 @@ async function fixture(t){
 test('checkpoint B exposes candidate prompts before visual preferences, without inventing answers',async t=>{
   const {invoke,visible,json}=await workspace(t);
   const request={topic:'Synthetic candidate ordering',template:{status:'none'},consultation:storyConsultation,
-    imageGeneration:{availability:'available',source:LABEL,toolName:'synthetic_not_invoked_imagegen'},
+    imageGeneration:{requested:true,availability:'available',source:LABEL,toolName:'synthetic_not_invoked_imagegen'},
     cards:[{id:'candidate',purpose:'Check response ordering',title:'Protocol card',body:LABEL,evidenceStatus:'illustrative'}]};
   const prepare=async value=>invoke('prepare',{requestPath:await json('prepare.json',value)});
   const current=await prepare(request);
@@ -85,7 +85,7 @@ test('checkpoint B exposes candidate prompts before visual preferences, without 
   const legacy=await prepare({...request,existingProject:true,consultation:{...legacyConsultation,interaction:'topics'}});
   assert.equal(legacy.imageGeneration.nextAction,'await-design-feedback');assert.equal(legacy.imageGeneration.prompt,undefined);
   const unavailable=await prepare({...request,imageGeneration:{availability:'unavailable',source:LABEL}});
-  assert.equal(unavailable.imageGeneration.nextAction,'select-native-cards');
+  assert.equal(unavailable.imageGeneration.nextAction,'design-evidence-pages');
   assert.deepEqual(unavailable.designRecords.consultation,storyConsultation);
 });
 

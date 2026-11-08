@@ -1,0 +1,160 @@
+{
+  "kind": "compose-page",
+  "mode": "create",
+  "slide": {
+    "id": "teaching-loop",
+    "title": "学习、执行与观测分开，反馈才有清楚的去向",
+    "paperIds": [],
+    "claimIds": [],
+    "seconds": 60,
+    "notes": "原创合成教学案例；无真实科研归因、实验结果或用户批准。",
+    "section": {
+      "number": "01",
+      "title": "构图工艺 · 紧凑回路"
+    }
+  },
+  "intent": {
+    "relationship": "mechanism",
+    "primaryNodeId": "control-loop",
+    "readingOrder": [
+      "lead",
+      "control-loop",
+      "parameter-layer",
+      "method-boundary"
+    ],
+    "rationale": "用一个紧凑完整回路明确角色，再在下一层展开三类参数；不把短节点拉成高柱，也不把收益口号作为方法说明。"
+  },
+  "body": {
+    "id": "method-page",
+    "kind": "split",
+    "axis": "y",
+    "gap": 10,
+    "children": [
+      {
+        "id": "lead",
+        "kind": "text",
+        "role": "body",
+        "text": "示意回路：角色通过连接与文字对应，不把短节点拉成整页高柱。",
+        "emphasis": [
+          "不把短节点拉成整页高柱"
+        ]
+      },
+      {
+        "id": "control-loop",
+        "kind": "flow",
+        "orientation": "auto",
+        "nodes": [
+          {
+            "id": "rl",
+            "label": "选择模块",
+            "detail": "给出候选参数",
+            "tone": "accent"
+          },
+          {
+            "id": "mpc",
+            "label": "执行模块",
+            "detail": "依据规则求解动作",
+            "tone": "soft"
+          },
+          {
+            "id": "crop",
+            "label": "测试环境",
+            "detail": "返回观测与结果",
+            "tone": "soft"
+          }
+        ],
+        "edges": [
+          {
+            "from": "rl",
+            "to": "mpc",
+            "kind": "flow",
+            "label": "调参"
+          },
+          {
+            "from": "mpc",
+            "to": "crop",
+            "kind": "flow",
+            "label": "执行"
+          },
+          {
+            "from": "crop",
+            "to": "rl",
+            "kind": "feedback",
+            "label": "反馈"
+          }
+        ]
+      },
+      {
+        "id": "parameter-layer",
+        "kind": "group",
+        "title": "第二层解释紧邻回路，不挤进主节点",
+        "child": {
+          "id": "parameter-columns",
+          "kind": "split",
+          "axis": "x",
+          "gap": 18,
+          "children": [
+            {
+              "id": "constraint",
+              "kind": "group",
+              "title": "01  输入条件",
+              "child": {
+                "id": "constraint-note",
+                "kind": "text",
+                "role": "label",
+                "text": "定义当前可用信息"
+              },
+              "tone": "plain",
+              "headingStyle": "rail",
+              "padding": 8
+            },
+            {
+              "id": "model",
+              "kind": "group",
+              "title": "02  变换规则",
+              "child": {
+                "id": "model-note",
+                "kind": "text",
+                "role": "label",
+                "text": "说明模块的职责"
+              },
+              "tone": "plain",
+              "headingStyle": "rail",
+              "padding": 8
+            },
+            {
+              "id": "weight",
+              "kind": "group",
+              "title": "03  输出检查",
+              "child": {
+                "id": "weight-note",
+                "kind": "text",
+                "role": "label",
+                "text": "区分效果与适用边界"
+              },
+              "tone": "plain",
+              "headingStyle": "rail",
+              "padding": 8
+            }
+          ]
+        },
+        "tone": "soft",
+        "headingStyle": "text",
+        "padding": 10
+      },
+      {
+        "id": "method-boundary",
+        "kind": "statement",
+        "label": "论证范围",
+        "tone": "soft",
+        "text": "图中连接只表示这份教学设定，不代表任何具体论文的方法。"
+      },
+      {
+        "id": "method-source",
+        "kind": "text",
+        "role": "note",
+        "text": "原创教学资料 · 无科研结果；文字变长时改布局，不压缩字号。"
+      }
+    ]
+  }
+}

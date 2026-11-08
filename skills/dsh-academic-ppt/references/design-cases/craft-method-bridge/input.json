@@ -1,0 +1,804 @@
+{
+  "title": "让方法的反馈与验证成为两种不同关系",
+  "design": {
+    "mode": "content-led",
+    "density": "balanced",
+    "styleProfile": "research-seminar",
+    "artDirection": "structured",
+    "chrome": {
+      "showSources": false,
+      "showBrand": false,
+      "showFooter": false
+    },
+    "palette": {
+      "ink": "#202A35",
+      "paper": "#FFFFFF",
+      "background": "#FCFCFB",
+      "accent": "#713E50",
+      "secondary": "#4D6570",
+      "muted": "#56616A",
+      "line": "#CAD3D7",
+      "soft": "#EFF3F2",
+      "tint": "#EFF3F2"
+    },
+    "authoringMode": "content-tree",
+    "consultation": {
+      "mode": "collaborative",
+      "interaction": "checkpoints",
+      "workflowVersion": 2
+    }
+  },
+  "assets": [],
+  "papers": [],
+  "claims": [],
+  "slides": [
+    {
+      "id": "sample",
+      "title": "让方法的反馈与验证成为两种不同关系",
+      "section": {
+        "number": "DESIGN",
+        "title": "原创教学 · 非科研结果"
+      },
+      "paperIds": [],
+      "claimIds": [],
+      "notes": "# 方法图：不同线型背后的关系\n\n此例完全原创，只演示结构，不是论文事实。上层 flow 用相邻箭头与独立反馈通道表示控制闭环；下层验证表按条件共享行。两组不等高，题签使用 tab 与 rail 区分主次。没有照搬参考中的具体文案、机构或图片。\n\n实际制作要先核对原文：如果输入不是状态观测、反馈不是环境回报，必须改变节点和边。独立验证不存在就不能补画。任意拓扑使用现有 drawings/composition，不为套这个例子强改研究关系。\n\n查看 request.json 学参数关系；input.json 为编译后快照。普通工具生成与视觉复看不代表真实 DeepSeek 已掌握自主设计。\n",
+      "seconds": 60,
+      "layout": "academic",
+      "figureIds": [],
+      "cards": [],
+      "authoringMap": {
+        "compiler": "content-composition-2",
+        "primaryNodeId": "loop",
+        "readingOrder": [
+          "loop"
+        ],
+        "nodes": [
+          {
+            "nodeId": "body",
+            "kind": "split",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 528.8
+            },
+            "elementIds": [
+              "method-1",
+              "method-heading-tab-2",
+              "method-title-3",
+              "loop-edge-4",
+              "loop-edgelabel-5",
+              "loop-edge-6",
+              "loop-edgelabel-7",
+              "loop-edge-8",
+              "loop-edgelabel-9",
+              "loop-node-observe-10",
+              "loop-label-observe-11",
+              "loop-body-observe-12",
+              "loop-node-policy-13",
+              "loop-label-policy-14",
+              "loop-body-policy-15",
+              "loop-node-system-16",
+              "loop-label-system-17",
+              "loop-body-system-18",
+              "validation-heading-rail-19",
+              "validation-title-20",
+              "validation-table-row0-21",
+              "validation-table-cell0-0-22",
+              "validation-table-cell0-1-23",
+              "validation-table-cell0-2-24",
+              "validation-table-row-line0-25",
+              "validation-table-row1-26",
+              "validation-table-cell1-0-27",
+              "validation-table-cell1-1-28",
+              "validation-table-cell1-2-29",
+              "validation-table-row-line1-30",
+              "validation-table-row2-31",
+              "validation-table-cell2-0-32",
+              "validation-table-cell2-1-33",
+              "validation-table-cell2-2-34",
+              "validation-table-row-line2-35"
+            ]
+          },
+          {
+            "nodeId": "method",
+            "kind": "group",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 301.6
+            },
+            "elementIds": [
+              "method-1",
+              "method-heading-tab-2",
+              "method-title-3",
+              "loop-edge-4",
+              "loop-edgelabel-5",
+              "loop-edge-6",
+              "loop-edgelabel-7",
+              "loop-edge-8",
+              "loop-edgelabel-9",
+              "loop-node-observe-10",
+              "loop-label-observe-11",
+              "loop-body-observe-12",
+              "loop-node-policy-13",
+              "loop-label-policy-14",
+              "loop-body-policy-15",
+              "loop-node-system-16",
+              "loop-label-system-17",
+              "loop-body-system-18"
+            ]
+          },
+          {
+            "nodeId": "loop",
+            "kind": "flow",
+            "box": {
+              "x": 16,
+              "y": 63.8,
+              "w": 1152,
+              "h": 221.8
+            },
+            "elementIds": [
+              "loop-edge-4",
+              "loop-edgelabel-5",
+              "loop-edge-6",
+              "loop-edgelabel-7",
+              "loop-edge-8",
+              "loop-edgelabel-9",
+              "loop-node-observe-10",
+              "loop-label-observe-11",
+              "loop-body-observe-12",
+              "loop-node-policy-13",
+              "loop-label-policy-14",
+              "loop-body-policy-15",
+              "loop-node-system-16",
+              "loop-label-system-17",
+              "loop-body-system-18"
+            ]
+          },
+          {
+            "nodeId": "validation",
+            "kind": "group",
+            "box": {
+              "x": 0,
+              "y": 321.6,
+              "w": 1184,
+              "h": 207.2
+            },
+            "elementIds": [
+              "validation-heading-rail-19",
+              "validation-title-20",
+              "validation-table-row0-21",
+              "validation-table-cell0-0-22",
+              "validation-table-cell0-1-23",
+              "validation-table-cell0-2-24",
+              "validation-table-row-line0-25",
+              "validation-table-row1-26",
+              "validation-table-cell1-0-27",
+              "validation-table-cell1-1-28",
+              "validation-table-cell1-2-29",
+              "validation-table-row-line1-30",
+              "validation-table-row2-31",
+              "validation-table-cell2-0-32",
+              "validation-table-cell2-1-33",
+              "validation-table-cell2-2-34",
+              "validation-table-row-line2-35"
+            ]
+          },
+          {
+            "nodeId": "validation-table",
+            "kind": "table",
+            "box": {
+              "x": 0,
+              "y": 367.4,
+              "w": 1184,
+              "h": 161.4
+            },
+            "elementIds": [
+              "validation-table-row0-21",
+              "validation-table-cell0-0-22",
+              "validation-table-cell0-1-23",
+              "validation-table-cell0-2-24",
+              "validation-table-row-line0-25",
+              "validation-table-row1-26",
+              "validation-table-cell1-0-27",
+              "validation-table-cell1-1-28",
+              "validation-table-cell1-2-29",
+              "validation-table-row-line1-30",
+              "validation-table-row2-31",
+              "validation-table-cell2-0-32",
+              "validation-table-cell2-1-33",
+              "validation-table-cell2-2-34",
+              "validation-table-row-line2-35"
+            ]
+          }
+        ]
+      },
+      "drawings": [
+        {
+          "id": "authored-body",
+          "width": 1184,
+          "height": 528.8,
+          "elements": [
+            {
+              "id": "method-1",
+              "kind": "rect",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 301.59999999999997,
+              "fill": "#FFFFFF",
+              "stroke": "#CAD3D7",
+              "strokeWidth": 0.8,
+              "role": "group"
+            },
+            {
+              "id": "method-heading-tab-2",
+              "kind": "rect",
+              "x": 0,
+              "y": 0,
+              "w": 340.7048,
+              "h": 51.8,
+              "fill": "#713E50",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "method-title-3",
+              "kind": "text",
+              "x": 16,
+              "y": 9,
+              "w": 308.7048,
+              "h": 33.8,
+              "text": "01  有证据时才绘制控制闭环",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-edge-4",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 346.6666666666667,
+                  "y": 171.2
+                },
+                {
+                  "x": 426.6666666666667,
+                  "y": 171.2
+                }
+              ],
+              "stroke": "#713E50",
+              "strokeWidth": 2,
+              "role": "relationship",
+              "endArrow": true
+            },
+            {
+              "id": "loop-edgelabel-5",
+              "kind": "text",
+              "x": 348.6666666666667,
+              "y": 119.19999999999999,
+              "w": 76,
+              "h": 26.599999999999998,
+              "text": "状态",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#56616A",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-edge-6",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 757.3333333333334,
+                  "y": 171.2
+                },
+                {
+                  "x": 837.3333333333334,
+                  "y": 171.2
+                }
+              ],
+              "stroke": "#713E50",
+              "strokeWidth": 2,
+              "role": "relationship",
+              "endArrow": true
+            },
+            {
+              "id": "loop-edgelabel-7",
+              "kind": "text",
+              "x": 759.3333333333334,
+              "y": 119.19999999999999,
+              "w": 76,
+              "h": 26.599999999999998,
+              "text": "动作",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#56616A",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-edge-8",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 1002.6666666666667,
+                  "y": 242.59999999999997
+                },
+                {
+                  "x": 1002.6666666666667,
+                  "y": 271.59999999999997
+                },
+                {
+                  "x": 181.33333333333334,
+                  "y": 271.59999999999997
+                },
+                {
+                  "x": 181.33333333333334,
+                  "y": 242.59999999999997
+                }
+              ],
+              "stroke": "#4D6570",
+              "strokeWidth": 2,
+              "role": "relationship",
+              "endArrow": true
+            },
+            {
+              "id": "loop-edgelabel-9",
+              "kind": "text",
+              "x": 195.33333333333334,
+              "y": 241.59999999999997,
+              "w": 793.3333333333334,
+              "h": 26.599999999999998,
+              "text": "下一时刻观测",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#4D6570",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-node-observe-10",
+              "kind": "rect",
+              "x": 16,
+              "y": 99.8,
+              "w": 330.6666666666667,
+              "h": 142.79999999999995,
+              "fill": "#EFF3F2",
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "loop-label-observe-11",
+              "kind": "text",
+              "x": 28,
+              "y": 113.8,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "观测",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#713E50",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-body-observe-12",
+              "kind": "text",
+              "x": 28,
+              "y": 159.6,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "状态与条件",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-node-policy-13",
+              "kind": "rect",
+              "x": 426.6666666666667,
+              "y": 99.8,
+              "w": 330.6666666666667,
+              "h": 142.79999999999995,
+              "fill": "#713E50",
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "loop-label-policy-14",
+              "kind": "text",
+              "x": 438.6666666666667,
+              "y": 113.8,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "策略",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-body-policy-15",
+              "kind": "text",
+              "x": 438.6666666666667,
+              "y": 159.6,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "选择动作",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#FFFFFF",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-node-system-16",
+              "kind": "rect",
+              "x": 837.3333333333334,
+              "y": 99.8,
+              "w": 330.6666666666667,
+              "h": 142.79999999999995,
+              "fill": "#EFF3F2",
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "loop-label-system-17",
+              "kind": "text",
+              "x": 849.3333333333334,
+              "y": 113.8,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "被控对象",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#713E50",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "loop-body-system-18",
+              "kind": "text",
+              "x": 849.3333333333334,
+              "y": 159.6,
+              "w": 306.6666666666667,
+              "h": 33.8,
+              "text": "响应与成本",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-heading-rail-19",
+              "kind": "rect",
+              "x": 0,
+              "y": 321.59999999999997,
+              "w": 4,
+              "h": 33.8,
+              "fill": "#713E50",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "validation-title-20",
+              "kind": "text",
+              "x": 12,
+              "y": 321.59999999999997,
+              "w": 1172,
+              "h": 33.8,
+              "text": "02  验证条件：共享行核对",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#713E50",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-row0-21",
+              "kind": "rect",
+              "x": 0,
+              "y": 367.4,
+              "w": 1184,
+              "h": 53.8,
+              "fill": "#EFF3F2",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "validation-table-cell0-0-22",
+              "kind": "text",
+              "x": 10,
+              "y": 377.4,
+              "w": 185.9130434782609,
+              "h": 33.8,
+              "text": "条件",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell0-1-23",
+              "kind": "text",
+              "x": 215.9130434782609,
+              "y": 377.4,
+              "w": 443.30434782608705,
+              "h": 33.8,
+              "text": "训练阶段",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell0-2-24",
+              "kind": "text",
+              "x": 679.217391304348,
+              "y": 377.4,
+              "w": 494.78260869565224,
+              "h": 33.8,
+              "text": "独立检验",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-row-line0-25",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 421.2
+                },
+                {
+                  "x": 1184,
+                  "y": 421.2
+                }
+              ],
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "decoration",
+              "endArrow": false
+            },
+            {
+              "id": "validation-table-row1-26",
+              "kind": "rect",
+              "x": 0,
+              "y": 421.2,
+              "w": 1184,
+              "h": 53.8,
+              "fill": "#FFFFFF",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "validation-table-cell1-0-27",
+              "kind": "text",
+              "x": 10,
+              "y": 431.2,
+              "w": 185.9130434782609,
+              "h": 33.8,
+              "text": "数据边界",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell1-1-28",
+              "kind": "text",
+              "x": 215.9130434782609,
+              "y": 431.2,
+              "w": 443.30434782608705,
+              "h": 33.8,
+              "text": "用于调整策略",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell1-2-29",
+              "kind": "text",
+              "x": 679.217391304348,
+              "y": 431.2,
+              "w": 494.78260869565224,
+              "h": 33.8,
+              "text": "保留未参与调整的数据",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-row-line1-30",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 475
+                },
+                {
+                  "x": 1184,
+                  "y": 475
+                }
+              ],
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "decoration",
+              "endArrow": false
+            },
+            {
+              "id": "validation-table-row2-31",
+              "kind": "rect",
+              "x": 0,
+              "y": 475,
+              "w": 1184,
+              "h": 53.8,
+              "fill": "#EFF3F2",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "validation-table-cell2-0-32",
+              "kind": "text",
+              "x": 10,
+              "y": 485,
+              "w": 185.9130434782609,
+              "h": 33.8,
+              "text": "判断对象",
+              "fontSize": 24,
+              "role": "label",
+              "bold": true,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell2-1-33",
+              "kind": "text",
+              "x": 215.9130434782609,
+              "y": 485,
+              "w": 443.30434782608705,
+              "h": 33.8,
+              "text": "策略能否学到任务",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-cell2-2-34",
+              "kind": "text",
+              "x": 679.217391304348,
+              "y": 485,
+              "w": 494.78260869565224,
+              "h": 33.8,
+              "text": "新条件下是否仍有效",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#202A35",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "validation-table-row-line2-35",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 0,
+                  "y": 528.8
+                },
+                {
+                  "x": 1184,
+                  "y": 528.8
+                }
+              ],
+              "stroke": "#CAD3D7",
+              "strokeWidth": 1,
+              "role": "decoration",
+              "endArrow": false
+            }
+          ],
+          "evidenceTables": [
+            {
+              "id": "validation-table",
+              "cellIds": [
+                [
+                  "validation-table-cell0-0-22",
+                  "validation-table-cell0-1-23",
+                  "validation-table-cell0-2-24"
+                ],
+                [
+                  "validation-table-cell1-0-27",
+                  "validation-table-cell1-1-28",
+                  "validation-table-cell1-2-29"
+                ],
+                [
+                  "validation-table-cell2-0-32",
+                  "validation-table-cell2-1-33",
+                  "validation-table-cell2-2-34"
+                ]
+              ],
+              "sourceClaimIds": []
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "authored-body",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 141.2,
+              "w": 1184,
+              "h": 528.8
+            },
+            "drawingIds": [
+              "authored-body"
+            ]
+          }
+        ]
+      },
+      "visualPlan": {
+        "relationship": "comparison",
+        "primaryPanelId": "authored-body",
+        "readingOrder": [
+          "authored-body"
+        ],
+        "rationale": "用字级、题签、比例与共享对齐组织信息；不是装饰数量或用户批准。"
+      }
+    }
+  ]
+}

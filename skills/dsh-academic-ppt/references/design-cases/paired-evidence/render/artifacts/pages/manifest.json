@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/session-audit/source/dsh-academic-ppt-0.10.0-rc.2/skills/dsh-academic-ppt/references/design-cases/paired-evidence/case.pptx",
+  "sourceSha256": "f54188ed3573898fd7f2ba4ab7693fee7ea688549587b3cc0bd3da32793736e5",
+  "dpi": 120,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/session-audit/source/dsh-academic-ppt-0.10.0-rc.2/skills/dsh-academic-ppt/references/design-cases/paired-evidence/render/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 171176
+    }
+  ],
+  "missingFonts": []
+}

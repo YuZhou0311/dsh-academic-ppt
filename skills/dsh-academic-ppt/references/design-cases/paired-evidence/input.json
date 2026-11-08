@@ -1,0 +1,898 @@
+{
+  "title": "同一比较的两组证据，应共享对象与阅读方向",
+  "design": {
+    "styleProfile": "research-seminar",
+    "mode": "content-led",
+    "density": "balanced",
+    "fontFamily": "Noto Sans CJK SC",
+    "titleFontFamily": "Noto Sans CJK SC",
+    "annotationFontFamily": "Noto Sans CJK SC",
+    "projection": {
+      "bodyMin": 28,
+      "labelMin": 24,
+      "noteMin": 18
+    },
+    "chrome": {
+      "header": "plain",
+      "showBrand": false,
+      "showSection": false,
+      "showPageNumber": false,
+      "showFooter": false,
+      "showSources": false,
+      "showTopRule": false
+    },
+    "palette": {
+      "background": "#F6F5F0",
+      "paper": "#F6F5F0",
+      "ink": "#263B40",
+      "accent": "#244F54",
+      "secondary": "#855321",
+      "muted": "#586B70",
+      "line": "#C7D1CD",
+      "soft": "#E4EBE7",
+      "tint": "#EEF1EC",
+      "gold": "#855321"
+    },
+    "system": {
+      "preset": "plain",
+      "header": "plain",
+      "panel": "plain",
+      "titleSize": 38,
+      "bodySize": 28,
+      "panelTitleSize": 28,
+      "captionSize": 18
+    }
+  },
+  "papers": [],
+  "claims": [],
+  "assets": [],
+  "slides": [
+    {
+      "id": "paired-evidence",
+      "layout": "academic",
+      "title": "同一比较的两组证据，应共享对象与阅读方向",
+      "paperIds": [],
+      "claimIds": [],
+      "figureIds": [],
+      "cards": [],
+      "notes": "原创教学构图，不对应实际论文、实验或模型结果。不是DSH模型端到端输出，也未获用户认可。替换为真实科学内容时须重新核对来源与图证关系。",
+      "seconds": 90,
+      "heading": {
+        "box": {
+          "x": 48,
+          "y": 30,
+          "w": 1184,
+          "h": 58
+        },
+        "fontSize": 38,
+        "color": "#263B40"
+      },
+      "drawings": [
+        {
+          "id": "paired",
+          "width": 1184,
+          "height": 586,
+          "elements": [
+            {
+              "id": "e1",
+              "kind": "text",
+              "x": 0,
+              "y": 0,
+              "w": 1184,
+              "h": 34,
+              "text": "多图组织教学  /  构造曲线仅检验版面，不代表真实模型或试验",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#244F54",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e2",
+              "kind": "rect",
+              "x": 0,
+              "y": 78,
+              "w": 665.2340425531916,
+              "h": 340,
+              "fill": "#FFFFFF",
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e3",
+              "kind": "rect",
+              "x": 0,
+              "y": 78,
+              "w": 665.2340425531916,
+              "h": 49,
+              "fill": "#244F54",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e4",
+              "kind": "text",
+              "x": 16,
+              "y": 85,
+              "w": 633.2340425531916,
+              "h": 39,
+              "text": "A  状态变化",
+              "fontSize": 28,
+              "role": "body",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e5",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 348
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 348
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e6",
+              "kind": "text",
+              "x": 10,
+              "y": 335,
+              "w": 42,
+              "h": 27,
+              "text": "0",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e7",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 259.5
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 259.5
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e8",
+              "kind": "text",
+              "x": 10,
+              "y": 246.5,
+              "w": 42,
+              "h": 27,
+              "text": "0.5",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e9",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 171
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 171
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e10",
+              "kind": "text",
+              "x": 10,
+              "y": 158,
+              "w": 42,
+              "h": 27,
+              "text": "1",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e11",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 171
+                },
+                {
+                  "x": 63,
+                  "y": 348
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 348
+                }
+              ],
+              "stroke": "#586B70",
+              "strokeWidth": 1.5,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e12",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 280.74
+                },
+                {
+                  "x": 120.92340425531916,
+                  "y": 260.67041678862427
+                },
+                {
+                  "x": 178.8468085106383,
+                  "y": 246.28993202750752
+                },
+                {
+                  "x": 236.77021276595747,
+                  "y": 235.9858644349381
+                },
+                {
+                  "x": 294.6936170212766,
+                  "y": 228.60267737859346
+                },
+                {
+                  "x": 352.6170212765958,
+                  "y": 223.3123926808994
+                },
+                {
+                  "x": 410.54042553191493,
+                  "y": 219.52173805315218
+                },
+                {
+                  "x": 468.4638297872341,
+                  "y": 216.80561532479987
+                },
+                {
+                  "x": 526.3872340425532,
+                  "y": 214.85942834657433
+                },
+                {
+                  "x": 584.3106382978724,
+                  "y": 213.46492444044475
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 212.46571872898548
+                }
+              ],
+              "stroke": "#244F54",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e13",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 63,
+                  "y": 280.74
+                },
+                {
+                  "x": 120.92340425531916,
+                  "y": 261.2396594953581
+                },
+                {
+                  "x": 178.8468085106383,
+                  "y": 249.41210510445666
+                },
+                {
+                  "x": 236.77021276595747,
+                  "y": 242.2383307369562
+                },
+                {
+                  "x": 294.6936170212766,
+                  "y": 237.8872166372065
+                },
+                {
+                  "x": 352.6170212765958,
+                  "y": 235.24813253180042
+                },
+                {
+                  "x": 410.54042553191493,
+                  "y": 233.64744710831133
+                },
+                {
+                  "x": 468.4638297872341,
+                  "y": 232.6765823224101
+                },
+                {
+                  "x": 526.3872340425532,
+                  "y": 232.08772306332565
+                },
+                {
+                  "x": 584.3106382978724,
+                  "y": 231.73056186843527
+                },
+                {
+                  "x": 642.2340425531916,
+                  "y": 231.51393265327465
+                }
+              ],
+              "stroke": "#95491F",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false,
+              "dash": "dash"
+            },
+            {
+              "id": "e14",
+              "kind": "text",
+              "x": 43,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "0",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e15",
+              "kind": "text",
+              "x": 332.6170212765958,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "5",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e16",
+              "kind": "text",
+              "x": 622.2340425531916,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "10",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e17",
+              "kind": "text",
+              "x": 16,
+              "y": 386,
+              "w": 633.2340425531916,
+              "h": 27,
+              "text": "横轴：构造时间步；纵轴：归一化状态",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e18",
+              "kind": "rect",
+              "x": 691.2340425531916,
+              "y": 78,
+              "w": 492.7659574468085,
+              "h": 340,
+              "fill": "#FFFFFF",
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e19",
+              "kind": "rect",
+              "x": 691.2340425531916,
+              "y": 78,
+              "w": 492.7659574468085,
+              "h": 49,
+              "fill": "#244F54",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e20",
+              "kind": "text",
+              "x": 707.2340425531916,
+              "y": 85,
+              "w": 460.7659574468085,
+              "h": 39,
+              "text": "B  控制动作",
+              "fontSize": 28,
+              "role": "body",
+              "bold": true,
+              "color": "#FFFFFF",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e21",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 348
+                },
+                {
+                  "x": 1161,
+                  "y": 348
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e22",
+              "kind": "text",
+              "x": 701.2340425531916,
+              "y": 335,
+              "w": 42,
+              "h": 27,
+              "text": "0",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e23",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 259.5
+                },
+                {
+                  "x": 1161,
+                  "y": 259.5
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e24",
+              "kind": "text",
+              "x": 701.2340425531916,
+              "y": 246.5,
+              "w": 42,
+              "h": 27,
+              "text": "0.5",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e25",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 171
+                },
+                {
+                  "x": 1161,
+                  "y": 171
+                }
+              ],
+              "stroke": "#C7D1CD",
+              "strokeWidth": 1,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e26",
+              "kind": "text",
+              "x": 701.2340425531916,
+              "y": 158,
+              "w": 42,
+              "h": 27,
+              "text": "1",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "right",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e27",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 171
+                },
+                {
+                  "x": 754.2340425531916,
+                  "y": 348
+                },
+                {
+                  "x": 1161,
+                  "y": 348
+                }
+              ],
+              "stroke": "#586B70",
+              "strokeWidth": 1.5,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e28",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 268.35
+                },
+                {
+                  "x": 794.9106382978724,
+                  "y": 251.24602040383928
+                },
+                {
+                  "x": 835.5872340425533,
+                  "y": 242.1863096688064
+                },
+                {
+                  "x": 876.263829787234,
+                  "y": 245.4317913154724
+                },
+                {
+                  "x": 916.9404255319149,
+                  "y": 259.4560646133607
+                },
+                {
+                  "x": 957.6170212765958,
+                  "y": 277.6632946951594
+                },
+                {
+                  "x": 998.2936170212766,
+                  "y": 291.49033675758074
+                },
+                {
+                  "x": 1038.9702127659575,
+                  "y": 294.434116865176
+                },
+                {
+                  "x": 1079.6468085106383,
+                  "y": 285.11012923551016
+                },
+                {
+                  "x": 1120.323404255319,
+                  "y": 267.9035909421405
+                },
+                {
+                  "x": 1161,
+                  "y": 250.90700580401614
+                }
+              ],
+              "stroke": "#244F54",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e29",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 754.2340425531916,
+                  "y": 258.1523032502895
+                },
+                {
+                  "x": 794.9106382978724,
+                  "y": 228.14182972882128
+                },
+                {
+                  "x": 835.5872340425533,
+                  "y": 217.04188695587953
+                },
+                {
+                  "x": 876.263829787234,
+                  "y": 230.07295145896896
+                },
+                {
+                  "x": 916.9404255319149,
+                  "y": 261.106309986287
+                },
+                {
+                  "x": 957.6170212765958,
+                  "y": 295.546489112833
+                },
+                {
+                  "x": 998.2936170212766,
+                  "y": 317.1957344527488
+                },
+                {
+                  "x": 1038.9702127659575,
+                  "y": 315.8720676438825
+                },
+                {
+                  "x": 1079.6468085106383,
+                  "y": 292.1980298693082
+                },
+                {
+                  "x": 1120.323404255319,
+                  "y": 257.3078910114524
+                },
+                {
+                  "x": 1161,
+                  "y": 227.61102854862298
+                }
+              ],
+              "stroke": "#95491F",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false,
+              "dash": "dash"
+            },
+            {
+              "id": "e30",
+              "kind": "text",
+              "x": 734.2340425531916,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "0",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e31",
+              "kind": "text",
+              "x": 937.6170212765958,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "5",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e32",
+              "kind": "text",
+              "x": 1141,
+              "y": 357,
+              "w": 40,
+              "h": 27,
+              "text": "10",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "center",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e33",
+              "kind": "text",
+              "x": 707.2340425531916,
+              "y": 386,
+              "w": 460.7659574468085,
+              "h": 27,
+              "text": "横轴：相同时间步；纵轴：归一化动作",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e34",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 12,
+                  "y": 55
+                },
+                {
+                  "x": 43,
+                  "y": 55
+                }
+              ],
+              "stroke": "#244F54",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false
+            },
+            {
+              "id": "e35",
+              "kind": "text",
+              "x": 54,
+              "y": 39,
+              "w": 220,
+              "h": 34,
+              "text": "方法甲（构造）",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#244F54",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e36",
+              "kind": "line",
+              "points": [
+                {
+                  "x": 300,
+                  "y": 55
+                },
+                {
+                  "x": 331,
+                  "y": 55
+                }
+              ],
+              "stroke": "#95491F",
+              "strokeWidth": 3.5,
+              "role": "data",
+              "endArrow": false,
+              "dash": "dash"
+            },
+            {
+              "id": "e37",
+              "kind": "text",
+              "x": 342,
+              "y": 39,
+              "w": 220,
+              "h": 34,
+              "text": "方法乙（构造）",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#95491F",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e38",
+              "kind": "rect",
+              "x": 0,
+              "y": 448,
+              "w": 1184,
+              "h": 95,
+              "fill": "#E4EBE7",
+              "stroke": "none",
+              "strokeWidth": 1,
+              "role": "group"
+            },
+            {
+              "id": "e39",
+              "kind": "text",
+              "x": 18,
+              "y": 464,
+              "w": 150,
+              "h": 39,
+              "text": "读图路径",
+              "fontSize": 28,
+              "role": "body",
+              "bold": true,
+              "color": "#20353C",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e40",
+              "kind": "text",
+              "x": 190,
+              "y": 462,
+              "w": 974,
+              "h": 34,
+              "text": "先核对A中的对象，再查B中的动作；同名对象同色，单位与基线必须各自保留。",
+              "fontSize": 24,
+              "role": "label",
+              "bold": false,
+              "color": "#20353C",
+              "align": "left",
+              "lineHeight": 1.2
+            },
+            {
+              "id": "e41",
+              "kind": "text",
+              "x": 0,
+              "y": 558,
+              "w": 1184,
+              "h": 27,
+              "text": "真实报告替换为来源面板，不重画未知曲线、不重着色；面板比例和图例若不适配，需要重排而非拉伸。",
+              "fontSize": 18,
+              "role": "note",
+              "bold": false,
+              "color": "#586B70",
+              "align": "left",
+              "lineHeight": 1.2
+            }
+          ]
+        }
+      ],
+      "composition": {
+        "regions": [
+          {
+            "id": "paired",
+            "title": "",
+            "heading": "hidden",
+            "surface": "plain",
+            "padding": 0,
+            "box": {
+              "x": 48,
+              "y": 104,
+              "w": 1184,
+              "h": 586
+            },
+            "drawingIds": [
+              "paired"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

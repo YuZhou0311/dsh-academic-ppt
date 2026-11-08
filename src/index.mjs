@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { buildAcademicTools } from './tools.mjs'
 import { assertHostOperationAccess } from './host-access.mjs'
+import { HostVisualWorkflow } from './host-visual-workflow.mjs'
 
 export const name = 'dsh-academic-ppt'
 export const inject = ['tools', 'skills', 'workingDirectory', 'sandboxPolicy']
@@ -44,10 +45,20 @@ export function apply(ctx, config = {}) {
     const resolveCwd = exec => exec?.agent
       ? ctx.workingDirectory.ensure(exec.agent, exec.signal)
       : process.cwd()
-    const beforeExecute = ({ name, args, cwd, exec }) => assertHostOperationAccess({
+    const visual = new HostVisualWorkflow(ctx)
+    if(ctx.on){
+      disposers.push(ctx.on('tools/result',(exec,result)=>{visual.observe(exec,result)}))
+      disposers.push(ctx.on('session/event',(session,event)=>visual.collaboration.observeSession(session,event)))
+      disposers.push(ctx.on('tools/pre-execute',(exec,next)=>visual.questionGuard(exec,next)))
+    }
+    const beforeExecute = async ({ name, args, cwd, exec }) => {
+      await assertHostOperationAccess({
       name, args, cwd, policy: ctx.sandboxPolicy.resolve({ session: exec?.agent?.session }), signal: exec?.signal,
-    })
-    for (const definition of buildAcademicTools({}, { resolveCwd, beforeExecute })) disposers.push(ctx.tools.register(definition))
+      })
+      await visual.before({name,args,cwd,exec})
+    }
+    const afterExecute = input => visual.after(input)
+    for (const definition of buildAcademicTools({}, { resolveCwd, beforeExecute, afterExecute })) disposers.push(ctx.tools.register(definition))
     ctx.on?.('dispose', release)
   } catch (error) {
     release()

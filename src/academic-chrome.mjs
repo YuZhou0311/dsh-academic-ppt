@@ -7,6 +7,12 @@ const fail = (b, code, message) => b.page.issues.push({severity:'error',code,sli
 // section sizes remain explicit and are checked instead of silently rewritten.
 const autoSize=(b,role,size)=>Math.max(size,b.design?.projection?.[role+'Min']??0);
 
+function bandInk(b){
+ const lum=hex=>{const v=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return .2126*v[0]+.7152*v[1]+.0722*v[2];};
+ const bg=lum(b.p.accent),contrast=c=>{const fg=lum(c);return (Math.max(bg,fg)+.05)/(Math.min(bg,fg)+.05);};
+ return ['#FFFFFF',b.p.ink,'#17212B'].sort((a,c)=>contrast(c)-contrast(a))[0];
+}
+
 export function resolveChrome(design = {}, slide = {}) { return { ...design.chrome, ...slide.chrome }; }
 function contentBottom(chrome) { return chrome.showSources===false ? (chrome.showPageNumber===false && chrome.showFooter===false ? 690 : 670) : 645; }
 
@@ -31,8 +37,8 @@ function headerIdentity(b, project, slide, measureTextWidth) {
 
 function paintHeaderIdentity(b,project,info,band) {
   const {label,brand,brandSize,brandW,logoW,right}=info,boxes=[];
-  if(label){const box={x:48,y:band?10:14,w:right-48,h:band?40:36};boxes.push(box);b.text('section-label',label,box,b.system.sectionSize,{bold:true,color:band?'#FFFFFF':b.p.accent,lineHeight:1.1,role:'section-label'});}
-  if(brand?.label){const box={x:1232-brandW,y:band?14:18,w:brandW,h:Math.max(band?29:28,brandSize*1.1)};boxes.push(box);b.text('brand-label',brand.label,box,brandSize,{color:band?'#FFFFFF':b.p.accent,bold:true,lineHeight:1.1,role:'identity'});}
+  if(label){const box={x:48,y:band?10:14,w:right-48,h:band?40:36};boxes.push(box);b.text('section-label',label,box,b.system.sectionSize,{bold:true,color:band?bandInk(b):b.p.accent,lineHeight:1.1,role:'section-label'});}
+  if(brand?.label){const box={x:1232-brandW,y:band?14:18,w:brandW,h:Math.max(band?29:28,brandSize*1.1)};boxes.push(box);b.text('brand-label',brand.label,box,brandSize,{color:band?bandInk(b):b.p.accent,bold:true,lineHeight:1.1,role:'identity'});}
   if(brand?.logoAssetId){const box={x:1232-brandW-logoW-8,y:band?7:8,w:40,h:40};boxes.push(box);logo(b,project,box,'header-logo');}
   return boxes;
 }
@@ -49,7 +55,7 @@ export function academicAuthoredChrome(b,project,slide,{measureTextWidth}) {
     // With no chapter or identity, the author's title itself occupies the band.
     const box=slide.heading.box,y=Math.max(0,box.y-9),band={x:0,y,w:1280,h:box.y+box.h+9-y};
     b.rect('academic-header-band',band,b.p.accent,'none');
-    return {style:info.style,reservedBoxes:[],bottom:band.y+band.h,titleColor:'#FFFFFF'};
+    return {style:info.style,reservedBoxes:[],bottom:band.y+band.h,titleColor:bandInk(b)};
   }
   const boxes=hasIdentity?paintHeaderIdentity(b,project,info,false):[];
   return {style:info.style,reservedBoxes:boxes,bottom:Math.max(0,...boxes.map(box=>box.y+box.h))};
@@ -64,7 +70,7 @@ export function academicHeader(b, project, slide, {wrapText,measureTextWidth}) {
     const bh=titleInBand?Math.max(60,titleH+18):54;
     b.rect('academic-header-band',{x:0,y:0,w:1280,h:bh},p.accent,'none');
     paintHeaderIdentity(b,project,info,true);
-    if(titleInBand)b.text('title',slide.title,{x:48,y:9,w:right-48,h:titleH},s.titleSize,{bold:true,color:'#FFFFFF',lineHeight:1.13,role:'title'});
+    if(titleInBand)b.text('title',slide.title,{x:48,y:9,w:right-48,h:titleH},s.titleSize,{bold:true,color:bandInk(b),lineHeight:1.13,role:'title'});
     if(titleInBand){
       let y=bh+18;
       if(slide.kicker){const h=wrapText(slide.kicker,1184,kickerSize).length*kickerSize*1.2;b.text('kicker',slide.kicker,{x:48,y,w:1184,h},kickerSize,{color:p.muted,lineHeight:1.2,role:'subtitle'});y+=h+14;}

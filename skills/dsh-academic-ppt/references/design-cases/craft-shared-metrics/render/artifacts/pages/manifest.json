@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/rc5-work/case-build/craft-shared-metrics-v3/exports/r1-3671df9a/preview-not-for-delivery.pptx",
+  "sourceSha256": "61991ba0365412289e7023c21900abceaa99376d69cb8840414f4f527d7f04bb",
+  "dpi": 108,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/rc5-work/case-build/craft-shared-metrics-v3/exports/r1-3671df9a/render-251d0922/artifacts/pages/page-0001.png",
+      "width": 1441,
+      "height": 811,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 160153
+    }
+  ],
+  "missingFonts": []
+}

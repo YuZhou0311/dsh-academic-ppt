@@ -20,7 +20,7 @@ const source={status:'confirmed',mode:'content-led',userResponse:'Synthetic user
 const report={topic:'观测误差的分解',audience:'方法研究组',consultation:{mode:'delegated',workflowVersion:2,source,delegationTopics:[...GUIDED_DESIGN_TOPICS],delegation:'Synthetic tests explicitly delegate preferences to isolate existing template and imagegen planning.'}};
 const templateChoice=(paths,mode='reference-guided')=>({...report.consultation,source:{status:'confirmed',mode,userResponse:'Synthetic user chose this specific template route.',templatePaths:paths}});
 const card={id:'question',purpose:'研究问题',title:'尺度变化后的误差来源',body:'区分观测噪声与模型结构误差。',evidenceStatus:'proposal',items:[{label:'当前证据',detail:'尚待跨尺度检验。'}]};
-const host={availability:'available',source:'Synthetic test fixture declares a host tool; no actual service call.',toolName:'fixture_image_generator'};
+const host={requested:true,availability:'available',source:'Synthetic test fixture declares a host tool; no actual service call.',toolName:'fixture_image_generator'};
 
 test('registered prepare defaults partial consultation objects to checkpoints without rewriting input or explicit topics',async t=>{
   const {cwd,requestPath}=await fixture(t),tool=buildAcademicTools().find(value=>value.name==='academic_ppt_prepare');
@@ -142,7 +142,7 @@ test('available host image generation receives exact report content and a native
   assert.ok(generation.prompt.includes(card.title));assert.ok(generation.prompt.includes(card.body));
   assert.ok(generation.prompt.includes(card.items[0].detail));assert.ok(generation.prompt.includes('proposal'));
   assert.match(generation.prompt,/可编辑原生/);
-  assert.equal(generation.fallback.strategy,'native-catalog');
+  assert.equal(generation.fallback.strategy,'native-composition');
   const rendered=formatToolResult('academic_ppt_prepare',result);
   assert.match(rendered,/尚未执行/);assert.ok(rendered.includes(card.body));
 });
@@ -190,11 +190,11 @@ test('explicit card requests retain fallback while preparation without cards con
   const {prepare}=await fixture(t);
   for(const availability of ['unknown','unavailable']){
     const result=await prepare({...report,template:{status:'unanswered'},imageGeneration:{availability,source:'Fixture capability record.'},cards:[card]});
-    assert.equal(result.nextAction,'select-native-cards');assert.equal(result.imageGeneration.prompt,undefined);
+    assert.equal(result.nextAction,'design-evidence-pages');assert.equal(result.imageGeneration.prompt,undefined);
   }
   const contentFirst=await prepare({...report,template:{status:'none'},imageGeneration:host});
   assert.equal(contentFirst.nextAction,'design-evidence-pages');assert.equal(contentFirst.imageGeneration.prompt,undefined);
-  await assert.rejects(prepare({...report,imageGeneration:{availability:'available',source:'No named host tool.'},cards:[card]}),/toolName/);
+  await assert.rejects(prepare({...report,imageGeneration:{requested:true,availability:'available',source:'No named host tool.'},cards:[card]}),/toolName/);
 });
 
 test('preparation favors whole-page evidence design when no card is requested',async t=>{
@@ -204,7 +204,7 @@ test('preparation favors whole-page evidence design when no card is requested',a
   assert.equal(result.designRecords.referenceStudy,undefined,'Preparing guidance must not invent a viewing record.');
   assert.equal(result.nativeFallback.tool,'academic_ppt_layouts');
   const text=formatToolResult('academic_ppt_prepare',result);
-  for(const expected of ['academicStyles','designStudies','componentStudies','readingOrder','evidenceHierarchy','adaptation','paletteRationale','drawings'])assert.ok(text.includes(expected),expected);
+  for(const expected of ['designCases','designStudies','componentStudies','readingOrder','evidenceHierarchy','adaptation','paletteRationale','drawings'])assert.ok(text.includes(expected),expected);
   assert.match(text,/开放科学排版不必读卡片|开放页面无需额外卡片学习/);
   assert.match(text,/同一模板可以提供多类组件/);
   assert.match(text,/不.*证明.*看图|不.*证明.*审美/);
@@ -260,7 +260,7 @@ test('failure and decline fall back without reattempting generation',async t=>{
   const {prepare}=await fixture(t);
   for(const status of ['failed','declined']){
     const result=await prepare({...report,template:{status:'none'},imageGeneration:{...host,status,failureReason:'Fixture result: request not completed.'},cards:[card]});
-    assert.equal(result.nextAction,'select-native-cards');assert.equal(result.imageGeneration.status,status);
+    assert.equal(result.nextAction,'design-evidence-pages');assert.equal(result.imageGeneration.status,status);
     assert.equal(result.imageGeneration.prompt,undefined);assert.match(result.imageGeneration.reason,/not completed/);
   }
 });
@@ -333,4 +333,15 @@ test('host-facing preparation output preserves reviewed template and generated r
     imageGeneration:{availability:'available',source:'Host tool capability listing.',status:'generated',strategy:'native-from-reviewed-reference',nextAction:'rebuild-editable-cards',resultReferences:['generated-card-result-17'],visualObservations:'Observed two aligned metric slots.'}};
   const text=tool.output.render({},result).map(part=>part.text??'').join('\n');
   for(const expected of ['/workspace/template-profile.json','/workspace/template-page.png','Observed narrow title rail and adjacent conditions.','generated-card-result-17','Observed two aligned metric slots.','Host tool capability listing.'])assert.ok(text.includes(expected),expected);
+});
+
+test('available image tool plus authored cards does not imply a request to generate',async t=>{
+ const {prepare}=await fixture(t);
+ const {requested:unused,...available}=host;
+ for(const imageGeneration of [available,{...available,requested:false}]){
+  const result=await prepare({...report,template:{status:'none'},imageGeneration,cards:[card]});
+  assert.equal(result.nextAction,'design-evidence-pages');assert.equal(result.imageGeneration.prompt,undefined);
+  assert.equal(result.imageGeneration.batches,undefined);
+  assert.match(result.imageGeneration.instructions.join(' '),/没有明确选择/);
+ }
 });

@@ -1,6 +1,7 @@
 /** A reviewable argument before page furniture. Records are attestations, not
  * proof that an agent read a paper or that a person approved a direction. */
 import {hash, stable} from './io.mjs';
+import {inventoryRequestSchema} from './figure-inventory.mjs';
 
 const text=(maxLength=1800)=>({type:'string',minLength:1,maxLength,pattern:'\\S'});
 const id={type:'string',pattern:'^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$'};
@@ -27,6 +28,7 @@ export const storyboardSchema=obj({
 },['version','objective','audienceTakeaway','throughline','pages','decision']);
 
 export const storyboardRequestSchema={oneOf:[
+  inventoryRequestSchema,
   obj({kind:{const:'storyboard',type:'string'},storyboard:storyboardSchema}),
   obj({kind:{const:'pilot-review',type:'string'},decision:en(['confirmed','delegated']),userResponse:text(2400),notes:text(3000)}),
 ]};
@@ -44,8 +46,8 @@ function usedAssets(slide){return [...new Set([...list(slide.figureIds),...list(
 
 /** New pages do not invalidate an unchanged pilot. Changing its science,
  * typography, palette or narrative does; merely recording an answer does not. */
-export function pilotFingerprint(project){
-  const ids=pilotSlideIds(project.storyboard),pages=list(project.slides).filter(s=>ids.includes(s.id));
+export function pilotFingerprint(project,{slideIds}={}){
+  const ids=slideIds??(project.storyboard?.pilot?pilotSlideIds(project.storyboard):(project.slides??[]).map(s=>s.id)),pages=list(project.slides).filter(s=>ids.includes(s.id));
   const claimIds=new Set(pages.flatMap(usedClaims));
   let changed=true;while(changed){changed=false;for(const c of list(project.claims))if(claimIds.has(c.id))for(const d of list(c.dependsOn))if(!claimIds.has(d)){claimIds.add(d);changed=true;}}
   const assetIds=new Set(pages.flatMap(s=>[...usedAssets(s),s.cover?.assetId,s.closing?.assetId].filter(Boolean)));

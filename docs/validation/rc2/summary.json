@@ -1,0 +1,52 @@
+{
+  "version": "0.10.0-rc.2",
+  "baseCommit": "414317c3b1f09f4d02c840bc92ea00ccf236062f",
+  "sourceState": "local candidate, not pushed to original PR or main; no Release published",
+  "checkedAt": "2026-10-31T04:48:45.544425+00:00",
+  "fullRegression": {
+    "command": "DSH_REQUIRE_REAL_RENDER=1 DSH_AGENT_RUNTIME_DIRS=<isolated official rc.3 runtime> npm test",
+    "node": "22.19.0",
+    "tests": 581,
+    "pass": 581,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 269194.948943
+  },
+  "pythonReferenceInspector": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0
+  },
+  "officialHost": {
+    "ok": true,
+    "runtimeVersion": "0.2.1-rc.3",
+    "providerRequests": 34,
+    "toolPipelineCalls": 27,
+    "successfulToolResults": 19,
+    "rejectedToolResults": 8,
+    "academicToolCount": 19,
+    "skillBodyCharacters": 5281
+  },
+  "officialHostBoundary": "Real official runtime and native tools; scripted provider replies. No actual DeepSeek HTTP request or creative-quality evaluation.",
+  "publicDesignCases": {
+    "count": 4,
+    "identity": "constructed-teaching-data-not-research-results",
+    "actualRender": true,
+    "sceneErrors": 0,
+    "sceneWarnings": 0,
+    "modelAutonomous": false
+  },
+  "packageSmoke": "Preliminary tarball extracted to a fresh directory; current case paths resolve there, actual PPTX render and receipt validation pass. Already-installed dependencies reused externally, not a fresh network/DSH Desktop installation. Final tarball smoke is supplied beside delivery to avoid a self-hash cycle.",
+  "unverified": [
+    "User Desktop/Web plugin-manager installation",
+    "Real Deepseek4.1flash1017 autonomous composition and refinement",
+    "Current provider HTTP image serialization/understanding",
+    "PowerPoint/WPS page-by-page appearance and live talk"
+  ],
+  "noUserProfileChange": true,
+  "noModelSwitch": true,
+  "noCredentialsRead": true,
+  "noFontBinariesDistributed": true
+}

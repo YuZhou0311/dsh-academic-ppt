@@ -1,12 +1,12 @@
 # 学术视觉执行
 
-先读 [academic-styles.md](academic-styles.md) 选择全稿方向，按 [visual-decision.md](visual-decision.md) 决定每页关系。文字层级、图表面积、对齐和注释为科学阅读服务；卡片和表面效果只在有具体用途时使用。
+先读 [视觉工艺](visual-craft.md) 和 [art-direction.md](art-direction.md) 与相关 [构图案例](design-cases/README.md)，按 [visual-decision.md](visual-decision.md) 决定每页关系，再用 [academic-styles.md](academic-styles.md) 选择可覆盖基底。文字层级、图表面积、对齐和注释为科学阅读服务；卡片和表面效果只在有具体用途时使用。
 
 ## 全稿与单页分工
 
 全稿统一字体职责、颜色含义、图例、线型和导航。单页由研究任务决定主载体、比较尺度、旁注和阅读次序。相同实验可保留同样布局；不同任务不强塞左图右三卡。不按页号轮换风格。
 
-`design.styleProfile` 提供六种起点，`system`、`fontFamily/titleFontFamily/annotationFontFamily`、`tableStyle` 等显式覆盖优先。旧工程无profile时保持原解析。调整风格后查看实际PPTX，不能根据字段名称推断已经改变外观。
+`design.artDirection` 执行章节色带、字体角色与分组题签的整体视觉语言；普通新工程默认structured，用户可选择editorial/open。`design.styleProfile` 提供六种内容阅读起点，`system`、`fontFamily/titleFontFamily/annotationFontFamily`、`tableStyle` 等显式覆盖优先。旧工程无profile时保持原解析。调整风格后查看实际PPTX，不能根据字段名称推断已经改变外观。
 
 ## 文字角色与实际尺寸
 
@@ -24,7 +24,7 @@
 
 ## 分组与表格
 
-`system.panel:plain` 支持开放分组；邻接、共同基线和空隙已经明确归属时无需边框。对照条件、共同范围或内外层级确需边界时，再选rule、tint或band等受支持形式。深色题签不是学术性的默认标志。
+`system.panel:plain` 支持开放分组；邻接、共同基线和空隙已经明确归属时无需边框。对照条件、共同范围或内外层级确需边界时，再选rule、tint或band等受支持形式。题签应当界定真实证据组；structured默认采用题签，不代表所有嵌套层级都要同样浓重。
 
 原生表格用独立 `tableStyle`：`three-line` 用于克制的学术表，`ruled` 用于逐行阅读，`banded` 用于有必要的表头强调。选择基于内容与投影可读性，不自动同步所有面板表面。保留全部必要行列、表头、单位和条件。
 
@@ -52,4 +52,4 @@
 
 ## 完成标准
 
-用 [design-critique.md](design-critique.md) 对当前最终PPTX逐页检查。风格有内容理由、证据读得清、条件与来源保留、关系可辨、字形和位置正确，才算完成视觉执行。字段齐全和自动检查通过不足以证明这一点。
+同时用 [design-critique.md](design-critique.md) 和 [page-polish.md](page-polish.md) 对当前最终PPTX逐页检查。风格有内容理由、证据读得清、条件与来源保留、关系可辨、字形和位置正确，才算完成视觉执行。字段齐全和自动检查通过不足以证明这一点。

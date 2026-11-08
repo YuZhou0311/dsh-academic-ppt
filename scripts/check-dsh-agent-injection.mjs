@@ -64,6 +64,8 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
   const expectedTools = academic.buildAcademicTools().map(({ name, description, parameters }) => ({ name, description, parameters }))
   assert.equal(expectedTools.length, 19)
   const sourceHashes = Object.fromEntries(await Promise.all([
+    'src/authoring-guidance.mjs', 'skills/dsh-academic-ppt/references/design-cases/catalog.json',
+    'skills/dsh-academic-ppt/references/art-direction.md', 'skills/dsh-academic-ppt/references/page-polish.md',
     'src/index.mjs', 'src/tools.mjs', 'src/host-access.mjs', 'src/core.mjs', 'src/design-intake.mjs',
     'src/design-dialogue.mjs', 'src/storyboard.mjs', 'src/tool-contract.mjs', 'src/academic-styles.mjs',
     'src/schema.mjs', 'src/scene.mjs', 'src/render.mjs', 'skills/dsh-academic-ppt/SKILL.md',
@@ -375,6 +377,38 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
     ])
     checks.push('Official read_image returns a native image block in the next provider request; its exact attachment identity resolves to verified original-fixture pixels and request bytes through the isolated real attachment store')
 
+    // Follow the CURRENT catalogue through the real native tool renderer and
+    // filesystem image entrypoint. Not a scripted assertion of visual taste.
+    let currentCase;
+    await runTurn(imageAgent, 'current-case-discovery-and-image', '读取当前构图案例与解释，检查安装资源可达性，不声称模型理解或审美通过。', [
+      () => [call('current-design-contract', 'academic_ppt_contract', {topic:'design'})],
+      request => {
+        const contract=expectRendered(request,'current-design-contract','academic_ppt_contract');
+        assert.equal(contract.installedPlugin.version,manifest.version);
+        assert.equal(contract.designCases.length,8);
+        currentCase=contract.designCases[0];
+        assert.ok(textOf(toolMessage(request,'current-design-contract')).includes(currentCase.previewPath));
+        return [call('current-case-read-image','read_image',{file_path:currentCase.previewPath}),
+          call('current-case-explanation','read',{file_path:currentCase.explanationPath,limit:2000})];
+      },
+      async request => {
+        const result=successfulResult('current-case-read-image');
+        assert.equal(result.value.path,currentCase.previewPath);
+        const blocks=toolMessage(request,'current-case-read-image').content.filter(block=>block.type==='image');
+        assert.equal(blocks.length,1);
+        const stored=await ctx.attachments.readImage(blocks[0].attachment,request.signal);
+        const expected=PNG.sync.read(await readFile(currentCase.previewPath));
+        const actual=PNG.sync.read(Buffer.from(stored.data));
+        assert.equal(actual.width,expected.width);assert.equal(actual.height,expected.height);
+        assert.deepEqual(actual.data,expected.data,'Current public case pixels reach the official attachment boundary.');
+        const explanation=successfulResult('current-case-explanation');
+        assert.equal(explanation.value.path,currentCase.explanationPath);
+        assert.match(textOf(toolMessage(request,'current-case-explanation')),/核心决策/);
+        return done();
+      },
+    ]);
+    checks.push('Current designCases version, PNG path and explanation reach the real native request; official read_image and read resolve installed skill resources without changing sandbox policy. No model HTTP call or image understanding is asserted.');
+
     for (const [suffix, model] of [['text-only', 'no-network-text-only-fixture'], ['unknown', 'no-network-fixture']]) {
       const incapable = await createAgent(`image-${suffix}`, undefined, model)
       const callId = `read-image-${suffix}`
@@ -617,6 +651,12 @@ export async function checkDshAgentInjection({ runtimeDir, output, artifactsDir 
     await plugin.dispose()
     const brokenRoot = join(workspace, 'missing-skill-package')
     await cp(join(projectRoot, 'src'), join(brokenRoot, 'src'), { recursive: true })
+    // Keep unrelated required package metadata/catalogue present so this fixture
+    // isolates missing SKILL.md rather than failing during module import.
+    await cp(join(projectRoot, 'package.json'), join(brokenRoot, 'package.json'))
+    const brokenCaseDir=join(brokenRoot,'skills','dsh-academic-ppt','references','design-cases')
+    await mkdir(brokenCaseDir,{recursive:true})
+    await cp(join(projectRoot,'skills','dsh-academic-ppt','references','design-cases','catalog.json'),join(brokenCaseDir,'catalog.json'))
     await symlink(join(projectRoot, 'node_modules'), join(brokenRoot, 'node_modules'), 'dir')
     const incompletePlugin = await import(pathToFileURL(join(brokenRoot, 'src', 'index.mjs')).href)
     const brokenFiber = ctx.plugin(incompletePlugin)

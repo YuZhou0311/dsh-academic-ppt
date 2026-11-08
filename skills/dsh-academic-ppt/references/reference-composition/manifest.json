@@ -1,0 +1,47 @@
+{
+  "identity": "original-synthetic-teaching-not-research",
+  "pluginVersion": "0.10.0-rc.7",
+  "modelRun": false,
+  "approval": "not-user-reviewed",
+  "builtThrough": "academic_ppt_init / plan(compose-page) / build(draft) / render",
+  "renderBackend": "wasm",
+  "rendererVersion": "0.1.5",
+  "sourcePptxSha256": "a8954a552726d539b308710b1360578bf1bce2be958e3d96ec6a0c5821a88df5",
+  "files": [
+    {
+      "path": "compact-loop.json",
+      "sha256": "6736f9a8de7655f03acbcfc637039f7234ef7494d161af1a5bed875d526d656e",
+      "bytes": 4344
+    },
+    {
+      "path": "compact-loop.png",
+      "sha256": "793c86f1f3335fb55e475516630f9e375d42ad97579dc48b09f9eea3985fcd4b",
+      "bytes": 172297
+    },
+    {
+      "path": "count-ledger.json",
+      "sha256": "eb8b66ff4b9d0cca3e8ac14aaa00d0e906a8f5b3249fce51dab918ddf0dbce9c",
+      "bytes": 2648
+    },
+    {
+      "path": "count-ledger.png",
+      "sha256": "30a70027081f4c0327e92bbc90fe6c95af8c20e421bf4e5dda4b0606b153dd22",
+      "bytes": 135222
+    },
+    {
+      "path": "lessons.pdf",
+      "sha256": "b83b256cfbd7a8e8f580b333193f425b62d578659243e4f2c1480e4a32bfb311",
+      "bytes": 119407
+    },
+    {
+      "path": "lessons.pptx",
+      "sha256": "a8954a552726d539b308710b1360578bf1bce2be958e3d96ec6a0c5821a88df5",
+      "bytes": 21799
+    },
+    {
+      "path": "render-receipt.json",
+      "sha256": "b5dd4df6e1fb7ffc934ff516fde72cec8217967fb89bd6fd6e4f3f559d2bb9da",
+      "bytes": 1220
+    }
+  ]
+}

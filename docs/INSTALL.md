@@ -1,6 +1,10 @@
 # 安装与使用
 
-## 0.10.0-rc.1 候选源码
+> **当前本地候选：0.10.0-rc.6。** 使用 [rc.6 安装与试作说明](INSTALL_RC6.md)。直接安装本轮交付的 `dsh-academic-ppt-0.10.0-rc.6.tgz`，无需解压。下面保留历史安装渠道；旧 Release 地址不含当前修复，不得代替本轮 TGZ。
+
+本轮未推送远程 PR、未发布 Release、未发布 npm registry。声明范围仍为 DSH `>=0.2.1-rc.2 <0.3.0-0`；本轮接入验证使用官方 `0.2.1-rc.3`，不宣称所有版本/桌面组合已实测。范围与验证见 [rc.6 说明](AUDIT_RC6.md)。
+
+## 历史 0.10.0-rc.1 候选源码
 
 本分支为候选版，尚未发布对应Release。可在独立源码目录运行 `npm ci`、`npm test`、`npm run check` 后执行 `npm pack`，将生成的 `dsh-academic-ppt-0.10.0-rc.1.tgz` 通过下文的本地包路径方式安装。不要把下文0.9.1下载链接当作0.10候选。新字段和兼容说明见 [当前工作流](../skills/dsh-academic-ppt/references/workflow-v010.md)，实际验证见 [VALIDATION_V010.md](VALIDATION_V010.md)。
 

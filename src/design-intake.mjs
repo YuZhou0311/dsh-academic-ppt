@@ -25,6 +25,7 @@ export const preparationRequestSchema = object({
   }, ['status']),
   imageGeneration:object({
     availability:enumeration(['available','unavailable','unknown']),
+    requested:{type:'boolean',default:false,description:'只有本次明确选择额外设计生图探索时才设true；可用不等于需要，缺省不生成。'},
     source:text(1000), toolName:text(180),
     status:enumeration(['not-requested','generated','failed','declined']),
     resultReferences:array(text(3000),8),
@@ -72,7 +73,7 @@ function adaptationPlan(request) {
       {mode:'compose-native',instruction:'需要改变内部列宽、题签位置、信息分区或正文文字色时，借鉴设计原则，用drawings与composition.regions重建原生组件；preset的内部recipe不接受appearance.layout/surface/accent覆盖，外框填充/线型/阴影可直接通过appearance控制。'},
     ],
     instructions:[
-      '先查看与当前证据任务有关的实际页面：academicStyles样张、page-recipes、用户模板或公开科学报告。研究阅读顺序、证据层级和直接标注。只有局部组件适用时才细读卡片；不把卡片数量当作设计目标。',
+      '先查看与当前证据任务有关的实际页面：contract(design).designCases的实际PNG与设计解释、page-recipes、用户模板或公开科学报告。研究阅读顺序、证据层级和直接标注。只有局部组件适用时才细读卡片；不把卡片数量当作设计目标。',
       '已提供用户模板时，实际查看代表正文与困难页中的组件，明确页号与局部位置。已有具体、可定位的模板组件细读可以沿用，不要求重新提取同一模板、看完每一页或额外打卡无关目录；同一模板可以提供多类组件。',
       '先确定实际文字量、条件、指标与信息关系，再决定保留、合并、拆分或重排哪些区块。卡片库、preferredPresets、用户模板和生成参考都是设计起点，不能只换字照搬，也不要求每张卡为了不同而强行变化。',
       '全稿保持颜色与研究对象、比较组、条件或边界的对应一致；同类比较使用一致视觉尺度。换色不能代替内容适配，也不能只靠颜色传达区别。',
@@ -188,22 +189,23 @@ function generationPlan(request) {
   }
   if (!request.cards?.length) return { ...common,strategy:'content-led-pages',nextAction:'design-evidence-pages',
     ...(declared.failureReason ? {reason:declared.failureReason} : {}),
-    instructions:['本次未请求卡片生图。先按证据与故事板查看相关整页或学术风格样张，记录designStudies与paletteRationale，再用composition或drawings组织开放页面。只有需要局部组件时才查询cards，不因存在生图接口而添加卡片。'] };
-  if (status === 'failed' || status === 'declined') return { ...common,strategy:'native-catalog',nextAction:'select-native-cards',
+    instructions:['本次未请求卡片生图。先按证据与故事板查看designCases实际PNG与解释或用户相关正文，记录designStudies与paletteRationale，再用composition或drawings组织适合本页的关系结构。只有需要局部组件时才查询cards，不因存在生图接口而添加卡片。'] };
+  if (status === 'failed' || status === 'declined') return { ...common,strategy:'native-composition',nextAction:'design-evidence-pages',
     ...(declared.failureReason ? { reason:declared.failureReason } : {}),
-    instructions:[status === 'failed' ? '本次生图失败，保留原因并转内置卡片库。无需为了继续制作反复重试、索要密钥或更换外部服务。' : '本次用户选择不用生图，直接按内容选原生卡片并继续。'] };
-  if (declared.availability !== 'available') return { ...common,strategy:'native-catalog',nextAction:'select-native-cards',
-    instructions:[declared.availability === 'unknown' ? '按宿主已公开的工具清单核实一次能力；当前没有已证实的接口，先用内置卡片库继续。不得仅凭模型名称或生成过PNG推定能调用生图。' : '当前宿主没有可用生图接口，直接使用内置卡片库与现有逐页设计流程。'] };
-  if (!declared.toolName) throw new Error('INVALID_PREPARATION: available image generation requires the actual host toolName.');
+    instructions:[status === 'failed' ? '本次生图失败，保留原因并按内容继续原生图表、方法图与自由composition。无需为了继续制作反复重试、索要密钥或更换外部服务。' : '本次用户选择不用生图，按证据关系继续原生图表、方法图与自由composition；卡片仅按需。'] };
+  if (declared.availability !== 'available') return { ...common,strategy:'native-composition',nextAction:'design-evidence-pages',
+    instructions:[declared.availability === 'unknown' ? '按宿主已公开的工具清单核实一次能力；当前没有已证实的接口，先按证据关系继续原生图表和自由composition。不得仅凭模型名称或生成过PNG推定能调用生图。' : '当前宿主没有可用生图接口，使用真实源图、原生图表和自由composition继续逐页设计与看图精修。'] };
+  if(declared.requested!==true)return {...common,strategy:'native-composition',nextAction:'design-evidence-pages',instructions:['宿主有生图能力，但本次没有明确选择额外探索（requested未设true）。直接按材料构图，不为了工具可用而生成卡片。']};
+  if (!declared.toolName) throw new Error('INVALID_PREPARATION: requested image generation requires the actual host toolName.');
   const batches=[];
   for(let start=0;start<request.cards.length;start+=4){
     const cards=request.cards.slice(start,start+4);
     batches.push({id:`card-reference-${batches.length+1}`,cardIds:cards.map(card=>card.id),prompt:cardPrompt(request,cards)});
   }
-  return { ...common,strategy:'host-imagegen-preferred',nextAction:'invoke-host-imagegen',toolName:declared.toolName,batches,...(batches.length===1?{prompt:batches[0].prompt}:{}),
+  return { ...common,strategy:'host-imagegen-opt-in',nextAction:'invoke-host-imagegen',toolName:declared.toolName,batches,...(batches.length===1?{prompt:batches[0].prompt}:{}),
     instructions:['宿主按工具自身契约调用已提供的生图工具；插件仅返回提示词，尚未调用。使用已授权的当前材料，不读取密钥或向任意URL发请求。',
-      '先查看生成结果；成功后以generated、resultReferences和visualObservations回填准备请求。失败/拒绝分别记录failed/declined并转内置库；无结果不可记为generated。'],
-    fallback:{strategy:'native-catalog',nextAction:'select-native-cards'},
+      '先查看生成结果；成功后以generated、resultReferences和visualObservations回填准备请求。失败/拒绝分别记录failed/declined并按内容转原生composition；无结果不可记为generated。'],
+    fallback:{strategy:'native-composition',nextAction:'design-evidence-pages'},
   };
 }
 
@@ -255,8 +257,8 @@ export async function prepareDesign({ cwd=process.cwd(), requestPath, outputPath
   const plan = { ok:true,version:2,requestPath:input,requestSha256:hash(bytes),topic:request.topic,
     nextAction,template,imageGeneration,designDialogue,designAdaptation:adaptationPlan(request),
     designRecords:{consultation:structuredClone(consultation),...(request.referenceStudy?{referenceStudy:structuredClone(request.referenceStudy)}:{})},
-    researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划卡片与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
-    nativeFallback:{ tool:'academic_ppt_layouts',selection:'按当前研究关系查看整页语法或contract(design).academicStyles的实际样张，记录designStudies的阅读顺序、证据层级、适配与paletteRationale。用户模板已有充分观察可沿用。需要局部组件时才调用academic_ppt_cards，并查看实际采用的preset；开放页面无需额外卡片学习。' },
+    researchPrerequisite:{scope:'supplemental-design-only',instructions:['本工具规划内容相关的整页、局部与模板设计参考，不代表已完成论文研究。先核对文献身份，取得并查看真实论文图、数据图或研究插图；图可嵌入卡片与解释和条件组成主证据组，也可开放排版。','web_fetch返回文本不等于下载PDF或图片。用宿主实际可用的下载/PDF处理能力保存图像，登记paper.sourceCheck、figureReview及asset；没有上传原图或生图工具不可用都不能作为纯文字成稿的理由。']},
+    nativeFallback:{ tool:'academic_ppt_layouts',selection:'按当前研究关系查看整页语法或contract(design).designCases的实际PNG与迁移说明，记录designStudies的阅读顺序、证据层级、适配与paletteRationale。用户模板已有充分观察可沿用。需要局部组件时才调用academic_ppt_cards，并查看实际采用的preset；开放页面无需额外卡片学习。' },
     stateRecord:'准备请求记录用户选择和宿主实际能力。返回提问/调用计划不代表动作已执行，不能把刚提出的问题记为无回复；得到真实回答后才更新状态。designRecords是待登记值，需合并实际design并用record保存，prepare不修改工程。',
   };
   if (outputPath) {

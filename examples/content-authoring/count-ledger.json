@@ -1,0 +1,105 @@
+{
+  "kind": "compose-page",
+  "mode": "create",
+  "slide": {
+    "id": "teaching-counts",
+    "title": "同一组测试，两项判据不应合成一个优劣排序",
+    "paperIds": [],
+    "claimIds": [],
+    "seconds": 60,
+    "notes": "合成教学数据：40个假想测试。判据一24/40/20，判据二24/2/6，不是科研结果。",
+    "section": {
+      "number": "02",
+      "title": "构图工艺 · 共享尺度"
+    }
+  },
+  "intent": {
+    "relationship": "comparison",
+    "primaryNodeId": "year-counts",
+    "readingOrder": [
+      "year-counts",
+      "readout",
+      "count-limit"
+    ],
+    "rationale": "精确读数和0–39完整尺度共处同一行；两项判据不能用一个名次概括，也不把边际计数当共同达标次数。"
+  },
+  "body": {
+    "id": "count-page",
+    "kind": "split",
+    "axis": "y",
+    "gap": 20,
+    "children": [
+      {
+        "id": "year-counts",
+        "kind": "comparison",
+        "items": [
+          {
+            "id": "a",
+            "label": "方案 A",
+            "tone": "accent"
+          },
+          {
+            "id": "b",
+            "label": "方案 B",
+            "tone": "secondary"
+          },
+          {
+            "id": "c",
+            "label": "方案 C",
+            "tone": "plain"
+          }
+        ],
+        "metrics": [
+          {
+            "label": "判据一",
+            "unit": "达标数 / 40 次",
+            "values": [
+              "24",
+              "40",
+              "20"
+            ],
+            "scale": {
+              "min": 0,
+              "max": 40
+            }
+          },
+          {
+            "label": "判据二",
+            "unit": "达标数 / 40 次",
+            "values": [
+              "24",
+              "2",
+              "6"
+            ],
+            "scale": {
+              "min": 0,
+              "max": 40
+            }
+          }
+        ]
+      },
+      {
+        "id": "readout",
+        "kind": "statement",
+        "label": "对照",
+        "tone": "accent",
+        "text": "两个判据分别读；准确数字和完整范围在同一行里核对。"
+      },
+      {
+        "id": "count-limit",
+        "kind": "text",
+        "role": "label",
+        "text": "边际计数不能推出共同达标次数。条带只表示这一合成计数，不附加误差或概率解释。",
+        "emphasis": [
+          "不能推出共同达标次数"
+        ]
+      },
+      {
+        "id": "count-source",
+        "kind": "text",
+        "role": "note",
+        "text": "原创合成教学资料 · 40 次假想测试；不属于任何论文或真实试验。"
+      }
+    ]
+  }
+}

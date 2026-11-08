@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "backend": "wasm",
+  "rasterEngine": "libreoffice",
+  "source": "saved",
+  "inputPath": "/mnt/data/plugin-audit/cases-build/shared-scale/case.pptx",
+  "sourceSha256": "43bbff70243a579d2ce711c10f939c520f68db0e609f226c8c6307da075fc6d5",
+  "dpi": 120,
+  "pageCount": 1,
+  "images": [
+    {
+      "index": 1,
+      "page": 1,
+      "path": "/mnt/data/plugin-audit/cases-build/shared-scale/render/artifacts/pages/page-0001.png",
+      "width": 1601,
+      "height": 901,
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1280.0666666666666,
+        "height": 720.0666666666667
+      },
+      "byteLength": 174343
+    }
+  ],
+  "missingFonts": []
+}

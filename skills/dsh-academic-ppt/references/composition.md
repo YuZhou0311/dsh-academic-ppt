@@ -1,5 +1,8 @@
 # 从研究关系到可编辑画面
 
+> rc.4 正常正文入口：`contract(authoring)` → `plan(kind:compose-page)`。先读 [内容关系构图](content-authoring.md)。模型选择关系与主次，工具编译原生几何；旧自动侧栏不是困难页默认。高级显式composition和用户模板继续支持。
+
+
 从[visual-decision.md](visual-decision.md)中的完整逐页设计稿出发，先核对实际可见内容与关系，再设计主构图、局部分组和坐标。页面任务可包含证据、方法、比较条件、解释和边界，按材料取舍。完整字段查academic_ppt_contract(topic:slide)，不要根据本文片段猜测未列出的字段。
 
 ## 流式行列与自由区域
